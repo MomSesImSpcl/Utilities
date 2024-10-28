@@ -1,0 +1,8 @@
+#NAMESPACE#
+/// <summary>
+/// 
+/// </summary>
+public enum #SCRIPTNAME#
+{
+    
+}
