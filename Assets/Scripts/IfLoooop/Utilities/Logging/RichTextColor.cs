@@ -1,7 +1,7 @@
 namespace IfLoooop.Utilities.Logging
 {
     /// <summary>
-    /// All colors that can be used for Rich Text formatting.
+    /// Represents the different colors that can be used for rich text formatting.
     /// </summary>
     public enum RichTextColor
     {

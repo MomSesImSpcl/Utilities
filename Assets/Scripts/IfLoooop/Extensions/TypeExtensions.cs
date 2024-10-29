@@ -8,22 +8,23 @@ namespace IfLoooop.Extensions
     public static class TypeExtensions
     {
         #region Methods
+
         /// <summary>
-        /// Returns the number of enum values of the given <c>_Type</c>.
+        /// Returns the count of the enum values of the given <c>_Type</c>.
         /// </summary>
-        /// <param name="_Type">The <see cref="Type"/> of the enum.</param>
-        /// <returns>The number of enum values of the given <c>_Type</c>.</returns>
+        /// <param name="_Type">The <see cref="Type"/> to get the enum count of.</param>
+        /// <returns>The count of the enum values of the given <c>_Type</c>.</returns>
         public static int GetEnumCount(this Type _Type)
         {
             return _Type.GetEnumValues().Length;
         }
-        
+
         /// <summary>
-        /// Returns the enum values of the given <c>_Type</c> as <c>T[]</c>.
+        /// Returns an array of the enum values of the given <c>_Type</c>.
         /// </summary>
+        /// <typeparam name="T">The type of the enum.</typeparam>
         /// <param name="_Type">The <see cref="Type"/> to get the enum values of.</param>
-        /// <typeparam name="T">Must be the <see cref="Type"/> of the enum.</typeparam>
-        /// <returns>The enum values of the given <c>_Type</c> as <c>T[]</c>.</returns>
+        /// <returns>An array of the enum values of the given <c>_Type</c>.</returns>
         public static T[] GetEnumValues<T>(this Type _Type)
         {
             return (T[])_Type.GetEnumValues();

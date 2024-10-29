@@ -3,32 +3,33 @@ using System.Text;
 namespace IfLoooop.Utilities.Pooling.Wrappers
 {
     /// <summary>
-    /// <see cref="System.Text.StringBuilder"/> wrapper for <see cref="ObjectPool{T}"/>.
+    /// A wrapper class for managing a <see cref="StringBuilder"/> instance within an object pool.
     /// </summary>
     public sealed class StringBuilderPoolWrapper : PoolWrapperBase<StringBuilderPoolWrapper>
     {
         #region Properties
         /// <summary>
-        /// <see cref="System.Text.StringBuilder"/>.
+        /// Gets the instance of <see cref="StringBuilder"/> managed by the wrapper.
         /// </summary>
-        internal StringBuilder StringBuilder { get; } = new();
+        public StringBuilder StringBuilder { get; } = new();
         #endregion
 
         #region Operators
         /// <summary>
-        /// Implicitly returns the <see cref="StringBuilder"/> from a <see cref="StringBuilderPoolWrapper"/> object.
+        /// Implicitly converts a <see cref="StringBuilderPoolWrapper"/> to a <see cref="StringBuilder"/>.
         /// </summary>
-        /// <param name="_StringBuilderPoolWrapper">The <see cref="StringBuilderPoolWrapper"/> object.</param>
-        /// <returns>The <see cref="StringBuilder"/> in the <see cref="StringBuilderPoolWrapper"/> object.</returns>
+        /// <param name="_StringBuilderPoolWrapper">The <see cref="StringBuilderPoolWrapper"/> instance to convert.</param>
+        /// <returns>The underlying <see cref="StringBuilder"/> of the provided <see cref="StringBuilderPoolWrapper"/>.</returns>
         public static implicit operator StringBuilder(StringBuilderPoolWrapper _StringBuilderPoolWrapper) => _StringBuilderPoolWrapper.StringBuilder;
         #endregion
         
         #region Methods
         /// <summary>
-        /// Returns the contents of <see cref="StringBuilder"/>, clears it and returns this <see cref="StringBuilderPoolWrapper"/> back to its <see cref="PoolWrapperBase{T}.ObjectPool"/>.
+        /// Retrieves the current string value of the underlying <see cref="StringBuilder"/>, clears the
+        /// <see cref="StringBuilder"/>, and returns this instance back to its associated object pool.
         /// </summary>
-        /// <returns>The contents of <see cref="StringBuilder"/>.</returns>
-        internal new string Return()
+        /// <returns>The current string value of the underlying <see cref="StringBuilder"/>.</returns>
+        public new string Return()
         {
             var _string = this.StringBuilder.ToString();
 

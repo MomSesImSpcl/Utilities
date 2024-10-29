@@ -5,32 +5,31 @@ using IfLoooop.Extensions;
 namespace IfLoooop.Utilities.Logging
 {
     /// <summary>
-    /// Used to retrieve the class, member name and the line number from where the <see cref="GetCallerInfo"/> method is called.
+    /// Represents information about the caller of a method, including file path, member name, and line number.
     /// </summary>
     public sealed class CallerInfo
     {
         #region Fields
         /// <summary>
-        /// Contains the class and member name + the line number, from where the <see cref="GetCallerInfo"/> method was called. <br/>
-        /// <i>CLASS_NAME.MEMBER_NAME:LINE_NUMBER</i>
+        /// Holds the caller information as a formatted string, including file path, member name, and line number.
         /// </summary>
         private readonly string callerInfo;
         #endregion
 
         #region Operators
         /// <summary>
-        /// Implicitly returns <see cref="callerInfo"/> from a <see cref="CallerInfo"/> object.
+        /// Defines an implicit conversion from a <see cref="CallerInfo"/> to a string.
         /// </summary>
-        /// <param name="_CallerInfo">A <see cref="CallerInfo"/> object.</param>
-        /// <returns>The value of <see cref="callerInfo"/>.</returns>
+        /// <param name="_CallerInfo">The instance of <see cref="CallerInfo"/> to be converted.</param>
+        /// <returns>A string representation of the caller information.</returns>
         public static implicit operator string(CallerInfo _CallerInfo) => _CallerInfo.callerInfo;
         #endregion
         
         #region Constructors
         /// <summary>
-        /// Create a new <see cref="CallerInfo"/>.
+        /// <see cref="CallerInfo"/>.
         /// </summary>
-        /// <param name="_CallerInfo">This will be the value of <see cref="callerInfo"/>.</param>
+        /// <param name="_CallerInfo"><see cref="callerInfo"/>.</param>
         private CallerInfo(string _CallerInfo)
         {
             this.callerInfo = _CallerInfo;
@@ -39,26 +38,26 @@ namespace IfLoooop.Utilities.Logging
         
         #region Methods
         /// <summary>
-        /// Creates a new <see cref="CallerInfo"/> with information about the calling member.
+        /// Retrieves information about the caller of a method, including file path, member name, and line number.
         /// </summary>
-        /// <param name="_FilePath">Path to the file from where this method is called. (Leave empty)</param>
-        /// <param name="_MemberName">Name of the member from which this method is called. (Leave empty)</param>
-        /// <param name="_LineNumber">Line number in the file, from where this method is called. (Leave 0)</param>
-        /// <returns>A new <see cref="CallerInfo"/>.</returns>
+        /// <param name="_FilePath">The file path of the source code that calls this method. This is automatically provided by the compiler.</param>
+        /// <param name="_MemberName">The name of the member (method, property, etc.) that calls this method. This is automatically provided by the compiler.</param>
+        /// <param name="_LineNumber">The line number in the source code at which this method is called. This is automatically provided by the compiler.</param>
+        /// <returns>An instance of <see cref="CallerInfo"/> containing the caller information.</returns>
         public static CallerInfo GetCallerInfo([CallerFilePath] string _FilePath = "", [CallerMemberName] string _MemberName = "", [CallerLineNumber] int _LineNumber = 0)
         {
             return new CallerInfo(FormatCallerInfo(_FilePath, _MemberName, _LineNumber));
         }
 
         /// <summary>
-        /// Formats caller information into a readable <see cref="string"/> containing the class name, member name, and line number. <br/>
-        /// <i>Returns a clickable hyperlink to the file, when output in the console.</i>
+        /// Formats caller information into a string that includes the class name, method name, and line number.
+        /// Optionally, formats this string as a clickable hyperlink for use in the Unity editor.
         /// </summary>
-        /// <param name="_FilePath">Path to the file from where this method is called.</param>
-        /// <param name="_MemberName">Name of the member from which this method is called.</param>
-        /// <param name="_LineNumber">Line number in the file, from where this method is called.</param>
-        /// <param name="_ToHyperlink">Set to <c>fasle</c>, to not create a hyperlink when output to the console (Editor only).</param>
-        /// <returns>A formatted <see cref="string"/> that includes the class name, member name, and line number.</returns>
+        /// <param name="_FilePath">The source file path of the caller.</param>
+        /// <param name="_MemberName">The member name of the caller.</param>
+        /// <param name="_LineNumber">The line number in the source file at which the call was made.</param>
+        /// <param name="_ToHyperlink">Specifies whether to format the string as a clickable hyperlink (only in the Unity editor).</param>
+        /// <returns>A formatted string with the caller's class, member name, and line number. Optionally, a clickable hyperlink in the Unity editor.</returns>
         public static string FormatCallerInfo(string _FilePath, string _MemberName, int _LineNumber, bool _ToHyperlink = true)
         {
             var _class = Path.GetFileNameWithoutExtension(_FilePath);
@@ -72,11 +71,11 @@ namespace IfLoooop.Utilities.Logging
 #endif
             return _callerInfo;
         }
-        
+
         /// <summary>
-        /// Returns the value of <see cref="callerInfo"/>
+        /// Returns a string representation of the caller information, including file path, member name, and line number.
         /// </summary>
-        /// <returns>The value of <see cref="callerInfo"/></returns>
+        /// <returns>A string that describes the caller information.</returns>
         public override string ToString()
         {
             return this.callerInfo;

@@ -1,28 +1,29 @@
 #nullable enable
-using System;
 using UnityEngine;
 
 namespace IfLoooop.Utilities.Singleton
 {
     /// <summary>
-    /// Automatically creates a singleton instance of the given <see cref="Type"/> <c>T</c> in <see cref="Awake"/>.
+    /// A generic base class for creating singleton MonoBehaviour instances in Unity.
     /// </summary>
+    /// <typeparam name="T">The type of the singleton class inheriting from this base class.</typeparam>
     public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBehaviour<T>
     {
         #region Fields
         /// <summary>
-        /// Singleton instance of the given <see cref="Type"/> <c>T</c>.
+        /// Holds the singleton instance of the derived class.
         /// </summary>
         protected static T? Instance;
         #endregion
 
         #region Properties
         /// <summary>
-        /// Specifies in what method the singleton instance will be initialized.
+        /// Specifies the method used to initialize the singleton instance.
         /// </summary>
         protected abstract InitializationMethod InitializationMethod { get; }
         /// <summary>
-        /// Set to <c>true</c> if the singleton instance should not be destroyed on load.
+        /// Indicates whether the singleton instance should persist across scene loads.
+        /// If true, the instance will not be destroyed when loading a new scene.
         /// </summary>
         protected new virtual bool DontDestroyOnLoad => false;
         #endregion
@@ -70,8 +71,13 @@ namespace IfLoooop.Utilities.Singleton
         }
 
         /// <summary>
-        /// Initializes <see cref="Instance"/> if it is not already set.
+        /// Initializes the singleton instance of the derived MonoBehaviour class.
         /// </summary>
+        /// <remarks>
+        /// This method ensures that only one instance of the derived class is instantiated. If an instance already exists,
+        /// the current gameObject will be destroyed. If no instance exists, the current instance is assigned and, if specified,
+        /// will not be destroyed on load of a new scene.
+        /// </remarks>
         private void Init()
         {
             if (Instance != null)

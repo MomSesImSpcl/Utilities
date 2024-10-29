@@ -1,26 +1,27 @@
-using System;
 using System.Collections.Generic;
 
 namespace IfLoooop.Utilities.Pooling
 {
     /// <summary>
-    /// Base class for all object pools.
+    /// Provides an abstract base class for creating object pools.
     /// </summary>
-    /// <typeparam name="C">
-    /// The <see cref="Type"/> of the collection that holds all objects in <see cref="ObjectPoolBase{C,T}.ObjectPool"/>. <br/>
-    /// <i>Must implement the <see cref="IReadOnlyCollection{T}"/> interface, and be able to be created with the <c>new()</c> keyword.</i>
-    /// </typeparam>
-    /// <typeparam name="T">The <see cref="Type"/> of the objects in <see cref="ObjectPoolBase{C,T}.ObjectPool"/>.</typeparam>
+    /// <typeparam name="C">The collection type used for internal object storage. Must implement <see cref="IReadOnlyCollection{T}"/> and have a parameterless constructor.</typeparam>
+    /// <typeparam name="T">The type of objects to be pooled.</typeparam>
     public abstract class ObjectPoolBase<C, T> where C : IReadOnlyCollection<T>, new()
     {
         #region Properties
         /// <summary>
-        /// A collection that holds all objects in this pool.
+        /// Represents a pool that manages reusable objects of type <typeparamref name="T"/>.
         /// </summary>
+        /// <typeparam name="T">The type of objects to be pooled. Must inherit from <see cref="PoolWrapperBase{T}"/> and have a parameterless constructor.</typeparam>
         protected C ObjectPool { get; }
         /// <summary>
-        /// Maximum amount of objects that can be in <see cref="ObjectPool"/> at a time.
+        /// Gets the maximum capacity of the object pool.
         /// </summary>
+        /// <value>
+        /// An integer representing the maximum number of objects that can be held in the pool.
+        /// This value is set through the constructor and cannot be less than 1.
+        /// </value>
         protected int MaxCapacity { get; }
         #endregion
 
@@ -37,12 +38,12 @@ namespace IfLoooop.Utilities.Pooling
         #endregion
         
         #region Methods
-        /// <summary>
-        /// Makes sure the given <c>_InitialCapacity</c> is not bigger than <see cref="MaxCapacity"/>.
-        /// </summary>
-        /// <param name="_InitialCapacity">Amount of objects to create.</param>
-        /// <param name="_initialCapacity">Adjusted <c>_InitialCapacity</c>.</param>
         // ReSharper disable once InconsistentNaming
+        /// <summary>
+        /// Validates the given initial capacity against the maximum capacity of the pool.
+        /// </summary>
+        /// <param name="_InitialCapacity">The initial capacity to be checked.</param>
+        /// <param name="_initialCapacity">The validated initial capacity which will be either the given initial capacity or the maximum capacity, whichever is lower.</param>
         protected void CheckInitialCapacity(int _InitialCapacity, out int _initialCapacity)
         {
             _initialCapacity = _InitialCapacity > this.MaxCapacity ? this.MaxCapacity : _InitialCapacity;

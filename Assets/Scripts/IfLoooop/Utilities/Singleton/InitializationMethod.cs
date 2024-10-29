@@ -1,7 +1,7 @@
 namespace IfLoooop.Utilities.Singleton
 {
     /// <summary>
-    /// Specifies in what method the <see cref="SingletonMonoBehaviour{T}"/> is initialized.
+    /// Specifies the method in which the singleton instance should be initialized.
     /// </summary>
     public enum InitializationMethod
     {

@@ -1,21 +1,24 @@
 namespace IfLoooop.Utilities.Pooling.Wrappers
 {
     /// <summary>
-    /// Wrapper for objects in <see cref="ObjectPool{T}"/>.
+    /// Represents a base class for wrapper objects that are managed within an object pool.
     /// </summary>
-    /// <typeparam name="T">Must have a parameterless constructor.</typeparam>
+    /// <typeparam name="T">The type of the pool wrapper. Must inherit from <see cref="PoolWrapperBase{T}"/> and have a parameterless constructor.</typeparam>
     public abstract class PoolWrapperBase<T> where T : PoolWrapperBase<T>, new()
     {
         #region Properties
         /// <summary>
-        /// The <see cref="ObjectPool{T}"/> this <see cref="PoolWrapperBase{T}"/> object belongs to.
+        /// Represents an object pool that manages a queue of objects.
         /// </summary>
+        /// <typeparam name="T">
+        /// The type of objects managed by the pool. Must be a class that inherits from <see cref="PoolWrapperBase{T}"/> and has a parameterless constructor.
+        /// </typeparam>
         public ObjectPool<T> ObjectPool { get; init; } = null!;
         #endregion
 
         #region Methods
         /// <summary>
-        /// Returns this <see cref="PoolWrapperBase{T}"/> object to its <see cref="ObjectPool"/>.
+        /// Returns this instance back to its associated object pool.
         /// </summary>
         protected void Return()
         {

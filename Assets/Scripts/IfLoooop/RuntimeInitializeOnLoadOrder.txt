@@ -1,0 +1,10 @@
+-Static Constructors
+-SubsystemRegistration
+-AfterAssembliesLoaded
+-BeforeSplashScreen
+-BeforeSceneLoad
+-Awake
+-OnEnable
+-AfterSceneLoad
+-RuntimeInitializeOnLoadMethod
+-Start

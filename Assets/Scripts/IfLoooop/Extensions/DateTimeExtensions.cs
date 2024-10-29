@@ -9,12 +9,12 @@ namespace IfLoooop.Extensions
     {
         #region Methods
         /// <summary>
-        /// Estimates the remaining time to complete a process.
+        /// Estimates the remaining time required to complete a process based on the current progress.
         /// </summary>
-        /// <param name="_StartTime">Start time of the process.</param>
-        /// <param name="_CurrentStep">The number of steps completed so far.</param>
-        /// <param name="_TotalSteps">The total number of steps in the process.</param>
-        /// <param name="_LastProgressUpdate">The last time the process was updated.</param>
+        /// <param name="_StartTime">The starting time of the process.</param>
+        /// <param name="_CurrentStep">The current progress step number.</param>
+        /// <param name="_TotalSteps">The total number of steps required to complete the process.</param>
+        /// <param name="_LastProgressUpdate">The time of the last progress update.</param>
         /// <returns>A <see cref="TimeSpan"/> representing the estimated remaining time to complete the process.</returns>
         public static TimeSpan EstimateTime(this DateTime _StartTime, long _CurrentStep, long _TotalSteps, DateTime _LastProgressUpdate)
         {

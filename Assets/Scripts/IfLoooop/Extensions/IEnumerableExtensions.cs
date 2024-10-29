@@ -19,10 +19,10 @@ namespace IfLoooop.Extensions
         /// <summary>
         /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the first occurrence within the entire
         /// </summary>
-        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to search in.</param>
-        /// <param name="_Match">The condition to search for.</param>
-        /// <typeparam name="T">Can be any <see cref="Type"/>.</typeparam>
-        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, -1.</returns>
+        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to search on</param>
+        /// <param name="_Match">The condition to search for</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, -1</returns>
         public static int FindIndex<T>(this IEnumerable<T> _Enumerable, Predicate<T> _Match)
         {
             var _count = 0;
@@ -40,15 +40,30 @@ namespace IfLoooop.Extensions
             
             return -1;
         }
-        
+
         /// <summary>
-        /// Returns the first element of a sequence, or <c>_DefaultValue</c> if no element is found.
+        /// Searches for an element that matches the conditions defined by the specified predicate in parallel, and returns the zero-based index of the first occurrence within the entire sequence.
         /// </summary>
-        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to search in.</param>
-        /// <param name="_Match">The condition to search for.</param>
-        /// <param name="_DefaultValue">The value to return when no element could be found.</param>
-        /// <typeparam name="T">Can be any <see cref="Type"/>.</typeparam>
-        /// <returns>The first element of a sequence, or <c>_DefaultValue</c> if no element is found.</returns>
+        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to search on</param>
+        /// <param name="_Match">The condition to search for</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, -1</returns>
+        public static int FindIndexParallel<T>(this IEnumerable<T> _Enumerable, Predicate<T> _Match)
+        {
+            var _array = _Enumerable as T[] ?? _Enumerable.ToArray();
+            var _index = ParallelEnumerable.Range(0, _array.Length).FirstOrDefault(_Index => _Match(_array[_Index]));
+
+            return _index != -1 ? _index : -1;
+        }
+
+        /// <summary>
+        /// Searches for an element that matches the conditions defined by the specified predicate and returns the first occurrence within the entire enumerable or the provided default value if no match is found.
+        /// </summary>
+        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to search on.</param>
+        /// <param name="_Match">The predicate to match elements against.</param>
+        /// <param name="_DefaultValue">The default value to return if no match is found.</param>
+        /// <typeparam name="T">The type of elements in the enumerable.</typeparam>
+        /// <returns>The first occurrence of an element that matches the conditions defined by the predicate, or the default value if no match is found.</returns>
         public static T? FirstOrDefault<T>(this IEnumerable<T> _Enumerable, Predicate<T> _Match, T? _DefaultValue)
         {
             using var _enumerator = _Enumerable.GetEnumerator();
@@ -63,13 +78,13 @@ namespace IfLoooop.Extensions
             
             return _DefaultValue;
         }
-        
+
         /// <summary>
-        /// Returns a random element from the given <c>_Collection</c>.
+        /// Returns a random element from the specified enumerable.
         /// </summary>
-        /// <param name="_Enumerable">The <c>_Collection</c> to get a random element from.</param>
-        /// <typeparam name="T">Can be any <see cref="Type"/>.</typeparam>
-        /// <returns>A random element from the given <c>_Collection</c>.</returns>
+        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to select a random element from.</param>
+        /// <typeparam name="T">The type of the elements in the enumerable.</typeparam>
+        /// <returns>A randomly selected element from the enumerable.</returns>
         public static T GetRandom<T>(this IEnumerable<T> _Enumerable)
         {
             var _array = _Enumerable.ToArray();
@@ -77,14 +92,14 @@ namespace IfLoooop.Extensions
 
             return _array[_index];
         }
-        
+
         /// <summary>
-        /// Returns a random amount of unique elements from the given <c>_Collection</c>.
+        /// Selects a random subset of elements from the given <see cref="IEnumerable{T}"/>.
         /// </summary>
-        /// <param name="_Enumerable">The collection to get the random elements from.</param>
-        /// <param name="_MaxAmount">The maximum amount of elements to return. (0 = <c>_Collection.Count()</c>)</param>
-        /// <typeparam name="T">Can be any <see cref="Type"/>.</typeparam>
-        /// <returns>A random amount of unique elements from the given <c>_Collection</c>.</returns>
+        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to select from</param>
+        /// <param name="_MaxAmount">The maximum number of elements to select. If 0 or not specified, selects up to the total length of the collection</param>
+        /// <typeparam name="T">The type of elements in the collection</typeparam>
+        /// <returns>A random subset of elements from the original collection</returns>
         public static IEnumerable<T> GetRandomAmount<T>(this IEnumerable<T> _Enumerable, int _MaxAmount = 0)
         {
             var _array = _Enumerable.ToArray();
@@ -92,15 +107,15 @@ namespace IfLoooop.Extensions
             
             return _array.OrderBy(_ => Guid.NewGuid()).Take(_take);
         }
-        
+
         /// <summary>
-        /// Formats and aligns the output of this collection into a table-like representation of the given <c>_Entries</c> as a <c>.json</c>-<see cref="string"/>.
+        /// Converts an <see cref="IEnumerable{T}"/> to a formatted JSON string with specified indentations and selected properties.
         /// </summary>
-        /// <param name="_Enumerable">The collection that holds the given <c>_Entries</c>.</param>
-        /// <param name="_Indentations">Amount of preceding whitespaces.</param>
-        /// <param name="_Entries">The values to print.</param>
-        /// <typeparam name="T">Can be any <see cref="Type"/>.</typeparam>
-        /// <returns>A table-like representation of the given <c>_Entries</c> as a <c>.json</c>-<see cref="string"/>.</returns>
+        /// <param name="_Enumerable">The enumerable collection to convert to JSON.</param>
+        /// <param name="_Indentations">The number of spaces to use for indentation.</param>
+        /// <param name="_Entries">Expressions specifying the properties to include in the JSON output.</param>
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <returns>A JSON string representing the collection with formatted entries and specified indentations.</returns>
         public static string PrettyJson<T>(this IEnumerable<T> _Enumerable, int _Indentations, params Expression<Func<T, object?>>[] _Entries)
         {
             var _array = _Enumerable.ToArray();
@@ -180,44 +195,43 @@ namespace IfLoooop.Extensions
             
             return _message;
         }
-        
+
         /// <summary>
-        /// Formats and aligns the output of this collection into a table-like representation of the given <c>_Entries</c>.
+        /// Prints the elements of the enumerable in a formatted, human-readable string.
         /// </summary>
-        /// <param name="_Enumerable">The collection that holds the given <c>_Entries</c>.</param>
-        /// <param name="_Title">Will be displayed as the first value.</param>
-        /// <param name="_Entries">The values to print.</param>
-        /// <typeparam name="T">Can be any <see cref="Type"/>.</typeparam>
-        /// <returns>A table-like representation of the given <c>_Entries</c>.</returns>
+        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to format and print.</param>
+        /// <param name="_Title">An optional title to use for the formatted output.</param>
+        /// <param name="_Entries">The properties or fields of the elements to include in the formatted output.</param>
+        /// <typeparam name="T">The type of elements in the enumerable.</typeparam>
+        /// <returns>A formatted string representing the elements of the enumerable.</returns>
         public static string PrintPretty<T>(this IEnumerable<T> _Enumerable, Expression<Func<T, object?>>? _Title = null, params Expression<Func<T, object?>>[] _Entries)
         {
             return PrintPretty(_Enumerable, true, true, _Title, _Entries);
         }
-        
+
         /// <summary>
-        /// Formats and aligns the output of this collection into a table-like representation of the given <c>_Entries</c>.
+        /// Generates a formatted string representing the provided collection, with options for including a title and specific entries.
         /// </summary>
-        /// <param name="_Enumerable">The collection that holds the given <c>_Entries</c>.</param>
-        /// <param name="_PrintName">Set to <c>false</c> to not print the name.</param>
-        /// <param name="_Title">Will be displayed as the first value.</param>
-        /// <param name="_Entries">The values to print.</param>
-        /// <typeparam name="T">Can be any <see cref="Type"/>.</typeparam>
-        /// <returns>A table-like representation of the given <c>_Entries</c>.</returns>
+        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to be formatted.</param>
+        /// <param name="_Title">An optional expression defining the title for the formatted output.</param>
+        /// <param name="_Entries">Expressions defining the entries to be included in the formatted output.</param>
+        /// <typeparam name="T">The type of elements in the collection.</typeparam>
+        /// <returns>A string representing the formatted output of the collection.</returns>
         public static string PrintPretty<T>(this IEnumerable<T> _Enumerable, bool _PrintName, Expression<Func<T, object?>>? _Title = null, params Expression<Func<T, object?>>[] _Entries)
         {
             return PrintPretty(_Enumerable, _PrintName, true, _Title, _Entries);
         }
-        
+
         /// <summary>
-        /// Formats and aligns the output of this collection into a table-like representation of the given <c>_Entries</c>.
+        /// Formats the elements of the specified collection into a readable string representation.
         /// </summary>
-        /// <param name="_Enumerable">The collection that holds the given <c>_Entries</c>.</param>
-        /// <param name="_PrintName">Set to <c>false</c> to not print the name.</param>
-        /// <param name="_AddNewLineAtEnd">Set to <c>false</c> to not add a <see cref="Environment.NewLine"/> at the..</param>
-        /// <param name="_Title">Will be displayed as the first value.</param>
-        /// <param name="_Entries">The values to print.</param>
-        /// <typeparam name="T">Can be any <see cref="Type"/>.</typeparam>
-        /// <returns>A table-like representation of the given <c>_Entries</c>.</returns>
+        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> containing the data to format.</param>
+        /// <param name="_PrintName">A boolean flag indicating if the property names should be included in the output.</param>
+        /// <param name="_AddNewLineAtEnd">A boolean flag indicating if a newline should be added at the end of the output.</param>
+        /// <param name="_Title">An expression that selects the title property from the collection's elements.</param>
+        /// <param name="_Entries">An array of expressions that select properties from the collection's elements to include in the output.</param>
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <returns>A formatted string representation of the collection elements.</returns>
         public static string PrintPretty<T>(this IEnumerable<T> _Enumerable, bool _PrintName = true, bool _AddNewLineAtEnd = true, Expression<Func<T, object?>>? _Title = null, params Expression<Func<T, object?>>[] _Entries)
         {
             var _array = _Enumerable.ToArray();

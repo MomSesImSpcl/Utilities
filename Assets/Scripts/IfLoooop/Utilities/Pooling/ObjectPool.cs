@@ -1,16 +1,12 @@
-using System;
 using System.Collections.Generic;
 using IfLoooop.Utilities.Pooling.Wrappers;
 
 namespace IfLoooop.Utilities.Pooling
 {
     /// <summary>
-    /// Object pool with a <see cref="Queue{T}"/>.
+    /// Represents a pool of reusable objects of type <typeparamref name="T"/>.
     /// </summary>
-    /// <typeparam name="T">
-    /// The <see cref="Type"/> of the objects in <see cref="ObjectPoolBase{C,T}.ObjectPool"/>.
-    /// <i>Must be a class and be able to be created with the <c>new()</c> keyword. </i>
-    /// </typeparam>
+    /// <typeparam name="T">The type of objects to be pooled.</typeparam>
     public sealed class ObjectPool<T> : ObjectPoolBase<Queue<T>, T> where T : PoolWrapperBase<T>, new()
     {
         #region Constructors
@@ -33,9 +29,9 @@ namespace IfLoooop.Utilities.Pooling
         
         #region Methods
         /// <summary>
-        /// Creates a new object of <see cref="Type"/> <c>T</c>.
+        /// Creates a new instance of the pooled object.
         /// </summary>
-        /// <returns>The created object of <see cref="Type"/> <c>T</c>.</returns>
+        /// <returns>A new instance of type <typeparamref name="T"/> with its <c>ObjectPool</c> property set to this object pool.</returns>
         private T CreateNew()
         {
             return new T
@@ -43,20 +39,20 @@ namespace IfLoooop.Utilities.Pooling
                 ObjectPool = this
             };
         }
-        
+
         /// <summary>
-        /// Retrieves an object from <see cref="ObjectPoolBase{C,T}.ObjectPool"/>.
+        /// Retrieves an object from the pool. If the pool is empty, a new object is created and returned.
         /// </summary>
-        /// <returns>An object of <see cref="Type"/> <c>T</c>.</returns>
+        /// <returns>An object of type <typeparamref name="T"/> from the pool.</returns>
         public T Get()
         {
             return base.ObjectPool.TryDequeue(out var _object) ? _object : this.CreateNew();
         }
 
         /// <summary>
-        /// Returns the given <c>_Object</c> to <see cref="ObjectPoolBase{C,T}.ObjectPool"/>, if it is not currently full.
+        /// Returns an object of type <typeparamref name="T"/> to the pool.
         /// </summary>
-        /// <param name="_Object">The object to return to <see cref="ObjectPoolBase{C,T}.ObjectPool"/>.</param>
+        /// <param name="_Object">The object to return to the pool.</param>
         public void Return(T _Object)
         {
             if (base.ObjectPool.Count < base.MaxCapacity)

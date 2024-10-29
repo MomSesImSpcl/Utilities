@@ -10,12 +10,13 @@ namespace IfLoooop.Extensions
     {
         #region Methods
         /// <summary>
-        /// Injects a custom <c>_Message</c> into this <see cref="Exception"/>.
+        /// Appends or prepends a custom message to an exception's existing message.
         /// </summary>
-        /// <param name="_Exception">The <see cref="Exception"/> to inject the <c>_Message</c> into.</param>
-        /// <param name="_Message">The message to inject.</param>
-        /// <param name="_InsertBefore">if <c>true</c>, the <c>_Message</c> will be inserted before the existing <see cref="Exception.Message"/>.</param>
-        /// <returns>This <see cref="Exception"/>.</returns>
+        /// <param name="_Exception">The exception to modify.</param>
+        /// <param name="_Message">The custom message to add.</param>
+        /// <param name="_InsertBefore">Indicates whether to prepend the custom message.
+        /// If false, the custom message will be appended.</param>
+        /// <return>The modified exception with the updated message.</return>
         public static Exception CustomMessage(this Exception _Exception, string _Message, bool _InsertBefore = false)
         {
             var _field = typeof(Exception).GetField("_message", BindingFlags.Instance | BindingFlags.NonPublic);
