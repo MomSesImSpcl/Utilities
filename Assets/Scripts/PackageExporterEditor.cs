@@ -30,7 +30,7 @@ namespace IfLoooop
 
             if (GUILayout.Button("Export Package"))
             {
-                this.packageExporter.ExportPackage();
+                this.packageExporter.ExportPackageAsync();
             }
         }
         #endregion

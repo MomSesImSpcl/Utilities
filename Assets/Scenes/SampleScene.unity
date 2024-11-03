@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836b39ccbbcd3f642ab383013714a476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  versionFile: {fileID: 4900000, guid: 926ffc91ef12ba54b8e0502ccd671dd0, type: 3}
   assets:
   - {fileID: 102900000, guid: d84488d7c5d30f34589d24a6e89b03be, type: 3}
   - {fileID: 102900000, guid: c090ab21200d3cb44a053847c927aaa4, type: 3}
