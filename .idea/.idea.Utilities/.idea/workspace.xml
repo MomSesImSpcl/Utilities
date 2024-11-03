@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d707ed9-23b4-4378-b2ba-58c6e20a1763" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Utilities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Utilities/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/IfLoooop/Extensions/ColorExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/IfLoooop/Extensions/ColorExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/IfLoooop/Extensions/StringExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/IfLoooop/Extensions/StringExtensions.cs" afterDir="false" />
-    </list>
+    <list default="true" id="6d707ed9-23b4-4378-b2ba-58c6e20a1763" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -162,7 +158,7 @@
       <workItem from="1730155085664" duration="17029000" />
       <workItem from="1730172227827" duration="444000" />
       <workItem from="1730178533516" duration="5465000" />
-      <workItem from="1730595051111" duration="2135000" />
+      <workItem from="1730595051111" duration="2489000" />
     </task>
     <servers />
   </component>
