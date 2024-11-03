@@ -313,6 +313,24 @@ namespace IfLoooop.Extensions
         }
 
         /// <summary>
+        /// Converts a hexadecimal color code to a Unity <see cref="Color"/>.
+        /// </summary>
+        /// <param name="_HexColor">The hexadecimal color code as a <see cref="string"/>.</param>
+        /// <returns>A <see cref="Color"/> representing the RGB values of the hexadecimal color code.</returns>
+        public static Color HexToRGB(this string _HexColor)
+        {
+            _HexColor = _HexColor.Replace("#", string.Empty);
+        
+            var _red = int.Parse(_HexColor.Substring(0, 2), NumberStyles.HexNumber);
+            var _green = int.Parse(_HexColor.Substring(2, 2), NumberStyles.HexNumber);
+            var _blue = int.Parse(_HexColor.Substring(4, 2), NumberStyles.HexNumber);
+
+            var _color = System.Drawing.Color.FromArgb(_red, _green, _blue);
+            
+            return new Color(_color.R, _color.G, _color.B);
+        }
+        
+        /// <summary>
         /// Determines whether the specified string is empty or consists only of white-space characters.
         /// </summary>
         /// <param name="_String">The <see cref="string"/> to check.</param>
