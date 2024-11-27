@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using IfLoooop.Extensions;
+using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,6 +18,8 @@ namespace IfLoooop
         [SerializeField] private TextAsset versionFile;
         [Tooltip("A collection of assets to be exported with the package.")]
         [SerializeField] private List<Object> assets = new();
+        [Tooltip("Won't check if the version has changed, when exporting the plugin.")]
+        [SerializeField] private bool skipVersionCheck;
         #endregion
         
         #region Methods
@@ -26,7 +30,7 @@ namespace IfLoooop
         /// </summary>
         internal async void ExportPackageAsync()
         {
-            var _exportPath = EditorUtility.SaveFilePanel("Export Package", string.Empty, "Utilities", "unitypackage");
+            var _exportPath = EditorUtility.SaveFilePanel("Export Package", "Downloads", "Utilities", "unitypackage");
 
             if (string.IsNullOrWhiteSpace(_exportPath))
             {
@@ -37,6 +41,14 @@ namespace IfLoooop
 
             if (File.Exists(_versionFilePath))
             {
+                var _version = await File.ReadAllTextAsync(_versionFilePath);
+
+                if (_version == PlayerSettings.bundleVersion && !this.skipVersionCheck)
+                {
+                    Debug.LogWarning($"Version has not changed [{PlayerSettings.bundleVersion}]. If you still want to export the package, check {nameof(this.skipVersionCheck).Italic()} in the inspector.");
+                    return;
+                }
+                
                 await File.WriteAllTextAsync(_versionFilePath, PlayerSettings.bundleVersion);
             }
             else
@@ -47,6 +59,8 @@ namespace IfLoooop
             var _assetPathNames = (from _asset in this.assets where _asset != null select AssetDatabase.GetAssetPath(_asset)).ToArray();
 
             AssetDatabase.ExportPackage(_assetPathNames, _exportPath, ExportPackageOptions.Recurse);
+
+            this.skipVersionCheck = false;
         }
         #endregion
     }   
