@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace IfLoooop.Data
 {
 #if ODIN_INSPECTOR
+    using Sirenix.OdinInspector;
+    
     /// <summary>
     /// Provides a read-only collection of selectable entries with values of type <typeparamref name="V"/>.
     /// </summary>

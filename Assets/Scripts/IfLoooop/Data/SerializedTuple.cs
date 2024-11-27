@@ -1,11 +1,12 @@
 #nullable enable
 using System;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace IfLoooop.Data
 {
 #if ODIN_INSPECTOR
+    using Sirenix.OdinInspector;
+    
     /// <summary>
     /// Represents a serialized tuple with two elements of the same type.
     /// </summary>

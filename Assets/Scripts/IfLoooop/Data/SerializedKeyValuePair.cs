@@ -1,11 +1,12 @@
 using System;
-using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
 namespace IfLoooop.Data
 {
 #if ODIN_INSPECTOR
+    using Sirenix.OdinInspector;
+    
     /// <summary>
     /// SerializedKeyValuePair is a serializable struct that represents a key/value pair, specifically designed to be used with Unity's serialization system.
     /// It uses Odin Inspector attributes for better editor integration and customization.

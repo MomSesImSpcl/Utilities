@@ -1,11 +1,12 @@
 using IfLoooop.Attributes;
 using IfLoooop.Data;
-using Sirenix.OdinInspector.Editor;
 using UnityEngine;
 
 namespace IfLoooop.Editor.PropertyDrawers
 {
 #if ODIN_INSPECTOR
+    using Sirenix.OdinInspector.Editor;
+    
     /// <summary>
     /// A custom drawer for <see cref="SerializedTuple{T}"/> to render it in the Unity Inspector.
     /// This drawer makes use of Odin Inspector to draw the properties and can also utilize the

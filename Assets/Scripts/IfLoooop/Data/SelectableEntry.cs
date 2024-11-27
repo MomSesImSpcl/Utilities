@@ -1,10 +1,11 @@
 using System;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace IfLoooop.Data
 {
 #if ODIN_INSPECTOR
+    using Sirenix.OdinInspector;
+    
     /// <summary>
     /// Represents a selectable entry with a generic value.
     /// </summary>
