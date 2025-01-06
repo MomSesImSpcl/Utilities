@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace IfLoooop
+namespace MomSesImSpcl
 {
     /// <summary>
     /// Custom editor for the <see cref="PackageExporter"/> class.

@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MomSesImSpcl.Extensions;
-using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
-namespace IfLoooop
+namespace MomSesImSpcl
 {
     /// <summary>
     /// Handles the export of assets into a unitypackage file.
