@@ -17,7 +17,7 @@ namespace MomSesImSpcl.Editor.Updater
         /// <summary>
         /// The constant key used to store the updater status in Unity's EditorPrefs.
         /// </summary>
-        private const string UPDATER_KEY = "IfLoooop.Editor.Updater";
+        private const string UPDATER_KEY = "MomSesImSpcl.Editor.Updater";
         #endregion
         
         #region Methods
@@ -34,7 +34,7 @@ namespace MomSesImSpcl.Editor.Updater
             {
                 EditorPrefs.SetBool(UPDATER_KEY, true);
                 
-                if (GetVersion(await new HttpClient().GetStringAsync("https://raw.githubusercontent.com/IfLoooop/Utilities/refs/heads/main/Assets/Scripts/IfLoooop/Version.txt"), out var _latestVersion))
+                if (GetVersion(await new HttpClient().GetStringAsync("https://raw.githubusercontent.com/MomSesImSpcl/Utilities/refs/heads/main/Assets/Scripts/MomSesImSpcl/Version.txt"), out var _latestVersion))
                 {
                     if (Directory.GetParent(GetFilePath())?.Parent?.Parent is {} _rootFolder)
                     {
@@ -44,7 +44,7 @@ namespace MomSesImSpcl.Editor.Updater
                         {
                             if (_currentVersion < _latestVersion)
                             {
-                                Debug.Log($"Update available for the {"Utilities".Italic()} package. Current version: {_currentVersion.ToString("F1").Bold()} | Latest version: {_latestVersion.ToString("F1").Bold()}\n{"https://github.com/IfLoooop/Utilities/releases".ToHyperlink()}");
+                                Debug.Log($"Update available for the {"Utilities".Italic()} package. Current version: {_currentVersion.ToString("F1").Bold()} | Latest version: {_latestVersion.ToString("F1").Bold()}\n{"https://github.com/MomSesImSpcl/Utilities/releases".ToHyperlink()}");
                             }
                         }
                     }
