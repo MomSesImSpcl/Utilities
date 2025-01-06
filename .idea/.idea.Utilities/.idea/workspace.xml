@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d707ed9-23b4-4378-b2ba-58c6e20a1763" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Utilities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Utilities/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/CustomScriptTemplates/Scripts/Extensions/StringExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/CustomScriptTemplates/Scripts/Extensions/StringExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MomSesImSpcl/Utilities/FPSCounter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MomSesImSpcl/Utilities/FPSCounter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PackageExporter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PackageExporter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PackageExporterEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PackageExporterEditor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IfLoooop.csproj.DotSettings" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IfLoooopEditor.csproj.DotSettings" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,7 +173,7 @@
       <workItem from="1732718997465" duration="1735000" />
       <workItem from="1732723142590" duration="217000" />
       <workItem from="1736167870470" duration="2752000" />
-      <workItem from="1736170945829" duration="101000" />
+      <workItem from="1736170945829" duration="447000" />
     </task>
     <servers />
   </component>
