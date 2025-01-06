@@ -171,7 +171,7 @@ namespace CustomScriptTemplates.Extensions
         {
             var _path = _Path.Replace(_PathToRemove, string.Empty);
 
-            return _path.StartsWith(Path.DirectorySeparatorChar.ToString()) ? _path.Substring(1) : _path;
+            return _path.StartsWith(System.IO.Path.DirectorySeparatorChar.ToString()) ? _path.Substring(1) : _path;
         }
         
         /// <summary>

@@ -1,0 +1,18 @@
+{
+    "name": "MomSesImSpclEditor",
+    "rootNamespace": "MomSesImSpcl",
+    "references": [
+        "GUID:682192562fa5113408a38b895f98338f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
