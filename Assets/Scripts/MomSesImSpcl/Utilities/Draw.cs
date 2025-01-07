@@ -35,6 +35,23 @@ namespace MomSesImSpcl.Utilities
                 }
             }
         }
+
+        /// <summary>
+        /// Draws a wireframe square at the given positions with the specified color, and duration.
+        /// </summary>
+        /// <param name="_TopLeft">Position of the top left corner.</param>
+        /// <param name="_TopRight">Position of the top right corner.</param>
+        /// <param name="_BottomRight">Position of the bottom right corner.</param>
+        /// <param name="_BottomLeft">Position of the bottom left corner.</param>
+        /// <param name="_Color">The color of the square lines.</param>
+        /// <param name="_Duration">The duration that the square will be visible. Default is 1 second.</param>
+        public static void Square(Vector2 _TopLeft, Vector2 _TopRight, Vector2 _BottomRight, Vector2 _BottomLeft, Color _Color, float _Duration = 1)
+        {
+            Debug.DrawLine(_TopLeft, _TopRight, _Color, _Duration);
+            Debug.DrawLine(_TopRight, _BottomRight, _Color, _Duration);
+            Debug.DrawLine(_BottomRight, _BottomLeft, _Color, _Duration);
+            Debug.DrawLine(_BottomLeft, _TopLeft, _Color, _Duration);
+        }
         #endregion
     }
 }
