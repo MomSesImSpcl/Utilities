@@ -213,6 +213,7 @@ namespace MomSesImSpcl.Extensions
         /// Generates a formatted string representing the provided collection, with options for including a title and specific entries.
         /// </summary>
         /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to be formatted.</param>
+        /// <param name="_PrintName">A boolean flag indicating if the property names should be included in the output.</param>
         /// <param name="_Title">An optional expression defining the title for the formatted output.</param>
         /// <param name="_Entries">Expressions defining the entries to be included in the formatted output.</param>
         /// <typeparam name="T">The type of elements in the collection.</typeparam>
