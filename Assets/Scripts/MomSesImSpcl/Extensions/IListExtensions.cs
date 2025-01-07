@@ -61,15 +61,16 @@ namespace MomSesImSpcl.Extensions
         public static IList<T> Shuffle<T>(this IList<T> _List)
         {
             var _random = new Random();
-            var _count = _List.Count;
-
-            while (_count > 1)
+            
+            // ReSharper disable once InconsistentNaming
+            for (var i = _List.Count - 1; i > 0; i--)
             {
-                _count--;
-                var _index = _random.Next(_count + 1);
-                (_List[_index], _List[_count]) = (_List[_count], _List[_index]);
+                // ReSharper disable once InconsistentNaming
+                var j = _random.Next(i + 1);
+                
+                (_List[i], _List[j]) = (_List[j], _List[i]);
             }
-
+            
             return _List;
         }
         #endregion
