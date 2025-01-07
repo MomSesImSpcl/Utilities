@@ -35,11 +35,11 @@ namespace MomSesImSpcl.Data
         /// <summary>
         /// <see cref="item1"/>.
         /// </summary>
-        public T? Item1 => this.item1;
+        public T? Item1 { get => this.item1; set => this.item1 = value; }
         /// <summary>
         /// <see cref="item2"/>.
         /// </summary>
-        public T? Item2 => this.item2;
+        public T? Item2 { get => this.item2; set => this.item2 = value; }
         #endregion
     } 
 #endif
