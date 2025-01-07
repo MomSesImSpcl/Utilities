@@ -53,12 +53,12 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
-        /// Randomizes the order of elements in the list.
+        /// Randomizes the order of elements in the list. <br/>
+        /// <i>Uses the Fisher-Yates shuffle.</i>
         /// </summary>
         /// <param name="_List">The list to be shuffled.</param>
         /// <typeparam name="T">The type of the elements in the list.</typeparam>
-        /// <returns>The shuffled list.</returns>
-        public static IList<T> Shuffle<T>(this IList<T> _List)
+        public static void Shuffle<T>(this IList<T> _List)
         {
             var _random = new Random();
             
@@ -70,8 +70,6 @@ namespace MomSesImSpcl.Extensions
                 
                 (_List[i], _List[j]) = (_List[j], _List[i]);
             }
-            
-            return _List;
         }
         #endregion
     }
