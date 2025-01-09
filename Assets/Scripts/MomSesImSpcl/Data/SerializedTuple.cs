@@ -1,3 +1,4 @@
+#if ODIN_INSPECTOR
 #nullable enable
 using System;
 using Sirenix.OdinInspector;
@@ -5,7 +6,6 @@ using UnityEngine;
 
 namespace MomSesImSpcl.Data
 {
-#if ODIN_INSPECTOR
     /// <summary>
     /// Represents a serialized tuple with two elements of the same type.
     /// </summary>
@@ -42,5 +42,5 @@ namespace MomSesImSpcl.Data
         public T? Item2 { get => this.item2; set => this.item2 = value; }
         #endregion
     } 
-#endif
 }
+#endif
