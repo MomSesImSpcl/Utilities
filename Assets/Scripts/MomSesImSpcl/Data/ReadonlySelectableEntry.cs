@@ -1,12 +1,11 @@
 #if ODIN_INSPECTOR
 using System;
+using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
 namespace MomSesImSpcl.Data
 {
-    using Sirenix.OdinInspector;
-
     /// <summary>
     /// Represents a read-only selectable entry containing a serialized key-value pair of type <typeparamref name="V"/>.
     /// </summary>
