@@ -1,3 +1,4 @@
+#if ODIN_INSPECTOR
 using System;
 using Sirenix.OdinInspector;
 using UnityEditor;
@@ -5,7 +6,6 @@ using UnityEngine;
 
 namespace MomSesImSpcl.Data
 {
-#if ODIN_INSPECTOR
     /// <summary>
     /// SerializedKeyValuePair is a serializable struct that represents a key/value pair, specifically designed to be used with Unity's serialization system.
     /// It uses Odin Inspector attributes for better editor integration and customization.
@@ -61,5 +61,5 @@ namespace MomSesImSpcl.Data
         }
         #endregion
     }
-#endif
 }
+#endif
