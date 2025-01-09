@@ -1,3 +1,4 @@
+#if ODIN_INSPECTOR
 using MomSesImSpcl.Attributes;
 using MomSesImSpcl.Data;
 using Sirenix.OdinInspector.Editor;
@@ -5,7 +6,6 @@ using UnityEngine;
 
 namespace MomSesImSpcl.Editor.PropertyDrawers
 {
-#if ODIN_INSPECTOR
     /// <summary>
     /// A custom drawer for <see cref="SerializedTuple{T}"/> to render it in the Unity Inspector.
     /// This drawer makes use of Odin Inspector to draw the properties and can also utilize the
@@ -30,5 +30,5 @@ namespace MomSesImSpcl.Editor.PropertyDrawers
         }
         #endregion
     } 
-#endif
 }
+#endif
