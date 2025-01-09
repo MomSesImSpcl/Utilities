@@ -1,3 +1,4 @@
+#if ODIN_INSPECTOR
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,7 +8,6 @@ using UnityEngine;
 
 namespace MomSesImSpcl.Data
 {
-#if ODIN_INSPECTOR
     /// <summary>
     /// Provides a read-only collection of selectable entries with values of type <typeparamref name="V"/>.
     /// </summary>
@@ -117,5 +117,5 @@ namespace MomSesImSpcl.Data
         }
         #endregion
     } 
-#endif
 }
+#endif
