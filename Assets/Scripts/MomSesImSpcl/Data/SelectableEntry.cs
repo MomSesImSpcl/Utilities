@@ -1,10 +1,10 @@
+#if ODIN_INSPECTOR
 using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace MomSesImSpcl.Data
 {
-#if ODIN_INSPECTOR
     /// <summary>
     /// Represents a selectable entry with a generic value.
     /// </summary>
@@ -37,5 +37,5 @@ namespace MomSesImSpcl.Data
         }
         #endregion
     } 
-#endif
 }
+#endif
