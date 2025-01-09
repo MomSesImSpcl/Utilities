@@ -1,10 +1,10 @@
+#if ODIN_INSPECTOR
 using System;
 using UnityEditor;
 using UnityEngine;
 
 namespace MomSesImSpcl.Data
 {
-#if ODIN_INSPECTOR
     using Sirenix.OdinInspector;
 
     /// <summary>
@@ -47,5 +47,5 @@ namespace MomSesImSpcl.Data
         }
         #endregion
     } 
-#endif
 }
+#endif
