@@ -121,6 +121,107 @@ namespace MomSesImSpcl.Extensions
         {
             return new ArgumentOutOfRangeException(_ParameterName, _Axis, $"The value of [{nameof(_Axis)}]:{_Axis}, is not allowed.");
         }
+        
+        /// <summary>
+        /// Sets the x component of a <see cref="Quaternion"/> to a specified value.
+        /// </summary>
+        /// <param name="_Quaternion">The <see cref="Quaternion"/> to modify.</param>
+        /// <param name="_X">The new value for the x component.</param>
+        /// <returns>A new <see cref="Quaternion"/> with the modified x component.</returns>
+        public static Quaternion WithX(this Quaternion _Quaternion, float _X)
+        {
+            _Quaternion.eulerAngles = _Quaternion.eulerAngles.WithX(_X);
+            
+            return _Quaternion;
+        }
+
+        /// <summary>
+        /// Sets the y component of a <see cref="Quaternion"/> to a specified value.
+        /// </summary>
+        /// <param name="_Quaternion">The <see cref="Quaternion"/> to modify.</param>
+        /// <param name="_Y">The new value for the y component.</param>
+        /// <returns>A new <see cref="Quaternion"/> with the modified y component.</returns>
+        public static Quaternion WithY(this Quaternion _Quaternion, float _Y)
+        {
+            _Quaternion.eulerAngles = _Quaternion.eulerAngles.WithY(_Y);
+            
+            return _Quaternion;
+        }
+
+        /// <summary>
+        /// Sets the z component of a <see cref="Quaternion"/> to a specified value.
+        /// </summary>
+        /// <param name="_Quaternion">The <see cref="Quaternion"/> to modify.</param>
+        /// <param name="_Z">The new value for the z component.</param>
+        /// <returns>A new <see cref="Quaternion"/> with the modified z component.</returns>
+        public static Quaternion WithZ(this Quaternion _Quaternion, float _Z)
+        {
+            _Quaternion.eulerAngles = _Quaternion.eulerAngles.WithY(_Z);
+            
+            return _Quaternion;
+        }
+
+        /// <summary>
+        /// Sets the x and y component of a <see cref="Quaternion"/> to a specified value.
+        /// </summary>
+        /// <param name="_Quaternion">The <see cref="Quaternion"/> to modify.</param>
+        /// <param name="_X">The new value for the x component.</param>
+        /// <param name="_Y">The new value for the y component.</param>
+        /// <returns>A new <see cref="Quaternion"/> with the modified x and y component.</returns>
+        public static Quaternion WithXY(this Quaternion _Quaternion, float _X, float _Y)
+        {
+            _Quaternion.eulerAngles = _Quaternion.eulerAngles.WithX(_X);
+            _Quaternion.eulerAngles = _Quaternion.eulerAngles.WithY(_Y);
+            
+            return _Quaternion;
+        }
+
+        /// <summary>
+        /// Sets the x and z component of a <see cref="Quaternion"/> to a specified value.
+        /// </summary>
+        /// <param name="_Quaternion">The <see cref="Quaternion"/> to modify.</param>
+        /// <param name="_X">The new value for the x component.</param>
+        /// <param name="_Z">The new value for the z component.</param>
+        /// <returns>A new <see cref="Quaternion"/> with the modified x and z component.</returns>
+        public static Quaternion WithXZ(this Quaternion _Quaternion, float _X, float _Z)
+        {
+            _Quaternion.eulerAngles = _Quaternion.eulerAngles.WithX(_X);
+            _Quaternion.eulerAngles = _Quaternion.eulerAngles.WithZ(_Z);
+            
+            return _Quaternion;
+        }
+
+        /// <summary>
+        /// Sets the y and z component of a <see cref="Quaternion"/> to a specified value.
+        /// </summary>
+        /// <param name="_Quaternion">The <see cref="Quaternion"/> to modify.</param>
+        /// <param name="_Y">The new value for the y component.</param>
+        /// <param name="_Z">The new value for the z component.</param>
+        /// <returns>A new <see cref="Quaternion"/> with the modified y and z component.</returns>
+        public static Quaternion WithYZ(this Quaternion _Quaternion, float _Y, float _Z)
+        {
+            _Quaternion.eulerAngles = _Quaternion.eulerAngles.WithY(_Y);
+            _Quaternion.eulerAngles = _Quaternion.eulerAngles.WithZ(_Z);
+            
+            return _Quaternion;
+        }
+
+        /// <summary>
+        /// Sets the x, y and z component of a <see cref="Quaternion"/> to a specified value.
+        /// </summary>
+        /// <param name="_Quaternion">The <see cref="Quaternion"/> to modify.</param>
+        /// <param name="_X">The new value for the x component.</param>
+        /// <param name="_Y">The new value for the y component.</param>
+        /// <param name="_Z">The new value for the z component.</param>
+        /// <returns>A new <see cref="Quaternion"/> with the modified x, y and z component.</returns>
+        public static Quaternion WithXYZ(this Quaternion _Quaternion, float _X, float _Y, float _Z)
+        {
+            _Quaternion.eulerAngles = _Quaternion.eulerAngles.WithX(_X);
+            _Quaternion.eulerAngles = _Quaternion.eulerAngles.WithY(_Y);
+            _Quaternion.eulerAngles = _Quaternion.eulerAngles.WithZ(_Z);
+            
+            return _Quaternion;
+        }
         #endregion
     }
 }
