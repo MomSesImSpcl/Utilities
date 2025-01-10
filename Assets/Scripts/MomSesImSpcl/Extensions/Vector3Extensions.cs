@@ -142,102 +142,95 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Vector">The <see cref="Vector3"/> to modify.</param>
         /// <param name="_X">The new value for the x component.</param>
-        /// <param name="_Add">If true, adds the value to the existing x component; otherwise, sets the x component to the specified value.</param>
         /// <returns>A new <see cref="Vector3"/> with the modified x component.</returns>
-        public static Vector3 WithX(this Vector3 _Vector, float _X, bool _Add = false)
+        public static Vector3 WithX(this Vector3 _Vector, float _X)
         {
-            _Vector.x = _Add == false ? _X : _Vector.x + _X;
+            _Vector.x = _X;
             return _Vector;
         }
 
         /// <summary>
-        /// Sets or adds a specified value to the Y component of a given <see cref="Vector3"/>.
+        /// Sets the y component of a <see cref="Vector3"/> to a specified value.
         /// </summary>
         /// <param name="_Vector">The <see cref="Vector3"/> whose Y component is to be modified.</param>
         /// <param name="_Y">The value to set or add to the Y component.</param>
-        /// <param name="_Add">If true, adds the value to the current Y component; otherwise, sets the Y component to the specified value.</param>
         /// <returns>A new <see cref="Vector3"/> with the modified Y component.</returns>
-        public static Vector3 WithY(this Vector3 _Vector, float _Y, bool _Add = false)
+        public static Vector3 WithY(this Vector3 _Vector, float _Y)
         {
-            _Vector.y = _Add == false ? _Y : _Vector.y + _Y;
+            _Vector.y = _Y;
             return _Vector;
         }
 
         /// <summary>
-        /// Returns a new <see cref="Vector3"/> with the Z component set to a specified value, or optionally added to the current Z component.
+        /// Sets the z component of a <see cref="Vector3"/> to a specified value.
         /// </summary>
         /// <param name="_Vector">The <see cref="Vector3"/> to modify.</param>
         /// <param name="_Z">The value to set or add to the Z component.</param>
-        /// <param name="_Add">If true, adds _Z to the current Z component rather than setting it. Default is false.</param>
         /// <returns>A new <see cref="Vector3"/> with the modified Z component.</returns>
-        public static Vector3 WithZ(this Vector3 _Vector, float _Z, bool _Add = false)
+        public static Vector3 WithZ(this Vector3 _Vector, float _Z)
         {
-            _Vector.z = _Add == false ? _Z : _Vector.z + _Z;
+            _Vector.z = _Z;
             return _Vector;
         }
 
         /// <summary>
-        /// Updates the x and y components of the <see cref="Vector3"/> with the specified values, with an option to add to the existing components.
+        /// Sets the x and y component of a <see cref="Vector3"/> to a specified value.
         /// </summary>
         /// <param name="_Vector">The original <see cref="Vector3"/> to be updated.</param>
         /// <param name="_X">The new value for the x component.</param>
         /// <param name="_Y">The new value for the y component.</param>
-        /// <param name="_Add">If true, the specified values will be added to the existing components; otherwise, they will replace the existing components.</param>
         /// <returns>A new <see cref="Vector3"/> with the updated x and y values.</returns>
-        public static Vector3 WithXY(this Vector3 _Vector, float _X, float _Y, bool _Add = false)
+        public static Vector3 WithXY(this Vector3 _Vector, float _X, float _Y)
         {
-            _Vector.x = _Add == false ? _X : _Vector.x + _X;
-            _Vector.y = _Add == false ? _Y : _Vector.y + _Y;
+            _Vector.x = _X;
+            _Vector.y = _Y;
 
             return _Vector;
         }
 
         /// <summary>
-        /// Adjusts the x and z components of a Vector3 with optional addition.
+        /// Sets the x and z component of a <see cref="Vector3"/> to a specified value.
         /// </summary>
         /// <param name="_Vector">The Vector3 to be adjusted.</param>
         /// <param name="_X">The value to set or add to the x component.</param>
         /// <param name="_Z">The value to set or add to the z component.</param>
-        /// <param name="_Add">Determines whether to add to the current components (true) or set them (false).</param>
         /// <returns>A new Vector3 with the adjusted x and z components.</returns>
-        public static Vector3 WithXZ(this Vector3 _Vector, float _X, float _Z, bool _Add = false)
+        public static Vector3 WithXZ(this Vector3 _Vector, float _X, float _Z)
         {
-            _Vector.x = _Add == false ? _X : _Vector.x + _X;
-            _Vector.z = _Add == false ? _Z : _Vector.z + _Z;
+            _Vector.x = _X;
+            _Vector.z = _Z;
 
             return _Vector;
         }
 
         /// <summary>
-        /// Sets the Y and Z components of a <see cref="Vector3"/> to the specified values, optionally adding the specified values to the existing components.
+        /// Sets the y and z component of a <see cref="Vector3"/> to a specified value.
         /// </summary>
         /// <param name="_Vector">The <see cref="Vector3"/> to be modified.</param>
         /// <param name="_Y">The value to set (or add to) the Y component.</param>
         /// <param name="_Z">The value to set (or add to) the Z component.</param>
-        /// <param name="_Add">If true, the specified values will be added to the existing components; otherwise, the components will be set to the specified values.</param>
         /// <returns>The modified <see cref="Vector3"/>.</returns>
-        public static Vector3 WithYZ(this Vector3 _Vector, float _Y, float _Z, bool _Add = false)
+        public static Vector3 WithYZ(this Vector3 _Vector, float _Y, float _Z)
         {
-            _Vector.y = _Add == false ? _Y : _Vector.y + _Y;
-            _Vector.z = _Add == false ? _Z : _Vector.z + _Z;
+            _Vector.y = _Y;
+            _Vector.z = _Z;
 
             return _Vector;
         }
 
         /// <summary>
-        /// Sets or adds the specified x, y, and z values to the components of the given <see cref="Vector3"/>.
+        /// Sets the x, y and z component of a <see cref="Vector3"/> to a specified value.
         /// </summary>
         /// <param name="_Vector">The <see cref="Vector3"/> instance to modify.</param>
         /// <param name="_X">The new x value or the value to add to the current x component.</param>
         /// <param name="_Y">The new y value or the value to add to the current y component.</param>
         /// <param name="_Z">The new z value or the value to add to the current z component.</param>
-        /// <param name="_Add">If true, the specified values are added to the current components; otherwise, they replace the current components.</param>
         /// <returns>The modified <see cref="Vector3"/>.</returns>
-        public static Vector3 WithXYZ(this Vector3 _Vector, float _X, float _Y, float _Z, bool _Add = false)
+        public static Vector3 WithXYZ(this Vector3 _Vector, float _X, float _Y, float _Z)
         {
-            _Vector.x = _Add == false ? _X : _Vector.x + _X;
-            _Vector.y = _Add == false ? _Y : _Vector.y + _Y;
-            _Vector.z = _Add == false ? _Z : _Vector.z + _Z;
+            _Vector.x = _X;
+            _Vector.y = _Y;
+            _Vector.z = _Z;
 
             return _Vector;
         }
