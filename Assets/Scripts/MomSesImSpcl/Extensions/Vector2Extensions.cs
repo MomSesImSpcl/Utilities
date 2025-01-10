@@ -102,43 +102,40 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
-        /// Sets or adds the x-coordinate of the given <c>Vector2</c> based on the <c>_Add</c> flag.
+        /// Sets the x component of a <see cref="Vector2"/> to a specified value.
         /// </summary>
         /// <param name="_Vector">The <see cref="Vector2"/> to modify.</param>
         /// <param name="_X">The x-coordinate to set or add.</param>
-        /// <param name="_Add">If <c>true</c>, the method adds <c>_X</c> to the current x-coordinate; otherwise, it sets the x-coordinate to <c>_X</c>.</param>
         /// <returns>This <c>Vector2</c> with the modified x-coordinate.</returns>
-        public static Vector2 WithX(this Vector2 _Vector, float _X, bool _Add = false)
+        public static Vector2 WithX(this Vector2 _Vector, float _X)
         {
-            _Vector.x = _Add == false ? _X : _Vector.x + _X;
+            _Vector.x = _X;
             return _Vector;
         }
 
         /// <summary>
-        /// Sets the y-component of <c>_Vector</c> to <c>_Y</c>. If <c>_Add</c> is true, adds <c>_Y</c> to the current y-component.
+        /// Sets the y component of a <see cref="Vector2"/> to a specified value.
         /// </summary>
         /// <param name="_Vector">The <see cref="Vector2"/> to modify the y-component for.</param>
         /// <param name="_Y">The value to set or add to the y-component.</param>
-        /// <param name="_Add">If true, adds <c>_Y</c> to the current y-component; otherwise, sets the y-component to <c>_Y</c>.</param>
         /// <returns>This <c>_Vector</c> with the modified y-component.</returns>
-        public static Vector2 WithY(this Vector2 _Vector, float _Y, bool _Add = false)
+        public static Vector2 WithY(this Vector2 _Vector, float _Y)
         {
-            _Vector.y = _Add == false ? _Y : _Vector.y + _Y;
+            _Vector.y = _Y;
             return _Vector;
         }
 
         /// <summary>
-        /// Returns a new <see cref="Vector2"/> with the specified <c>X</c> and <c>Y</c> values modified.
+        /// Sets the x, y component of a <see cref="Vector2"/> to a specified value.
         /// </summary>
         /// <param name="_Vector">The original <see cref="Vector2"/> to modify.</param>
         /// <param name="_X">The new value for the <c>X</c> component.</param>
         /// <param name="_Y">The new value for the <c>Y</c> component.</param>
-        /// <param name="_Add">If <c>true</c>, adds the <c>X</c> and <c>Y</c> values to the current components; otherwise, sets the components to the new values.</param>
         /// <returns>A new <see cref="Vector2"/> with the modified <c>X</c> and <c>Y</c> values.</returns>
-        public static Vector2 WithXY(this Vector2 _Vector, float _X, float _Y, bool _Add = false)
+        public static Vector2 WithXY(this Vector2 _Vector, float _X, float _Y)
         {
-            _Vector.x = _Add == false ? _X : _Vector.x + _X;
-            _Vector.y = _Add == false ? _Y : _Vector.y + _Y;
+            _Vector.x = _X;
+            _Vector.y = _Y;
             return _Vector;
         }
         #endregion
