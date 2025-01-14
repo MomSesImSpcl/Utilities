@@ -16,7 +16,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The <see cref="int"/> representation of the <see cref="Enum"/> value.</returns>
         public static int ToInt<E>(this E _EnumValue) where E : Enum
         {
-            return Convert.ToInt32(_EnumValue);
+            return (int)(object)_EnumValue;
         }
         #endregion
     }
