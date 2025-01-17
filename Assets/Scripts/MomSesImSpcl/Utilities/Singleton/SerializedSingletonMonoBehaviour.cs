@@ -9,7 +9,7 @@ namespace MomSesImSpcl.Utilities.Singleton
     /// A generic base class for creating singleton <see cref="SerializedMonoBehaviour"/> instances in Unity.
     /// </summary>
     /// <typeparam name="T">The type of the singleton class inheriting from this base class.</typeparam>
-    internal abstract class SerializedSingletonMonoBehaviour<T> : SerializedMonoBehaviour where T : SerializedSingletonMonoBehaviour<T>
+    public abstract class SerializedSingletonMonoBehaviour<T> : SerializedMonoBehaviour where T : SerializedSingletonMonoBehaviour<T>
     {
         #region Fields
         /// <summary>
