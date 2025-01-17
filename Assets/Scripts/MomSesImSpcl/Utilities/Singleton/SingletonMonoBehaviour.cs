@@ -4,7 +4,7 @@ using UnityEngine;
 namespace MomSesImSpcl.Utilities.Singleton
 {
     /// <summary>
-    /// A generic base class for creating singleton MonoBehaviour instances in Unity.
+    /// A generic base class for creating singleton <see cref="MonoBehaviour"/> instances in Unity.
     /// </summary>
     /// <typeparam name="T">The type of the singleton class inheriting from this base class.</typeparam>
     public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBehaviour<T>
