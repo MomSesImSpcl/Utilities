@@ -25,6 +25,7 @@ namespace MomSesImSpcl.Utilities.Singleton
         /// Indicates whether the singleton instance should persist across scene loads.
         /// If true, the instance will not be destroyed when loading a new scene.
         /// </summary>
+        // ReSharper disable once VirtualMemberNeverOverridden.Global
         protected new virtual bool DontDestroyOnLoad => false;
         #endregion
         
