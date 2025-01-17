@@ -3,7 +3,7 @@
 using MomSesImSpcl.Utilities.Singleton;
 using Sirenix.OdinInspector;
 
-namespace RogueDeck
+namespace MomSesImSpcl.Utilities.Singleton
 {
     /// <summary>
     /// A generic base class for creating singleton <see cref="SerializedMonoBehaviour"/> instances in Unity.
