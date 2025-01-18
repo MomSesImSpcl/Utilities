@@ -1,0 +1,16 @@
+[Server/Host]
+-NetworkBehaviour Awake 
+-NetworkBehaviour OnEnable 
+-NetworkBehaviour OnNetworkSpawn 
+-NetworkManager OnServerStarted (Called only on Server)
+-NetworkManager OnClientStarted (Called only on Client)
+-NetworkManager OnClientConnectedCallback (Called for each Client with client ID)
+-NetworkBehaviour Start 
+
+[Client]
+-NetworkManager OnClientStarted (Called only on Client)
+-NetworkBehaviour Awake 
+-NetworkBehaviour OnEnable 
+-NetworkBehaviour OnNetworkSpawn 
+-NetworkManager OnClientConnectedCallback (Called once with server ID)
+-NetworkBehaviour Start
