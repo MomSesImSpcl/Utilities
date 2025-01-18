@@ -1,5 +1,5 @@
 [Server]
--NetworkManager OnServerStarted
+-NetworkManager   OnServerStarted
 -NetworkBehaviour Awake
 -NetworkBehaviour OnEnable
 -NetworkBehaviour OnNetworkPreSpawn
