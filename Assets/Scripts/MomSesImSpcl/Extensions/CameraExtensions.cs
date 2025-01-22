@@ -29,17 +29,37 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Camera">The Camera from which the frustum points are calculated.</param>
         /// <param name="_Z">The distance from the camera at which to calculate the frustum points.</param>
         /// <returns>An array containing the positions of the four points that form the corners of the frustum at the given distance.</returns>
-        public static Vector3[] CalculateFrustumPoints(this Camera _Camera, float _Z)
+        public static Vector3[] CalculateFrustumPoints(this Camera _Camera, float _DistanceFromCamera)
         {
-            var _normalizedViewportCoordinates = new Rect(0, 0, 1, 1);
             var _frustumCorners = new Vector3[4];
             
-            _Camera.CalculateFrustumCorners(_normalizedViewportCoordinates, _Z - _Camera.nearClipPlane, Camera.MonoOrStereoscopicEye.Mono, _frustumCorners);
-
-            // ReSharper disable once InconsistentNaming
-            for (var i = 0; i < _frustumCorners.Length; i++)
+            if (_Camera.orthographic)
             {
-                _frustumCorners[i] = _Camera.ScreenToWorldPoint(_frustumCorners[i]);
+                var _halfHeight = _Camera.orthographicSize;
+                var _halfWidth = _halfHeight * _Camera.aspect;
+                
+                _frustumCorners[0] = new Vector3(-_halfWidth, -_halfHeight, _DistanceFromCamera); // Bottom-left
+                _frustumCorners[1] = new Vector3(-_halfWidth, _halfHeight, _DistanceFromCamera);  // Top-left
+                _frustumCorners[2] = new Vector3(_halfWidth, _halfHeight, _DistanceFromCamera);   // Top-right
+                _frustumCorners[3] = new Vector3(_halfWidth, -_halfHeight, _DistanceFromCamera);  // Bottom-right
+                
+                // ReSharper disable once InconsistentNaming
+                for (var i = 0; i < _frustumCorners.Length; i++)
+                {
+                    _frustumCorners[i] = _Camera.transform.TransformPoint(_frustumCorners[i]);
+                }
+            }
+            else
+            {
+                var _normalizedViewportCoordinates = new Rect(0, 0, 1, 1);
+                
+                _Camera.CalculateFrustumCorners(_normalizedViewportCoordinates, _DistanceFromCamera, Camera.MonoOrStereoscopicEye.Mono, _frustumCorners);
+                
+                // ReSharper disable once InconsistentNaming
+                for (var i = 0; i < _frustumCorners.Length; i++)
+                {
+                    _frustumCorners[i] = _Camera.ScreenToWorldPoint(_frustumCorners[i]);
+                }
             }
             
             return _frustumCorners;
