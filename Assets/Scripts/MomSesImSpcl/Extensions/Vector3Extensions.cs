@@ -30,6 +30,32 @@ namespace MomSesImSpcl.Extensions
         };
 
         /// <summary>
+        /// Determines whether this <see cref="Vector3"/> has reached or exceeded the given <c>_TargetPosition</c>, based on the direction of the given <c>_OriginPosition</c>.
+        /// </summary>
+        /// <param name="_CurrentPosition">The current <see cref="Transform.position"/> of the <see cref="Vector3"/>.</param>
+        /// <param name="_OriginPosition">The original <see cref="Transform.position"/> from where the direction should be calculated from.</param>
+        /// <param name="_TargetPosition">The target <see cref="Transform.position"/> to where the direction should be calculated to.</param>
+        /// <param name="_PercentageOffset">
+        /// A percentual offset for the <c>_TargetPosition</c>, how far away the current position can be, for this method to return <c>true</c>. <br/>
+        /// <b>Must be between <c>0</c> and <c>1</c>.</b>
+        /// </param>
+        /// <returns><c>true</c> if this <see cref="Vector3"/> has reached or exceeded the given <c>_TargetPosition</c>, based on the direction of the given <c>_OriginPosition</c>; otherwise, <c>false</c>.</returns>
+        public static bool HasReachedTarget(this Vector3 _CurrentPosition, Vector3 _OriginPosition, Vector3 _TargetPosition, float _PercentageOffset = 1f)
+        {
+            // Calculate vectors from the origin to the current and target positions.
+            var _toCurrent = _CurrentPosition - _OriginPosition;
+            var _toTarget = _TargetPosition - _OriginPosition;
+            var _direction = _TargetPosition - _OriginPosition;
+
+            // Project these vectors onto the direction vector.
+            var _currentProjection = Vector3.Dot(_toCurrent, _direction);
+            var _targetProjection = Vector3.Dot(_toTarget, _direction) * _PercentageOffset;
+            
+            // If the current projection exceeds the target projection, it has moved beyond.
+            return _currentProjection >= _targetProjection;
+        }
+        
+        /// <summary>
         /// Returns the maximum value among the x, y, and z components of the given <see cref="Vector3"/>.
         /// </summary>
         /// <param name="_Vector3">The <see cref="Vector3"/> to evaluate.</param>
