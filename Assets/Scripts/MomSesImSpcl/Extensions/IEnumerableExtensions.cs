@@ -88,7 +88,8 @@ namespace MomSesImSpcl.Extensions
         public static T GetRandom<T>(this IEnumerable<T> _Enumerable)
         {
             var _array = _Enumerable.ToArray();
-            var _index = Random.Range(0, _array.Length);
+            var _multiplier = _array.Length < 4 ? 10 : 1;
+            var _index = Mathf.FloorToInt(Random.Range(0, _array.Length * _multiplier) / (float)_multiplier);
 
             return _array[_index];
         }
