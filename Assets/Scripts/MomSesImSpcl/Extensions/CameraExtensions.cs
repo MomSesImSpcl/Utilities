@@ -27,7 +27,7 @@ namespace MomSesImSpcl.Extensions
         /// Calculates the points of the camera frustum at a given distance from the camera.
         /// </summary>
         /// <param name="_Camera">The Camera from which the frustum points are calculated.</param>
-        /// <param name="_Z">The distance from the camera at which to calculate the frustum points.</param>
+        /// <param name="_DistanceFromCamera">The distance from the camera at which to calculate the frustum points.</param>
         /// <returns>An array containing the positions of the four points that form the corners of the frustum at the given distance.</returns>
         public static Vector3[] CalculateFrustumPoints(this Camera _Camera, float _DistanceFromCamera)
         {
