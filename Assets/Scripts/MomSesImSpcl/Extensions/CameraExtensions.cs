@@ -28,8 +28,9 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Camera">The Camera from which the frustum points are calculated.</param>
         /// <param name="_DistanceFromCamera">The distance from the camera at which to calculate the frustum points.</param>
+        /// <param name="_ReturnMidpoints">Set to <c>true</c> to return the midpoints instead of the corners.</param>
         /// <returns>An array containing the positions of the four points that form the corners of the frustum at the given distance.</returns>
-        public static Vector3[] CalculateFrustumPoints(this Camera _Camera, float _DistanceFromCamera)
+        public static Vector3[] CalculateFrustumPoints(this Camera _Camera, float _DistanceFromCamera, bool _ReturnMidpoints = false)
         {
             var _frustumCorners = new Vector3[4];
             
@@ -59,6 +60,15 @@ namespace MomSesImSpcl.Extensions
                 for (var i = 0; i < _frustumCorners.Length; i++)
                 {
                     _frustumCorners[i] = _Camera.ScreenToWorldPoint(_frustumCorners[i]);
+                }
+            }
+            
+            if (_ReturnMidpoints)
+            {
+                // ReSharper disable once InconsistentNaming
+                for (var i = 0; i < _frustumCorners.Length; i++)
+                {
+                    _frustumCorners[i] = (_frustumCorners[i] + _frustumCorners[(i + 1) % 4]) / 2;
                 }
             }
             
