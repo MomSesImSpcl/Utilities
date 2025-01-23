@@ -375,6 +375,32 @@ namespace MomSesImSpcl.Extensions
 
             return _message;
         }
+
+        /// <summary>
+        /// Returns the elements at the given <c>_Indices</c> in this <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to be filtered.</param>
+        /// <param name="_Indices">The indices of the elements in this <see cref="IEnumerable{T}"/> to return.</param>
+        /// <typeparam name="T">Can be any <see cref="Type"/>.</typeparam>
+        /// <returns>A <see cref="List{T}"/> containing the elements of this <see cref="IEnumerable{T}"/> at the given <c>_Indices</c>.</returns>
+        public static List<T> Take<T>(this IEnumerable<T> _Enumerable, params int[] _Indices)
+        {
+            using var _enumerator = _Enumerable.GetEnumerator();
+            var _list = new List<T>(_Indices.Length);
+            var _counter = 0;
+            
+            while (_enumerator.MoveNext())
+            {
+                if (_Indices.Contains(_counter))
+                {
+                    _list.Add(_enumerator.Current);
+                }
+                
+                _counter++;
+            }
+
+            return _list;
+        }
         #endregion
     }
 }
