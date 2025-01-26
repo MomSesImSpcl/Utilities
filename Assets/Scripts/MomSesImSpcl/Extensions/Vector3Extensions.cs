@@ -29,19 +29,24 @@ namespace MomSesImSpcl.Extensions
             Axis.XYZ => new Vector3(_Vector3.x / _Value, _Vector3.y / _Value, _Vector3.z / _Value),
             _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
         };
-
+        
         /// <summary>
-        /// Get the value of the given <see cref="Axis"/> from this <see cref="Vector3"/>.
+        /// Gets a new <see cref="Vector3"/> with the values of this <see cref="Vector3"/> for the given <see cref="Axis"/>. <br/>
+        /// <i>ALl other <see cref="Axis"/> values will be <c>0</c>.</i>
         /// </summary>
         /// <param name="_Vector3">The <see cref="Vector3"/> to get the value from.</param>
         /// <param name="_Axis">The <see cref="Axis"/> from which to get the value.</param>
-        /// <returns>The value of the given <see cref="Axis"/> from this <see cref="Vector3"/>.</returns>
+        /// <returns>The values for the given <see cref="Axis"/> of this <see cref="Vector3"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
-        public static float Get(this Vector3 _Vector3, Axis _Axis) => _Axis switch
+        public static Vector3 Get(this Vector3 _Vector3, Axis _Axis) => _Axis switch
         {
-            Axis.X => _Vector3.x,
-            Axis.Y => _Vector3.y,
-            Axis.Z => _Vector3.z,
+            Axis.X => new Vector3(_Vector3.x, 0, 0),
+            Axis.Y => new Vector3(0, _Vector3.y, 0),
+            Axis.Z => new Vector3(0, 0, _Vector3.z),
+            Axis.XY => new Vector3(_Vector3.x, _Vector3.y, 0),
+            Axis.XZ => new Vector3(_Vector3.x, 0, _Vector3.z),
+            Axis.YZ => new Vector3(0, _Vector3.y, _Vector3.z),
+            Axis.XYZ => new Vector3(_Vector3.x, _Vector3.y, _Vector3.z),
             _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
         };
         
@@ -172,6 +177,31 @@ namespace MomSesImSpcl.Extensions
             _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
         };
 
+        /// <summary>
+        /// Sets the component(s) of this <see cref="Vector3"/> to a specified value(s) along the given axes.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to be modified.</param>
+        /// <param name="_Axis">The axes along which to set the component(s).</param>
+        /// <param name="_Value">The value(s) to set the component(s) to.</param>
+        /// <returns>A new <see cref="Vector3"/> with the set values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
+        public static Vector3 Set(this Vector3 _Vector3, Axis _Axis, Vector3 _Value)
+        {
+            var _vector3 = _Value.Get(_Axis);
+
+            return _Axis switch
+            {
+                Axis.X => _Vector3.Set(Axis.X, _vector3.x),
+                Axis.Y => _Vector3.Set(Axis.Y, _vector3.y),
+                Axis.Z => _Vector3.Set(Axis.Z, _vector3.z),
+                Axis.XY => _Vector3.Set(Axis.X, _vector3.x).Set(Axis.Y, _vector3.y),
+                Axis.XZ => _Vector3.Set(Axis.X, _vector3.x).Set(Axis.Z, _vector3.z),
+                Axis.YZ => _Vector3.Set(Axis.Y, _vector3.y).Set(Axis.Z, _vector3.z),
+                Axis.XYZ => _Vector3.Set(Axis.X, _vector3.x).Set(Axis.Y, _vector3.y).Set(Axis.Z, _vector3.z),
+                _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            };
+        }
+        
         /// <summary>
         /// Creates a new <see cref="ArgumentOutOfRangeException"/> for the specified parameter and axis.
         /// </summary>
