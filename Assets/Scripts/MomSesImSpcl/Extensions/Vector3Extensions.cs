@@ -17,6 +17,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Axis">The axis along which to divide the component(s).</param>
         /// <param name="_Value">The value by which to divide the component(s).</param>
         /// <returns>A new <see cref="Vector3"/> with the divided values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
         public static Vector3 Divide(this Vector3 _Vector3, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector3(_Vector3.x / _Value, _Vector3.y, _Vector3.z),
@@ -29,6 +30,21 @@ namespace MomSesImSpcl.Extensions
             _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
         };
 
+        /// <summary>
+        /// Get the value of the given <see cref="Axis"/> from this <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to get the value from.</param>
+        /// <param name="_Axis">The <see cref="Axis"/> from which to get the value.</param>
+        /// <returns>The value of the given <see cref="Axis"/> from this <see cref="Vector3"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
+        public static float Get(this Vector3 _Vector3, Axis _Axis) => _Axis switch
+        {
+            Axis.X => _Vector3.x,
+            Axis.Y => _Vector3.y,
+            Axis.Z => _Vector3.z,
+            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+        };
+        
         /// <summary>
         /// Determines whether this <see cref="Vector3"/> has reached or exceeded the given <c>_TargetPosition</c>, based on the direction of the given <c>_OriginPosition</c>.
         /// </summary>
@@ -83,6 +99,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Axis">The axis along which to subtract the component(s).</param>
         /// <param name="_Value">The value to subtract from the component(s).</param>
         /// <returns>A new <see cref="Vector3"/> with the subtracted values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
         public static Vector3 Minus(this Vector3 _Vector3, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector3(_Vector3.x - _Value, _Vector3.y, _Vector3.z),
@@ -102,6 +119,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Axis">The axis along which to multiply the component(s).</param>
         /// <param name="_Value">The value by which to multiply the component(s).</param>
         /// <returns>A new Vector3 with the multiplied values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
         public static Vector3 Multiply(this Vector3 _Vector3, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector3(_Vector3.x * _Value, _Vector3.y, _Vector3.z),
@@ -121,6 +139,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Axis">The axis along which to add the value to the component(s).</param>
         /// <param name="_Value">The value to add to the component(s).</param>
         /// <returns>A new <see cref="Vector3"/> with the added values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
         public static Vector3 Plus(this Vector3 _Vector3, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector3(_Vector3.x + _Value, _Vector3.y, _Vector3.z),
@@ -140,6 +159,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Axis">The axis along which to set the component(s).</param>
         /// <param name="_Value">The value to set the component(s) to.</param>
         /// <returns>A new <see cref="Vector3"/> with the set values.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
         public static Vector3 Set(this Vector3 _Vector3, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector3(_Value, _Vector3.y, _Vector3.z),
