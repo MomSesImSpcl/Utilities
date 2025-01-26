@@ -27,6 +27,20 @@ namespace MomSesImSpcl.Extensions
         };
 
         /// <summary>
+        /// Get the value of the given <see cref="Axis"/> from this <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to get the value from.</param>
+        /// <param name="_Axis">The <see cref="Axis"/> from which to get the value.</param>
+        /// <returns>The value of the given <see cref="Axis"/> from this <see cref="Vector2"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When <c>_Axis</c> is any other value than: <see cref="Axis.X"/> or <see cref="Axis.Y"/>.</exception>
+        public static float Get(this Vector2 _Vector2, Axis _Axis) => _Axis switch
+        {
+            Axis.X => _Vector2.x,
+            Axis.Y => _Vector2.y,
+            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+        };
+        
+        /// <summary>
         /// Subtracts a value from <c>_Vector2</c> on the given <c>_Axis</c>.
         /// </summary>
         /// <param name="_Vector2">The <see cref="Vector2"/> to subtract the value from.</param>
