@@ -41,6 +41,19 @@ namespace MomSesImSpcl.Data
         /// </summary>
         public T? Item2 { get => this.item2; set => this.item2 = value; }
         #endregion
+
+        #region Constructors
+        /// <summary>
+        /// Creates a new <see cref="SerializedTuple{T}"/> <see cref="object"/>.
+        /// </summary>
+        /// <param name="_Item1"><see cref="item1"/>.</param>
+        /// <param name="_Item2"><see cref="item2"/>.</param>
+        public SerializedTuple(T? _Item1, T? _Item2)
+        {
+            this.item1 = _Item1;
+            this.item2 = _Item2;
+        }
+        #endregion
     } 
 }
 #endif
