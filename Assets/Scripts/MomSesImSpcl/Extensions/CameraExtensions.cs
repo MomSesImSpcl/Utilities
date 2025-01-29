@@ -59,7 +59,7 @@ namespace MomSesImSpcl.Extensions
                 // ReSharper disable once InconsistentNaming
                 for (var i = 0; i < _frustumCorners.Length; i++)
                 {
-                    _frustumCorners[i] = _Camera.ScreenToWorldPoint(_frustumCorners[i]);
+                    _frustumCorners[i] = _Camera.transform.TransformPoint(_frustumCorners[i]);
                 }
             }
             
