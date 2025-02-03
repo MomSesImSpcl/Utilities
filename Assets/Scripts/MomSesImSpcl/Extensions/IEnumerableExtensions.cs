@@ -95,6 +95,52 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Returns random elements from the given enumerable.
+        /// </summary>
+        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to select random elements from.</param>
+        /// <param name="_Amount">The number of elements to return.</param>
+        /// <param name="_CanContainDuplicates">
+        /// Set to <c>false</c> to only return unique elements. <br/>
+        /// <b>The given <see cref="IEnumerable{T}"/> must contain at least as many elements as the requested amount.</b>
+        /// </param>
+        /// <typeparam name="T">The type of the elements in the enumerable.</typeparam>
+        /// <returns>Randomly selected elements from the enumerable.</returns>
+        /// <exception cref="ArgumentException">Thrown if the enumerable does not contain enough unique elements.</exception>
+        public static IEnumerable<T> GetRandom<T>(this IEnumerable<T> _Enumerable, uint _Amount, bool _CanContainDuplicates)
+        {
+            var _array = _Enumerable.ToArray();
+            var _random = new System.Random();
+
+            switch (_CanContainDuplicates)
+            {
+                case false when _array.Length < _Amount:
+                    throw new ArgumentException($"The enumerable does not contain enough unique elements. Required: {_Amount}, Available: {_array.Length}");
+                case true:
+                {
+                    // ReSharper disable once InconsistentNaming
+                    for (var i = 0; i < _Amount; i++)
+                    {
+                        yield return _array[_random.Next(_array.Length)];
+                    }
+
+                    break;
+                }
+                default:
+                {
+                    _array.Shuffle();
+                    
+                    // ReSharper disable once InconsistentNaming
+                    for (var i = 0; i < _Amount; i++)
+                    {
+                        yield return _array[i];
+                    }
+
+                    break;
+                }
+            }
+        }
+        
+        /// <summary>
         /// Selects a random subset of elements from the given <see cref="IEnumerable{T}"/>.
         /// </summary>
         /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to select from</param>
