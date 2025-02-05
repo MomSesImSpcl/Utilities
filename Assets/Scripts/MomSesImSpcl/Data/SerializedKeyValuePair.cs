@@ -47,6 +47,18 @@ namespace MomSesImSpcl.Data
         /// </summary>
         public V Value { get => this.value; set => this.value = value; }
         #endregion
+
+        #region Operators
+        /// <summary>
+        /// Implicitly creates a new <see cref="SerializedKeyValuePair{K,V}"/> from the given <see cref="KeyValuePair{TKey,TValue}"/>.
+        /// </summary>
+        /// <param name="_KeyValuePair">The <see cref="KeyValuePair{TKey,TValue}"/> to create a <see cref="SerializedKeyValuePair{K,V}"/> from.</param>
+        /// <returns>A new <see cref="SerializedKeyValuePair{K,V}"/> with the value of the given <see cref="KeyValuePair{TKey,TValue}"/>.</returns>
+        public static implicit operator SerializedKeyValuePair<K, V>(KeyValuePair<K,V> _KeyValuePair)
+        {
+            return new SerializedKeyValuePair<K, V>(_KeyValuePair.Key, _KeyValuePair.Value);
+        }
+        #endregion
         
         #region Constructors
         /// <summary>
