@@ -54,9 +54,9 @@ namespace MomSesImSpcl.Data
         /// </summary>
         /// <param name="_KeyValuePair">The <see cref="KeyValuePair{TKey,TValue}"/> to create a <see cref="SerializedKeyValuePair{K,V}"/> from.</param>
         /// <returns>A new <see cref="SerializedKeyValuePair{K,V}"/> with the value of the given <see cref="KeyValuePair{TKey,TValue}"/>.</returns>
-        public static implicit operator SerializedKeyValuePair<K, V>(KeyValuePair<K,V> _KeyValuePair)
+        public static implicit operator SerializedKeyValuePair<K,V>(KeyValuePair<K,V> _KeyValuePair)
         {
-            return new SerializedKeyValuePair<K, V>(_KeyValuePair.Key, _KeyValuePair.Value);
+            return new SerializedKeyValuePair<K,V>(_KeyValuePair.Key, _KeyValuePair.Value);
         }
         #endregion
         
