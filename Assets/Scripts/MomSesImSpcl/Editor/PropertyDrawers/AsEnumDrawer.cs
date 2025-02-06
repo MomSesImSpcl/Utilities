@@ -17,80 +17,113 @@ namespace MomSesImSpcl.Editor.PropertyDrawers
         {
             var _asEnumAttribute = (AsEnumAttribute)base.attribute;
             
-#if ACTK_IS_HERE // Must enable the "ACTK_IS_HERE" checkbox under "Project Settings -> Code Stage -> Anti-Cheat Toolkit -> Third-party related" for this to work.
-            if (typeof(CodeStage.AntiCheat.ObscuredTypes.IObscuredType).IsAssignableFrom(base.fieldInfo.FieldType))
-            {
-                _Property = _Property.FindPropertyRelative("hiddenValue");
-            }
-#endif
-            var _enumValue = GetEnumValue(_asEnumAttribute.EnumType, _Property);
+            var _propertyValue = GetBoxedValue(_Property);
+            var _enumValue = (Enum)Enum.ToObject(_asEnumAttribute.EnumType, _propertyValue);
             
             EditorGUI.BeginChangeCheck();
             
             var _selectedEnumValue = EditorGUI.EnumPopup(_Rect, _Label, _enumValue);
-
+            
             if (EditorGUI.EndChangeCheck())
             {
-                SetPropertyValue(_Property, _selectedEnumValue);
+                _Property.boxedValue = ConvertToBoxedValue(_Property, _selectedEnumValue);
             }
         }
-
+        
         /// <summary>
-        /// Gets the value of the <see cref="Enum"/> set in the <see cref="AsEnumAttribute"/> that corresponds with teh value of the given <see cref="SerializedProperty"/>.
+        /// Get the <see cref="SerializedProperty.boxedValue"/> from the given <see cref="SerializedProperty"/> as the correct <see cref="Type"/>.
         /// </summary>
-        /// <param name="_EnumType">The <see cref="Type"/> of the <see cref="Enum"/> defined in the <see cref="AsEnumAttribute"/>.</param>
-        /// <param name="_Property">Must be a non floating point numeric <see cref="Type"/>.</param>
-        /// <returns>The <see cref="Enum"/> value that corresponds with teh value of the given <see cref="SerializedProperty"/>.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">When the <see cref="SerializedProperty.numericType"/> is not valid.</exception>
-        private static Enum GetEnumValue(Type _EnumType, SerializedProperty _Property) => (Enum)Enum.ToObject(_EnumType, _Property.numericType switch
+        /// <param name="_Property">Must be a non floating points numeric <see cref="Type"/>.</param>
+        /// <returns>A numeric value that matches the <see cref="Type"/> of the given <see cref="SerializedProperty"/>.</returns>
+        private static dynamic GetBoxedValue(SerializedProperty _Property)
         {
-            SerializedPropertyNumericType.Int8 => (sbyte)_Property.intValue,
-            SerializedPropertyNumericType.UInt8 => (byte)_Property.uintValue,
-            SerializedPropertyNumericType.Int16 => (short)_Property.intValue,
-            SerializedPropertyNumericType.UInt16 => (ushort)_Property.uintValue,
-            SerializedPropertyNumericType.Int32 => _Property.intValue,
-            SerializedPropertyNumericType.UInt32 => _Property.uintValue,
-            SerializedPropertyNumericType.Int64 => _Property.longValue,
-            SerializedPropertyNumericType.UInt64 => _Property.ulongValue,
-            _ => throw new ArgumentOutOfRangeException($"{_Property.numericType.Bold()} is not a valid numeric type.")
-        });
-
-        /// <summary>
-        /// Sets the value of the given <see cref="SerializedProperty"/>.
-        /// </summary>
-        /// <param name="_Property">Must be a non floating point numeric <see cref="Type"/>.</param>
-        /// <param name="_SelectedEnumValue">The currently selected <see cref="Enum"/> value in the inspector dropdown.</param>
-        /// <exception cref="ArgumentOutOfRangeException">When the <see cref="SerializedProperty.numericType"/> is not valid.</exception>
-        private static void SetPropertyValue(SerializedProperty _Property, Enum _SelectedEnumValue)
-        {
-            switch (_Property.numericType)
+            switch (_Property.boxedValue)
             {
-                case SerializedPropertyNumericType.Int8:
-                    _Property.intValue = Convert.ToSByte(_SelectedEnumValue);
-                    break;
-                case SerializedPropertyNumericType.UInt8:
-                    _Property.uintValue = Convert.ToByte(_SelectedEnumValue);
-                    break;
-                case SerializedPropertyNumericType.Int16:
-                    _Property.intValue = Convert.ToInt16(_SelectedEnumValue);
-                    break;
-                case SerializedPropertyNumericType.UInt16:
-                    _Property.uintValue = Convert.ToUInt16(_SelectedEnumValue);
-                    break;
-                case SerializedPropertyNumericType.Int32:
-                    _Property.intValue = Convert.ToInt32(_SelectedEnumValue);
-                    break;
-                case SerializedPropertyNumericType.UInt32:
-                    _Property.uintValue = Convert.ToUInt32(_SelectedEnumValue);
-                    break;
-                case SerializedPropertyNumericType.Int64:
-                    _Property.longValue = Convert.ToInt64(_SelectedEnumValue);
-                    break;
-                case SerializedPropertyNumericType.UInt64:
-                    _Property.ulongValue = Convert.ToUInt64(_SelectedEnumValue);
-                    break;
+                case byte _byte:
+                    return _byte;
+                case sbyte _sbyte:
+                    return _sbyte;
+                case short _short:
+                    return _short;
+                case ushort _ushort:
+                    return _ushort;
+                case int _int:
+                    return _int;
+                case uint _uint:
+                    return _uint;
+                case long _long:
+                    return _long;
+                case ulong _ulong:
+                    return _ulong;
+#if ACTK_IS_HERE // Must enable the "ACTK_IS_HERE" checkbox under "Project Settings -> Code Stage -> Anti-Cheat Toolkit -> Third-party related" for this to work.
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredByte _obscuredByte:
+                    return _obscuredByte;
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredSByte _obscuredSByte:
+                    return _obscuredSByte;
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredShort _obscuredShort:
+                    return _obscuredShort;
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredUShort _obscuredUShort:
+                    return _obscuredUShort;
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredInt _obscuredInt:
+                    return _obscuredInt;
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredUInt _obscuredUInt:
+                    return _obscuredUInt;
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredLong _obscuredLong:
+                    return _obscuredLong;
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredULong _obscuredULong:
+                    return _obscuredULong;
+#endif
                 default:
-                    throw new ArgumentOutOfRangeException($"{_Property.numericType.Bold()} is not a valid numeric type.");
+                    throw new NotSupportedException($"The type of the property: [{_Property.type.Bold()}] is not supported.");
+            }
+        }
+        
+        /// <summary>
+        /// Converts the given <see cref="Enum"/> value to the correct <see cref="Type"/> based on the <see cref="SerializedProperty.boxedValue"/> of the given <see cref="SerializedProperty"/>.
+        /// </summary>
+        /// <param name="_Property">Must be a non floating points numeric <see cref="Type"/>.</param>
+        /// <param name="_EnumValue">The <see cref="Enum"/> value to convert to its numeric counterpart.</param>
+        /// <returns>A numeric value that matches the <see cref="Type"/> of the given <see cref="SerializedProperty"/>.</returns>
+        private static dynamic ConvertToBoxedValue(SerializedProperty _Property, Enum _EnumValue)
+        {
+            switch (_Property.boxedValue)
+            {
+                case byte:
+                    return Convert.ToByte(_EnumValue);
+                case sbyte:
+                    return Convert.ToSByte(_EnumValue);
+                case short:
+                    return Convert.ToInt16(_EnumValue);
+                case ushort:
+                    return Convert.ToUInt16(_EnumValue);
+                case int:
+                    return Convert.ToInt32(_EnumValue);
+                case uint:
+                    return Convert.ToUInt32(_EnumValue);
+                case long:
+                    return Convert.ToInt64(_EnumValue);
+                case ulong:
+                    return Convert.ToUInt64(_EnumValue);
+#if ACTK_IS_HERE // Must enable the "ACTK_IS_HERE" checkbox under "Project Settings -> Code Stage -> Anti-Cheat Toolkit -> Third-party related" for this to work.
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredByte:
+                    return (CodeStage.AntiCheat.ObscuredTypes.ObscuredByte)Convert.ToByte(_EnumValue);
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredSByte:
+                    return (CodeStage.AntiCheat.ObscuredTypes.ObscuredSByte)Convert.ToSByte(_EnumValue);
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredShort:
+                    return (CodeStage.AntiCheat.ObscuredTypes.ObscuredShort)Convert.ToInt16(_EnumValue);
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredUShort:
+                    return (CodeStage.AntiCheat.ObscuredTypes.ObscuredUShort)Convert.ToUInt16(_EnumValue);
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredInt:
+                    return (CodeStage.AntiCheat.ObscuredTypes.ObscuredInt)Convert.ToInt32(_EnumValue);
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredUInt:
+                    return (CodeStage.AntiCheat.ObscuredTypes.ObscuredUInt)Convert.ToUInt32(_EnumValue);
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredLong:
+                    return (CodeStage.AntiCheat.ObscuredTypes.ObscuredLong)Convert.ToInt64(_EnumValue);
+                case CodeStage.AntiCheat.ObscuredTypes.ObscuredULong:
+                    return (CodeStage.AntiCheat.ObscuredTypes.ObscuredULong)Convert.ToUInt64(_EnumValue);
+#endif
+                default:
+                    throw new NotSupportedException($"The type of the property: [{_Property.type.Bold()}] is not supported.");
             }
         }
         #endregion
