@@ -1,5 +1,6 @@
 #if ODIN_INSPECTOR
 using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
@@ -47,7 +48,7 @@ namespace MomSesImSpcl.Data
         /// </summary>
         public V Value { get => this.value; set => this.value = value; }
         #endregion
-
+        
         #region Operators
         /// <summary>
         /// Implicitly creates a new <see cref="SerializedKeyValuePair{K,V}"/> from the given <see cref="KeyValuePair{TKey,TValue}"/>.
@@ -62,7 +63,7 @@ namespace MomSesImSpcl.Data
         
         #region Constructors
         /// <summary>
-        /// <see cref="SerializedKeyValuePair{K,V}"/>.
+        /// Creates a new <see cref="SerializedKeyValuePair{K,V}"/> from the given <c>_Key</c> and <c>_Value</c>.
         /// </summary>
         /// <param name="_Key"><see cref="key"/>.</param>
         /// <param name="_Value"><see cref="value"/>.</param>
@@ -70,6 +71,26 @@ namespace MomSesImSpcl.Data
         {
             this.key = _Key;
             this.value = _Value;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="SerializedKeyValuePair{K,V}"/> from the given <see cref="KeyValuePair{TKey,TValue}"/>.
+        /// </summary>
+        /// <param name="_KeyValuePair"><see cref="KeyValuePair{TKey,TValue}"/>.</param>
+        public SerializedKeyValuePair(KeyValuePair<K,V> _KeyValuePair)
+        {
+            this.key = _KeyValuePair.Key;
+            this.value = _KeyValuePair.Value;
+        }
+        
+        /// <summary>
+        /// Creates a new <see cref="SerializedKeyValuePair{K,V}"/> from the given <see cref="SerializedKeyValuePair{TKey,TValue}"/>.
+        /// </summary>
+        /// <param name="_SerializedKeyValuePair"><see cref="SerializedKeyValuePair{K,V}"/>.</param>
+        public SerializedKeyValuePair(SerializedKeyValuePair<K,V> _SerializedKeyValuePair)
+        {
+            this.key = _SerializedKeyValuePair.Key;
+            this.value = _SerializedKeyValuePair.Value;
         }
         #endregion
     }
