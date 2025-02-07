@@ -41,6 +41,28 @@ namespace MomSesImSpcl.Extensions
             Axis.XY => new Vector2(_Vector3.x, _Vector3.y),
             _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
         };
+
+        /// <summary>
+        /// Calculates the 2D <see cref="Transform.rotation"/> needed to look at a target <see cref="Transform.position"/>.
+        /// </summary>
+        /// <param name="_Source">Current <see cref="Transform.position"/>.</param>
+        /// <param name="_Target">Target <see cref="Transform.position"/> to look at.</param>
+        /// <param name="_OffsetDegrees">Additional angular offset (e.g., -90 if sprite faces up).</param>
+        /// <param name="_DefaultRotation"><see cref="Transform.rotation"/> to return if <see cref="Transform.position"/>s are identical.</param>
+        /// <returns>The <see cref="Transform.rotation"/> that is needed to look at the given <c>_Target</c>.</returns>
+        public static Quaternion Get2DLookAtRotation(this Vector2 _Source, Vector2 _Target, float _OffsetDegrees = 0f, Quaternion? _DefaultRotation = null)
+        {
+            var _direction = _Target - _Source;
+
+            if (_direction.sqrMagnitude < Mathf.Epsilon)
+            {
+                return _DefaultRotation ?? Quaternion.identity;
+            }
+
+            var _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+            
+            return Quaternion.Euler(0f, 0f, _angle + _OffsetDegrees);
+        }
         
         /// <summary>
         /// Subtracts a value from <c>_Vector2</c> on the given <c>_Axis</c>.
