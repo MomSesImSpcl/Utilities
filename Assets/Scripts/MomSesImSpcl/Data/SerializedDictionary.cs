@@ -21,14 +21,14 @@ namespace MomSesImSpcl.Data
         /// Only used in editor to display all <see cref="dictionary"/> entries in the inspector.
         /// </summary>
         [Tooltip("Contains all elements of the underlying Dictionary.")]
-        [SerializeField] private List<SerializedKeyValuePair<K,V>> list = new();
+        [SerializeField] private List<SerializedKeyValuePair<K,V>> list;
         #endregion
 #endif
         #region Fields
         /// <summary>
         /// The underlying <see cref="Dictionary{K,V}"/> of this <see cref="SerializedDictionary{K,V}"/>.
         /// </summary>
-        private readonly Dictionary<K,V> dictionary = new();
+        private readonly Dictionary<K,V> dictionary;
         #endregion
         
         #region Properties
@@ -77,6 +77,108 @@ namespace MomSesImSpcl.Data
                 }
 #endif
             }
+        }
+        #endregion
+        
+        #region Constructors
+        /// <summary>
+        /// Creates a new <see cref="SerializedDictionary{K,V}"/>.
+        /// </summary>
+        public SerializedDictionary()
+        {
+            this.dictionary = new Dictionary<K,V>();
+#if UNITY_EDITOR
+            this.list = new List<SerializedKeyValuePair<K,V>>();
+#endif
+        }
+        
+        /// <summary>
+        /// Creates a new <see cref="SerializedDictionary{K,V}"/> with the elements of the given <see cref="IDictionary{TKey,TValue}"/>.
+        /// </summary>
+        /// <param name="_Dictionary"><see cref="IDictionary{TKey,TValue}"/>.</param>
+        public SerializedDictionary(IDictionary<K,V> _Dictionary)
+        {
+            this.dictionary = new Dictionary<K,V>(_Dictionary);
+#if UNITY_EDITOR
+            this.list = new List<SerializedKeyValuePair<K,V>>(_Dictionary.Select(_Kvp => new SerializedKeyValuePair<K,V>(_Kvp)));
+#endif
+        }
+        
+        /// <summary>
+        /// Creates a new <see cref="SerializedDictionary{K,V}"/> with the elements of the given <see cref="IDictionary{TKey,TValue}"/>.
+        /// </summary>
+        /// <param name="_Dictionary"><see cref="IDictionary{TKey,TValue}"/>.</param>
+        /// <param name="_Comparer"><see cref="IEqualityComparer{T}"/>.</param>
+        public SerializedDictionary(IDictionary<K,V> _Dictionary, IEqualityComparer<K> _Comparer)
+        {
+            this.dictionary = new Dictionary<K,V>(_Dictionary, _Comparer);
+#if UNITY_EDITOR
+            this.list = new List<SerializedKeyValuePair<K,V>>(_Dictionary.Select(_Kvp => new SerializedKeyValuePair<K,V>(_Kvp)));
+#endif
+        }
+        
+        /// <summary>
+        /// Creates a new <see cref="SerializedDictionary{K,V}"/> from the given <c>_Collection</c>.
+        /// </summary>
+        /// <param name="_Collection"><see cref="IEnumerable{T}"/>.</param>
+        public SerializedDictionary(IEnumerable<KeyValuePair<K,V>> _Collection)
+        {
+            var _array = _Collection.ToArray();
+            this.dictionary = new Dictionary<K,V>(_array);
+#if UNITY_EDITOR
+            this.list = new List<SerializedKeyValuePair<K,V>>(_array.Select(_Kvp => new SerializedKeyValuePair<K,V>(_Kvp)));
+#endif
+        }
+        
+        /// <summary>
+        /// Creates a new <see cref="SerializedDictionary{K,V}"/> from the given <c>_Collection</c>.
+        /// </summary>
+        /// <param name="_Collection"><see cref="IEnumerable{T}"/>.</param>
+        /// <param name="_Comparer"><see cref="IEqualityComparer{T}"/>.</param>
+        public SerializedDictionary(IEnumerable<KeyValuePair<K,V>> _Collection, IEqualityComparer<K> _Comparer)
+        {
+            var _array = _Collection.ToArray();
+            this.dictionary = new Dictionary<K,V>(_array, _Comparer);
+#if UNITY_EDITOR
+            this.list = new List<SerializedKeyValuePair<K,V>>(_array.Select(_Kvp => new SerializedKeyValuePair<K,V>(_Kvp)));
+#endif
+        }
+        
+        /// <summary>
+        /// Creates a new <see cref="SerializedDictionary{K,V}"/> with the given <see cref="IEqualityComparer{T}"/>.
+        /// </summary>
+        /// <param name="_Comparer"><see cref="IEqualityComparer{T}"/>.</param>
+        public SerializedDictionary(IEqualityComparer<K> _Comparer)
+        {
+            this.dictionary = new Dictionary<K,V>(_Comparer);
+#if UNITY_EDITOR
+            this.list = new List<SerializedKeyValuePair<K,V>>();
+#endif
+        }
+        
+        /// <summary>
+        /// Creates a new <see cref="SerializedDictionary{K,V}"/> with the given <c>_Capacity</c>.
+        /// </summary>
+        /// <param name="_Capacity">The initial size of the <see cref="dictionary"/>.</param>
+        public SerializedDictionary(int _Capacity)
+        {
+            this.dictionary = new Dictionary<K,V>(_Capacity);
+#if UNITY_EDITOR
+            this.list = new List<SerializedKeyValuePair<K,V>>(_Capacity);
+#endif
+        }
+        
+        /// <summary>
+        /// Creates a new <see cref="SerializedDictionary{K,V}"/> with the given <c>_Capacity</c> and <see cref="IEqualityComparer{T}"/>.
+        /// </summary>
+        /// <param name="_Capacity">The initial size of the <see cref="dictionary"/>.</param>
+        /// <param name="_Comparer"><see cref="IEqualityComparer{T}"/>.</param>
+        public SerializedDictionary(int _Capacity, IEqualityComparer<K> _Comparer)
+        {
+            this.dictionary = new Dictionary<K,V>(_Capacity, _Comparer);
+#if UNITY_EDITOR
+            this.list = new List<SerializedKeyValuePair<K,V>>(_Capacity);
+#endif
         }
         #endregion
         
