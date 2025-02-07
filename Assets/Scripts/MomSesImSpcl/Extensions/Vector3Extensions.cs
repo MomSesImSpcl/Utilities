@@ -49,6 +49,73 @@ namespace MomSesImSpcl.Extensions
             Axis.XYZ => new Vector3(_Vector3.x, _Vector3.y, _Vector3.z),
             _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
         };
+
+        /// <summary>
+        /// Calculates the <see cref="Transform.rotation"/> needed to align a specific local axis with a target <see cref="Transform.position"/>.
+        /// </summary>
+        /// <param name="_Source">Current <see cref="Transform.position"/> in world space.</param>
+        /// <param name="_Target">Target <see cref="Transform.position"/> to look at.</param>
+        /// <param name="_LocalAxis">Local axis to align with target direction (default: <see cref="Vector3"/>.<see cref="Vector3.forward"/>).</param>
+        /// <param name="_Up">World <see cref="Vector3.up"/> vector for orientation (default: <see cref="Vector3"/>.<see cref="Vector3.up"/>).</param>
+        /// <param name="_DefaultRotation">Fallback <see cref="Transform.rotation"/> if <see cref="Transform.position"/>s are identical.</param>
+        /// <returns>The <see cref="Transform.rotation"/> that is needed to look at the given <c>_Target</c>.</returns>
+        public static Quaternion Get3DLookAtRotation(this Vector3 _Source, Vector3 _Target, Vector3 _LocalAxis = default, Vector3 _Up = default, Quaternion? _DefaultRotation = null)
+        {
+            var _direction = _Target - _Source;
+
+            // Handle zero direction case.
+            if (_direction.sqrMagnitude < Mathf.Epsilon)
+            {
+                return _DefaultRotation ?? Quaternion.identity;
+            }
+
+            _direction.Normalize();
+
+            // Set defaults if not specified.
+            _LocalAxis = _LocalAxis == default ? Vector3.forward : _LocalAxis.normalized;
+            _Up = _Up == default ? Vector3.up : _Up.normalized;
+
+            // Handle collinear direction and up vectors.
+            if (Mathf.Abs(Vector3.Dot(_direction, _Up)) > .9999f)
+            {
+                _Up = Vector3.Cross(_direction, Vector3.right).normalized;
+                
+                if (_Up.sqrMagnitude < .01f)
+                {
+                    _Up = Vector3.Cross(_direction, Vector3.forward).normalized;
+                }
+            }
+
+            // Calculate target rotation.
+            var _lookRotation = Quaternion.LookRotation(_direction, _Up);
+        
+            // Calculate axis alignment adjustment.
+            var _axisAlignment = Quaternion.Inverse(Quaternion.LookRotation(_LocalAxis, _Up));
+
+            return _lookRotation * _axisAlignment;
+        }
+        
+        /// <summary>
+        /// Calculates the 2D <see cref="Transform.rotation"/> needed to look at a target <see cref="Transform.position"/>.
+        /// </summary>
+        /// <param name="_Source">Current <see cref="Transform.position"/>.</param>
+        /// <param name="_Target">Target <see cref="Transform.position"/> to look at.</param>
+        /// <param name="_OffsetDegrees">Additional angular offset (e.g., -90 if sprite faces up).</param>
+        /// <param name="_DefaultRotation"><see cref="Transform.rotation"/> to return if <see cref="Transform.position"/>s are identical.</param>
+        /// <returns>The <see cref="Transform.rotation"/> that is needed to look at the given <c>_Target</c>.</returns>
+        public static Quaternion Get2DLookAtRotation(this Vector3 _Source, Vector3 _Target, float _OffsetDegrees = 0f, Quaternion? _DefaultRotation = null)
+        {
+            var _direction = _Target - _Source;
+
+            if (_direction.sqrMagnitude < Mathf.Epsilon)
+            {
+                return _DefaultRotation ?? Quaternion.identity;
+            }
+
+            var _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+            
+            return Quaternion.Euler(0f, 0f, _angle + _OffsetDegrees);
+        }
         
         /// <summary>
         /// Determines whether this <see cref="Vector3"/> has reached or exceeded the given <c>_TargetPosition</c>, based on the direction of the given <c>_OriginPosition</c>.
