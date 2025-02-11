@@ -53,6 +53,23 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Removes the first element in this <see cref="IList{T}"/> that matches the given <c>_Condition</c>. <br/>
+        /// <i>If no element inside the <see cref="IList{T}"/> matches the given <c>_Condition</c>, nothing will be removed.</i>
+        /// </summary>
+        /// <param name="_List">The <see cref="IList{T}"/> to remove the element from.</param>
+        /// <param name="_Condition">The condition that must be met for the element to be removed.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the element.</typeparam>
+        public static void Remove<T>(this IList<T> _List, Predicate<T> _Condition)
+        {
+            var _index = _List.FindIndex(_Condition);
+
+            if (_index != -1)
+            {
+                _List.RemoveAt(_index);
+            }
+        }
+        
+        /// <summary>
         /// Randomizes the order of elements in the list. <br/>
         /// <i>Uses the Fisher-Yates shuffle.</i>
         /// </summary>
