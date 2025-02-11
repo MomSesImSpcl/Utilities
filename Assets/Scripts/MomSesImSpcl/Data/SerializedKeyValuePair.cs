@@ -93,6 +93,19 @@ namespace MomSesImSpcl.Data
             this.value = _SerializedKeyValuePair.Value;
         }
         #endregion
+
+        #region Methods
+        /// <summary>
+        /// Deconstructor for <see cref="SerializedKeyValuePair{K,V}"/>.
+        /// </summary>
+        /// <param name="_Key"><see cref="Key"/>.</param>
+        /// <param name="_Value"><see cref="Value"/>.</param>
+        public void Deconstruct(out K _Key, out V _Value)
+        {
+            _Key = this.key;
+            _Value = this.value;
+        }
+        #endregion
     }
 }
 #endif
