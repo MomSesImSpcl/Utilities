@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,7 +6,6 @@ namespace MomSesImSpcl.Data
     /// <summary>
     /// <see cref="EventTrigger"/> with an optional <see cref="flag"/> field.
     /// </summary>
-    [Serializable]
     public class CustomEventTrigger : EventTrigger
     {
         #region Inspector Fields
