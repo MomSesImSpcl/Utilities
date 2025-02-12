@@ -19,14 +19,15 @@ namespace MomSesImSpcl.Data
         [SerializeField] private SerializedKeyValuePair<bool, V> entry;
         #endregion
         
+#if UNITY_EDITOR
         #region Constants
         /// <summary>
         /// Refactor resistant name for <see cref="Entry"/>. <br/>
         /// <i>For custom <see cref="PropertyDrawer"/>.</i>
         /// </summary>
         public const string ENTRY = nameof(entry);
-        #endregion
-        
+        #endregion 
+#endif
         #region Properties
         /// <summary>
         /// Gets or sets the serialized key-value pair of the read-only selectable entry.
