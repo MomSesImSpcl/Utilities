@@ -7,8 +7,9 @@ namespace MomSesImSpcl.Data
     /// <summary>
     /// Wrapper to serialize an interface in the inspector.
     /// </summary>
+    /// <typeparam name="T">Should be an interface.</typeparam>
     [Serializable]
-    public sealed class InterfaceReference<T> : ISerializationCallbackReceiver where T : class
+    public class InterfaceReference<T> : ISerializationCallbackReceiver where T : class
     {
         #region Inspector Fields
         [Tooltip("The class that implements the interface.")]
