@@ -25,6 +25,7 @@ namespace MomSesImSpcl.Data
         [SerializeField] private V value;
         #endregion
         
+#if UNITY_EDITOR
         #region Constants
         /// <summary>
         /// Refactor resistant name for <see cref="key"/>. <br/>
@@ -36,8 +37,8 @@ namespace MomSesImSpcl.Data
         /// <i>For custom <see cref="PropertyDrawer"/>.</i>
         /// </summary>
         public const string VALUE = nameof(value);
-        #endregion
-        
+        #endregion 
+#endif
         #region Properties
         /// <summary>
         /// <see cref="key"/>.
@@ -93,7 +94,7 @@ namespace MomSesImSpcl.Data
             this.value = _SerializedKeyValuePair.Value;
         }
         #endregion
-
+        
         #region Methods
         /// <summary>
         /// Deconstructor for <see cref="SerializedKeyValuePair{K,V}"/>.
