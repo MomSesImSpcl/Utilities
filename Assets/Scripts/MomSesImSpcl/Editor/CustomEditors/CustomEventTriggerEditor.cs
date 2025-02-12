@@ -12,7 +12,7 @@ namespace MomSesImSpcl.Editor.CustomEditors
     {
         #region Fields
         /// <summary>
-        /// <see cref="CustomEventTrigger.flag"/>.
+        /// <see cref="CustomEventTrigger.Flag"/>.
         /// </summary>
         private SerializedProperty flagField;
         #endregion
