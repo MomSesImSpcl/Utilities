@@ -31,9 +31,9 @@ namespace MomSesImSpcl.Editor.CustomEditors
             
             EditorGUILayout.PropertyField(this.flagField);
             
-            base.OnInspectorGUI();
-            
             base.serializedObject.ApplyModifiedProperties();
+            
+            base.OnInspectorGUI();
         }
         #endregion
     }
