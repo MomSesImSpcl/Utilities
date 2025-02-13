@@ -53,6 +53,17 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Wraps this object's <see cref="object.ToString"/>-output in a Rich Text underline tag. <br/>
+        /// <i>Doesn't work in the default console, but works with TextMeshPro.</i>
+        /// </summary>
+        /// <param name="_Object">The <see cref="object"/> to get the <see cref="object.ToString"/>-output of.</param>
+        /// <returns>A <see cref="string"/> containing this object's <see cref="object.ToString"/>-output, wrapped in an underline tag.</returns>
+        public static string Underline(this object? _Object)
+        {
+            return $"<u>{_Object.OrNull()}</u>";
+        }
+        
+        /// <summary>
         /// Converts the string representation of the specified object to a MemoryStream, using the provided encoding.
         /// </summary>
         /// <param name="_Object">The object whose string representation will be converted to a MemoryStream.</param>
