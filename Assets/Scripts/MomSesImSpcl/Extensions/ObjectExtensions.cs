@@ -1,7 +1,12 @@
 #nullable enable
+using System;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using MomSesImSpcl.Utilities.Logging;
+using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -52,6 +57,85 @@ namespace MomSesImSpcl.Extensions
             return _Object?.ToString() ?? "null";
         }
 
+        /// <summary>
+        /// Sets the value of a Field through reflection.
+        /// </summary>
+        /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
+        /// <param name="_Field">The Field whose value to set.</param>
+        /// <param name="_Value">The value to set to the Field.</param>
+        /// <param name="_BindingFlags">Optional <see cref="BindingFlags"/> to find the Field.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/> that holds the Field.</typeparam>
+        /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
+        public static void SetFieldValue<T,V>(this T _Instance, Expression<Func<T,V>> _Field, V _Value, BindingFlags _BindingFlags = BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
+        {
+            _Instance.SetMemberValue(_Field, (_Type, _FieldName) => _Type.GetField(_FieldName, _BindingFlags), _FieldInfo =>
+            {
+                _FieldInfo.SetValue(_Instance, _Value);
+                
+                // ReSharper disable once VariableHidesOuterVariable
+            }, (_Type, _BindingFlags) => _Type.GetFields(_BindingFlags));
+        }
+        
+        /// <summary>
+        /// Sets the value of a Property through reflection.
+        /// </summary>
+        /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Property.</param>
+        /// <param name="_Property">The Property whose value to set.</param>
+        /// <param name="_Value">The value to set to the Property.</param>
+        /// <param name="_BindingFlags">Optional <see cref="BindingFlags"/> to find the Property.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/> that holds the Property.</typeparam>
+        /// <typeparam name="V">The <see cref="Type"/> of the Property.</typeparam>
+        public static void SetPropertyValue<T,V>(this T _Instance, Expression<Func<T,V>> _Property, V _Value, BindingFlags _BindingFlags = BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
+        {
+            _Instance.SetMemberValue(_Property, (_Type, _PropertyName) => _Type.GetProperty(_PropertyName, _BindingFlags), _PropertyInfo =>
+            {
+                _PropertyInfo.SetValue(_Instance, _Value);
+                
+                // ReSharper disable once VariableHidesOuterVariable
+            }, (_Type, _BindingFlags) => _Type.GetProperties(_BindingFlags));
+        }
+        
+        /// <summary>
+        /// Sets the value of a member through reflection.
+        /// </summary>
+        /// <param name="_">The instance of the <see cref="object"/> that holds the member.</param>
+        /// <param name="_Member">The member whose value to set.</param>
+        /// <param name="_GetMethod">Should be <see cref="Type.GetField(string,BindingFlags)"/> or <see cref="Type.GetProperty(string,BindingFlags)"/>.</param>
+        /// <param name="_SetMethod">Should be <see cref="FieldInfo"/>.<see cref="FieldInfo.SetValue(object,object)"/> or <see cref="PropertyInfo"/>.<see cref="PropertyInfo.SetValue(object,object)"/>.</param>
+        /// <param name="_FallbackMembers">
+        /// In case the Field/Property could not be found, this will print all Fields/Properties of the given <see cref="Type"/>. <br/>
+        /// <i>Should be <see cref="Type.GetFields(BindingFlags)"/> or <see cref="Type.GetProperties(BindingFlags)"/>.</i>
+        /// </param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/> that holds the member.</typeparam>
+        /// <typeparam name="V">The <see cref="Type"/> of the member.</typeparam>
+        /// <typeparam name="I">The concrete <see cref="Type"/> of the <see cref="MemberInfo"/>.</typeparam>
+        private static void SetMemberValue<T,V,I>(this T _, Expression<Func<T,V>> _Member, Func<Type,string,I> _GetMethod, Action<I> _SetMethod, Func<Type,BindingFlags,I[]> _FallbackMembers) where I : MemberInfo
+        {
+            if (_Member.Body is MemberExpression _memberExpression)
+            {
+                var _type = typeof(T);
+                
+                if (_GetMethod(_type, _memberExpression.Member.Name) is {} _memberInfo)
+                {
+                    _SetMethod(_memberInfo);
+                }
+                else
+                {
+                    // ReSharper disable once VariableHidesOuterVariable
+                    var _members = _FallbackMembers(_type, BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy).Select(_MemberInfo => _MemberInfo.Name);
+                    var _memberType = nameof(I).Replace("Info", string.Empty, StringComparison.InvariantCultureIgnoreCase);
+                    var _memberName = _memberExpression.Member.Name.Bold();
+                    var _className = nameof(T).Bold();
+                    
+                    Debug.LogError($"Could not find the {_memberType} [{_memberName}] in Class [{_className}].{Environment.NewLine}Here is every {_memberType} in Class [{_className}]:{Environment.NewLine}[{string.Join(Environment.NewLine, _members)}]");
+                }
+            }
+            else
+            {
+                Debug.LogError($"The given Expression [{_Member.Bold()}] is not a Field or Property.");
+            }
+        }
+        
         /// <summary>
         /// Wraps this object's <see cref="object.ToString"/>-output in a Rich Text underline tag. <br/>
         /// <i>Doesn't work in the default console, but works with TextMeshPro.</i>
