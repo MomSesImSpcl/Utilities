@@ -447,6 +447,23 @@ namespace MomSesImSpcl.Extensions
 
             return _list;
         }
+
+#if ODIN_INSPECTOR
+        /// <summary>
+        /// Creates a new <see cref="Data.SerializedDictionary{K,V}"/> from this <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <param name="_IEnumerable">The <see cref="IEnumerable{T}"/> to create a <see cref="Data.SerializedDictionary{K,V}"/> from.</param>
+        /// <param name="_Key"><see cref="Data.SerializedKeyValuePair{K,V}.Key"/>.</param>
+        /// <param name="_Value"><see cref="Data.SerializedKeyValuePair{K,V}.Value"/>.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the elements inside the <see cref="IEnumerable{T}"/>.</typeparam>
+        /// <typeparam name="K">The <see cref="Type"/> of the <see cref="Data.SerializedDictionary{K,V}.Keys"/>.</typeparam>
+        /// <typeparam name="V">The <see cref="Type"/> of the <see cref="Data.SerializedDictionary{K,V}.Values"/>.</typeparam>
+        /// <returns>A new <see cref="Data.SerializedDictionary{K,V}"/>.</returns>
+        public static Data.SerializedDictionary<K,V> ToSerializedDictionary<T,K,V>(this IEnumerable<T> _IEnumerable, Func<T,K> _Key, Func<T,V> _Value)
+        {
+            return new Data.SerializedDictionary<K, V>(_IEnumerable.ToDictionary(_Key, _Value));
+        }
+#endif
         #endregion
     }
 }
