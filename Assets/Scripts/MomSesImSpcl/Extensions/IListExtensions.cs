@@ -88,6 +88,20 @@ namespace MomSesImSpcl.Extensions
                 (_List[i], _List[j]) = (_List[j], _List[i]);
             }
         }
+
+        /// <summary>
+        /// Removes an element from the <see cref="IList{T}"/> by swapping it with the last element and then removing the last element. <br/>
+        /// <b>Don't use this when the order of the elements matters.</b>
+        /// </summary>
+        /// <typeparam name="T">The <see cref="Type"/> of elements in the <see cref="IList{T}"/>.</typeparam>
+        /// <param name="_List">The <see cref="IList{T}"/> from which to remove an element.</param>
+        /// <param name="_Index">The index of the element to remove.</param>
+        public static void SwapAndPop<T>(this IList<T> _List, int _Index)
+        {
+            var _lastIndex = _List.Count - 1;
+            _List[_Index] = _List[_lastIndex];
+            _List.RemoveAt(_lastIndex);
+        }
         #endregion
     }
 }
