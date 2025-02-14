@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using MomSesImSpcl.Data;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace MomSesImSpcl.Extensions
@@ -34,7 +36,7 @@ namespace MomSesImSpcl.Extensions
                 {
                     return _count;
                 }
-
+            
                 _count++;
             }
             
@@ -88,12 +90,17 @@ namespace MomSesImSpcl.Extensions
         public static T GetRandom<T>(this IEnumerable<T> _Enumerable)
         {
             var _array = _Enumerable.ToArray();
-            var _multiplier = _array.Length < 4 ? 10 : 1;
-            var _index = Mathf.FloorToInt(Random.Range(0, _array.Length * _multiplier) / (float)_multiplier);
-
+            var _index = Random.Range(0, _array.Length);
+            
+#if UNITY_EDITOR // TODO: Sometimes Index out of Range exception, no idea why.
+            if (_index == -1 || _index >= _array.Length || _array.Length == 0)
+            {
+                Debug.LogError($"Index: {_index} | Array: {_array.Length}");
+            }
+#endif
             return _array[_index];
         }
-
+        
         /// <summary>
         /// Returns random elements from the given enumerable.
         /// </summary>
@@ -136,6 +143,99 @@ namespace MomSesImSpcl.Extensions
                     }
 
                     break;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Returns a weighted random selection of elements from this <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <param name="_Enumerable">The enumerable from which to select the elements.</param>
+        /// <param name="_Value">The that determines the weight factor.</param>
+        /// <param name="_Weights">
+        /// Maps every possible <c>_Value</c> to its corresponding weight. <br/>
+        /// <i>Values with a higher weight factor will be more frequent in the returned collection.</i>
+        /// </param>
+        /// <param name="_Amount">The number of elements to select.</param>
+        /// <param name="_CanContainDuplicates"><c>true</c> if the same element can be selected multiple times, <c>false</c> if each returned element should be unique.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the elements in the <see cref="IEnumerable{T}"/>.</typeparam>
+        /// <typeparam name="V">The <see cref="Type"/> of the weighting key (<c>_Value</c>) used to look up the weights in the <c>_Weights</c> <see cref="IDictionary{TKey,TValue}"/>.</typeparam>
+        /// <returns>A <see cref="IEnumerable{T}"/> of randomly selected elements of type, weighted by their associated weights.</returns>
+        /// <exception cref="ArgumentException"> <br/>
+        /// -If the given <c>_Weights</c> <see cref="IDictionary{TKey,TValue}"/> has no weight value that is greater than <c>0</c>. <br/>
+        /// -If <paramref name="_CanContainDuplicates"/> is <c>false</c> and there are fewer unique elements with positive weights than <paramref name="_Amount"/>.
+        /// </exception>
+        public static IEnumerable<T> GetWeightedRandom<T,V>(this IEnumerable<T> _Enumerable, Func<T,V> _Value, IDictionary<V,uint> _Weights, uint _Amount, bool _CanContainDuplicates)
+        {
+            var _weightedElements = _Enumerable.Select(_Element => new
+            {
+                Element = _Element,
+                Weight = _Weights.TryGetValue(_Value(_Element), out var _weight) ? _weight : 0
+                
+            }).Where(_WeightedElement => _WeightedElement.Weight > 0).ToList();
+            
+            if (_weightedElements.Count == 0)
+            {
+                throw new ArgumentException("No elements with positive weight found.");
+            }
+
+            if (!_CanContainDuplicates && _weightedElements.Count < _Amount)
+            {
+                throw new ArgumentException($"Not enough unique elements. Required: {_Amount}, Found: {_weightedElements.Count}");
+            }
+
+            var _random = new System.Random();
+            
+            if (_CanContainDuplicates)
+            {
+                ulong _totalWeight = 0;
+                var _cumulativeWeights = new ulong[_weightedElements.Count];
+    
+                // ReSharper disable once InconsistentNaming
+                for (var i = 0; i < _weightedElements.Count; i++)
+                {
+                    _totalWeight += _weightedElements[i].Weight;
+                    _cumulativeWeights[i] = _totalWeight;
+                }
+            
+                // ReSharper disable once InconsistentNaming
+                for (var i = 0; i < _Amount; i++)
+                {
+                    var _randomNumber = (ulong)(_random.NextDouble() * _totalWeight);
+                    var _index = Array.BinarySearch(_cumulativeWeights, _randomNumber);
+
+                    if (_index < 0)
+                    {
+                        _index = ~_index;
+                    }
+
+                    yield return _weightedElements[_index].Element;
+                }
+            }
+            else
+            {
+                var _totalWeight = (ulong)_weightedElements.Sum(_WeightedElement => _WeightedElement.Weight);
+                
+                // ReSharper disable once InconsistentNaming
+                for (var i = 0; i < _Amount; i++)
+                {
+                    var _index = 0;
+                    var _cumulativeWeight = 0UL;
+                    var _randomNumber = (ulong)(_random.NextDouble() * _totalWeight);
+                
+                    for (; _index < _weightedElements.Count; _index++)
+                    {
+                        if ((_cumulativeWeight += _weightedElements[_index].Weight) > _randomNumber)
+                        {
+                            break;
+                        }
+                    }
+                
+                    var _element = _weightedElements[_index].Element;
+                    _totalWeight -= _weightedElements[_index].Weight;
+                    _weightedElements.SwapAndPop(_index);
+                
+                    yield return _element;
                 }
             }
         }
@@ -459,9 +559,9 @@ namespace MomSesImSpcl.Extensions
         /// <typeparam name="K">The <see cref="Type"/> of the <see cref="Data.SerializedDictionary{K,V}.Keys"/>.</typeparam>
         /// <typeparam name="V">The <see cref="Type"/> of the <see cref="Data.SerializedDictionary{K,V}.Values"/>.</typeparam>
         /// <returns>A new <see cref="Data.SerializedDictionary{K,V}"/>.</returns>
-        public static Data.SerializedDictionary<K,V> ToSerializedDictionary<T,K,V>(this IEnumerable<T> _IEnumerable, Func<T,K> _Key, Func<T,V> _Value)
+        public static SerializedDictionary<K,V> ToSerializedDictionary<T,K,V>(this IEnumerable<T> _IEnumerable, Func<T,K> _Key, Func<T,V> _Value)
         {
-            return new Data.SerializedDictionary<K, V>(_IEnumerable.ToDictionary(_Key, _Value));
+            return new SerializedDictionary<K, V>(_IEnumerable.ToDictionary(_Key, _Value));
         }
 #endif
         #endregion
