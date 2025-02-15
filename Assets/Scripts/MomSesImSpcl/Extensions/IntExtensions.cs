@@ -26,7 +26,7 @@ namespace MomSesImSpcl.Extensions
         /// <typeparam name="T">Must be an <see cref="Enum"/>.</typeparam>
         /// <returns>This <see cref="int"/> as the value inside the given <see cref="Enum"/> <see cref="Type"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T ToEnum<T>(this int _Int) where T : Enum
+        public static T AsEnum<T>(this int _Int) where T : Enum
         {
             return Unsafe.As<int,T>(ref _Int);
         }
