@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 
 namespace MomSesImSpcl.Extensions
@@ -16,7 +17,19 @@ namespace MomSesImSpcl.Extensions
         /// true if the specified integer is negative; otherwise, false.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasSign(int _Int) => !(_Int >= 0f);
+        public static bool HasSign(this int _Int) => !(_Int >= 0f);
+
+        /// <summary>
+        /// Casts this <see cref="int"/> to the given <see cref="Enum"/> <see cref="Type"/> <c>T</c>.
+        /// </summary>
+        /// <param name="_Int">The <see cref="int"/> value to cast to its <see cref="Enum"/> representation.</param>
+        /// <typeparam name="T">Must be an <see cref="Enum"/>.</typeparam>
+        /// <returns>This <see cref="int"/> as the value inside the given <see cref="Enum"/> <see cref="Type"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T ToEnum<T>(this int _Int) where T : Enum
+        {
+            return Unsafe.As<int,T>(ref _Int);
+        }
         #endregion
     }
 }
