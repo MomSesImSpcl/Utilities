@@ -47,6 +47,21 @@ namespace MomSesImSpcl.Extensions
         {
             return _Dictionary.SelectMany(_KeyValuePair => _KeyValuePair.Value.Select(_Action));
         }
+
+        /// <summary>
+        /// Set all <see cref="Dictionary{TKey,TValue}.Values"/> of this <see cref="IDictionary{TKey,TValue}"/> to the given <c>_Value</c>.
+        /// </summary>
+        /// <param name="_Dictionary">The <see cref="IDictionary{TKey,TValue}"/> to set the <see cref="Dictionary{TKey,TValue}.Values"/> of.</param>
+        /// <param name="_Value">The value to set.</param>
+        /// <typeparam name="K">The <see cref="Type"/> of the <see cref="KeyValuePair{TKey,TValue}.Key"/>.</typeparam>
+        /// <typeparam name="V">The <see cref="Type"/> of the <see cref="KeyValuePair{TKey,TValue}.Value"/>.</typeparam>
+        public static void SetAll<K,V>(this IDictionary<K,V> _Dictionary, V _Value)
+        {
+            foreach (var (_key, _) in _Dictionary)
+            {
+                _Dictionary[_key] = _Value;
+            }
+        }
         #endregion
     }
 }
