@@ -6,7 +6,7 @@ using CodeStage.AntiCheat.ObscuredTypes;
 namespace MomSesImSpcl.Extensions
 {
     /// <summary>
-    /// Contains extension methods for <see cref="ObscuredInt"/>
+    /// Contains extension methods for <see cref="ObscuredInt"/>.
     /// </summary>
     public static class ObscuredIntExtensions
     {
