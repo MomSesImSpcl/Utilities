@@ -27,7 +27,7 @@ namespace MomSesImSpcl.Extensions
             Axis.XZ => new Vector3(_Vector3.x / _Value, _Vector3.y, _Vector3.z / _Value),
             Axis.YZ => new Vector3(_Vector3.x, _Vector3.y / _Value, _Vector3.z / _Value),
             Axis.XYZ => new Vector3(_Vector3.x / _Value, _Vector3.y / _Value, _Vector3.z / _Value),
-            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
         
         /// <summary>
@@ -47,7 +47,7 @@ namespace MomSesImSpcl.Extensions
             Axis.XZ => new Vector3(_Vector3.x, 0, _Vector3.z),
             Axis.YZ => new Vector3(0, _Vector3.y, _Vector3.z),
             Axis.XYZ => new Vector3(_Vector3.x, _Vector3.y, _Vector3.z),
-            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
         
         /// <summary>
@@ -181,7 +181,7 @@ namespace MomSesImSpcl.Extensions
             Axis.XZ => new Vector3(_Vector3.x - _Value, _Vector3.y, _Vector3.z - _Value),
             Axis.YZ => new Vector3(_Vector3.x, _Vector3.y - _Value, _Vector3.z - _Value),
             Axis.XYZ => new Vector3(_Vector3.x - _Value, _Vector3.y - _Value, _Vector3.z - _Value),
-            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace MomSesImSpcl.Extensions
             Axis.XZ => new Vector3(_Vector3.x * _Value, _Vector3.y, _Vector3.z * _Value),
             Axis.YZ => new Vector3(_Vector3.x, _Vector3.y * _Value, _Vector3.z * _Value),
             Axis.XYZ => new Vector3(_Vector3.x * _Value, _Vector3.y * _Value, _Vector3.z * _Value),
-            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace MomSesImSpcl.Extensions
                 Utilities.Operation.Subtract => _Vector3.Minus(_Axis, _Value),
                 Utilities.Operation.Multiply => _Vector3.Multiply(_Axis, _Value),
                 Utilities.Operation.Divide => _Vector3.Divide(_Axis, _Value),
-                _ => throw ArgumentOutOfRangeException(nameof(_Operation), _Operation)
+                _ => throw new ArgumentOutOfRangeException(nameof(_Operation), _Operation, null)
             };
         }
         
@@ -242,7 +242,7 @@ namespace MomSesImSpcl.Extensions
             Axis.XZ => new Vector3(_Vector3.x + _Value, _Vector3.y, _Vector3.z + _Value),
             Axis.YZ => new Vector3(_Vector3.x, _Vector3.y + _Value, _Vector3.z + _Value),
             Axis.XYZ => new Vector3(_Vector3.x + _Value, _Vector3.y + _Value, _Vector3.z + _Value),
-            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace MomSesImSpcl.Extensions
             Axis.XZ => new Vector3(_Value, _Vector3.y, _Value),
             Axis.YZ => new Vector3(_Vector3.x, _Value, _Value),
             Axis.XYZ => new Vector3(_Value, _Value, _Value),
-            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
 
         /// <summary>
@@ -286,22 +286,10 @@ namespace MomSesImSpcl.Extensions
                 Axis.XZ => _Vector3.Set(Axis.X, _vector3.x).Set(Axis.Z, _vector3.z),
                 Axis.YZ => _Vector3.Set(Axis.Y, _vector3.y).Set(Axis.Z, _vector3.z),
                 Axis.XYZ => _Vector3.Set(Axis.X, _vector3.x).Set(Axis.Y, _vector3.y).Set(Axis.Z, _vector3.z),
-                _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+                _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
             };
         }
         
-        /// <summary>
-        /// Creates a new <see cref="ArgumentOutOfRangeException"/> for the specified parameter and axis.
-        /// </summary>
-        /// <param name="_ParameterName">The name of the parameter that caused the exception.</param>
-        /// <param name="_Axis">The axis enumeration value that is not allowed.</param>
-        /// <typeparam name="E">Must be an <see cref="Enum"/>.</typeparam>
-        /// <returns>An instance of <see cref="ArgumentOutOfRangeException"/>.</returns>
-        private static ArgumentOutOfRangeException ArgumentOutOfRangeException<E>(string _ParameterName, E _Axis) where E : Enum
-        {
-            return new ArgumentOutOfRangeException(_ParameterName, _Axis, $"The value of [{nameof(_Axis)}]:{_Axis}, is not allowed.");
-        }
-
         /// <summary>
         /// Sets the x component of a <see cref="Vector3"/> to a specified value.
         /// </summary>
