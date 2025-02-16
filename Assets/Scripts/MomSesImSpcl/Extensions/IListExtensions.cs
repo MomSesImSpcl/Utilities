@@ -75,7 +75,8 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_List">The list to be shuffled.</param>
         /// <typeparam name="T">The type of the elements in the list.</typeparam>
-        public static void Shuffle<T>(this IList<T> _List)
+        /// <returns>The shuffled <see cref="IList{T}"/>.</returns>
+        public static IList<T> Shuffle<T>(this IList<T> _List)
         {
             var _random = new Random();
             
@@ -87,6 +88,8 @@ namespace MomSesImSpcl.Extensions
                 
                 (_List[i], _List[j]) = (_List[j], _List[i]);
             }
+
+            return _List;
         }
 
         /// <summary>
