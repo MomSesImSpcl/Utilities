@@ -20,7 +20,8 @@ namespace MomSesImSpcl.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T AsEnum<T>(this ObscuredInt _ObscuredInt)  where T : Enum
         {
-            return Unsafe.As<ObscuredInt,T>(ref _ObscuredInt);
+            var _value = _ObscuredInt.GetDecrypted();
+            return Unsafe.As<int,T>(ref _value);
         }
         #endregion
     }
