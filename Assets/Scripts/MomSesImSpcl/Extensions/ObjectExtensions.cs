@@ -25,7 +25,7 @@ namespace MomSesImSpcl.Extensions
         {
             return $"<b>{_Object.OrNull()}</b>";
         }
-
+        
         /// <summary>
         /// Wraps this object's <see cref="object.ToString"/>-output in a Rich Text color tag.
         /// </summary>
