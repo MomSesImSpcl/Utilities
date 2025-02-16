@@ -49,7 +49,7 @@ namespace MomSesImSpcl.Extensions
             Axis.XYZ => new Vector3(_Vector3.x, _Vector3.y, _Vector3.z),
             _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
         };
-
+        
         /// <summary>
         /// Calculates the <see cref="Transform.rotation"/> needed to align a specific local axis with a target <see cref="Transform.position"/>.
         /// </summary>
@@ -205,6 +205,27 @@ namespace MomSesImSpcl.Extensions
         };
 
         /// <summary>
+        /// Performs a mathematical <see cref="Utilities.Operation"/> on the given <see cref="Axis"/> of this <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to modify.</param>
+        /// <param name="_Operation">The mathematical operation to apply.</param>
+        /// <param name="_Axis">The <see cref="Axis"/> on which to apply the <see cref="Utilities.Operation"/>.</param>
+        /// <param name="_Value">The value to use for the <see cref="Utilities.Operation"/>.</param>
+        /// <returns>A new <see cref="Vector3"/> with the specified <see cref="Utilities.Operation"/> applied to the given <see cref="Axis"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the specified <see cref="Utilities.Operation"/> is not valid.</exception>
+        public static Vector3 Operation(this Vector3 _Vector3, Operation _Operation, Axis _Axis, float _Value)
+        {
+            return _Operation switch
+            {
+                Utilities.Operation.Add => _Vector3.Plus(_Axis, _Value),
+                Utilities.Operation.Subtract => _Vector3.Minus(_Axis, _Value),
+                Utilities.Operation.Multiply => _Vector3.Multiply(_Axis, _Value),
+                Utilities.Operation.Divide => _Vector3.Divide(_Axis, _Value),
+                _ => throw ArgumentOutOfRangeException(nameof(_Operation), _Operation)
+            };
+        }
+        
+        /// <summary>
         /// Adds a specified value to the components of a <see cref="Vector3"/> along the given axis.
         /// </summary>
         /// <param name="_Vector3">The <see cref="Vector3"/> to which the value will be added.</param>
@@ -274,8 +295,9 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_ParameterName">The name of the parameter that caused the exception.</param>
         /// <param name="_Axis">The axis enumeration value that is not allowed.</param>
+        /// <typeparam name="E">Must be an <see cref="Enum"/>.</typeparam>
         /// <returns>An instance of <see cref="ArgumentOutOfRangeException"/>.</returns>
-        private static ArgumentOutOfRangeException ArgumentOutOfRangeException(string _ParameterName, Axis _Axis)
+        private static ArgumentOutOfRangeException ArgumentOutOfRangeException<E>(string _ParameterName, E _Axis) where E : Enum
         {
             return new ArgumentOutOfRangeException(_ParameterName, _Axis, $"The value of [{nameof(_Axis)}]:{_Axis}, is not allowed.");
         }
