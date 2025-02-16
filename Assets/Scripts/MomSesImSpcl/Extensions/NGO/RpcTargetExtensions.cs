@@ -1,6 +1,9 @@
+// using MomSesImSpcl.Utilities.Pooling;
+// using RogueDeck.Networking;
 // using Unity.Netcode;
+//
 // // Can be uncommented when an Assembly Definition file is referenced, that includes the Unity.Netcode namespace.
-// namespace MomSesImSpcl.Extensions.NGO
+// namespace RogueDeck.MomSesImSpcl.Extensions.NGO
 // {
 //     /// <summary>
 //     /// Contains extension methods for <see cref="Unity.Netcode.RpcTarget"/>.
@@ -13,12 +16,16 @@
 //         /// </summary>
 //         /// <param name="_RpcTarget"><see cref="RpcTarget"/>.</param>
 //         /// <param name="_RPCParams">The <see cref="RpcParams"/> of the sender, whose <see cref="NetworkBehaviour.OwnerClientId"/> to exclude.</param>
+//         /// <param name="_ClientIdWrapper">
+//         /// <see cref="ClientIdWrapper"/>. <br/>
+//         /// <i>Should be returned to the <see cref="ObjectPool{T}"/> when no longer needed.</i>
+//         /// </param>
 //         /// <returns>A <see cref="BaseRpcTarget"/> from <see cref="RpcTarget.Not(ulong[],RpcTargetUse)"/>, with the excluded <see cref="NetworkBehaviour.OwnerClientId"/>s.</returns>
-//         public static BaseRpcTarget ExcludeServerAndSender(this RpcTarget _RpcTarget, RpcParams _RPCParams)
+//         public static BaseRpcTarget ExcludeServerAndSender(this RpcTarget _RpcTarget, RpcParams _RPCParams, out ClientIdWrapper _ClientIdWrapper)
 //         {
-//             var _excludedOwnerClientIds = new ulong[] { 0, _RPCParams.Receive.SenderClientId };
-//
-//             return _RpcTarget.Not(_excludedOwnerClientIds, RpcTargetUse.Temp);
+//             _ClientIdWrapper = CustomNetworkManager.ClientIdPool.Get();
+//             
+//             return _RpcTarget.Not(_ClientIdWrapper.SetId(_RPCParams.Receive.SenderClientId), RpcTargetUse.Temp);
 //         }
 //         #endregion
 //     }
