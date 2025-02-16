@@ -23,7 +23,7 @@ namespace MomSesImSpcl.Extensions
             Axis.X => new Vector2(_Vector2.x / _Value, _Vector2.y),
             Axis.Y => new Vector2(_Vector2.x, _Vector2.y / _Value),
             Axis.XY => new Vector2(_Vector2.x / _Value, _Vector2.y / _Value),
-            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
 
         /// <summary>
@@ -39,9 +39,9 @@ namespace MomSesImSpcl.Extensions
             Axis.X => new Vector2(_Vector3.x, 0),
             Axis.Y => new Vector2(0, _Vector3.y),
             Axis.XY => new Vector2(_Vector3.x, _Vector3.y),
-            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
-
+        
         /// <summary>
         /// Calculates the 2D <see cref="Transform.rotation"/> needed to look at a target <see cref="Transform.position"/>.
         /// </summary>
@@ -77,7 +77,7 @@ namespace MomSesImSpcl.Extensions
             Axis.X => new Vector2(_Vector2.x - _Value, _Vector2.y),
             Axis.Y => new Vector2(_Vector2.x, _Vector2.y - _Value),
             Axis.XY => new Vector2(_Vector2.x - _Value, _Vector2.y - _Value),
-            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace MomSesImSpcl.Extensions
             Axis.X => new Vector2(_Vector2.x * _Value, _Vector2.y),
             Axis.Y => new Vector2(_Vector2.x, _Vector2.y * _Value),
             Axis.XY => new Vector2(_Vector2.x * _Value, _Vector2.y * _Value),
-            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace MomSesImSpcl.Extensions
             Axis.X => new Vector2(_Vector2.x + _Value, _Vector2.y),
             Axis.Y => new Vector2(_Vector2.x, _Vector2.y + _Value),
             Axis.XY => new Vector2(_Vector2.x + _Value, _Vector2.y + _Value),
-            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace MomSesImSpcl.Extensions
             Axis.X => new Vector2(_Value, _Vector2.y),
             Axis.Y => new Vector2(_Vector2.x, _Value),
             Axis.XY => new Vector2(_Value, _Value),
-            _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+            _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
 
         /// <summary>
@@ -145,21 +145,10 @@ namespace MomSesImSpcl.Extensions
                 Axis.X => _Vector2.Set(Axis.X, _vector2.x),
                 Axis.Y => _Vector2.Set(Axis.Y, _vector2.y),
                 Axis.XY => _Vector2.Set(Axis.X, _vector2.x).Set(Axis.Y, _vector2.y),
-                _ => throw ArgumentOutOfRangeException(nameof(_Axis), _Axis)
+                _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
             };
         }
         
-        /// <summary>
-        /// Creates an <see cref="ArgumentOutOfRangeException"/> for the specified parameter and axis.
-        /// </summary>
-        /// <param name="_ParameterName">The name of the parameter that caused the exception.</param>
-        /// <param name="_Axis">The <see cref="Axis"/> value that caused the exception.</param>
-        /// <returns>An <see cref="ArgumentOutOfRangeException"/> with a detailed message.</returns>
-        private static ArgumentOutOfRangeException ArgumentOutOfRangeException(string _ParameterName, Axis _Axis)
-        {
-            return new ArgumentOutOfRangeException(_ParameterName, _Axis, $"The value of [{nameof(_Axis)}]:{_Axis}, is not allowed.");
-        }
-
         /// <summary>
         /// Sets the x component of a <see cref="Vector2"/> to a specified value.
         /// </summary>
