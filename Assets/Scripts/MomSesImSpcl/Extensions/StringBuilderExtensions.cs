@@ -33,7 +33,7 @@ namespace MomSesImSpcl.Extensions
         public static StringBuilder Color(this StringBuilder _StringBuilder, RichTextColor _Color, int _Index = 0)
         {
             const string _OPENING_TAG = "<color=";
-            var _color = _Color.ToString();
+            var _color = _Color.GetName();
             const string _CLOSING_TAG = ">";
             
             _StringBuilder.Insert(_Index, _OPENING_TAG);
