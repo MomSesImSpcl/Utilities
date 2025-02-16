@@ -14,7 +14,7 @@ namespace MomSesImSpcl.Utilities.Pooling
         /// This pool allows for the reuse of <see cref="StringBuilder"/> objects, improving performance
         /// by reducing the overhead associated with frequent allocations and deallocations of these objects.
         /// </summary>
-        public static ObjectPool<StringBuilderPoolWrapper> StringBuilderPool { get; } = new(1);
+        public static ObjectPool<StringBuilderPoolWrapper> StringBuilderPool { get; set; }
         /// <summary>
         /// Provides access to a thread-safe object pool for <see cref="ConcurrentStringBuilderPoolWrapper"/> instances.
         /// </summary>
@@ -23,7 +23,7 @@ namespace MomSesImSpcl.Utilities.Pooling
         /// aiming to minimize the overhead of creating and destroying <see cref="StringBuilder"/> objects, thus improving performance in scenarios
         /// where these objects are frequently used.
         /// </remarks>
-        public static ConcurrentObjectPool<ConcurrentStringBuilderPoolWrapper> ConcurrentStringBuilderPool { get; } = new(1);
+        public static ConcurrentObjectPool<ConcurrentStringBuilderPoolWrapper> ConcurrentStringBuilderPool { get; set; }
         #endregion
     }
 }
