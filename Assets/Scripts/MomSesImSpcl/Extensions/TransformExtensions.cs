@@ -23,14 +23,14 @@ namespace MomSesImSpcl.Extensions
         {
             return _Transform.TransformPoint(_Direction switch
             {
-                TransformDirection.Up => _Transform.localPosition.Operation(_Operation, Axis.Y, _Value),
-                TransformDirection.Down => _Transform.localPosition.Operation(_Operation,Axis.Y, _Value),
-                TransformDirection.Left => _Transform.localPosition.Operation(_Operation,Axis.X, _Value),
-                TransformDirection.Right => _Transform.localPosition.Operation(_Operation,Axis.X, _Value),
-                TransformDirection.UpLeft => _Transform.localPosition.Operation(_Operation,Axis.Y, _Value).Minus(Axis.X, _Value),
-                TransformDirection.UpRight => _Transform.localPosition.Operation(_Operation,Axis.Y, _Value).Plus(Axis.X, _Value),
-                TransformDirection.DownLeft => _Transform.localPosition.Operation(_Operation,Axis.Y, _Value).Minus(Axis.X, _Value),
-                TransformDirection.DownRight => _Transform.localPosition.Operation(_Operation,Axis.Y, _Value).Plus(Axis.X, _Value),
+                TransformDirection.Up => Vector3.zero.Operation(_Operation, Axis.Y, _Value),
+                TransformDirection.Down => Vector3.zero.Operation(_Operation, Axis.Y, _Value),
+                TransformDirection.Left => Vector3.zero.Operation(_Operation, Axis.X, _Value),
+                TransformDirection.Right => Vector3.zero.Operation(_Operation, Axis.X, _Value),
+                TransformDirection.UpLeft => Vector3.zero.Operation(_Operation, Axis.Y, _Value).Minus(Axis.X, _Value),
+                TransformDirection.UpRight => Vector3.zero.Operation(_Operation, Axis.Y, _Value).Plus(Axis.X, _Value),
+                TransformDirection.DownLeft => Vector3.zero.Operation(_Operation, Axis.Y, _Value).Minus(Axis.X, _Value),
+                TransformDirection.DownRight => Vector3.zero.Operation(_Operation, Axis.Y, _Value).Plus(Axis.X, _Value),
                 _ => throw new ArgumentOutOfRangeException(nameof(_Direction), _Direction, null)
             });
         }
