@@ -11,14 +11,14 @@ namespace MomSesImSpcl.Utilities.Pooling.Wrappers
     {
         #region Properties
         /// <summary>
-        /// Gets or sets the <see cref="ConcurrentObjectPool{T}"/> associated with this wrapper.
+        /// Gets or sets the <see cref="ConcurrentCustomPool{T}"/> associated with this wrapper.
         /// </summary>
         /// <remarks>
         /// This property is initialized when the wrapper object is created and associates
         /// the wrapper with its parent object pool. It is used internally to manage the
         /// return of the object back to the pool for reuse.
         /// </remarks>
-        public ConcurrentObjectPool<T> ObjectPool { get; init; } = null!;
+        public ConcurrentCustomPool<T> CustomPool { get; init; } = null!;
         #endregion
 
         #region Methods
@@ -27,7 +27,7 @@ namespace MomSesImSpcl.Utilities.Pooling.Wrappers
         /// </summary>
         protected void Return()
         {
-            this.ObjectPool.Return((T)this);
+            this.CustomPool.Return((T)this);
         }
         #endregion
     }
