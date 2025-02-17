@@ -13,7 +13,7 @@ namespace MomSesImSpcl.Utilities.Pooling.Wrappers
         /// <typeparam name="T">
         /// The type of objects managed by the pool. Must be a class that inherits from <see cref="PoolWrapperBase{T}"/> and has a parameterless constructor.
         /// </typeparam>
-        public ObjectPool<T> ObjectPool { get; init; } = null!;
+        public CustomPool<T> CustomPool { get; init; } = null!;
         #endregion
 
         #region Methods
@@ -22,7 +22,7 @@ namespace MomSesImSpcl.Utilities.Pooling.Wrappers
         /// </summary>
         protected void Return()
         {
-            this.ObjectPool.Return((T)this);
+            this.CustomPool.Return((T)this);
         }
         #endregion
     }
