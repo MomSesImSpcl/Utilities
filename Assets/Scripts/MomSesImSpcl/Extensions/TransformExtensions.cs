@@ -16,10 +16,21 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Axis">The axis on which to apply the offset.</param>
         /// <param name="_Value">The distance to move in the specified direction.</param>
         /// <param name="_Operation">The mathematical <see cref="Operation"/> to perform.</param>
+        /// <param name="_Visualize">Set to <c>true</c> to draw a sphere at the computed <see cref="Transform.position"/>.</param>
+        /// <param name="_Duration">Duration in seconds how long the sphere will be visible.</param>
+        /// <param name="_Radius">The radius of the sphere.</param>
         /// <returns>The new world-space <see cref="Transform.position"/> after applying the offset in the given direction.</returns>
-        public static Vector3 Local(this Transform _Transform, Axis _Axis, float _Value, Operation _Operation = Operation.Add)
+        public static Vector3 Local(this Transform _Transform, Axis _Axis, float _Value, Operation _Operation = Operation.Add, bool _Visualize = false, float _Duration = 1f, float _Radius = 1f)
         {
-            return _Transform.TransformPoint(Vector3.zero.Operation(_Operation, _Axis, _Value));
+            var _position = _Transform.TransformPoint(Vector3.zero.Operation(_Operation, _Axis, _Value));
+            
+#if UNITY_EDITOR
+            if (_Visualize)
+            {
+                Draw.Sphere(_position, _Radius, Color.red, _Duration);
+            }
+#endif
+            return _position;
         }
         
         /// <summary>
@@ -32,15 +43,25 @@ namespace MomSesImSpcl.Extensions
         /// The desired angle to calculate the <see cref="Transform.position"/> with. <br/>
         /// <i>Useful when the <see cref="Transform"/> is rotated, but the <see cref="Transform.position"/> should be calculated with no or a specific <see cref="Transform.rotation"/>.</i>
         /// </param>
+        /// <param name="_Visualize">Set to <c>true</c> to draw a sphere at the computed <see cref="Transform.position"/>.</param>
+        /// <param name="_Duration">Duration in seconds how long the sphere will be visible.</param>
+        /// <param name="_Radius">The radius of the sphere.</param>
         /// <param name="_Operation">The mathematical <see cref="Operation"/> to perform.</param>
         /// <returns>The new world-space <see cref="Transform.position"/> after applying the offset in the given direction.</returns>
-        public static Vector3 Local(this Transform _Transform, Axis _Axis, float _Value, Vector3 _Angle, Operation _Operation = Operation.Add)
+        public static Vector3 Local(this Transform _Transform, Axis _Axis, float _Value, Vector3 _Angle, Operation _Operation = Operation.Add, bool _Visualize = false, float _Duration = 1f, float _Radius = 1f)
         {
             var _localOffset = Vector3.zero.Operation(_Operation, _Axis, _Value);
             var _scaledOffset = Vector3.Scale(_localOffset, _Transform.localScale);
             var _angleOffset = _Angle - _Transform.localEulerAngles;
+            var _position = _Transform.position + Quaternion.Euler(_angleOffset) * _scaledOffset;
             
-            return _Transform.position + Quaternion.Euler(_angleOffset) * _scaledOffset;
+#if UNITY_EDITOR
+            if (_Visualize)
+            {
+                Draw.Sphere(_position, _Radius, Color.red, _Duration);
+            }
+#endif
+            return _position;
         }
         #endregion
     }
