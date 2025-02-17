@@ -342,6 +342,20 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Sets the x and y component of a <see cref="Vector3"/> to a specified value.
+        /// </summary>
+        /// <param name="_Vector">The <see cref="Vector3"/> instance to modify.</param>
+        /// <param name="_Value">The new value to set to every axis.</param>
+        /// <returns>The modified <see cref="Vector3"/>.</returns>
+        public static Vector3 WithXY(this Vector3 _Vector, float _Value)
+        {
+            _Vector.x = _Value;
+            _Vector.y = _Value;
+
+            return _Vector;
+        }
+        
+        /// <summary>
         /// Sets the x and z component of a <see cref="Vector3"/> to a specified value.
         /// </summary>
         /// <param name="_Vector">The Vector3 to be adjusted.</param>
@@ -356,6 +370,20 @@ namespace MomSesImSpcl.Extensions
             return _Vector;
         }
 
+        /// <summary>
+        /// Sets the x and z component of a <see cref="Vector3"/> to a specified value.
+        /// </summary>
+        /// <param name="_Vector">The <see cref="Vector3"/> instance to modify.</param>
+        /// <param name="_Value">The new value to set to every axis.</param>
+        /// <returns>The modified <see cref="Vector3"/>.</returns>
+        public static Vector3 WithXZ(this Vector3 _Vector, float _Value)
+        {
+            _Vector.x = _Value;
+            _Vector.z = _Value;
+
+            return _Vector;
+        }
+        
         /// <summary>
         /// Sets the y and z component of a <see cref="Vector3"/> to a specified value.
         /// </summary>
@@ -372,6 +400,20 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Sets the y and z component of a <see cref="Vector3"/> to a specified value.
+        /// </summary>
+        /// <param name="_Vector">The <see cref="Vector3"/> instance to modify.</param>
+        /// <param name="_Value">The new value to set to every axis.</param>
+        /// <returns>The modified <see cref="Vector3"/>.</returns>
+        public static Vector3 WithYZ(this Vector3 _Vector, float _Value)
+        {
+            _Vector.y = _Value;
+            _Vector.z = _Value;
+
+            return _Vector;
+        }
+        
+        /// <summary>
         /// Sets the x, y and z component of a <see cref="Vector3"/> to a specified value.
         /// </summary>
         /// <param name="_Vector">The <see cref="Vector3"/> instance to modify.</param>
@@ -384,6 +426,21 @@ namespace MomSesImSpcl.Extensions
             _Vector.x = _X;
             _Vector.y = _Y;
             _Vector.z = _Z;
+
+            return _Vector;
+        }
+        
+        /// <summary>
+        /// Sets the x, y and z component of a <see cref="Vector3"/> to a specified value.
+        /// </summary>
+        /// <param name="_Vector">The <see cref="Vector3"/> instance to modify.</param>
+        /// <param name="_Value">The new value to set to every axis.</param>
+        /// <returns>The modified <see cref="Vector3"/>.</returns>
+        public static Vector3 WithXYZ(this Vector3 _Vector, float _Value)
+        {
+            _Vector.x = _Value;
+            _Vector.y = _Value;
+            _Vector.z = _Value;
 
             return _Vector;
         }
