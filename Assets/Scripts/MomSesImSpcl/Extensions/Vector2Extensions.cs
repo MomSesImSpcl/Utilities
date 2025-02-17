@@ -158,6 +158,7 @@ namespace MomSesImSpcl.Extensions
         public static Vector2 WithX(this Vector2 _Vector, float _X)
         {
             _Vector.x = _X;
+            
             return _Vector;
         }
 
@@ -170,6 +171,7 @@ namespace MomSesImSpcl.Extensions
         public static Vector2 WithY(this Vector2 _Vector, float _Y)
         {
             _Vector.y = _Y;
+            
             return _Vector;
         }
 
@@ -184,6 +186,21 @@ namespace MomSesImSpcl.Extensions
         {
             _Vector.x = _X;
             _Vector.y = _Y;
+            
+            return _Vector;
+        }
+        
+        /// <summary>
+        /// Sets the x, y component of a <see cref="Vector2"/> to a specified value.
+        /// </summary>
+        /// <param name="_Vector">The original <see cref="Vector2"/> to modify.</param>
+        /// <param name="_Value">The new value to set to every axis.</param>
+        /// <returns>A new <see cref="Vector2"/> with the modified <c>X</c> and <c>Y</c> values.</returns>
+        public static Vector2 WithXY(this Vector2 _Vector, float _Value)
+        {
+            _Vector.x = _Value;
+            _Vector.y = _Value;
+
             return _Vector;
         }
         #endregion
