@@ -8,7 +8,7 @@ namespace MomSesImSpcl.Attributes
     /// Add this to a number <see cref="Type"/> field, to display the corresponding <see cref="Enum"/> value in the inspector.
     /// </summary>
     [Conditional("UNITY_EDITOR")]
-    public class AsEnumAttribute : PropertyAttribute
+    public sealed class AsEnumAttribute : PropertyAttribute
     {
         #region Properties
         /// <summary>
