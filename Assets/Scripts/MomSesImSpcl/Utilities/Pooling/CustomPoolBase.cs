@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MomSesImSpcl.Utilities.Pooling.Wrappers;
 
 namespace MomSesImSpcl.Utilities.Pooling
 {
@@ -38,15 +39,14 @@ namespace MomSesImSpcl.Utilities.Pooling
         #endregion
         
         #region Methods
-        // ReSharper disable once InconsistentNaming
         /// <summary>
         /// Validates the given initial capacity against the maximum capacity of the pool.
         /// </summary>
         /// <param name="_InitialCapacity">The initial capacity to be checked.</param>
-        /// <param name="_initialCapacity">The validated initial capacity which will be either the given initial capacity or the maximum capacity, whichever is lower.</param>
-        protected void CheckInitialCapacity(int _InitialCapacity, out int InitialCapacity)
+        /// <param name="_ValidatedCapacity">The validated initial capacity which will be either the given initial capacity or the maximum capacity, whichever is lower.</param>
+        protected void CheckInitialCapacity(int _InitialCapacity, out int _ValidatedCapacity)
         {
-            InitialCapacity = _InitialCapacity > this.MaxCapacity ? this.MaxCapacity : _InitialCapacity;
+            _ValidatedCapacity = _InitialCapacity > this.MaxCapacity ? this.MaxCapacity : _InitialCapacity;
         }
         #endregion
     }
