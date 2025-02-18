@@ -286,7 +286,7 @@ namespace MomSesImSpcl.Utilities.Pooling
         /// <summary>
         /// Holds a <see cref="Queue{T}"/> of <see cref="Array"/>s of a specific <see cref="Array.Length"/>.
         /// </summary>
-        private class ArrayBucket
+        private sealed class ArrayBucket
         {
             #region Fields
             /// <summary>
@@ -303,15 +303,15 @@ namespace MomSesImSpcl.Utilities.Pooling
             /// <summary>
             /// The maximum number of <see cref="Array"/>s to retain in this bucket.
             /// </summary>
-            public uint MaxAmount { get; set; } = 1;
+            internal uint MaxAmount { get; set; } = 1;
             /// <summary>
             /// Gets the current number of <see cref="Array"/>s in this bucket.
             /// </summary>
-            public int Count => this.arrays.Count;
+            internal int Count => this.arrays.Count;
             /// <summary>
             /// <see cref="rentedCount"/>.
             /// </summary>
-            public uint RentedCount
+            internal uint RentedCount
             {
                 get => this.rentedCount;
                 set
@@ -323,14 +323,14 @@ namespace MomSesImSpcl.Utilities.Pooling
             /// <summary>
             /// Max amount of concurrently rented <see cref="Array"/>s from this <see cref="ArrayBucket"/>.
             /// </summary>
-            public uint PeakRentedCount { get; private set; }
+            internal uint PeakRentedCount { get; private set; }
             #endregion
             
             #region Methods
             /// <summary>
             /// Enqueues an <see cref="Array"/> into the bucket.
             /// </summary>
-            public void Enqueue(T[] _Array)
+            internal void Enqueue(T[] _Array)
             {
                 this.RentedCount -= 1;
                 this.arrays.Enqueue(_Array);
@@ -339,7 +339,7 @@ namespace MomSesImSpcl.Utilities.Pooling
             /// <summary>
             /// Dequeues an <see cref="Array"/> from the bucket.
             /// </summary>
-            public T[] Dequeue()
+            internal T[] Dequeue()
             {
                 return this.arrays.Dequeue();
             }
@@ -347,7 +347,7 @@ namespace MomSesImSpcl.Utilities.Pooling
             /// <summary>
             /// Clears every <see cref="Array"/> from the bucket.
             /// </summary>
-            public void Clear() => this.arrays.Clear();
+            internal void Clear() => this.arrays.Clear();
             #endregion
         }
     }
