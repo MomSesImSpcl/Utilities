@@ -5,7 +5,7 @@ namespace MomSesImSpcl.Data
     /// <summary>
     /// Wrapper class that contains a primitive <see cref="Type"/> to use it as a reference <see cref="Type"/>.
     /// </summary>
-    public class ReferenceType<T> where T : struct
+    public sealed class ReferenceType<T> where T : struct
     {
         #region Properties
         /// <summary>
