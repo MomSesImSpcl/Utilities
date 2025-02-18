@@ -8,7 +8,7 @@ namespace MomSesImSpcl.Editor.CustomEditors
     /// <see cref="CustomEditor"/> for <see cref="CustomEventTrigger"/>.
     /// </summary>
     [CustomEditor(typeof(CustomEventTrigger))]
-    public class CustomEventTriggerEditor : EventTriggerEditor
+    public sealed class CustomEventTriggerEditor : EventTriggerEditor
     {
         #region Fields
         /// <summary>
