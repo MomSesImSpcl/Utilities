@@ -10,7 +10,7 @@ namespace MomSesImSpcl.Editor.PropertyDrawers
     /// Draws a <see cref="SerializedProperty.numericType"/> as the corresponding <see cref="Enum"/> value in the inspector.
     /// </summary>
     [CustomPropertyDrawer(typeof(AsEnumAttribute))]
-    public class AsEnumDrawer : PropertyDrawer
+    public sealed class AsEnumDrawer : PropertyDrawer
     {
         #region Methods
         public override void OnGUI(Rect _Rect, SerializedProperty _Property, GUIContent _Label)
