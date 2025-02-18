@@ -5,7 +5,7 @@ namespace MomSesImSpcl.Data
     /// <summary>
     /// Used to add a description to a <see cref="GameObject"/> in the inspector.
     /// </summary>
-    public class InspectorComment : MonoBehaviour
+    public sealed class InspectorComment : MonoBehaviour
     {
 #if UNITY_EDITOR
         #region Inspector Fields
