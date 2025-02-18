@@ -211,7 +211,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Operation">The mathematical operation to apply.</param>
         /// <param name="_Axis">The <see cref="Axis"/> on which to apply the <see cref="Utilities.Operation"/>.</param>
         /// <param name="_Value">The value to use for the <see cref="Utilities.Operation"/>.</param>
-        /// <returns>A new <see cref="Vector3"/> with the specified <see cref="Utilities.Operation"/> applied to the given <see cref="Axis"/>.</returns>
+        /// <returns>A new <see cref="Vector3"/> computed with the specified <see cref="Utilities.Operation"/> applied to the given <see cref="Axis"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the specified <see cref="Utilities.Operation"/> is not valid.</exception>
         public static Vector3 Operation(this Vector3 _Vector3, Operation _Operation, Axis _Axis, float _Value)
         {
@@ -221,6 +221,30 @@ namespace MomSesImSpcl.Extensions
                 Utilities.Operation.Subtract => _Vector3.Minus(_Axis, _Value),
                 Utilities.Operation.Multiply => _Vector3.Multiply(_Axis, _Value),
                 Utilities.Operation.Divide => _Vector3.Divide(_Axis, _Value),
+                _ => throw new ArgumentOutOfRangeException(nameof(_Operation), _Operation, null)
+            };
+        }
+        
+        /// <summary>
+        /// Performs a mathematical <see cref="Utilities.Operation"/> with the given <c>_Values</c>.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to modify.</param>
+        /// <param name="_Operation">The mathematical operation to apply.</param>
+        /// <param name="_Values">
+        /// The values to use for the <see cref="Utilities.Operation"/>. <br/>
+        /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Add"/> and <see cref="Utilities.Operation.Subtract"/> set the values inside the <see cref="Vector3"/> you don't want to change to <c>0</c>.</i> <br/>
+        /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Multiply"/> and <see cref="Utilities.Operation.Divide"/> set the values inside the <see cref="Vector3"/> you don't want to change to <c>1</c>.</i> <br/>
+        /// </param>
+        /// <returns>A new <see cref="Vector3"/> computed with the specified <see cref="Utilities.Operation"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the specified <see cref="Utilities.Operation"/> is not valid.</exception>
+        public static Vector3 Operation(this Vector3 _Vector3, Operation _Operation, Vector3 _Values)
+        {
+            return _Operation switch
+            {
+                Utilities.Operation.Add => _Vector3 + _Values,
+                Utilities.Operation.Subtract => _Vector3 - _Values,
+                Utilities.Operation.Multiply => new Vector3(_Vector3.x * _Values.x, _Vector3.y * _Values.y, _Vector3.z * _Values.z),
+                Utilities.Operation.Divide => new Vector3(_Vector3.x / _Values.x, _Vector3.y / _Values.y, _Vector3.z / _Values.z),
                 _ => throw new ArgumentOutOfRangeException(nameof(_Operation), _Operation, null)
             };
         }
@@ -244,7 +268,7 @@ namespace MomSesImSpcl.Extensions
             Axis.XYZ => new Vector3(_Vector3.x + _Value, _Vector3.y + _Value, _Vector3.z + _Value),
             _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
-
+        
         /// <summary>
         /// Sets the component(s) of a <see cref="Vector3"/> to a specified value along the given axis.
         /// </summary>
