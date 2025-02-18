@@ -13,7 +13,7 @@ namespace MomSesImSpcl.Data
     /// <typeparam name="K">The <see cref="Type"/> of the <see cref="Dictionary{K,V}.Keys"/>.</typeparam>
     /// <typeparam name="V">The <see cref="Type"/> of the <see cref="Dictionary{K,V}.Values"/>.</typeparam>
     [Serializable]
-    public class SerializedDictionary<K,V> : IDictionary<K,V>, ISerializationCallbackReceiver
+    public sealed class SerializedDictionary<K,V> : IDictionary<K,V>, ISerializationCallbackReceiver
     {
 #if UNITY_EDITOR
         #region Inspector Fields
