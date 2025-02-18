@@ -10,7 +10,7 @@ namespace MomSesImSpcl.Utilities
     /// This class requires a Text component to be attached to the same GameObject.
     /// </remarks>
     [RequireComponent(typeof(Text))]
-    public class FPSCounter : MonoBehaviour
+    public sealed class FPSCounter : MonoBehaviour
     {
         #region Inspector Fields
         [Tooltip("Time in seconds between the measurements")]
