@@ -8,7 +8,7 @@ namespace MomSesImSpcl.Editor.PropertyDrawers
     /// Custom property drawer for the <see cref="ElementNamesAttribute"/>.
     /// </summary>
     [CustomPropertyDrawer(typeof(ElementNamesAttribute))]
-    public class ElementNamesDrawer : PropertyDrawer
+    public sealed class ElementNamesDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect _Rect, SerializedProperty _Property, GUIContent _Label)
         {
