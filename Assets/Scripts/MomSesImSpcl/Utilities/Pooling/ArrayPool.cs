@@ -27,11 +27,11 @@ namespace MomSesImSpcl.Utilities.Pooling
 #if UNITY_EDITOR
         #region Properties
         /// <summary>
-        /// If <c>true</c> the total number of created <see cref="Array"/>s will be printed on every <c>Get()</c>.
+        /// If <c>true</c>, info about the used <see cref="ArrayBucket"/> will be printed to the console on every <c>Get()</c>.
         /// </summary>
         // ReSharper disable once StaticMemberInGenericType
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public static bool PrintNewArrayCount { get; set; }
+        public static bool LogArrayBuckets { get; set; }
         #endregion
 #endif
         #region Methods
@@ -79,15 +79,15 @@ namespace MomSesImSpcl.Utilities.Pooling
         /// <b>Not thread safe.</b>
         /// </summary>
         /// <param name="_Length">The desired <see cref="Array.Length"/>.</param>
-        /// <param name="_PrintNewArrayCount">
-        /// If <c>true</c> the total number of created <see cref="Array"/>s of this <see cref="Type"/> and <see cref="Array.Length"/> will be printed to the console. <br/>
-        /// <i>Parameter will be ignored if <see cref="PrintNewArrayCount"/> is set to <c>true</c>.</i>
+        /// <param name="_LogArrayBucket">
+        /// If <c>true</c>, info about the <see cref="ArrayBucket"/> will be printed to the console. <br/>
+        /// <i>Parameter will be ignored if <see cref="LogArrayBuckets"/> is set to <c>true</c>.</i>
         /// </param>
-        /// /// <param name="_ForceStopLogging">Set this to <c>true</c> to prevent the total number of created <see cref="Array"/>s from being printed, even if <see cref="PrintNewArrayCount"/> is set to <c>true</c>.</param>
+        /// <param name="_ForceStopLogging">Set this to <c>true</c> to prevent logging, even if <see cref="LogArrayBuckets"/> is set to <c>true</c>.</param>
         /// <returns>An <see cref="Array"/> of type <c>T</c> with the specified <see cref="Array.Length"/>.</returns>
-        public static T[] Get(int _Length, bool _PrintNewArrayCount = false, bool _ForceStopLogging = false)
+        public static T[] Get(int _Length, bool _LogArrayBucket = false, bool _ForceStopLogging = false)
         {
-            return Get(arrayPool, _Length, _PrintNewArrayCount, _ForceStopLogging);
+            return Get(arrayPool, _Length, _LogArrayBucket, _ForceStopLogging);
         }
 
         /// <summary>
@@ -95,15 +95,15 @@ namespace MomSesImSpcl.Utilities.Pooling
         /// <b>Thread safe.</b>
         /// </summary>
         /// <param name="_Length">The desired <see cref="Array.Length"/>.</param>
-        /// <param name="_PrintNewArrayCount">
-        /// If <c>true</c> the total number of created <see cref="Array"/>s of this <see cref="Type"/> and <see cref="Array.Length"/> will be printed to the console. <br/>
-        /// <i>Parameter will be ignored if <see cref="PrintNewArrayCount"/> is set to <c>true</c>.</i>
+        /// <param name="_LogArrayBucket">
+        /// If <c>true</c>, info about the <see cref="ArrayBucket"/> will be printed to the console. <br/>
+        /// <i>Parameter will be ignored if <see cref="LogArrayBuckets"/> is set to <c>true</c>.</i>
         /// </param>
-        /// /// <param name="_ForceStopLogging">Set this to <c>true</c> to prevent the total number of created <see cref="Array"/>s from being printed, even if <see cref="PrintNewArrayCount"/> is set to <c>true</c>.</param>
+        /// <param name="_ForceStopLogging">Set this to <c>true</c> to prevent logging, even if <see cref="LogArrayBuckets"/> is set to <c>true</c>.</param>
         /// <returns>An <see cref="Array"/> of type <c>T</c> with the specified <see cref="Array.Length"/>.</returns>
-        public static T[] GetConcurrent(int _Length, bool _PrintNewArrayCount = false, bool _ForceStopLogging = false)
+        public static T[] GetConcurrent(int _Length, bool _LogArrayBucket = false, bool _ForceStopLogging = false)
         {
-            return Get(concurrentArrayPool, _Length, _PrintNewArrayCount, _ForceStopLogging);
+            return Get(concurrentArrayPool, _Length, _LogArrayBucket, _ForceStopLogging);
         }
         
         /// <summary>
@@ -111,13 +111,13 @@ namespace MomSesImSpcl.Utilities.Pooling
         /// </summary>
         /// <param name="_ArrayPool">Must be <see cref="arrayPool"/> or <see cref="concurrentArrayPool"/>.</param>
         /// <param name="_Length">The desired <see cref="Array.Length"/>.</param>
-        /// <param name="_PrintNewArrayCount">
-        /// If <c>true</c> the total number of created <see cref="Array"/>s of this <see cref="Type"/> and <see cref="Array.Length"/> will be printed to the console. <br/>
-        /// <i>Parameter will be ignored if <see cref="PrintNewArrayCount"/> is set to <c>true</c>.</i>
+        /// <param name="_LogArrayBucket">
+        /// If <c>true</c>, info about the <see cref="ArrayBucket"/> will be printed to the console. <br/>
+        /// <i>Parameter will be ignored if <see cref="LogArrayBuckets"/> is set to <c>true</c>.</i>
         /// </param>
-        /// <param name="_ForceStopLogging">Set this to <c>true</c> to prevent the total number of created <see cref="Array"/>s from being printed, even if <see cref="PrintNewArrayCount"/> is set to <c>true</c>.</param>
+        /// <param name="_ForceStopLogging">Set this to <c>true</c> to prevent logging, even if <see cref="LogArrayBuckets"/> is set to <c>true</c>.</param>
         /// <returns>An <see cref="Array"/> of type <c>T</c> with the specified <see cref="Array.Length"/>.</returns>
-        private static T[] Get(IDictionary<int, ArrayBucket> _ArrayPool, int _Length, bool _PrintNewArrayCount, bool _ForceStopLogging)
+        private static T[] Get(IDictionary<int, ArrayBucket> _ArrayPool, int _Length, bool _LogArrayBucket, bool _ForceStopLogging)
         {
             if (!_ArrayPool.TryGetValue(_Length, out var _bucket))
             {
@@ -130,7 +130,7 @@ namespace MomSesImSpcl.Utilities.Pooling
             _bucket.RentedCount++;
             
 #if UNITY_EDITOR
-            if ((_PrintNewArrayCount || PrintNewArrayCount) && !_ForceStopLogging)
+            if ((_LogArrayBucket || LogArrayBuckets) && !_ForceStopLogging)
             {
                 var _poolType = $"{nameof(ArrayPool<T>)}<{typeof(T).Name}>".Bold();
                 UnityEngine.Debug.Log($"{_poolType}\nLength: [{_Length.Bold()}] | {nameof(_bucket.MaxAmount)}: [{_bucket.MaxAmount.Bold()}] | {nameof(_bucket.RentedCount)}: [{_bucket.RentedCount.Bold()}] | {nameof(_bucket.PeakRentedCount)}: [{_bucket.PeakRentedCount.Bold()}]");
