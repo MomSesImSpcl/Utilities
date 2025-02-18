@@ -12,7 +12,7 @@ namespace MomSesImSpcl.Attributes
     /// </summary>
     [Conditional("UNITY_EDITOR")]
     [AttributeUsage(AttributeTargets.Field)]
-    public class TupleLabelsAttribute : PropertyAttribute
+    public sealed class TupleLabelsAttribute : PropertyAttribute
     {
         #region Properties
 
