@@ -125,7 +125,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Values">
         /// The values to use for the <see cref="Utilities.Operation"/>. <br/>
         /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Add"/> and <see cref="Utilities.Operation.Subtract"/> set the values inside the <see cref="Vector2"/> you don't want to change to <c>0</c>.</i> <br/>
-        /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Multiply"/> and <see cref="Utilities.Operation.Divide"/> set the values inside the <see cref="Vector2"/> you don't want to change to <c>1</c>.</i> <br/>
+        /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Multiply"/> and <see cref="Utilities.Operation.Divide"/> set the values inside the <see cref="Vector2"/> you don't want to change to <c>1</c>.</i>
         /// </param>
         /// <returns>A new <see cref="Vector2"/> computed with the specified <see cref="Utilities.Operation"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the specified <see cref="Utilities.Operation"/> is not valid.</exception>
