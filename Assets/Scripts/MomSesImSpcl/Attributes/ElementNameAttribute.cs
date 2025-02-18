@@ -7,7 +7,7 @@ namespace MomSesImSpcl.Attributes
     /// Used to annotate elements with a custom name in the Unity inspector.
     /// </summary>
     [Conditional("UNITY_EDITOR")]
-    public class ElementNameAttribute : PropertyAttribute
+    public sealed class ElementNameAttribute : PropertyAttribute
     {
         #region Properties
         /// <summary>
