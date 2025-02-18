@@ -97,6 +97,51 @@ namespace MomSesImSpcl.Extensions
         };
 
         /// <summary>
+        /// Performs a mathematical <see cref="Utilities.Operation"/> on the given <see cref="Axis"/> of this <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to modify.</param>
+        /// <param name="_Operation">The mathematical operation to apply.</param>
+        /// <param name="_Axis">The <see cref="Axis"/> on which to apply the <see cref="Utilities.Operation"/>.</param>
+        /// <param name="_Value">The value to use for the <see cref="Utilities.Operation"/>.</param>
+        /// <returns>A new <see cref="Vector2"/> computed with the specified <see cref="Utilities.Operation"/> applied to the given <see cref="Axis"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the specified <see cref="Utilities.Operation"/> is not valid.</exception>
+        public static Vector2 Operation(this Vector2 _Vector2, Operation _Operation, Axis _Axis, float _Value)
+        {
+            return _Operation switch
+            {
+                Utilities.Operation.Add => _Vector2.Plus(_Axis, _Value),
+                Utilities.Operation.Subtract => _Vector2.Minus(_Axis, _Value),
+                Utilities.Operation.Multiply => _Vector2.Multiply(_Axis, _Value),
+                Utilities.Operation.Divide => _Vector2.Divide(_Axis, _Value),
+                _ => throw new ArgumentOutOfRangeException(nameof(_Operation), _Operation, null)
+            };
+        }
+        
+        /// <summary>
+        /// Performs a mathematical <see cref="Utilities.Operation"/> with the given <c>_Values</c>.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to modify.</param>
+        /// <param name="_Operation">The mathematical operation to apply.</param>
+        /// <param name="_Values">
+        /// The values to use for the <see cref="Utilities.Operation"/>. <br/>
+        /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Add"/> and <see cref="Utilities.Operation.Subtract"/> set the values inside the <see cref="Vector2"/> you don't want to change to <c>0</c>.</i> <br/>
+        /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Multiply"/> and <see cref="Utilities.Operation.Divide"/> set the values inside the <see cref="Vector2"/> you don't want to change to <c>1</c>.</i> <br/>
+        /// </param>
+        /// <returns>A new <see cref="Vector2"/> computed with the specified <see cref="Utilities.Operation"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the specified <see cref="Utilities.Operation"/> is not valid.</exception>
+        public static Vector2 Operation(this Vector2 _Vector2, Operation _Operation, Vector2 _Values)
+        {
+            return _Operation switch
+            {
+                Utilities.Operation.Add => _Vector2 + _Values,
+                Utilities.Operation.Subtract => _Vector2 - _Values,
+                Utilities.Operation.Multiply => new Vector2(_Vector2.x * _Values.x, _Vector2.y * _Values.y),
+                Utilities.Operation.Divide => new Vector2(_Vector2.x / _Values.x, _Vector2.y / _Values.y),
+                _ => throw new ArgumentOutOfRangeException(nameof(_Operation), _Operation, null)
+            };
+        }
+        
+        /// <summary>
         /// Adds <c>_Value</c> to <c>_Vector2</c> on the given <c>_Axis</c>.
         /// </summary>
         /// <param name="_Vector2">The <see cref="Vector2"/> to add the value to.</param>
