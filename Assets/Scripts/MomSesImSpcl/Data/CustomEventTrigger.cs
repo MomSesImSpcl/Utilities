@@ -7,7 +7,7 @@ namespace MomSesImSpcl.Data
     /// <summary>
     /// <see cref="EventTrigger"/> with an optional <see cref="Flag"/> field.
     /// </summary>
-    public class CustomEventTrigger : EventTrigger
+    public sealed class CustomEventTrigger : EventTrigger
     {
          #region Inspector Fields
          [Tooltip("Optional flag to differentiate this EventTrigger from others on the same GameObject.\nMust be a class that implements the IFlag interface.")]
