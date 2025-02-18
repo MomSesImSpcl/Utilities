@@ -8,7 +8,7 @@ namespace MomSesImSpcl.Editor.PropertyDrawers
     /// A custom property drawer for displaying collection elements with a custom name in the Unity Editor.
     /// </summary>
     [CustomPropertyDrawer(typeof(ElementNameAttribute))]
-    public class ElementNameDrawer : PropertyDrawer
+    public sealed class ElementNameDrawer : PropertyDrawer
     {
         #region Methods
         public override void OnGUI(Rect _Rect, SerializedProperty _Property, GUIContent _Label)
