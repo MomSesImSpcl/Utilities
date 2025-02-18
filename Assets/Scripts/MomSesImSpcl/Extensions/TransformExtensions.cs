@@ -33,7 +33,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Values">
         /// The distance to move in the specified axis. <br/>
         /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Add"/> and <see cref="Utilities.Operation.Subtract"/> set the values inside the <see cref="Vector3"/> you don't want to change to <c>0</c>.</i> <br/>
-        /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Multiply"/> and <see cref="Utilities.Operation.Divide"/> set the values inside the <see cref="Vector3"/> you don't want to change to <c>1</c>.</i> <br/>
+        /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Multiply"/> and <see cref="Utilities.Operation.Divide"/> set the values inside the <see cref="Vector3"/> you don't want to change to <c>1</c>.</i>
         /// </param>
         /// <param name="_Operation">The mathematical <see cref="Operation"/> to perform.</param>
         /// <param name="_Visualize">Set to <c>true</c> to draw a sphere at the computed <see cref="Transform.position"/>.</param>
@@ -53,7 +53,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_LocalPosition">
         /// The distance to move in the specified axis. <br/>
         /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Add"/> and <see cref="Utilities.Operation.Subtract"/> set the values inside the <see cref="Vector3"/> you don't want to change to <c>0</c>.</i> <br/>
-        /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Multiply"/> and <see cref="Utilities.Operation.Divide"/> set the values inside the <see cref="Vector3"/> you don't want to change to <c>1</c>.</i> <br/>
+        /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Multiply"/> and <see cref="Utilities.Operation.Divide"/> set the values inside the <see cref="Vector3"/> you don't want to change to <c>1</c>.</i>
         /// </param>
         /// <param name="_Visualize">Set to <c>true</c> to draw a sphere at the computed <see cref="Transform.position"/>.</param>
         /// <param name="_Duration">Duration in seconds how long the sphere will be visible.</param>
@@ -100,7 +100,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Values">
         /// The distance to move in the specified axis. <br/>
         /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Add"/> and <see cref="Utilities.Operation.Subtract"/> set the values inside the <see cref="Vector3"/> you don't want to change to <c>0</c>.</i> <br/>
-        /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Multiply"/> and <see cref="Utilities.Operation.Divide"/> set the values inside the <see cref="Vector3"/> you don't want to change to <c>1</c>.</i> <br/>
+        /// <i>For <see cref="Utilities.Operation"/> <see cref="Utilities.Operation.Multiply"/> and <see cref="Utilities.Operation.Divide"/> set the values inside the <see cref="Vector3"/> you don't want to change to <c>1</c>.</i>
         /// </param>
         /// <param name="_Angles">
         /// The desired angles to calculate the <see cref="Transform.position"/> with. <br/>
