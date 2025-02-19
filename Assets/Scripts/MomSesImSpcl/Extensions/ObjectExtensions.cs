@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using MomSesImSpcl.Utilities.Logging;
-using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -15,6 +14,13 @@ namespace MomSesImSpcl.Extensions
     /// </summary>
     public static class ObjectExtensions
     {
+        #region Constants
+        /// <summary>
+        /// <see cref="BindingFlags"/> to get every field/property of a <see cref="Type"/>.
+        /// </summary>
+        private const BindingFlags BINDING_FLAGS = BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy;
+        #endregion
+        
         #region Methods
         /// <summary>
         /// Wraps this object's <see cref="object.ToString"/>-output in a Rich Text bold tag.
@@ -37,6 +43,89 @@ namespace MomSesImSpcl.Extensions
             return $"<color={_Color}>{_Object.OrNull()}</color>";
         }
 
+        /// <summary>
+        /// Gets the value of a Field through reflection.
+        /// </summary>
+        /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
+        /// <param name="_FieldName">The name of the Field.</param>
+        /// <param name="_BindingFlags">Optional <see cref="BindingFlags"/> to find the Field.</param>
+        /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
+        /// <returns>The Field value.</returns>
+        public static V GetFieldValue<V>(this object _Instance, string _FieldName, BindingFlags _BindingFlags = BINDING_FLAGS)
+        {
+            // ReSharper disable ConvertToLambdaExpression
+            return _Instance.GetMemberValue<V,FieldInfo>(_FieldName, _InstanceType =>
+            {
+                return _InstanceType.GetField(_FieldName, _BindingFlags);
+                
+            }, _InstanceType =>
+            {
+                return _InstanceType.GetFields(BINDING_FLAGS);
+            });
+            // ReSharper restore ConvertToLambdaExpression
+        }
+
+        /// <summary>
+        /// Gets the value of a Property through reflection.
+        /// </summary>
+        /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Property.</param>
+        /// <param name="_PropertyName">The name of the Property.</param>
+        /// <param name="_BindingFlags">Optional <see cref="BindingFlags"/> to find the Property.</param>
+        /// <typeparam name="V">The <see cref="Type"/> of the Property.</typeparam>
+        /// <returns>The Property value.</returns>
+        public static V GetPropertyValue<V>(this object _Instance, string _PropertyName, BindingFlags _BindingFlags = BINDING_FLAGS)
+        {
+            // ReSharper disable ConvertToLambdaExpression
+            return _Instance.GetMemberValue<V,PropertyInfo>(_PropertyName, _InstanceType =>
+            {
+                return _InstanceType.GetProperty(_PropertyName, _BindingFlags);
+                
+            }, _InstanceType =>
+            {
+                return _InstanceType.GetProperties(BINDING_FLAGS);
+            });
+            // ReSharper restore ConvertToLambdaExpression
+        }
+        
+        /// <summary>
+        /// Gets the value of a member through reflection.
+        /// </summary>
+        /// <param name="_Instance">The instance of the <see cref="object"/> that holds the member.</param>
+        /// <param name="_MemberName">The name of the member whose value to get.</param>
+        /// <param name="_GetMember">Should be <see cref="Type.GetField(string,BindingFlags)"/> or <see cref="Type.GetProperty(string,BindingFlags)"/>.</param>
+        /// <param name="_FallbackMembers">
+        /// In case the Field/Property could not be found, this will print all Fields/Properties of the given <see cref="Type"/>. <br/>
+        /// <i>Should be <see cref="Type.GetFields(BindingFlags)"/> or <see cref="Type.GetProperties(BindingFlags)"/>.</i>
+        /// </param>
+        /// <typeparam name="V">The <see cref="Type"/> of the member.</typeparam>
+        /// <typeparam name="I">The concrete <see cref="Type"/> of the <see cref="MemberInfo"/>.</typeparam>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">When the given <see cref="Type"/> <c>T</c> does not contain a member with the given name.</exception>
+        /// <exception cref="ArgumentException">When the given <see cref="Expression"/> is not a field or property.</exception>
+        private static V GetMemberValue<V,I>(this object _Instance, string _MemberName, Func<Type,I> _GetMember, Func<Type,I[]> _FallbackMembers) where I : MemberInfo
+        {
+            var _type = _Instance.GetType();
+            
+            if (_GetMember(_type) is {} _memberInfo)
+            {
+                var _memberValue = _memberInfo switch
+                {
+                    FieldInfo _fieldInfo => _fieldInfo.GetValue(_Instance),
+                    PropertyInfo _propertyInfo => _propertyInfo.GetValue(_Instance),
+                    _ => throw new NotSupportedException($"The Member: [{_MemberName.Bold()}], is not a Field or Property and cannot be accessed using GetValue.")
+                };
+                
+                if (_memberValue is V _value)
+                {
+                    return _value;
+                }
+                
+                throw new InvalidCastException($"The given Type: [{typeof(V).Name.Bold()}], does not match the Type of [{_MemberName.Bold()}]: [{_memberValue.GetType().Name.Bold()}].");
+            }
+
+            throw PrintFallbackMembers(_type, _MemberName, _FallbackMembers);
+        }
+        
         /// <summary>
         /// Wraps this object's <see cref="object.ToString"/>-output in a Rich Text italic tag.
         /// </summary>
@@ -66,14 +155,32 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_BindingFlags">Optional <see cref="BindingFlags"/> to find the Field.</param>
         /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/> that holds the Field.</typeparam>
         /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
-        public static void SetFieldValue<T,V>(this T _Instance, Expression<Func<T,V>> _Field, V _Value, BindingFlags _BindingFlags = BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
+        public static void SetFieldValue<T,V>(this T _Instance, Expression<Func<T,V>> _Field, V _Value, BindingFlags _BindingFlags = BINDING_FLAGS) where T : notnull
         {
-            _Instance.SetMemberValue(_Field, (_Type, _FieldName) => _Type.GetField(_FieldName, _BindingFlags), _FieldInfo =>
+            var _fieldName = _Field.GetMemberName();
+            _Instance.SetMemberValue<T,V,FieldInfo>(_fieldName, _InstanceType => _InstanceType.GetField(_fieldName, _BindingFlags), _FieldInfo =>
             {
                 _FieldInfo.SetValue(_Instance, _Value);
                 
-                // ReSharper disable once VariableHidesOuterVariable
-            }, (_Type, _BindingFlags) => _Type.GetFields(_BindingFlags));
+            }, _InstanceType => _InstanceType.GetFields(BINDING_FLAGS));
+        }
+        
+        /// <summary>
+        /// Sets the value of a Field through reflection.
+        /// </summary>
+        /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
+        /// <param name="_FieldName">The name of the Field whose value to set.</param>
+        /// <param name="_Value">The value to set to the Field.</param>
+        /// <param name="_BindingFlags">Optional <see cref="BindingFlags"/> to find the Field.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/> that holds the Field.</typeparam>
+        /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
+        public static void SetFieldValue<T,V>(this T _Instance, string _FieldName, V _Value, BindingFlags _BindingFlags = BINDING_FLAGS) where T : notnull
+        {
+            _Instance.SetMemberValue<T,V,FieldInfo>(_FieldName, _InstanceType => _InstanceType.GetField(_FieldName, _BindingFlags), _FieldInfo =>
+            {
+                _FieldInfo.SetValue(_Instance, _Value);
+                
+            }, _InstanceType => _InstanceType.GetFields(BINDING_FLAGS));
         }
         
         /// <summary>
@@ -85,21 +192,39 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_BindingFlags">Optional <see cref="BindingFlags"/> to find the Property.</param>
         /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/> that holds the Property.</typeparam>
         /// <typeparam name="V">The <see cref="Type"/> of the Property.</typeparam>
-        public static void SetPropertyValue<T,V>(this T _Instance, Expression<Func<T,V>> _Property, V _Value, BindingFlags _BindingFlags = BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
+        public static void SetPropertyValue<T,V>(this T _Instance, Expression<Func<T,V>> _Property, V _Value, BindingFlags _BindingFlags = BINDING_FLAGS) where T : notnull
         {
-            _Instance.SetMemberValue(_Property, (_Type, _PropertyName) => _Type.GetProperty(_PropertyName, _BindingFlags), _PropertyInfo =>
+            var _propertyName = _Property.GetMemberName();
+            _Instance.SetMemberValue<T,V,PropertyInfo>(_propertyName, _InstanceType => _InstanceType.GetProperty(_propertyName, _BindingFlags), _PropertyInfo =>
             {
                 _PropertyInfo.SetValue(_Instance, _Value);
                 
-                // ReSharper disable once VariableHidesOuterVariable
-            }, (_Type, _BindingFlags) => _Type.GetProperties(_BindingFlags));
+            }, _InstanceType => _InstanceType.GetProperties(BINDING_FLAGS));
+        }
+        
+        /// <summary>
+        /// Sets the value of a Field through reflection.
+        /// </summary>
+        /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
+        /// <param name="_PropertyName">The name of the Property whose value to set.</param>
+        /// <param name="_Value">The value to set to the Field.</param>
+        /// <param name="_BindingFlags">Optional <see cref="BindingFlags"/> to find the Field.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/> that holds the Field.</typeparam>
+        /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
+        public static void SetPropertyValue<T,V>(this T _Instance, string _PropertyName, V _Value, BindingFlags _BindingFlags = BINDING_FLAGS) where T : notnull
+        {
+            _Instance.SetMemberValue<T,V,PropertyInfo>(_PropertyName, _InstanceType => _InstanceType.GetProperty(_PropertyName, _BindingFlags), _PropertyInfo =>
+            {
+                _PropertyInfo.SetValue(_Instance, _Value);
+                
+            }, _InstanceType => _InstanceType.GetProperties(BINDING_FLAGS));
         }
         
         /// <summary>
         /// Sets the value of a member through reflection.
         /// </summary>
         /// <param name="_">The instance of the <see cref="object"/> that holds the member.</param>
-        /// <param name="_Member">The member whose value to set.</param>
+        /// <param name="_MemberName">The name of the member whose value to set.</param>
         /// <param name="_GetMethod">Should be <see cref="Type.GetField(string,BindingFlags)"/> or <see cref="Type.GetProperty(string,BindingFlags)"/>.</param>
         /// <param name="_SetMethod">Should be <see cref="FieldInfo"/>.<see cref="FieldInfo.SetValue(object,object)"/> or <see cref="PropertyInfo"/>.<see cref="PropertyInfo.SetValue(object,object)"/>.</param>
         /// <param name="_FallbackMembers">
@@ -109,31 +234,37 @@ namespace MomSesImSpcl.Extensions
         /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/> that holds the member.</typeparam>
         /// <typeparam name="V">The <see cref="Type"/> of the member.</typeparam>
         /// <typeparam name="I">The concrete <see cref="Type"/> of the <see cref="MemberInfo"/>.</typeparam>
-        private static void SetMemberValue<T,V,I>(this T _, Expression<Func<T,V>> _Member, Func<Type,string,I> _GetMethod, Action<I> _SetMethod, Func<Type,BindingFlags,I[]> _FallbackMembers) where I : MemberInfo
+        /// <exception cref="InvalidOperationException">When the given <see cref="Type"/> <c>T</c> does not contain a member with the given name.</exception>
+        /// <exception cref="ArgumentException">When the given <see cref="Expression"/> is not a field or property.</exception>
+        private static void SetMemberValue<T,V,I>(this T _, string _MemberName, Func<Type,I> _GetMethod, Action<I> _SetMethod, Func<Type,I[]> _FallbackMembers) where I : MemberInfo
         {
-            if (_Member.Body is MemberExpression _memberExpression)
-            {
-                var _type = typeof(T);
+            var _type = typeof(T);
                 
-                if (_GetMethod(_type, _memberExpression.Member.Name) is {} _memberInfo)
-                {
-                    _SetMethod(_memberInfo);
-                }
-                else
-                {
-                    var _members = _FallbackMembers(_type, BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy).Select(_MemberInfo => _MemberInfo.Name);
-                    var _memberType = typeof(I).Name.Replace("Info", string.Empty);
-                    var _memberName = _memberExpression.Member.Name.Bold();
-                    var _className = _type.Name;
-                    
-                    // ReSharper disable once VariableHidesOuterVariable
-                    Debug.LogError($"Could not find the {_memberType} [{_memberName}] in Class [{_className.Bold()}].{Environment.NewLine}Here is every {_memberType} in Class {_className}:{Environment.NewLine}-{string.Join($"{Environment.NewLine}-", _members.Select(_Member => _Member.Italic()))}\n");
-                }
+            if (_GetMethod(_type) is {} _memberInfo)
+            {
+                _SetMethod(_memberInfo);
             }
             else
             {
-                Debug.LogError($"The given Expression [{_Member.Bold()}] is not a Field or Property.");
+                throw PrintFallbackMembers(_type, _MemberName, _FallbackMembers);
             }
+        }
+        
+        /// <summary>
+        /// Creates a <see cref="InvalidOperationException"/> with all members of the given <see cref="Type"/> <c>I</c> inside <c>_Type</c>.
+        /// </summary>
+        /// <param name="_Type">The <see cref="Type"/> from which to get all members of.</param>
+        /// <param name="_MemberName">The name of the member that could not be found.</param>
+        /// <param name="_FallbackMembers">Every member of the given <see cref="Type"/> <c>I</c> inside <c>_Type</c>.</param>
+        /// <typeparam name="I">Must be a <see cref="MemberInfo"/>.</typeparam>
+        /// <returns>A new <see cref="InvalidOperationException"/> with the constructed message.</returns>
+        private static InvalidOperationException PrintFallbackMembers<I>(Type _Type, string _MemberName, Func<Type,I[]> _FallbackMembers) where I : MemberInfo
+        {
+            var _members = _FallbackMembers(_Type).Select(_MemberInfo => _MemberInfo.Name);
+            var _memberType = typeof(I).Name.Replace("Info", string.Empty);
+            var _className = _Type.Name;
+                
+            return new InvalidOperationException($"Could not find the {_memberType} [{_MemberName.Bold()}] in Type [{_className.Bold()}].{Environment.NewLine}Here is every {_memberType} in Type {_className}:{Environment.NewLine}-{string.Join($"{Environment.NewLine}-", _members.Select(_Member => _Member.Italic()))}\n");
         }
         
         /// <summary>
