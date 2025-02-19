@@ -121,13 +121,13 @@ namespace MomSesImSpcl.Extensions
                 }
                 else
                 {
-                    // ReSharper disable once VariableHidesOuterVariable
                     var _members = _FallbackMembers(_type, BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy).Select(_MemberInfo => _MemberInfo.Name);
-                    var _memberType = nameof(I).Replace("Info", string.Empty, StringComparison.InvariantCultureIgnoreCase);
+                    var _memberType = typeof(I).Name.Replace("Info", string.Empty);
                     var _memberName = _memberExpression.Member.Name.Bold();
-                    var _className = nameof(T).Bold();
+                    var _className = _type.Name;
                     
-                    Debug.LogError($"Could not find the {_memberType} [{_memberName}] in Class [{_className}].{Environment.NewLine}Here is every {_memberType} in Class [{_className}]:{Environment.NewLine}[{string.Join(Environment.NewLine, _members)}]");
+                    // ReSharper disable once VariableHidesOuterVariable
+                    Debug.LogError($"Could not find the {_memberType} [{_memberName}] in Class [{_className.Bold()}].{Environment.NewLine}Here is every {_memberType} in Class {_className}:{Environment.NewLine}-{string.Join($"{Environment.NewLine}-", _members.Select(_Member => _Member.Italic()))}\n");
                 }
             }
             else
