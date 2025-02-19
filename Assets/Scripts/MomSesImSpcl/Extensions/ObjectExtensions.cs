@@ -42,12 +42,12 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
         /// <param name="_FieldName">The name of the Field.</param>
-        /// <param name="_CustomBindingFlags">Optional <see cref="CustomBindingFlags"/> to find the Field.</param>
+        /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Field.</param>
         /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
         /// <returns>The Field value.</returns>
-        public static V GetFieldValue<V>(this object _Instance, string _FieldName, CustomBindingFlags _CustomBindingFlags = CustomBindingFlags.All)
+        public static V GetFieldValue<V>(this object _Instance, string _FieldName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
         {
-            var _bindingFlags = (BindingFlags)_CustomBindingFlags;
+            var _bindingFlags = (BindingFlags)_CombinedBindingFlags;
             
             // ReSharper disable ConvertToLambdaExpression
             return _Instance.GetMemberValue<V,FieldInfo>(_FieldName, _InstanceType =>
@@ -66,12 +66,12 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Property.</param>
         /// <param name="_PropertyName">The name of the Property.</param>
-        /// <param name="_CustomBindingFlags">Optional <see cref="CustomBindingFlags"/> to find the Property.</param>
+        /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Property.</param>
         /// <typeparam name="V">The <see cref="Type"/> of the Property.</typeparam>
         /// <returns>The Property value.</returns>
-        public static V GetPropertyValue<V>(this object _Instance, string _PropertyName, CustomBindingFlags _CustomBindingFlags = CustomBindingFlags.All)
+        public static V GetPropertyValue<V>(this object _Instance, string _PropertyName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
         {
-            var _bindingFlags = (BindingFlags)_CustomBindingFlags;
+            var _bindingFlags = (BindingFlags)_CombinedBindingFlags;
             
             // ReSharper disable ConvertToLambdaExpression
             return _Instance.GetMemberValue<V,PropertyInfo>(_PropertyName, _InstanceType =>
@@ -150,13 +150,13 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
         /// <param name="_Field">The Field whose value to set.</param>
         /// <param name="_Value">The value to set to the Field.</param>
-        /// <param name="_CustomBindingFlags">Optional <see cref="CustomBindingFlags"/> to find the Field.</param>
+        /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Field.</param>
         /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/> that holds the Field.</typeparam>
         /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
-        public static void SetFieldValue<T,V>(this T _Instance, Expression<Func<T,V>> _Field, V _Value, CustomBindingFlags _CustomBindingFlags = CustomBindingFlags.All) where T : notnull
+        public static void SetFieldValue<T,V>(this T _Instance, Expression<Func<T,V>> _Field, V _Value, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All) where T : notnull
         {
             var _fieldName = _Field.GetMemberName();
-            var _bindingFlags = (BindingFlags)_CustomBindingFlags;
+            var _bindingFlags = (BindingFlags)_CombinedBindingFlags;
             
             _Instance.SetMemberValue<T,V,FieldInfo>(_fieldName, _InstanceType => _InstanceType.GetField(_fieldName, _bindingFlags), _FieldInfo =>
             {
@@ -171,12 +171,12 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
         /// <param name="_FieldName">The name of the Field whose value to set.</param>
         /// <param name="_Value">The value to set to the Field.</param>
-        /// <param name="_CustomBindingFlags">Optional <see cref="CustomBindingFlags"/> to find the Field.</param>
+        /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Field.</param>
         /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/> that holds the Field.</typeparam>
         /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
-        public static void SetFieldValue<T,V>(this T _Instance, string _FieldName, V _Value, CustomBindingFlags _CustomBindingFlags = CustomBindingFlags.All) where T : notnull
+        public static void SetFieldValue<T,V>(this T _Instance, string _FieldName, V _Value, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All) where T : notnull
         {
-            var _bindingFlags = (BindingFlags)_CustomBindingFlags;
+            var _bindingFlags = (BindingFlags)_CombinedBindingFlags;
             
             _Instance.SetMemberValue<T,V,FieldInfo>(_FieldName, _InstanceType => _InstanceType.GetField(_FieldName, _bindingFlags), _FieldInfo =>
             {
@@ -191,13 +191,13 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Property.</param>
         /// <param name="_Property">The Property whose value to set.</param>
         /// <param name="_Value">The value to set to the Property.</param>
-        /// <param name="_CustomBindingFlags">Optional <see cref="CustomBindingFlags"/> to find the Property.</param>
+        /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Property.</param>
         /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/> that holds the Property.</typeparam>
         /// <typeparam name="V">The <see cref="Type"/> of the Property.</typeparam>
-        public static void SetPropertyValue<T,V>(this T _Instance, Expression<Func<T,V>> _Property, V _Value, CustomBindingFlags _CustomBindingFlags = CustomBindingFlags.All) where T : notnull
+        public static void SetPropertyValue<T,V>(this T _Instance, Expression<Func<T,V>> _Property, V _Value, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All) where T : notnull
         {
             var _propertyName = _Property.GetMemberName();
-            var _bindingFlags = (BindingFlags)_CustomBindingFlags;
+            var _bindingFlags = (BindingFlags)_CombinedBindingFlags;
             
             _Instance.SetMemberValue<T,V,PropertyInfo>(_propertyName, _InstanceType => _InstanceType.GetProperty(_propertyName, _bindingFlags), _PropertyInfo =>
             {
@@ -212,12 +212,12 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
         /// <param name="_PropertyName">The name of the Property whose value to set.</param>
         /// <param name="_Value">The value to set to the Field.</param>
-        /// <param name="_CustomBindingFlags">Optional <see cref="CustomBindingFlags"/> to find the Field.</param>
+        /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Field.</param>
         /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/> that holds the Field.</typeparam>
         /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
-        public static void SetPropertyValue<T,V>(this T _Instance, string _PropertyName, V _Value, CustomBindingFlags _CustomBindingFlags = CustomBindingFlags.All) where T : notnull
+        public static void SetPropertyValue<T,V>(this T _Instance, string _PropertyName, V _Value, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All) where T : notnull
         {
-            var _bindingFlags = (BindingFlags)_CustomBindingFlags;
+            var _bindingFlags = (BindingFlags)_CombinedBindingFlags;
             
             _Instance.SetMemberValue<T,V,PropertyInfo>(_PropertyName, _InstanceType => _InstanceType.GetProperty(_PropertyName, _bindingFlags), _PropertyInfo =>
             {
