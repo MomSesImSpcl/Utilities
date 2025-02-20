@@ -1,5 +1,6 @@
 using System;
 using MomSesImSpcl.Utilities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -64,7 +65,7 @@ namespace MomSesImSpcl.Extensions
             var _direction = _Target - _Source;
 
             // Handle zero direction case.
-            if (_direction.sqrMagnitude < Mathf.Epsilon)
+            if (_direction.sqrMagnitude < math.EPSILON)
             {
                 return _DefaultRotation ?? Quaternion.identity;
             }
@@ -76,7 +77,7 @@ namespace MomSesImSpcl.Extensions
             _Up = _Up == default ? Vector3.up : _Up.normalized;
 
             // Handle collinear direction and up vectors.
-            if (Mathf.Abs(Vector3.Dot(_direction, _Up)) > .9999f)
+            if (math.abs(Vector3.Dot(_direction, _Up)) > .9999f)
             {
                 _Up = Vector3.Cross(_direction, Vector3.right).normalized;
                 
@@ -107,12 +108,12 @@ namespace MomSesImSpcl.Extensions
         {
             var _direction = _Target - _Source;
 
-            if (_direction.sqrMagnitude < Mathf.Epsilon)
+            if (_direction.sqrMagnitude < math.EPSILON)
             {
                 return _DefaultRotation ?? Quaternion.identity;
             }
 
-            var _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+            var _angle = math.atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
             
             return Quaternion.Euler(0f, 0f, _angle + _OffsetDegrees);
         }
