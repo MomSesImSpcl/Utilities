@@ -314,6 +314,16 @@ namespace MomSesImSpcl.Extensions
                 _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
             };
         }
+
+        /// <summary>
+        /// Converts this <see cref="Vector3"/> to a <see cref="Quaternion"/>.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to convert to a <see cref="Quaternion"/>.</param>
+        /// <returns>This <see cref="Vector3"/> converted to a <see cref="Quaternion"/>.</returns>
+        public static Quaternion ToQuaternion(this Vector3 _Vector3)
+        {
+            return Quaternion.Euler(_Vector3);
+        }
         
         /// <summary>
         /// Sets the x component of a <see cref="Vector3"/> to a specified value.
