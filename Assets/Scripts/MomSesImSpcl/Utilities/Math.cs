@@ -1,4 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Utilities
@@ -19,7 +21,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Approx(float _Value, float _About, float _Range)
         {
-            return Mathf.Abs(_Value - _About) < _Range;
+            return math.abs(_Value - _About) < _Range;
         }
 
         /// <summary>
@@ -36,14 +38,28 @@ namespace MomSesImSpcl.Utilities
         }
 
         /// <summary>
+        /// Compares two floating point values and returns true if they are similar.
+        /// </summary>
+        /// <param name="_A">Value to compare.</param>
+        /// <param name="_B">Value to compare with.</param>
+        /// <returns><c>true</c> if value <c>_A</c> is similar to value <c>_B</c>, otherwise <c>false</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressMessage("ReSharper", "RedundantCast")]
+        public static bool Approximately(float _A, float _B)
+        {
+            return (double) math.abs(_B - _A) < (double) math.max(1E-06f * math.max(math.abs(_A), math.abs(_B)), math.EPSILON * 8f);
+        }
+        
+        /// <summary>
         /// Computes the ceiling of the absolute value of a floating-point number.
         /// </summary>
         /// <param name="_Value">The floating-point value whose absolute value ceiling is to be computed.</param>
         /// <returns>The ceiling of the absolute value of the specified floating-point value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static float CeilAbsolute(float _Value)
         {
-            var _absoluteValue = Mathf.Abs(_Value);
-            var _ceiled = Mathf.Ceil(_absoluteValue);
+            var _absoluteValue = math.abs(_Value);
+            var _ceiled = math.ceil(_absoluteValue);
 
             return _ceiled;
         }
@@ -71,7 +87,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float DecibelToLinear(float _Decibel)
         {
-            return _Decibel * Mathf.Pow(10.0f, _Decibel / 20.0f);
+            return _Decibel * math.pow(10.0f, _Decibel / 20.0f);
         }
 
         /// <summary>
@@ -94,7 +110,7 @@ namespace MomSesImSpcl.Utilities
             float _decibel;
 
             if (_Linear != 0)
-                _decibel = 20.0f * Mathf.Log10(_Linear);
+                _decibel = 20.0f * math.log10(_Linear);
             else
                 _decibel = -144.0f;
 
@@ -114,7 +130,7 @@ namespace MomSesImSpcl.Utilities
             var _fullDirection = _LineEnd - _LineStart;
             var _lineDirection = Vector3.Normalize(_fullDirection);
             var _closestPoint = Vector3.Dot(_Point - _LineStart, _lineDirection) / Vector3.Dot(_lineDirection, _lineDirection);
-            return _LineStart + Mathf.Clamp(_closestPoint, 0.0f, Vector3.Magnitude(_fullDirection)) * _lineDirection;
+            return _LineStart + math.clamp(_closestPoint, 0.0f, Vector3.Magnitude(_fullDirection)) * _lineDirection;
         }
 
         /// <summary>
