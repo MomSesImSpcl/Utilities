@@ -41,12 +41,12 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Field.</param>
         /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
         /// <returns>The Field value.</returns>
-        public static V GetFieldValue<V>(this Type _Type, string _FieldName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.AllStaticFlattened)
+        public static V GetFieldValue<V>(this Type _Type, string _FieldName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
         {
             // ReSharper disable VariableHidesOuterVariable
             return _Type.GetMemberValue<V,FieldInfo>(_FieldName, 
                 _Type => _Type.GetField(_FieldName, (BindingFlags)_CombinedBindingFlags), 
-                _Type => _Type.GetFields((BindingFlags)CombinedBindingFlags.AllStaticFlattened));
+                _Type => _Type.GetFields((BindingFlags)CombinedBindingFlags.All));
             // ReSharper restore VariableHidesOuterVariable
         }
         
@@ -58,12 +58,12 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Property.</param>
         /// <typeparam name="V">The <see cref="Type"/> of the Property.</typeparam>
         /// <returns>The Property value.</returns>
-        public static V GetPropertyValue<V>(this Type _Type, string _PropertyName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.AllStaticFlattened)
+        public static V GetPropertyValue<V>(this Type _Type, string _PropertyName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
         {
             // ReSharper disable VariableHidesOuterVariable
             return _Type.GetMemberValue<V,PropertyInfo>(_PropertyName, 
                 _Type => _Type.GetProperty(_PropertyName, (BindingFlags)_CombinedBindingFlags), 
-                _Type => _Type.GetProperties((BindingFlags)CombinedBindingFlags.AllStaticFlattened));
+                _Type => _Type.GetProperties((BindingFlags)CombinedBindingFlags.All));
             // ReSharper restore VariableHidesOuterVariable
         }
         
@@ -114,14 +114,14 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Field.</param>
         /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
         /// <returns><c>true</c> if the value of the Field was successfully set, otherwise <c>false</c>.</returns>
-        public static bool SetFieldValue<V>(this Type _Type, string _FieldName, V _Value, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.AllStatic)
+        public static bool SetFieldValue<V>(this Type _Type, string _FieldName, V _Value, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
         {
             // ReSharper disable VariableHidesOuterVariable
             return SetMemberValue(_Type, _FieldName, _Type => _Type.GetField(_FieldName, (BindingFlags)_CombinedBindingFlags), _FieldInfo =>
             {
                 _FieldInfo.SetValue(null, _Value);
                 
-            }, _Value, _Type => _Type.GetFields((BindingFlags)CombinedBindingFlags.AllStatic));
+            }, _Value, _Type => _Type.GetFields((BindingFlags)CombinedBindingFlags.All));
             // ReSharper restore VariableHidesOuterVariable
         }
         
@@ -134,14 +134,14 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Property.</param>
         /// <typeparam name="V">The <see cref="Type"/> of the Property.</typeparam>
         /// <returns><c>true</c> if the value of the Property was successfully set, otherwise <c>false</c>.</returns>
-        public static bool SetPropertyValue<V>(this Type _Type, string _PropertyName, V _Value, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.AllStatic)
+        public static bool SetPropertyValue<V>(this Type _Type, string _PropertyName, V _Value, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
         {
             // ReSharper disable VariableHidesOuterVariable
             return SetMemberValue(_Type, _PropertyName, _Type => _Type.GetProperty(_PropertyName, (BindingFlags)_CombinedBindingFlags), _PropertyInfo =>
             {
                 _PropertyInfo.SetValue(null, _Value);
                 
-            }, _Value, _Type => _Type.GetProperties((BindingFlags)CombinedBindingFlags.AllStatic));
+            }, _Value, _Type => _Type.GetProperties((BindingFlags)CombinedBindingFlags.All));
             // ReSharper restore VariableHidesOuterVariable
         }
 
