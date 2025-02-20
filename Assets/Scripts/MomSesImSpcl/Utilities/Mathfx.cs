@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Utilities
@@ -45,7 +46,7 @@ namespace MomSesImSpcl.Utilities
         public static float BErp(float _Start, float _End, float _InterpolationValue)
         {
             _InterpolationValue = Mathf.Clamp01(_InterpolationValue);
-            _InterpolationValue = (Mathf.Sin(_InterpolationValue * Mathf.PI * (0.2f + 2.5f * _InterpolationValue * _InterpolationValue * _InterpolationValue)) * Mathf.Pow(1f - _InterpolationValue, 2.2f) + _InterpolationValue) * (1f + 1.2f * (1f - _InterpolationValue));
+            _InterpolationValue = (math.sin(_InterpolationValue * math.PI * (0.2f + 2.5f * _InterpolationValue * _InterpolationValue * _InterpolationValue)) * math.pow(1f - _InterpolationValue, 2.2f) + _InterpolationValue) * (1f + 1.2f * (1f - _InterpolationValue));
             return _Start + (_End - _Start) * _InterpolationValue;
         }
 
@@ -79,7 +80,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Bounce(float _Value)
         {
-            return Mathf.Abs(Mathf.Sin(6.28f * (_Value + 1f) * (_Value + 1f)) * (1f - _Value));
+            return math.abs(math.sin(6.28f * (_Value + 1f) * (_Value + 1f)) * (1f - _Value));
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace MomSesImSpcl.Utilities
         {
             const float _MIN = 0.0f;
             const float _MAX = 360.0f;
-            var _half = Mathf.Abs((_MAX - _MIN) / 2.0f);
+            var _half = math.abs((_MAX - _MIN) / 2.0f);
             float _returnValue;
             float _difference;
 
@@ -149,7 +150,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float CosErp(float _Start, float _End, float _InterpolationValue)
         {
-            return Mathf.Lerp(_Start, _End, 1.0f - Mathf.Cos(_InterpolationValue * Mathf.PI * 0.5f));
+            return math.lerp(_Start, _End, 1.0f - math.cos(_InterpolationValue * math.PI * 0.5f));
         }
 
         /// <summary>
@@ -164,8 +165,8 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Damp(float _Start, float _End, float _Smoothing, float _Speed, float _SnapEpsilon = 0.01f)
         {
-            var _value = Mathf.Lerp(_Start, _End, 1 - Mathf.Pow(_Smoothing, _Speed));
-            if (Mathf.Abs(_value - _End) < _SnapEpsilon)
+            var _value = math.lerp(_Start, _End, 1 - math.pow(_Smoothing, _Speed));
+            if (math.abs(_value - _End) < _SnapEpsilon)
                 _value = _End;
 
             return _value;
@@ -182,7 +183,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Damp(Vector2 _Start, Vector2 _End, float _Smoothing, float _Speed)
         {
-            return Vector2.Lerp(_Start, _End, 1 - Mathf.Pow(_Smoothing, _Speed));
+            return Vector2.Lerp(_Start, _End, 1 - math.pow(_Smoothing, _Speed));
         }
 
         /// <summary>
@@ -196,7 +197,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Damp(Vector3 _Start, Vector3 _End, float _Smoothing, float _Speed)
         {
-            return Vector3.Lerp(_Start, _End, 1 - Mathf.Pow(_Smoothing, _Speed));
+            return Vector3.Lerp(_Start, _End, 1 - math.pow(_Smoothing, _Speed));
         }
 
         /// <summary>
@@ -210,7 +211,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector4 Damp(Vector4 _Start, Vector4 _End, float _Smoothing, float _Speed)
         {
-            return Vector4.Lerp(_Start, _End, 1 - Mathf.Pow(_Smoothing, _Speed));
+            return Vector4.Lerp(_Start, _End, 1 - math.pow(_Smoothing, _Speed));
         }
 
         /// <summary>
@@ -224,7 +225,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Quaternion Damp(Quaternion _Start, Quaternion _End, float _Smoothing, float _Speed)
         {
-            return Quaternion.Lerp(_Start, _End, 1 - Mathf.Pow(_Smoothing, _Speed));
+            return Quaternion.Lerp(_Start, _End, 1 - math.pow(_Smoothing, _Speed));
         }
 
         /// <summary>
@@ -238,7 +239,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color Damp(Color _Start, Color _End, float _Smoothing, float _Speed)
         {
-            return Color.Lerp(_Start, _End, 1 - Mathf.Pow(_Smoothing, _Speed));
+            return Color.Lerp(_Start, _End, 1 - math.pow(_Smoothing, _Speed));
         }
 
         /// <summary>
@@ -278,7 +279,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Hermite(float _Start, float _End, float _InterpolationValue)
         {
-            return Mathf.Lerp(_Start, _End, _InterpolationValue * _InterpolationValue * (3.0f - 2.0f * _InterpolationValue));
+            return math.lerp(_Start, _End, _InterpolationValue * _InterpolationValue * (3.0f - 2.0f * _InterpolationValue));
         }
 
         /// <summary>
@@ -304,7 +305,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float SinErp(float _Start, float _End, float _InterpolationValue)
         {
-            return Mathf.Lerp(_Start, _End, Mathf.Sin(_InterpolationValue * Mathf.PI * 0.5f));
+            return math.lerp(_Start, _End, math.sin(_InterpolationValue * math.PI * 0.5f));
         }
 
         /// <summary>
@@ -317,7 +318,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 SinErp(Vector2 _Start, Vector2 _End, float _InterpolationValue)
         {
-            return new Vector2(Mathf.Lerp(_Start.x, _End.x, Mathf.Sin(_InterpolationValue * Mathf.PI * 0.5f)), Mathf.Lerp(_Start.y, _End.y, Mathf.Sin(_InterpolationValue * Mathf.PI * 0.5f)));
+            return new Vector2(math.lerp(_Start.x, _End.x, math.sin(_InterpolationValue * math.PI * 0.5f)), math.lerp(_Start.y, _End.y, math.sin(_InterpolationValue * math.PI * 0.5f)));
         }
 
         /// <summary>
@@ -330,7 +331,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 SinErp(Vector3 _Start, Vector3 _End, float _InterpolationValue)
         {
-            return new Vector3(Mathf.Lerp(_Start.x, _End.x, Mathf.Sin(_InterpolationValue * Mathf.PI * 0.5f)), Mathf.Lerp(_Start.y, _End.y, Mathf.Sin(_InterpolationValue * Mathf.PI * 0.5f)), Mathf.Lerp(_Start.z, _End.z, Mathf.Sin(_InterpolationValue * Mathf.PI * 0.5f)));
+            return new Vector3(math.lerp(_Start.x, _End.x, math.sin(_InterpolationValue * math.PI * 0.5f)), math.lerp(_Start.y, _End.y, math.sin(_InterpolationValue * math.PI * 0.5f)), math.lerp(_Start.z, _End.z, math.sin(_InterpolationValue * math.PI * 0.5f)));
         }
 
         /// <summary>
@@ -343,7 +344,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float SmoothSin(float _Start, float _End, float _InterpolationValue)
         {
-            return Mathf.Lerp(_Start, _End, Mathf.Sin(_InterpolationValue * 2 * Mathf.PI + Mathf.PI * 0.5f));
+            return math.lerp(_Start, _End, math.sin(_InterpolationValue * 2 * math.PI + math.PI * 0.5f));
         }
 
         /// <summary>
@@ -382,7 +383,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float SmoothStep(float _Value, float _Min, float _Max)
         {
-            _Value = Mathf.Clamp(_Value, _Min, _Max);
+            _Value = math.clamp(_Value, _Min, _Max);
             var _v1 = (_Value - _Min) / (_Max - _Min);
             var _v2 = (_Value - _Min) / (_Max - _Min);
             return -2 * _v1 * _v1 * _v1 + 3 * _v2 * _v2;
