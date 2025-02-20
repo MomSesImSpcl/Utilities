@@ -81,7 +81,7 @@ namespace MomSesImSpcl.Utilities.Singleton
         /// </remarks>
         private void Init()
         {
-            if (Instance != null)
+            if (Instance is not null)
             {
                 Destroy(base.gameObject);
                 return;
