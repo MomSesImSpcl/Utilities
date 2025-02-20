@@ -51,7 +51,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_OffsetDegrees">Additional angular offset (e.g., -90 if sprite faces up).</param>
         /// <param name="_DefaultRotation"><see cref="Transform.rotation"/> to return if <see cref="Transform.position"/>s are identical.</param>
         /// <returns>The <see cref="Transform.rotation"/> that is needed to look at the given <c>_Target</c>.</returns>
-        public static Quaternion Get2DLookAtRotation(this Vector2 _Source, Vector2 _Target, float _OffsetDegrees = 0f, Quaternion? _DefaultRotation = null)
+        public static Quaternion Get2DLookAtRotation(this Vector2 _Source, Vector2 _Target, float _OffsetDegrees = -90f, Quaternion? _DefaultRotation = null)
         {
             var _direction = _Target - _Source;
 
