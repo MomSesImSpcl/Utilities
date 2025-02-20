@@ -26,6 +26,14 @@ namespace MomSesImSpcl.Utilities
         /// </summary>
         PublicInstanceDeclaredIgnoreCase = PublicInstanceDeclared | PublicInstanceIgnoreCase,
         /// <summary>
+        /// <see cref="PublicInstance"/> | <see cref="BindingFlags.FlattenHierarchy"/>.
+        /// </summary>
+        PublicInstanceFlattened = PublicInstance | BindingFlags.FlattenHierarchy,
+        /// <summary>
+        /// <see cref="PublicInstanceFlattened"/> | <see cref="PublicInstanceIgnoreCase"/>.
+        /// </summary>
+        PublicInstanceFlattenedIgnoreCase = PublicInstanceFlattened | PublicInstanceIgnoreCase,
+        /// <summary>
         /// <see cref="BindingFlags.NonPublic"/> | <see cref="BindingFlags.Instance"/>.
         /// </summary>
         NonPublicInstance = BindingFlags.NonPublic | BindingFlags.Instance,
@@ -41,6 +49,14 @@ namespace MomSesImSpcl.Utilities
         /// <see cref="NonPublicInstanceDeclared"/> | <see cref="NonPublicInstanceIgnoreCase"/>.
         /// </summary>
         NonPublicInstanceDeclaredIgnoreCase = NonPublicInstanceDeclared | NonPublicInstanceIgnoreCase,
+        /// <summary>
+        /// <see cref="NonPublicInstance"/> | <see cref="BindingFlags.FlattenHierarchy"/>.
+        /// </summary>
+        NonPublicInstanceFlattened = NonPublicInstance | BindingFlags.FlattenHierarchy,
+        /// <summary>
+        /// <see cref="NonPublicInstance"/> | <see cref="NonPublicInstanceIgnoreCase"/>.
+        /// </summary>
+        NonPublicInstanceFlattenedIgnoreCase = NonPublicInstance | NonPublicInstanceIgnoreCase,
         /// <summary>
         /// <see cref="BindingFlags.Public"/> | <see cref="BindingFlags.Static"/>.
         /// </summary>
@@ -106,6 +122,14 @@ namespace MomSesImSpcl.Utilities
         /// </summary>
         AllInstanceDeclaredIgnoreCase = PublicInstanceDeclaredIgnoreCase | NonPublicInstanceDeclaredIgnoreCase,
         /// <summary>
+        /// <see cref="PublicInstanceFlattened"/> | <see cref="NonPublicInstanceFlattened"/>.
+        /// </summary>
+        AllInstanceFlattened = PublicInstanceFlattened | NonPublicInstanceFlattened,
+        /// <summary>
+        /// <see cref="PublicInstanceFlattenedIgnoreCase"/> | <see cref="NonPublicInstanceFlattenedIgnoreCase"/>.
+        /// </summary>
+        AllInstanceFlattenedIgnoreCase = PublicInstanceFlattenedIgnoreCase | NonPublicInstanceFlattenedIgnoreCase,
+        /// <summary>
         /// <see cref="PublicStatic"/> | <see cref="NonPublicStatic"/>.
         /// </summary>
         AllStatic = PublicStatic | NonPublicStatic,
@@ -138,9 +162,9 @@ namespace MomSesImSpcl.Utilities
         /// </summary>
         AllInstDeclaredIgnoreCase = AllInstanceDeclaredIgnoreCase | AllStaticDeclaredIgnoreCase,
         /// <summary>
-        /// <see cref="AllInstance"/> | <see cref="AllStaticFlattened"/>.
+        /// <see cref="AllInstanceFlattened"/> | <see cref="AllStaticFlattened"/>.
         /// </summary>
-        All = AllInstance | AllStaticFlattened,
+        All = AllInstanceFlattened | AllStaticFlattened,
         /// <summary>
         /// <see cref="AllInstanceIgnoreCase"/> | <see cref="AllStaticFlattenedIgnoreCase"/>.
         /// </summary>
