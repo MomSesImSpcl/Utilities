@@ -9,13 +9,21 @@ namespace MomSesImSpcl.Data
     /// </summary>
     public sealed class CustomEventTrigger : EventTrigger
     {
-         #region Inspector Fields
-         [Tooltip("Optional flag to differentiate this EventTrigger from others on the same GameObject.\nMust be a class that implements the IFlag interface.")]
-         [SerializeField] private InterfaceReference<IFlag> flag;
-         #endregion
+        #region Inspector Fields
+#if UNITY_EDITOR
+        [Tooltip("Use this to add optional information for this GameObject.")]
+        [SerializeField][TextArea] private string comment;        
+#endif
+        [Tooltip("Optional flag to differentiate this EventTrigger from others on the same GameObject.\nMust be a class that implements the IFlag interface.")]
+        [SerializeField] private InterfaceReference<IFlag> flag;
+        #endregion
          
 #if UNITY_EDITOR
         #region Constants
+        /// <summary>
+        /// Refactor resistant field name for <see cref="comment"/>.
+        /// </summary>
+        public const string COMMENT = nameof(comment);
         /// <summary>
         /// Refactor resistant field name for <see cref="Flag"/>.
         /// </summary>
