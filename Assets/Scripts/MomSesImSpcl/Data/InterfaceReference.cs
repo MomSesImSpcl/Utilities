@@ -12,7 +12,7 @@ namespace MomSesImSpcl.Data
     public sealed class InterfaceReference<T> : ISerializationCallbackReceiver where T : class
     {
         #region Inspector Fields
-        [Tooltip("The class that implements the interface.")]
+        [Tooltip("Reference to the Object that implements the given interface of type T.")]
         [SerializeField] private Object target;
         #endregion
         
@@ -35,6 +35,7 @@ namespace MomSesImSpcl.Data
         #region Methods
         private void OnValidate()
         {
+#if UNITY_EDITOR
             if (this.target is T || this.target is not GameObject _gameObject)
             {
                 return;
@@ -57,6 +58,7 @@ namespace MomSesImSpcl.Data
             {
                 Debug.LogWarning($"The given GameObject doesn't implement the interface: {typeof(T).Name}");
             }
+#endif
         }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize() => this.OnValidate();
