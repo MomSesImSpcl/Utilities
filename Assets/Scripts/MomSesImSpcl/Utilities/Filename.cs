@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using MomSesImSpcl.Extensions;
 using MomSesImSpcl.Utilities.Pooling;
@@ -25,15 +25,31 @@ namespace MomSesImSpcl.Utilities
         /// <summary>
         /// Regular expression used to identify escaped invalid filename characters in their wrapped hexadecimal representation.
         /// </summary>
-        private static Regex FromFilenameRegex { get; } = new($@"\{WRAPPER}.*?\{WRAPPER}");
+        private static Regex FromFilenameRegex { get; } = new(InitFromFilenameRegex());
         /// <summary>
         /// An array containing characters that are not allowed in filenames.
         /// These characters will be used to identify and escape invalid filename characters.
         /// </summary>
-        private static char[] InvalidFilenameCharacters { get; } = Path.GetInvalidFileNameChars();
+        private static HashSet<char> InvalidFilenameCharacters { get; } = new(Path.GetInvalidFileNameChars());
         #endregion
         
         #region Methods
+        /// <summary>
+        /// Initializes the <see cref="FromFilenameRegex"/> with its <see cref="Regex"/> pattern.
+        /// </summary>
+        /// <returns>The <see cref="Regex"/> pattern <see cref="string"/> that is used in <see cref="FromFilenameRegex"/>.</returns>
+        private static string InitFromFilenameRegex()
+        {
+            var _poolWrapper = ObjectPools.StringBuilderPool.Get();
+
+            _poolWrapper.StringBuilder.Append('\\');
+            _poolWrapper.StringBuilder.Append(WRAPPER);
+            _poolWrapper.StringBuilder.Append(".*?\\");
+            _poolWrapper.StringBuilder.Append(WRAPPER);
+
+            return _poolWrapper.Return();
+        }
+        
         /// <summary>
         /// Unescapes all characters that were previously escaped in a filename string and returns the original characters.
         /// </summary>
@@ -43,7 +59,12 @@ namespace MomSesImSpcl.Utilities
         {
             return FromFilenameRegex.Replace(_Filename, _Match =>
             {
-                var _hexValue = _Match.Value.ExtractBetween($@"\{WRAPPER}", $@"\{WRAPPER}");
+                var _poolWrapper = ObjectPools.StringBuilderPool.Get();
+                _poolWrapper.StringBuilder.Append('\\');
+                _poolWrapper.StringBuilder.Append(WRAPPER);
+
+                var _pattern = _poolWrapper.Return();
+                var _hexValue = _Match.Value.ExtractBetween(_pattern, _pattern);
                 
                 return ((char)Convert.ToInt32(_hexValue, 16)).ToString();
             });
@@ -57,15 +78,15 @@ namespace MomSesImSpcl.Utilities
         /// <returns>The <c>_Filename</c> with all invalid characters converted to their hexadecimal representations.</returns>
         public static string EscapeFilename(string _Filename)
         {
-            const char _WRAPPER = '$';
-
             var _poolWrapper = ObjectPools.StringBuilderPool.Get();
             
             foreach (var _character in _Filename)
             {
                 if (InvalidFilenameCharacters.Contains(_character))
                 {
-                    _poolWrapper.StringBuilder.Append($"{_WRAPPER}{(int)_character:X2}{_WRAPPER}");
+                    _poolWrapper.StringBuilder.Append(WRAPPER);
+                    _poolWrapper.StringBuilder.Append(((int)_character).ToString("X2"));
+                    _poolWrapper.StringBuilder.Append(WRAPPER);
                 }
                 else
                 {
