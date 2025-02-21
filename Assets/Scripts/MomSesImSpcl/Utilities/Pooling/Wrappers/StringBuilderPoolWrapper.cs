@@ -38,6 +38,74 @@ namespace MomSesImSpcl.Utilities.Pooling.Wrappers
             
             return _string;
         }
+
+        /// <summary>
+        /// Retrieves a <see cref="System.Text.StringBuilder"/> from <see cref="ObjectPools"/>.<see cref="ObjectPools.StringBuilderPool"/> and appends the given <see cref="string"/> to it.
+        /// </summary>
+        /// <param name="_String1">The <see cref="string"/> to append to the retrieved <see cref="System.Text.StringBuilder"/>.</param>
+        /// <returns>The <see cref="string"/> inside the retrieved <see cref="System.Text.StringBuilder"/>.</returns>
+        public static string Append(string _String1)
+        {
+            var _poolWrapper = ObjectPools.StringBuilderPool.Get();
+            
+            _poolWrapper.StringBuilder.Append(_String1);
+            
+            return _poolWrapper.Return();
+        }
+        
+        /// <summary>
+        /// Retrieves a <see cref="System.Text.StringBuilder"/> from <see cref="ObjectPools"/>.<see cref="ObjectPools.StringBuilderPool"/> and appends the given <see cref="string"/> to it.
+        /// </summary>
+        /// <param name="_String1">The first <see cref="string"/> to append to the retrieved <see cref="System.Text.StringBuilder"/>.</param>
+        /// <param name="_String2">The second <see cref="string"/> to append to the retrieved <see cref="System.Text.StringBuilder"/>.</param>
+        /// <returns>The <see cref="string"/> inside the retrieved <see cref="System.Text.StringBuilder"/>.</returns>
+        public static string Append(string _String1, string _String2)
+        {
+            var _poolWrapper = ObjectPools.StringBuilderPool.Get();
+            
+            _poolWrapper.StringBuilder.Append(_String1);
+            _poolWrapper.StringBuilder.Append(_String2);
+            
+            return _poolWrapper.Return();
+        }
+        
+        /// <summary>
+        /// Retrieves a <see cref="System.Text.StringBuilder"/> from <see cref="ObjectPools"/>.<see cref="ObjectPools.StringBuilderPool"/> and appends the given <see cref="string"/> to it.
+        /// </summary>
+        /// <param name="_String1">The first <see cref="string"/> to append to the retrieved <see cref="System.Text.StringBuilder"/>.</param>
+        /// <param name="_String2">The second <see cref="string"/> to append to the retrieved <see cref="System.Text.StringBuilder"/>.</param>
+        /// <param name="_String3">The third <see cref="string"/> to append to the retrieved <see cref="System.Text.StringBuilder"/>.</param>
+        /// <returns>The <see cref="string"/> inside the retrieved <see cref="System.Text.StringBuilder"/>.</returns>
+        public static string Append(string _String1, string _String2, string _String3)
+        {
+            var _poolWrapper = ObjectPools.StringBuilderPool.Get();
+            
+            _poolWrapper.StringBuilder.Append(_String1);
+            _poolWrapper.StringBuilder.Append(_String2);
+            _poolWrapper.StringBuilder.Append(_String3);
+            
+            return _poolWrapper.Return();
+        }
+        
+        /// <summary>
+        /// Retrieves a <see cref="System.Text.StringBuilder"/> from <see cref="ObjectPools"/>.<see cref="ObjectPools.StringBuilderPool"/> and appends the given <see cref="string"/> to it.
+        /// </summary>
+        /// <param name="_String1">The first <see cref="string"/> to append to the retrieved <see cref="System.Text.StringBuilder"/>.</param>
+        /// <param name="_String2">The second <see cref="string"/> to append to the retrieved <see cref="System.Text.StringBuilder"/>.</param>
+        /// <param name="_String3">The third <see cref="string"/> to append to the retrieved <see cref="System.Text.StringBuilder"/>.</param>
+        /// <param name="_String4">The fourth <see cref="string"/> to append to the retrieved <see cref="System.Text.StringBuilder"/>.</param>
+        /// <returns>The <see cref="string"/> inside the retrieved <see cref="System.Text.StringBuilder"/>.</returns>
+        public static string Append(string _String1, string _String2, string _String3, string _String4)
+        {
+            var _poolWrapper = ObjectPools.StringBuilderPool.Get();
+            
+            _poolWrapper.StringBuilder.Append(_String1);
+            _poolWrapper.StringBuilder.Append(_String2);
+            _poolWrapper.StringBuilder.Append(_String3);
+            _poolWrapper.StringBuilder.Append(_String4);
+            
+            return _poolWrapper.Return();
+        }
         #endregion
     }
 }
