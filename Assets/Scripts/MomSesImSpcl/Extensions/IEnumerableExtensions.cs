@@ -82,6 +82,23 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Iterates over each element in the <see cref="IEnumerable"/> and executes the provided <see cref="Action{T}"/>.
+        /// </summary>
+        /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to iterate over.</param>
+        /// <param name="_Action">The <see cref="Action{T}"/> to perform + the current index of the element in the <see cref="IEnumerable{T}"/>.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="IEnumerable{T}"/>.</typeparam>
+        public static void For<T>(this IEnumerable<T> _Enumerable, Action<T,int> _Action)
+        {
+            using var _enumerator = _Enumerable.GetEnumerator();
+
+            var _index = 0;
+            while (_enumerator.MoveNext())
+            {
+                _Action(_enumerator.Current, _index++);
+            }
+        }
+        
+        /// <summary>
         /// Returns a random element from the specified enumerable.
         /// </summary>
         /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to select a random element from.</param>
