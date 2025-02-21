@@ -12,6 +12,10 @@ namespace MomSesImSpcl.Editor.CustomEditors
     {
         #region Fields
         /// <summary>
+        /// <see cref="CustomEventTrigger.comment"/>.
+        /// </summary>
+        private SerializedProperty inspectorCommentField;
+        /// <summary>
         /// <see cref="CustomEventTrigger.Flag"/>.
         /// </summary>
         private SerializedProperty flagField;
@@ -22,6 +26,7 @@ namespace MomSesImSpcl.Editor.CustomEditors
         {
             base.OnEnable();
             
+            this.inspectorCommentField = base.serializedObject.FindProperty(CustomEventTrigger.COMMENT);
             this.flagField = base.serializedObject.FindProperty(CustomEventTrigger.FLAG);
         }
 
@@ -29,6 +34,7 @@ namespace MomSesImSpcl.Editor.CustomEditors
         {
             base.serializedObject.Update();
             
+            EditorGUILayout.PropertyField(this.inspectorCommentField);
             EditorGUILayout.PropertyField(this.flagField);
             
             base.serializedObject.ApplyModifiedProperties();
