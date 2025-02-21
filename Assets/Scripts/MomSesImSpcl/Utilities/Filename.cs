@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using MomSesImSpcl.Extensions;
 using MomSesImSpcl.Utilities.Pooling;
+using MomSesImSpcl.Utilities.Pooling.Wrappers;
 
 namespace MomSesImSpcl.Utilities
 {
@@ -38,17 +39,7 @@ namespace MomSesImSpcl.Utilities
         /// Initializes the <see cref="FromFilenameRegex"/> with its <see cref="Regex"/> pattern.
         /// </summary>
         /// <returns>The <see cref="Regex"/> pattern <see cref="string"/> that is used in <see cref="FromFilenameRegex"/>.</returns>
-        private static string InitFromFilenameRegex()
-        {
-            var _poolWrapper = ObjectPools.StringBuilderPool.Get();
-
-            _poolWrapper.StringBuilder.Append('\\');
-            _poolWrapper.StringBuilder.Append(WRAPPER);
-            _poolWrapper.StringBuilder.Append(".*?\\");
-            _poolWrapper.StringBuilder.Append(WRAPPER);
-
-            return _poolWrapper.Return();
-        }
+        private static string InitFromFilenameRegex() => StringBuilderPoolWrapper.Append("\\", WRAPPER.ToString(), ".*?\\", WRAPPER.ToString());
         
         /// <summary>
         /// Unescapes all characters that were previously escaped in a filename string and returns the original characters.
@@ -59,11 +50,7 @@ namespace MomSesImSpcl.Utilities
         {
             return FromFilenameRegex.Replace(_Filename, _Match =>
             {
-                var _poolWrapper = ObjectPools.StringBuilderPool.Get();
-                _poolWrapper.StringBuilder.Append('\\');
-                _poolWrapper.StringBuilder.Append(WRAPPER);
-
-                var _pattern = _poolWrapper.Return();
+                var _pattern = StringBuilderPoolWrapper.Append("\\", WRAPPER.ToString());
                 var _hexValue = _Match.Value.ExtractBetween(_pattern, _pattern);
                 
                 return ((char)Convert.ToInt32(_hexValue, 16)).ToString();
