@@ -32,6 +32,28 @@ namespace MomSesImSpcl.Extensions
         };
         
         /// <summary>
+        /// Divides the components of a Vector3 by a specified value.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to be divided from.</param>
+        /// <param name="_Value">The value to divide from the component(s).</param>
+        /// <returns>A new <see cref="Vector3"/> with the divided value.</returns>
+        public static Vector3 Divide(this Vector3 _Vector3, float _Value)
+        {
+            return new Vector3(_Vector3.x / _Value, _Vector3.y / _Value, _Vector3.z / _Value);
+        }
+        
+        /// <summary>
+        /// Divides the components of a Vector3 by a specified values.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to be divided from.</param>
+        /// <param name="_Values">The values to divide from the component(s).</param>
+        /// <returns>A new <see cref="Vector3"/> with the divided values.</returns>
+        public static Vector3 Divide(this Vector3 _Vector3, Vector3 _Values)
+        {
+            return new Vector3(_Vector3.x / _Values.x, _Vector3.y / _Values.y, _Vector3.z / _Values.z);
+        }
+        
+        /// <summary>
         /// Gets a new <see cref="Vector3"/> with the values of this <see cref="Vector3"/> for the given <see cref="Axis"/>. <br/>
         /// <i>ALl other <see cref="Axis"/> values will be <c>0</c>.</i>
         /// </summary>
@@ -186,6 +208,28 @@ namespace MomSesImSpcl.Extensions
         };
 
         /// <summary>
+        /// Subtracts the components of a Vector3 by a specified value.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to be subtracted from.</param>
+        /// <param name="_Value">The value to subtract from the component(s).</param>
+        /// <returns>A new <see cref="Vector3"/> with the subtracted value.</returns>
+        public static Vector3 Minus(this Vector3 _Vector3, float _Value)
+        {
+            return new Vector3(_Vector3.x - _Value, _Vector3.y - _Value, _Vector3.z - _Value);
+        }
+        
+        /// <summary>
+        /// Subtracts the components of a Vector3 by a specified values.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to be subtracted from.</param>
+        /// <param name="_Values">The values to subtract from the component(s).</param>
+        /// <returns>A new <see cref="Vector3"/> with the subtracted values.</returns>
+        public static Vector3 Minus(this Vector3 _Vector3, Vector3 _Values)
+        {
+            return new Vector3(_Vector3.x - _Values.x, _Vector3.y - _Values.y, _Vector3.z - _Values.z);
+        }
+        
+        /// <summary>
         /// Multiplies the components of a Vector3 by a specified value along the given axis.
         /// </summary>
         /// <param name="_Vector3">The Vector3 to be multiplied.</param>
@@ -205,6 +249,28 @@ namespace MomSesImSpcl.Extensions
             _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
 
+        /// <summary>
+        /// Multiplies the components of a Vector3 by a specified value.
+        /// </summary>
+        /// <param name="_Vector3">The Vector3 to be multiplied.</param>
+        /// <param name="_Value">The value by which to multiply the component(s).</param>
+        /// <returns>A new Vector3 with the multiplied values.</returns>
+        public static Vector3 Multiply(this Vector3 _Vector3, float _Value)
+        {
+            return new Vector3(_Vector3.x * _Value, _Vector3.y * _Value, _Vector3.z * _Value);
+        }
+        
+        /// <summary>
+        /// Multiplies the components of a Vector3 by a specified values.
+        /// </summary>
+        /// <param name="_Vector3">The Vector3 to be multiplied.</param>
+        /// <param name="_Values">The value by which to multiply the component(s).</param>
+        /// <returns>A new Vector3 with the multiplied values.</returns>
+        public static Vector3 Multiply(this Vector3 _Vector3, Vector3 _Values)
+        {
+            return new Vector3(_Vector3.x * _Values.x, _Vector3.y * _Values.y, _Vector3.z * _Values.z);
+        }
+        
         /// <summary>
         /// Performs a mathematical <see cref="Utilities.Operation"/> on the given <see cref="Axis"/> of this <see cref="Vector3"/>.
         /// </summary>
@@ -269,6 +335,28 @@ namespace MomSesImSpcl.Extensions
             Axis.XYZ => new Vector3(_Vector3.x + _Value, _Vector3.y + _Value, _Vector3.z + _Value),
             _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
+        
+        /// <summary>
+        /// Adds the components of a Vector3 by a specified value.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to add to.</param>
+        /// <param name="_Value">The value to add to the component(s).</param>
+        /// <returns>A new <see cref="Vector3"/> with the added value.</returns>
+        public static Vector3 Plus(this Vector3 _Vector3, float _Value)
+        {
+            return new Vector3(_Vector3.x + _Value, _Vector3.y + _Value, _Vector3.z + _Value);
+        }
+        
+        /// <summary>
+        /// Adds the components of a Vector3 by a specified values.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to add to.</param>
+        /// <param name="_Values">The values to add to the component(s).</param>
+        /// <returns>A new <see cref="Vector3"/> with the added values.</returns>
+        public static Vector3 Plus(this Vector3 _Vector3, Vector3 _Values)
+        {
+            return new Vector3(_Vector3.x + _Values.x, _Vector3.y + _Values.y, _Vector3.z + _Values.z);
+        }
         
         /// <summary>
         /// Sets the component(s) of a <see cref="Vector3"/> to a specified value along the given axis.
