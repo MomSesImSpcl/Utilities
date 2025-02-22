@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using MomSesImSpcl.Utilities.Logging;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -15,6 +16,27 @@ namespace MomSesImSpcl.Extensions
     public static class StringExtensions
     {
         #region Methods
+        /// <summary>
+        /// Wraps this <see cref="string"/> in a Rich Text bold tag.
+        /// </summary>
+        /// <param name="_String">The <see cref="string"/> to wrap.</param>
+        /// <returns>The <see cref="string"/> wrapped in an bold tag.</returns>
+        public static string Bold(this string? _String)
+        {
+            return $"<b>{_String}</b>";
+        }
+        
+        /// <summary>
+        /// Wraps this <see cref="string"/> in a Rich Text color tag.
+        /// </summary>
+        /// <param name="_String">The <see cref="string"/> to wrap.</param>
+        /// <param name="_Color">The <see cref="RichTextColor"/> to wrap the <see cref="string"/> with.</param>
+        /// <returns>The <see cref="string"/> wrapped in an color tag.</returns>
+        public static string Color(this string? _String, RichTextColor _Color)
+        {
+            return $"<color={_Color}>{_String.OrNull()}</color>";
+        }
+        
         /// <summary>
         /// Converts the specified string to title case.
         /// </summary>
@@ -341,6 +363,16 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Wraps this <see cref="string"/> in a Rich Text italic tag.
+        /// </summary>
+        /// <param name="_String">The <see cref="string"/> to wrap.</param>
+        /// <returns>The <see cref="string"/> wrapped in an italic tag.</returns>
+        public static string Italic(this string? _String)
+        {
+            return $"<i>{_String}</i>";
+        }
+        
+        /// <summary>
         /// Finds the nth occurrence of a specified value in the given string.
         /// </summary>
         /// <param name="_String">The string to search within.</param>
@@ -393,6 +425,16 @@ namespace MomSesImSpcl.Extensions
             return _index;
         }
 
+        /// <summary>
+        /// Returns the <see cref="string"/> or <c>null</c> as a <see cref="string"/> if the <see cref="string"/> is <c>null</c>.
+        /// </summary>
+        /// <param name="_String">The <see cref="string"/> to return.</param>
+        /// <returns>The <see cref="string"/> or <c>null</c> as a <see cref="string"/> if the <see cref="string"/> is <c>null</c>.</returns>
+        public static string OrNull(this string? _String)
+        {
+            return _String ?? "null";
+        }
+        
         /// <summary>
         /// Removes the specified character from the input string.
         /// </summary>
@@ -599,10 +641,20 @@ namespace MomSesImSpcl.Extensions
         /// Converts the specified string to a URL-friendly format.
         /// </summary>
         /// <param name="_String">The <see cref="string"/> to convert.</param>
-        /// <returns>The converted <see cref="string"/> in URL-friendly format.</returns
+        /// <returns>The converted <see cref="string"/> in URL-friendly format.</returns>
         public static string ToURLString(this string _String)
         {
             return Uri.EscapeDataString(_String.Replace(' ', '_'));
+        }
+        
+        /// <summary>
+        /// Wraps this <see cref="string"/> in a Rich Text underline tag.
+        /// </summary>
+        /// <param name="_String">The <see cref="string"/> to wrap.</param>
+        /// <returns>The <see cref="string"/> wrapped in an underline tag.</returns>
+        public static string Underline(this string? _String)
+        {
+            return $"<u>{_String}</u>";
         }
         #endregion
     }
