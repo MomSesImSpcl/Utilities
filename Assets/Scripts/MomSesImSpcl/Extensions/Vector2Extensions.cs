@@ -28,6 +28,28 @@ namespace MomSesImSpcl.Extensions
         };
 
         /// <summary>
+        /// Divides the components of a Vector2 by a specified value.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to be divided from.</param>
+        /// <param name="_Value">The value to divide from the component(s).</param>
+        /// <returns>A new <see cref="Vector2"/> with the divided value.</returns>
+        public static Vector2 Divide(this Vector2 _Vector2, float _Value)
+        {
+            return new Vector2(_Vector2.x / _Value, _Vector2.y / _Value);
+        }
+        
+        /// <summary>
+        /// Divides the components of a Vector2 by a specified values.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to be divided from.</param>
+        /// <param name="_Values">The values to divide from the component(s).</param>
+        /// <returns>A new <see cref="Vector2"/> with the divided values.</returns>
+        public static Vector2 Divide(this Vector2 _Vector2, Vector2 _Values)
+        {
+            return new Vector2(_Vector2.x / _Values.x, _Vector2.y / _Values.y);
+        }
+        
+        /// <summary>
         /// Gets a new <see cref="Vector2"/> with the values of this <see cref="Vector2"/> for the given <see cref="Axis"/>. <br/>
         /// <i>ALl other <see cref="Axis"/> values will be <c>0</c>.</i>
         /// </summary>
@@ -82,6 +104,28 @@ namespace MomSesImSpcl.Extensions
         };
 
         /// <summary>
+        /// Subtracts the components of a Vector2 by a specified value.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to be subtracted from.</param>
+        /// <param name="_Value">The value to subtract from the component(s).</param>
+        /// <returns>A new <see cref="Vector2"/> with the subtracted value.</returns>
+        public static Vector2 Minus(this Vector2 _Vector2, float _Value)
+        {
+            return new Vector2(_Vector2.x - _Value, _Vector2.y - _Value);
+        }
+        
+        /// <summary>
+        /// Subtracts the components of a Vector2 by a specified values.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to be subtracted from.</param>
+        /// <param name="_Values">The values to subtract from the component(s).</param>
+        /// <returns>A new <see cref="Vector2"/> with the subtracted values.</returns>
+        public static Vector2 Minus(this Vector2 _Vector2, Vector2 _Values)
+        {
+            return new Vector2(_Vector2.x - _Values.x, _Vector2.y - _Values.y);
+        }
+        
+        /// <summary>
         /// Multiplies <c>_Vector2</c> by <c>_Value</c> on the given <c>_Axis</c>.
         /// </summary>
         /// <param name="_Vector2">The <see cref="Vector2"/> to multiply the value for.</param>
@@ -97,6 +141,28 @@ namespace MomSesImSpcl.Extensions
             _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
 
+        /// <summary>
+        /// Multiplies the components of a Vector2 by a specified value.
+        /// </summary>
+        /// <param name="_Vector2">The Vector2 to be multiplied.</param>
+        /// <param name="_Value">The value by which to multiply the component(s).</param>
+        /// <returns>A new Vector2 with the multiplied values.</returns>
+        public static Vector2 Multiply(this Vector2 _Vector2, float _Value)
+        {
+            return new Vector2(_Vector2.x * _Value, _Vector2.y * _Value);
+        }
+        
+        /// <summary>
+        /// Multiplies the components of a Vector2 by a specified values.
+        /// </summary>
+        /// <param name="_Vector2">The Vector2 to be multiplied.</param>
+        /// <param name="_Values">The value by which to multiply the component(s).</param>
+        /// <returns>A new Vector2 with the multiplied values.</returns>
+        public static Vector2 Multiply(this Vector2 _Vector2, Vector2 _Values)
+        {
+            return new Vector2(_Vector2.x * _Values.x, _Vector2.y * _Values.y);
+        }
+        
         /// <summary>
         /// Performs a mathematical <see cref="Utilities.Operation"/> on the given <see cref="Axis"/> of this <see cref="Vector3"/>.
         /// </summary>
@@ -158,6 +224,28 @@ namespace MomSesImSpcl.Extensions
             _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
         };
 
+        /// <summary>
+        /// Adds the components of a Vector2 by a specified value.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to add to.</param>
+        /// <param name="_Value">The value to add to the component(s).</param>
+        /// <returns>A new <see cref="Vector2"/> with the added value.</returns>
+        public static Vector2 Plus(this Vector2 _Vector2, float _Value)
+        {
+            return new Vector2(_Vector2.x + _Value, _Vector2.y + _Value);
+        }
+        
+        /// <summary>
+        /// Adds the components of a Vector2 by a specified values.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to add to.</param>
+        /// <param name="_Values">The values to add to the component(s).</param>
+        /// <returns>A new <see cref="Vector2"/> with the added values.</returns>
+        public static Vector2 Plus(this Vector2 _Vector2, Vector2 _Values)
+        {
+            return new Vector2(_Vector2.x + _Values.x, _Vector2.y + _Values.y);
+        }
+        
         /// <summary>
         /// Sets the value of <c>_Vector2</c> on the specified <c>_Axis</c>.
         /// </summary>
