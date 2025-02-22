@@ -24,7 +24,7 @@ namespace MomSesImSpcl.Extensions
                 return _memberExpression.Member.Name;
             }
             
-            throw new ArgumentException($"The given Expression [{_Member.Bold()}] is not a Field or Property.");
+            throw new ArgumentException($"The given Expression [{_Member.ToString().Bold()}] is not a Field or Property.");
         }
         #endregion
     }
