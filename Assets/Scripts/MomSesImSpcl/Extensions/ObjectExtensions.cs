@@ -22,7 +22,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Object">The <see cref="object"/> to get the <see cref="object.ToString"/>-output of.</param>
         /// <returns>A <see cref="string"/> containing this object's <see cref="object.ToString"/>-output, wrapped in a bold tag.</returns>
-        public static string Bold(this object? _Object)
+        public static string Bold<T>(this T? _Object)
         {
             return $"<b>{_Object.OrNull()}</b>";
         }
@@ -33,7 +33,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Object">The <see cref="object"/> to get the <see cref="object.ToString"/>-output of.</param>
         /// <param name="_Color">The <see cref="RichTextColor"/> to wrap the <see cref="object.ToString"/>-output with.</param>
         /// <returns>A <see cref="string"/> containing this object's <see cref="object.ToString"/>-output, wrapped in the specified color tag.</returns>
-        public static string Color(this object? _Object, RichTextColor _Color)
+        public static string Color<T>(this T? _Object, RichTextColor _Color)
         {
             return $"<color={_Color}>{_Object.OrNull()}</color>";
         }
@@ -113,7 +113,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Object">The <see cref="object"/> to get the <see cref="object.ToString"/>-output of.</param>
         /// <returns>A <see cref="string"/> containing this object's <see cref="object.ToString"/>-output, wrapped in an italic tag.</returns>
-        public static string Italic(this object? _Object)
+        public static string Italic<T>(this T? _Object)
         {
             return $"<i>{_Object.OrNull()}</i>";
         }
@@ -123,11 +123,11 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Object">The object to get the string representation of.</param>
         /// <returns>A string representing the object, or "null" if the object is null.</returns>
-        public static string OrNull(this object? _Object)
+        public static string OrNull<T>(this T? _Object)
         {
             return _Object?.ToString() ?? "null";
         }
-
+        
         /// <summary>
         /// Sets the value of an instance Field through reflection.
         /// </summary>
@@ -272,7 +272,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Object">The <see cref="object"/> to get the <see cref="object.ToString"/>-output of.</param>
         /// <returns>A <see cref="string"/> containing this object's <see cref="object.ToString"/>-output, wrapped in an underline tag.</returns>
-        public static string Underline(this object? _Object)
+        public static string Underline<T>(this T? _Object)
         {
             return $"<u>{_Object.OrNull()}</u>";
         }
@@ -283,7 +283,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Object">The object whose string representation will be converted to a MemoryStream.</param>
         /// <param name="_Encoding">The encoding to use for the conversion.</param>
         /// <returns>A MemoryStream containing the encoded string representation of the specified object.</returns>
-        public static MemoryStream ToMemoryStream(this object? _Object, Encoding _Encoding)
+        public static MemoryStream ToMemoryStream<T>(this T? _Object, Encoding _Encoding)
         {
             return new MemoryStream(_Encoding.GetBytes(_Object?.ToString()?.OrNull()!));
         }
