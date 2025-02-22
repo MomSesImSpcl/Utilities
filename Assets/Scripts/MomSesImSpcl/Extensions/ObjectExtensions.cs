@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using MomSesImSpcl.Utilities;
-using MomSesImSpcl.Utilities.Logging;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -17,27 +16,6 @@ namespace MomSesImSpcl.Extensions
     public static class ObjectExtensions
     {
         #region Methods
-        /// <summary>
-        /// Wraps this object's <see cref="object.ToString"/>-output in a Rich Text bold tag.
-        /// </summary>
-        /// <param name="_Object">The <see cref="object"/> to get the <see cref="object.ToString"/>-output of.</param>
-        /// <returns>A <see cref="string"/> containing this object's <see cref="object.ToString"/>-output, wrapped in a bold tag.</returns>
-        public static string Bold<T>(this T? _Object)
-        {
-            return $"<b>{_Object.OrNull()}</b>";
-        }
-        
-        /// <summary>
-        /// Wraps this object's <see cref="object.ToString"/>-output in a Rich Text color tag.
-        /// </summary>
-        /// <param name="_Object">The <see cref="object"/> to get the <see cref="object.ToString"/>-output of.</param>
-        /// <param name="_Color">The <see cref="RichTextColor"/> to wrap the <see cref="object.ToString"/>-output with.</param>
-        /// <returns>A <see cref="string"/> containing this object's <see cref="object.ToString"/>-output, wrapped in the specified color tag.</returns>
-        public static string Color<T>(this T? _Object, RichTextColor _Color)
-        {
-            return $"<color={_Color}>{_Object.OrNull()}</color>";
-        }
-
         /// <summary>
         /// Gets the value of an instance Field through reflection.
         /// </summary>
@@ -106,26 +84,6 @@ namespace MomSesImSpcl.Extensions
             }
 
             throw new InvalidOperationException(FallbackMemberMessage(_type, _MemberName, _FallbackMembers));
-        }
-        
-        /// <summary>
-        /// Wraps this object's <see cref="object.ToString"/>-output in a Rich Text italic tag.
-        /// </summary>
-        /// <param name="_Object">The <see cref="object"/> to get the <see cref="object.ToString"/>-output of.</param>
-        /// <returns>A <see cref="string"/> containing this object's <see cref="object.ToString"/>-output, wrapped in an italic tag.</returns>
-        public static string Italic<T>(this T? _Object)
-        {
-            return $"<i>{_Object.OrNull()}</i>";
-        }
-
-        /// <summary>
-        /// Returns the string representation of the object, or "null" if the object is null.
-        /// </summary>
-        /// <param name="_Object">The object to get the string representation of.</param>
-        /// <returns>A string representing the object, or "null" if the object is null.</returns>
-        public static string OrNull<T>(this T? _Object)
-        {
-            return _Object?.ToString() ?? "null";
         }
         
         /// <summary>
@@ -267,21 +225,11 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
-        /// Wraps this object's <see cref="object.ToString"/>-output in a Rich Text underline tag. <br/>
-        /// <i>Doesn't work in the default console, but works with TextMeshPro.</i>
-        /// </summary>
-        /// <param name="_Object">The <see cref="object"/> to get the <see cref="object.ToString"/>-output of.</param>
-        /// <returns>A <see cref="string"/> containing this object's <see cref="object.ToString"/>-output, wrapped in an underline tag.</returns>
-        public static string Underline<T>(this T? _Object)
-        {
-            return $"<u>{_Object.OrNull()}</u>";
-        }
-        
-        /// <summary>
         /// Converts the string representation of the specified object to a MemoryStream, using the provided encoding.
         /// </summary>
         /// <param name="_Object">The object whose string representation will be converted to a MemoryStream.</param>
         /// <param name="_Encoding">The encoding to use for the conversion.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="object"/>.</typeparam>
         /// <returns>A MemoryStream containing the encoded string representation of the specified object.</returns>
         public static MemoryStream ToMemoryStream<T>(this T? _Object, Encoding _Encoding)
         {
