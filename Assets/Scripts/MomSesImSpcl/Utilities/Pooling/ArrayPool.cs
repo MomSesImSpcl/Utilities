@@ -133,7 +133,7 @@ namespace MomSesImSpcl.Utilities.Pooling
             if ((_LogArrayBucket || LogArrayBuckets) && !_ForceStopLogging)
             {
                 var _poolType = $"{nameof(ArrayPool<T>)}<{typeof(T).Name}>".Bold();
-                UnityEngine.Debug.Log($"{_poolType}\nLength: [{_Length.Bold()}] | {nameof(_bucket.MaxAmount)}: [{_bucket.MaxAmount.Bold()}] | {nameof(_bucket.RentedCount)}: [{_bucket.RentedCount.Bold()}] | {nameof(_bucket.PeakRentedCount)}: [{_bucket.PeakRentedCount.Bold()}]");
+                UnityEngine.Debug.Log($"{_poolType}\nLength: [{_Length.ToString().Bold()}] | {nameof(_bucket.MaxAmount)}: [{_bucket.MaxAmount.ToString().Bold()}] | {nameof(_bucket.RentedCount)}: [{_bucket.RentedCount.ToString().Bold()}] | {nameof(_bucket.PeakRentedCount)}: [{_bucket.PeakRentedCount.ToString().Bold()}]");
             }
 #endif
             return _array;
