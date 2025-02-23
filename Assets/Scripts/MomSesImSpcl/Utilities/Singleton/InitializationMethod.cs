@@ -17,6 +17,10 @@ namespace MomSesImSpcl.Utilities.Singleton
         /// Will be initialized in the Start method.
         /// </summary>
         Start,
+        /// <summary>
+        /// When the singleton should initialized manually.
+        /// </summary>
+        Manual,
 #if UNITY_EDITOR
         /// <summary>
         /// Will be initialized in the OnValidate method. <br/>
