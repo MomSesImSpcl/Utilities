@@ -1,3 +1,5 @@
+using MomSesImSpcl.Extensions;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Utilities
@@ -8,6 +10,32 @@ namespace MomSesImSpcl.Utilities
     public static class Draw
     {
         #region Methods
+        /// <summary>
+        /// Draws a 2D circle in the scene.
+        /// </summary>
+        /// <param name="_Center">The center <see cref="Transform.position"/> of the circle.</param>
+        /// <param name="_Radius">The radius of the circle.</param>
+        /// <param name="_Color">The color of the sphere lines.</param>
+        /// <param name="_Duration">The duration that the sphere will be visible. Default is 1 second.</param>
+        public static void Circle(Vector3 _Center, float _Radius, Color _Color, float _Duration = 1f)
+        {
+            // Defines how smooth the circle will be, smaller value = smoother.
+            const float _ANGLE_STEP = 1f; // DON'T SET TO 0!
+            var _previousPoint = _Center + Vector3.zero.WithX(_Radius);
+            
+            for (var _angle = _ANGLE_STEP; _angle <= 360f; _angle += _ANGLE_STEP)
+            {
+                var _rad = _angle * Mathf.Deg2Rad;
+                var _x = math.cos(_rad) * _Radius;
+                var _y = math.sin(_rad) * _Radius;
+                var _nextPoint = _Center + Vector3.zero.WithXY(_x, _y);
+                
+                Debug.DrawLine(_previousPoint, _nextPoint, _Color, _Duration);
+                
+                _previousPoint = _nextPoint;
+            }
+        }
+        
         /// <summary>
         /// Draws a wireframe sphere at the given position with the specified radius, color, and duration.
         /// </summary>
