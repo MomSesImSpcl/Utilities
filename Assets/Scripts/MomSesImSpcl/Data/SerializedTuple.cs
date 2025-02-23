@@ -1,7 +1,6 @@
-#if ODIN_INSPECTOR
 #nullable enable
 using System;
-using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
 
 namespace MomSesImSpcl.Data
@@ -11,49 +10,61 @@ namespace MomSesImSpcl.Data
     /// </summary>
     /// <typeparam name="T">The type of the elements in the tuple.</typeparam>
     [Serializable]
-    public sealed class SerializedTuple<T>
+    public struct SerializedTuple<T>
     {
         #region Inspector Fields
-        [HorizontalGroup]
-        [LabelText("$" + nameof(Item1Label))][Tooltip("The first item of the serialized tuple.")]
-        [SerializeField] private T? item1;
-        [HorizontalGroup]
-        [LabelText("$" + nameof(Item2Label))][Tooltip("The second item of the serialized tuple.")]
-        [SerializeField] private T? item2;
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.HorizontalGroup]
+        [Sirenix.OdinInspector.LabelText("$" + nameof(Item1Label))]
+#endif
+        [Tooltip("The first item of the serialized tuple.")]
+        [SerializeField] private T item1;
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.HorizontalGroup]
+        [Sirenix.OdinInspector.LabelText("$" + nameof(Item2Label))]
+#endif
+        [Tooltip("The second item of the serialized tuple.")]
+        [SerializeField] private T item2;
         #endregion
         
         #region Properties
+#if UNITY_EDITOR && ODIN_INSPECTOR
         /// <summary>
-        /// Inspector name for <see cref="item1"/>.
+        /// Refactor resistant name for <see cref="item1"/>. <br/>
+        /// <i>For custom <see cref="PropertyDrawer"/>.</i>
         /// </summary>
-        public string Item1Label { get; set; } = nameof(item1);
+        public string Item1Label { get; set; }
         /// <summary>
-        /// Inspector name for <see cref="item2"/>.
+        /// Refactor resistant name for <see cref="item2"/>. <br/>
+        /// <i>For custom <see cref="PropertyDrawer"/>.</i>
         /// </summary>
-        public string Item2Label { get; set; } = nameof(item2);
-        
+        public string Item2Label { get; set; }
+#endif
         /// <summary>
         /// <see cref="item1"/>.
         /// </summary>
-        public T? Item1 { get => this.item1; set => this.item1 = value; }
+        public T Item1 { get => this.item1; set => this.item1 = value; }
         /// <summary>
         /// <see cref="item2"/>.
         /// </summary>
-        public T? Item2 { get => this.item2; set => this.item2 = value; }
+        public T Item2 { get => this.item2; set => this.item2 = value; }
         #endregion
-
+        
         #region Constructors
         /// <summary>
         /// Creates a new <see cref="SerializedTuple{T}"/> <see cref="object"/>.
         /// </summary>
         /// <param name="_Item1"><see cref="item1"/>.</param>
         /// <param name="_Item2"><see cref="item2"/>.</param>
-        public SerializedTuple(T? _Item1, T? _Item2)
+        public SerializedTuple(T _Item1, T _Item2)
         {
             this.item1 = _Item1;
             this.item2 = _Item2;
+#if UNITY_EDITOR && ODIN_INSPECTOR
+            this.Item1Label = nameof(this.item1);
+            this.Item2Label = nameof(this.item2);
+#endif
         }
         #endregion
     } 
 }
-#endif
