@@ -97,13 +97,20 @@ namespace MomSesImSpcl.Extensions
         /// <i><c>0</c> will be to the right of the center <see cref="Transform.position"/>.</i> <br/>
         /// <i>Positive values will be added anti-clockwise, negative will be added clockwise.</i>
         /// </param>
+        /// <param name="_Visualize">If set to <c>true</c>, the point will be visualized.</param>
         /// <returns>A points on the circumference of a circle around the <see cref="Transform.position"/> of this <see cref="Vector2"/>.</returns>
-        public static Vector2 GetPointAround(this Vector2 _Center, float _Radius, float _Angle)
+        public static Vector2 GetPointAround(this Vector2 _Center, float _Radius, float _Angle, bool _Visualize = false)
         {
             var _angleRad = _Angle * math.TORADIANS;
             var _x = _Center.x + _Radius * math.cos(_angleRad);
             var _y = _Center.y + _Radius * math.sin(_angleRad);
 
+#if UNITY_EDITOR
+            if (_Visualize)
+            {
+                Draw.Angle(_Center, _Radius, _Angle);
+            }
+#endif
             return new Vector2(_x, _y);
         }
         
