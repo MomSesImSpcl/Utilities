@@ -17,7 +17,7 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_Radius">The radius of the circle.</param>
         /// <param name="_Angle">The angle (in degrees) at which to place the point on the circle's circumference.</param>
         /// <param name="_Duration">The duration (in seconds) for which the visualization remains visible.</param>
-        public static void DrawAngle(Vector3 _Center, float _Radius, float _Angle, float _Duration = 1f)
+        public static void Angle(Vector3 _Center, float _Radius, float _Angle, float _Duration = 1f)
         {
             var _point = _Center.ToVector2().GetPointAround(_Radius, _Angle);
             
