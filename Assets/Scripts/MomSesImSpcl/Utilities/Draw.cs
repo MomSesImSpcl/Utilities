@@ -11,6 +11,22 @@ namespace MomSesImSpcl.Utilities
     {
         #region Methods
         /// <summary>
+        /// Draws a visual representation of an angle from the given <c>_Center</c> <see cref="Transform.position"/>.
+        /// </summary>
+        /// <param name="_Center">The center <see cref="Transform.position"/> of the circle.</param>
+        /// <param name="_Radius">The radius of the circle.</param>
+        /// <param name="_Angle">The angle (in degrees) at which to place the point on the circle's circumference.</param>
+        /// <param name="_Duration">The duration (in seconds) for which the visualization remains visible.</param>
+        public static void DrawAngle(Vector3 _Center, float _Radius, float _Angle, float _Duration = 1f)
+        {
+            var _point = _Center.ToVector2().GetPointAround(_Radius, _Angle);
+            
+            Circle(_Center, _Radius, Color.red, _Duration);
+            Sphere(_point, .5f, Color.green, _Duration);
+            Debug.DrawLine(_Center, _point, Color.blue, _Duration);
+        }
+        
+        /// <summary>
         /// Draws a 2D circle in the scene.
         /// </summary>
         /// <param name="_Center">The center <see cref="Transform.position"/> of the circle.</param>
@@ -25,7 +41,7 @@ namespace MomSesImSpcl.Utilities
             
             for (var _angle = _ANGLE_STEP; _angle <= 360f; _angle += _ANGLE_STEP)
             {
-                var _rad = _angle * Mathf.Deg2Rad;
+                var _rad = _angle * math.TORADIANS;
                 var _x = math.cos(_rad) * _Radius;
                 var _y = math.sin(_rad) * _Radius;
                 var _nextPoint = _Center + Vector3.zero.WithXY(_x, _y);
