@@ -86,6 +86,26 @@ namespace MomSesImSpcl.Extensions
             
             return Quaternion.Euler(0f, 0f, _angle + _OffsetDegrees);
         }
+
+        /// <summary>
+        /// Gets a points on the circumference of a circle around the <see cref="Transform.position"/> of this <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_Center">The center of the circle to get the point around.</param>
+        /// <param name="_Radius">Distance from the center of the circle.</param>
+        /// <param name="_Angle">
+        /// The angle at which to get the point. <br/>
+        /// <i><c>0</c> will be to the right of the center <see cref="Transform.position"/>.</i> <br/>
+        /// <i>Positive values will be added anti-clockwise, negative will be added clockwise.</i>
+        /// </param>
+        /// <returns>A points on the circumference of a circle around the <see cref="Transform.position"/> of this <see cref="Vector2"/>.</returns>
+        public static Vector2 GetPointAround(this Vector2 _Center, float _Radius, float _Angle)
+        {
+            var _angleRad = _Angle * math.TORADIANS;
+            var _x = _Center.x + _Radius * math.cos(_angleRad);
+            var _y = _Center.y + _Radius * math.sin(_angleRad);
+
+            return new Vector2(_x, _y);
+        }
         
         /// <summary>
         /// Subtracts a value from <c>_Vector2</c> on the given <c>_Axis</c>.
@@ -281,6 +301,16 @@ namespace MomSesImSpcl.Extensions
                 Axis.XY => _Vector2.Set(Axis.X, _vector2.x).Set(Axis.Y, _vector2.y),
                 _ => throw new ArgumentOutOfRangeException(nameof(_Axis), _Axis, null)
             };
+        }
+
+        /// <summary>
+        /// Converts this <see cref="Vector2"/> to a <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to convert.</param>
+        /// <returns>A new <see cref="Vector3"/> with the value of this <see cref="Vector2"/>.</returns>
+        public static Vector3 ToVector3(this Vector2 _Vector2)
+        {
+            return new Vector3(_Vector2.x, _Vector2.y, 0);
         }
         
         /// <summary>
