@@ -404,6 +404,16 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Converts this <see cref="Vector3"/> to a <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to convert.</param>
+        /// <returns>A new <see cref="Vector2"/> with the value of this <see cref="Vector3"/>.</returns>
+        public static Vector2 ToVector2(this Vector3 _Vector3)
+        {
+            return new Vector2(_Vector3.x, _Vector3.y);
+        }
+        
+        /// <summary>
         /// Converts this <see cref="Vector3"/> to a <see cref="Quaternion"/>.
         /// </summary>
         /// <param name="_Vector3">The <see cref="Vector3"/> to convert to a <see cref="Quaternion"/>.</param>
