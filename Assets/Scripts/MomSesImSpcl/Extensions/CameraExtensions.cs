@@ -1,5 +1,6 @@
-using Unity.Mathematics;
+using MomSesImSpcl.Utilities.Pooling;
 using UnityEngine;
+using math = Unity.Mathematics.math;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -33,7 +34,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>An array containing the positions of the four points that form the corners of the frustum at the given distance.</returns>
         public static Vector3[] CalculateFrustumPoints(this Camera _Camera, float _DistanceFromCamera, bool _ReturnMidpoints = false)
         {
-            var _frustumCorners = new Vector3[4];
+            var _frustumCorners = ArrayPool<Vector3>.Get(4);
             
             if (_Camera.orthographic)
             {
@@ -57,6 +58,17 @@ namespace MomSesImSpcl.Extensions
                 
                 _Camera.CalculateFrustumCorners(_normalizedViewportCoordinates, _DistanceFromCamera, Camera.MonoOrStereoscopicEye.Mono, _frustumCorners);
                 
+                var _halfFovRad = _Camera.fieldOfView * .5f * math.TORADIANS;
+                var _halfHeight = _DistanceFromCamera * math.tan(_halfFovRad);
+                var _halfWidth = _halfHeight * _Camera.aspect;
+                
+                // Define corners in camera space
+                _frustumCorners[0] = new Vector3(-_halfWidth, -_halfHeight, _DistanceFromCamera); // Bottom-left
+                _frustumCorners[1] = new Vector3(-_halfWidth, _halfHeight * 2, _DistanceFromCamera);  // To
+                                                                                                      // p-left
+                _frustumCorners[2] = new Vector3(_halfWidth * 2, _halfHeight, _DistanceFromCamera);   // Top-right
+                _frustumCorners[3] = new Vector3(_halfWidth * 2, -_halfHeight * 2, _DistanceFromCamera);  // Bottom-right
+                
                 // ReSharper disable once InconsistentNaming
                 for (var i = 0; i < _frustumCorners.Length; i++)
                 {
@@ -75,7 +87,7 @@ namespace MomSesImSpcl.Extensions
             
             return _frustumCorners;
         }
-
+        
         /// <summary>
         /// Calculates the angle between the mouse cursor and a given world position from the perspective of the camera.
         /// </summary>
