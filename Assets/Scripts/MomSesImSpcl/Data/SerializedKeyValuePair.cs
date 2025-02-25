@@ -1,7 +1,5 @@
-#if ODIN_INSPECTOR
 using System;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,10 +16,14 @@ namespace MomSesImSpcl.Data
     {
         #region Inspector Fields
         [Tooltip("Represents the key in a serialized key/value pair.")]
-        [HorizontalGroup, HideLabel]
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.HorizontalGroup, Sirenix.OdinInspector.HideLabel]
+#endif
         [SerializeField] private K key;
         [Tooltip("Represents the value in a serialized key/value pair.")]
-        [HorizontalGroup, HideLabel]
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.HorizontalGroup, Sirenix.OdinInspector.HideLabel]
+#endif
         [SerializeField] private V value;
         #endregion
         
@@ -109,4 +111,3 @@ namespace MomSesImSpcl.Data
         #endregion
     }
 }
-#endif
