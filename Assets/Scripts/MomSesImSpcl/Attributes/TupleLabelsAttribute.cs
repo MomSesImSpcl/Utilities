@@ -1,10 +1,10 @@
+#if ODIN_INSPECTOR
 using System;
 using System.Diagnostics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Attributes
 {
-#if ODIN_INSPECTOR
     /// <summary>
     /// Attribute to specify custom labels for tuple items in the Unity Inspector.
     /// This attribute is used in conjunction with the SerializedTupleDrawer
@@ -15,12 +15,10 @@ namespace MomSesImSpcl.Attributes
     public sealed class TupleLabelsAttribute : PropertyAttribute
     {
         #region Properties
-
         /// <summary>
         /// Gets the label for the first item of the tuple.
         /// </summary>
         public string Item1Label { get; }
-
         /// <summary>
         /// Gets the label for the second item of the tuple.
         /// </summary>
@@ -40,5 +38,5 @@ namespace MomSesImSpcl.Attributes
         }
         #endregion
     } 
-#endif
 }
+#endif
