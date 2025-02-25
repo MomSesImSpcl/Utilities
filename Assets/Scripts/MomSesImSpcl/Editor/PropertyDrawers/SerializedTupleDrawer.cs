@@ -24,6 +24,7 @@ namespace MomSesImSpcl.Editor.PropertyDrawers
             {
                 _tuple.Item1Label = _tupleLabelsAttribute.Item1Label;
                 _tuple.Item2Label = _tupleLabelsAttribute.Item2Label;
+                this.ValueEntry.SmartValue = _tuple;
             }
 
             base.CallNextDrawer(_Label);
