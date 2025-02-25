@@ -65,5 +65,18 @@ namespace MomSesImSpcl.Data
 #endif
         }
         #endregion
+
+        #region Methods
+        /// <summary>
+        /// Deconstructor for <see cref="SerializedTuple{T}"/>.
+        /// </summary>
+        /// <param name="_Item1"><see cref="item1"/>.</param>
+        /// <param name="_Item2"><see cref="item2"/>.</param>
+        public void Deconstruct(out T _Item1, out T _Item2)
+        {
+                _Item1 = this.item1;
+                _Item2 = this.item2;
+        }
+        #endregion
     } 
 }
