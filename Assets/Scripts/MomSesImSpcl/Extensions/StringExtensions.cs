@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using MomSesImSpcl.Utilities.Logging;
 using UnityEngine;
@@ -23,7 +24,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The <see cref="string"/> wrapped in an bold tag.</returns>
         public static string Bold(this string? _String)
         {
-            return $"<b>{_String}</b>";
+            return $"<b>{_String.OrNull()}</b>";
         }
         
         /// <summary>
@@ -369,7 +370,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The <see cref="string"/> wrapped in an italic tag.</returns>
         public static string Italic(this string? _String)
         {
-            return $"<i>{_String}</i>";
+            return $"<i>{_String.OrNull()}</i>";
         }
         
         /// <summary>
@@ -654,7 +655,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The <see cref="string"/> wrapped in an underline tag.</returns>
         public static string Underline(this string? _String)
         {
-            return $"<u>{_String}</u>";
+            return $"<u>{_String.OrNull()}</u>";
         }
         #endregion
     }
