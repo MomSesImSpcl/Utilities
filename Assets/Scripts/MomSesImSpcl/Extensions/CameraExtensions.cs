@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using MomSesImSpcl.Utilities.Pooling;
 using UnityEngine;
 using math = Unity.Mathematics.math;
@@ -31,7 +33,13 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Camera">The Camera from which the frustum points are calculated.</param>
         /// <param name="_DistanceFromCamera">The distance from the camera at which to calculate the frustum points.</param>
         /// <param name="_ReturnMidpoints">Set to <c>true</c> to return the midpoints instead of the corners.</param>
-        /// <returns>An array containing the positions of the four points that form the corners of the frustum at the given distance.</returns>
+        /// <returns>
+        /// An array containing the positions of the four points that form the corners of the frustum at the given distance. <br/>
+        /// <b>[0]:</b> Bottom-Left. <br/>
+        /// <b>[1]:</b> Top-Left. <br/>
+        /// <b>[2]:</b> Top-Right. <br/>
+        /// <b>[3]:</b> Bottom-Right.
+        /// </returns>
         public static Vector3[] CalculateFrustumPoints(this Camera _Camera, float _DistanceFromCamera, bool _ReturnMidpoints = false)
         {
             var _frustumCorners = ArrayPool<Vector3>.Get(4);
@@ -71,6 +79,51 @@ namespace MomSesImSpcl.Extensions
                 for (var i = 0; i < _frustumCorners.Length; i++)
                 {
                     _frustumCorners[i] = (_frustumCorners[i] + _frustumCorners[(i + 1) % 4]) / 2;
+                }
+            }
+            
+            return _frustumCorners;
+        }
+        
+        /// <summary>
+        /// Calculates the points where the frustum corners of this <see cref="Camera"/> intersect with the given <c>_TargetHeight</c>.
+        /// </summary>
+        /// <param name="_Camera">The <see cref="Camera"/> to get the frustum of.</param>
+        /// <param name="_TargetHeight"><see cref="Vector3.y"/>-<see cref="Transform.position"/> in world space coordinates.</param>
+        /// <param name="_ReturnMidpoints">Set to <c>true</c> to return the midpoints instead of the corners.</param>
+        /// <returns>A <see cref="Vector3"/> <see cref="Array"/> that contains the points where the frustum corners of this <see cref="Camera"/> intersect with the given <c>_TargetHeight</c>.</returns>
+        public static Vector3[] CalculateFrustumPointsAtHeight(this Camera _Camera, float _TargetHeight, bool _ReturnMidpoints = false)
+        {
+            var _cameraTransform = _Camera.transform;
+            var _distance = _cameraTransform.GetDistanceToHeight(_TargetHeight);
+            var _cameraPosition = _cameraTransform.position;
+            var _frustumCorners = _Camera.CalculateFrustumPoints(_distance, _ReturnMidpoints);
+            var _targetPlane = new Plane(Vector3.up, new Vector3(0, _TargetHeight, 0));
+            
+            // ReSharper disable once InconsistentNaming
+            for (var i = 0; i < _frustumCorners.Length; i++)
+            {
+                var _rayDirection = _frustumCorners[i] - _cameraPosition;
+                var _ray = new Ray(_cameraPosition, _rayDirection);
+        
+                if (_targetPlane.Raycast(_ray, out var _enter))
+                {
+                    _frustumCorners[i] = _ray.GetPoint(_enter);
+                }
+                else
+                {
+                    _frustumCorners[i] = _cameraPosition;
+#pragma warning disable CS8509
+                    var _corner = i switch
+#pragma warning restore CS8509
+                    {
+                        0 => "Bottom-Left",
+                        1 => "Top-Left",
+                        2 => "Top-Right",
+                        3 => "Bottom-Right"
+                    };
+                    
+                    Debug.LogWarning($"Frustum corner {_corner.Bold()} did not intersect at height {_TargetHeight.ToString(CultureInfo.InvariantCulture)}.");
                 }
             }
             
