@@ -74,6 +74,28 @@ namespace MomSesImSpcl.Extensions
         };
         
         /// <summary>
+        /// Calculates the 2D <see cref="Transform.rotation"/> needed to look at a target <see cref="Transform.position"/>.
+        /// </summary>
+        /// <param name="_Source">Current <see cref="Transform.position"/>.</param>
+        /// <param name="_Target">Target <see cref="Transform.position"/> to look at.</param>
+        /// <param name="_OffsetDegrees">Additional angular offset (e.g., -90 if sprite faces up).</param>
+        /// <param name="_DefaultRotation"><see cref="Transform.rotation"/> to return if <see cref="Transform.position"/>s are identical.</param>
+        /// <returns>The <see cref="Transform.rotation"/> that is needed to look at the given <c>_Target</c>.</returns>
+        public static Quaternion Get2DLookAtRotation(this Vector3 _Source, Vector3 _Target, float _OffsetDegrees = -90f, Quaternion? _DefaultRotation = null)
+        {
+            var _direction = _Target - _Source;
+
+            if (_direction.sqrMagnitude < math.EPSILON)
+            {
+                return _DefaultRotation ?? Quaternion.identity;
+            }
+
+            var _angle = math.atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+            
+            return Quaternion.Euler(0f, 0f, _angle + _OffsetDegrees);
+        }
+        
+        /// <summary>
         /// Calculates the <see cref="Transform.rotation"/> needed to align a specific local axis with a target <see cref="Transform.position"/>.
         /// </summary>
         /// <param name="_Source">Current <see cref="Transform.position"/> in world space.</param>
@@ -119,25 +141,38 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
-        /// Calculates the 2D <see cref="Transform.rotation"/> needed to look at a target <see cref="Transform.position"/>.
+        /// Gets a points on the circumference of a circle around the <see cref="Transform.position"/> of this <see cref="Vector3"/>.
         /// </summary>
-        /// <param name="_Source">Current <see cref="Transform.position"/>.</param>
-        /// <param name="_Target">Target <see cref="Transform.position"/> to look at.</param>
-        /// <param name="_OffsetDegrees">Additional angular offset (e.g., -90 if sprite faces up).</param>
-        /// <param name="_DefaultRotation"><see cref="Transform.rotation"/> to return if <see cref="Transform.position"/>s are identical.</param>
-        /// <returns>The <see cref="Transform.rotation"/> that is needed to look at the given <c>_Target</c>.</returns>
-        public static Quaternion Get2DLookAtRotation(this Vector3 _Source, Vector3 _Target, float _OffsetDegrees = -90f, Quaternion? _DefaultRotation = null)
+        /// <param name="_Center">The center of the circle to get the point around.</param>
+        /// <param name="_Direction">The direction around which the point will be calculated.</param>
+        /// <param name="_Radius">Distance from the center to the target point.</param>
+        /// <param name="_Angle">
+        /// The angle at which to get the point. <br/>
+        /// <i><c>0</c> will be to the right of the center <see cref="Transform.position"/>.</i> <br/>
+        /// <i>Positive values will be added anti-clockwise, negative will be added clockwise.</i>
+        /// </param>
+        /// <param name="_Visualize">If set to <c>true</c>, the point will be visualized.</param>
+        /// <returns>A points on the circumference of a circle around the <see cref="Transform.position"/> of this <see cref="Vector2"/>.</returns>
+        public static Vector3 GetPointAround(this Vector3 _Center, Vector3 _Direction, float _Radius, float _Angle, bool _Visualize = false)
         {
-            var _direction = _Target - _Source;
-
-            if (_direction.sqrMagnitude < math.EPSILON)
+            if (_Direction == Vector3.zero)
             {
-                return _DefaultRotation ?? Quaternion.identity;
+                Debug.LogError("The direction can't be zero.");
+                return _Center;
             }
-
-            var _angle = math.atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
             
-            return Quaternion.Euler(0f, 0f, _angle + _OffsetDegrees);
+            var _normal = math.normalize(_Direction);
+            math.orthonormal_basis(_normal, out var _tangent, out var _bitangent);
+            var _angleRad = _Angle * math.PI / 180f;
+            Vector3 _offset = _Radius * (math.cos(_angleRad) * _tangent + math.sin(_angleRad) * _bitangent);
+            
+#if UNITY_EDITOR
+            if (_Visualize)
+            {
+                Draw.Angle(_Center, _Direction, _Radius, _Angle);
+            }
+#endif
+            return _Center + _offset;
         }
         
         /// <summary>
