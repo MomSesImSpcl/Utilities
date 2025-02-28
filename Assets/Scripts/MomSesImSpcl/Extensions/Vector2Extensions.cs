@@ -110,8 +110,8 @@ namespace MomSesImSpcl.Extensions
             
             var _normal = math.normalize(_Direction);
             math.orthonormal_basis(_normal, out var _tangent, out var _bitangent);
-            var _angleRad = _Angle * math.PI / 180f;
-            Vector3 _offset = _Radius * (math.cos(_angleRad) * _tangent + math.sin(_angleRad) * _bitangent);
+            var _radians = _Angle * math.PI / 180f;
+            Vector3 _offset = _Radius * (math.cos(_radians) * _tangent + math.sin(_radians) * _bitangent);
             
 #if UNITY_EDITOR
             if (_Visualize)
