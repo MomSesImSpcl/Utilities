@@ -91,7 +91,8 @@ namespace MomSesImSpcl.Extensions
         /// Gets a points on the circumference of a circle around the <see cref="Transform.position"/> of this <see cref="Vector2"/>.
         /// </summary>
         /// <param name="_Center">The center of the circle to get the point around.</param>
-        /// <param name="_Radius">Distance from the center of the circle.</param>
+        /// <param name="_Direction">The direction around which the point will be calculated.</param>
+        /// <param name="_Radius">Distance from the center to the target point.</param>
         /// <param name="_Angle">
         /// The angle at which to get the point. <br/>
         /// <i><c>0</c> will be to the right of the center <see cref="Transform.position"/>.</i> <br/>
@@ -99,19 +100,26 @@ namespace MomSesImSpcl.Extensions
         /// </param>
         /// <param name="_Visualize">If set to <c>true</c>, the point will be visualized.</param>
         /// <returns>A points on the circumference of a circle around the <see cref="Transform.position"/> of this <see cref="Vector2"/>.</returns>
-        public static Vector2 GetPointAround(this Vector2 _Center, float _Radius, float _Angle, bool _Visualize = false)
+        public static Vector2 GetPointAround(this Vector2 _Center, Vector3 _Direction, float _Radius, float _Angle, bool _Visualize = false)
         {
-            var _angleRad = _Angle * math.TORADIANS;
-            var _x = _Center.x + _Radius * math.cos(_angleRad);
-            var _y = _Center.y + _Radius * math.sin(_angleRad);
-
+            if (_Direction == Vector3.zero)
+            {
+                Debug.LogError("The direction can't be zero.");
+                return _Center;
+            }
+            
+            var _normal = math.normalize(_Direction);
+            math.orthonormal_basis(_normal, out var _tangent, out var _bitangent);
+            var _angleRad = _Angle * math.PI / 180f;
+            Vector3 _offset = _Radius * (math.cos(_angleRad) * _tangent + math.sin(_angleRad) * _bitangent);
+            
 #if UNITY_EDITOR
             if (_Visualize)
             {
-                Draw.Angle(_Center, _Radius, _Angle);
+                Draw.Angle(_Center, _Direction, _Radius, _Angle);
             }
 #endif
-            return new Vector2(_x, _y);
+            return _Center + _offset.ToVector2();
         }
         
         /// <summary>
