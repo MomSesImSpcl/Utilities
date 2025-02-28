@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using MomSesImSpcl.Utilities.Logging;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -64,13 +65,23 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The modified <see cref="string"/> with specific HTML tags escaped.</returns>
         public static string EscapeRichText(this string _String)
         {
-            _String = Regex.Replace(_String, "(</?)b(>)", _Match => $"{_Match.Groups[1].Value}β{_Match.Groups[2].Value}");
-            _String = Regex.Replace(_String, "(</?)i(>)", _Match => $"{_Match.Groups[1].Value}ι{_Match.Groups[2].Value}");
-            _String = Regex.Replace(_String, "(</?)u(>)", _Match => $"{_Match.Groups[1].Value}υ{_Match.Groups[2].Value}");
-            _String = Regex.Replace(_String, "(</?)a(\\s+[^>]*?>|>)", _Match => $"{_Match.Groups[1].Value}α{_Match.Groups[2].Value}");
-            _String = Regex.Replace(_String, "(<)a href(.*)", _Match => $"{_Match.Groups[1].Value}α href{_Match.Groups[2].Value}");
-            
-            return _String;
+            return Regex.Replace(_String, @"(</?)([biua])((?:\s+[^>]*?)?(?:>|$))", _Match =>
+            {
+                var _prefix = _Match.Groups[1].Value;
+                var _tag = _Match.Groups[2].Value;
+                var _suffix = _Match.Groups[3].Value;
+                
+                var _replacement = _tag switch
+                {
+                    "b" => "β",
+                    "i" => "ι",
+                    "u" => "υ",
+                    "a" => "α",
+                    _ => _tag
+                };
+
+                return $"{_prefix}{_replacement}{_suffix}";
+            });
         }
 
         /// <summary>
@@ -79,7 +90,10 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_String">The <see cref="string"/> to search within.</param>
         /// <param name="_StartPattern">The <see cref="string"/> pattern to search for.</param>
         /// <param name="_Length">The length of the substring to extract. If 0, extracts until the end of the string.</param>
-        /// <param name="_Occurence">The occurrence of the start pattern to extract after.</param>
+        /// <param name="_Occurence">
+        /// The occurrence of the pattern to look for. <br/>
+        /// <i>Set to &lt; 1 to search for the last occurence.</i>
+        /// </param>
         /// <param name="_RightToLeft">Determines the search direction. If true, searches from right to left.</param>
         /// <returns>The extracted substring, or null if the start pattern is not found.</returns>
         public static string? ExtractAfter(this string _String, string _StartPattern, int _Length = 0, uint _Occurence = 1, bool _RightToLeft = false)
@@ -90,159 +104,183 @@ namespace MomSesImSpcl.Extensions
         /// <summary>
         /// Extracts a substring from the given string that occurs after the specified pattern.
         /// </summary>
-        /// <param name="_String">The string to search within.</param>
-        /// <param name="_StartPattern">The pattern to search for.</param>
+        /// <param name="_Input">The string to search within.</param>
+        /// <param name="_Pattern">The pattern to search for.</param>
         /// <param name="_RightToLeft">If true, searches from right to left.</param>
         /// <param name="_Length">The length of the substring to extract. If 0, extracts to the end of the string.</param>
-        /// <param name="_Occurence">The occurrence of the pattern to consider. Default is 1.</param>
+        /// <param name="_Occurrence">
+        /// The occurrence of the pattern to look for. <br/>
+        /// <i>Set to &lt; 1 to search for the last occurence.</i>
+        /// </param>
         /// <returns>The extracted substring, or null if the pattern is not found.</returns>
-        public static string? ExtractAfter(this string _String, string _StartPattern, bool _RightToLeft, int _Length = 0, uint _Occurence = 1)
+        public static string? ExtractAfter(this string _Input, string _Pattern, bool _RightToLeft, int _Length = 0, uint _Occurrence = 1)
         {
-            var _regexOptions = _RightToLeft ? RegexOptions.RightToLeft : RegexOptions.None;
-            string? _output = null;
-            
-            if (_Occurence < 1)
+            if (_Occurrence < 1)
             {
-                // Reverse the search order when the last occurence is requested.
                 _RightToLeft = !_RightToLeft;
-                _regexOptions = _RightToLeft ? RegexOptions.RightToLeft : RegexOptions.None;
-                _Occurence = 1;
+                _Occurrence = 1;
             }
+    
+            var _offset = 0;
             
-            // ReSharper disable once InconsistentNaming
-            for (var i = 1; i <= _Occurence; i++)
+            if (!_RightToLeft)
             {
-                int _startIndex;
-                var _match = Regex.Match(_String, _StartPattern, _regexOptions).Value;
-
-                if (_match == string.Empty)
+                var _regex = new Regex(_Pattern);
+                
+                // ReSharper disable once InconsistentNaming
+                for (uint i = 0; i < _Occurrence; i++)
                 {
-                    break;
+                    var _match = _regex.Match(_Input, _offset);
+
+                    if (!_match.Success)
+                    {
+                        return null;
+                    }
+                    
+                    _offset = _match.Index + _match.Length;
+                }
+            }
+            else
+            {
+                var _regex = new Regex(_Pattern, RegexOptions.RightToLeft);
+                Match? _match = null;
+                
+                var _searchLength = _Input.Length;
+                
+                // ReSharper disable once InconsistentNaming
+                for (uint i = 0; i < _Occurrence; i++)
+                {
+                    _match = _regex.Match(_Input, 0, _searchLength);
+                    
+                    if (!_match.Success)
+                    {
+                        return null;
+                    }
+                    
+                    _searchLength = _match.Index;
                 }
                 
-                if (_RightToLeft)
-                {
-                    _startIndex = _String.LastIndexOf(_match, StringComparison.Ordinal) + _match.Length;
-                    
-                    if (i == _Occurence)
-                    {
-                        _output = _String[_startIndex..] + _output;
-                    }
-                    else
-                    {
-                        _output = _String[(_startIndex - _match.Length)..] + _output;
-                    }
-                    
-                    _String = _String[..(_startIndex - _match.Length - 1)];
-                }
-                else
-                {
-                    _startIndex = _String.IndexOf(_match, StringComparison.Ordinal) + _match.Length;
-                    
-                    _output = _String = _String[_startIndex..];
-                }
-            }
-
-            if (_Length > 0)
-            {
-                _output = _output?[.._Length];
+                _offset = _match!.Index + _match.Length;
             }
             
-            return _output;
+            var _end = _Length > 0 ? math.min(_offset + _Length, _Input.Length) : _Input.Length;
+                
+            return _Input[_offset.._end];
         }
-
+        
         /// <summary>
         /// Extracts a substring from the specified string that occurs before the first instance of the given start pattern.
         /// </summary>
         /// <param name="_String">The string to extract from.</param>
         /// <param name="_StartPattern">The start pattern that identifies where the substring begins.</param>
         /// <param name="_Length">The number of characters to extract. If zero, extracts up to the start pattern.</param>
-        /// <param name="_Occurence">The occurrence of the start pattern to consider. Default is 1.</param>
+        /// <param name="_Occurence">
+        /// The occurrence of the pattern to look for. <br/>
+        /// <i>Set to &lt; 1 to search for the last occurence.</i>
+        /// </param>
         /// <param name="_RightToLeft">Specifies whether to search from right to left. Default is false.</param>
         /// <returns>The extracted substring or null if the start pattern is not found.</returns>
         public static string? ExtractBefore(this string _String, string _StartPattern, int _Length = 0, uint _Occurence = 1, bool _RightToLeft = false)
         {
             return _String.ExtractBefore(_StartPattern, _RightToLeft, _Length, _Occurence);
         }
-
+        
         /// <summary>
         /// Extracts a substring from the specified string that occurs before the given start pattern.
         /// </summary>
-        /// <param name="_String">The <see cref="string"/> to extract from.</param>
+        /// <param name="_Input">The <see cref="string"/> to extract from.</param>
         /// <param name="_StartPattern">The start pattern to look for.</param>
         /// <param name="_RightToLeft">Specifies whether to search right to left. Defaults to false.</param>
         /// <param name="_Length">The length of the substring to be extracted. Defaults to 0.</param>
-        /// <param name="_Occurence">The occurrence of the start pattern to target. Defaults to 1.</param>
+        /// <param name="_Occurrence">
+        /// The occurrence of the pattern to look for. <br/>
+        /// <i>Set to &lt; 1 to search for the last occurence.</i>
+        /// </param>
         /// <returns>The extracted <see cref="string"/> or null if the start pattern is not found.</returns>
-        public static string? ExtractBefore(this string _String, string _StartPattern, bool _RightToLeft, int _Length = 0, uint _Occurence = 1)
+        public static string? ExtractBefore(this string _Input, string _StartPattern, bool _RightToLeft, int _Length = 0, uint _Occurrence = 1)
         {
-            var _regexOptions = _RightToLeft ? RegexOptions.RightToLeft : RegexOptions.None;
-            string? _output = null;
-            
-            if (_Occurence < 1)
+            if (_Occurrence < 1)
             {
-                // Reverse the search order when the last occurence is requested.
                 _RightToLeft = !_RightToLeft;
-                _regexOptions = _RightToLeft ? RegexOptions.RightToLeft : RegexOptions.None;
-                _Occurence = 1;
+                _Occurrence = 1;
             }
-            
-            // ReSharper disable once InconsistentNaming
-            for (var i = 1; i <= _Occurence; i++)
-            {
-                int _startIndex;
-                var _match = Regex.Match(_String, _StartPattern, _regexOptions).Value;
-                
-                if (_match == string.Empty)
-                {
-                    break;
-                }
-                
-                if (_RightToLeft)
-                {
-                    _startIndex = _String.LastIndexOf(_match, StringComparison.Ordinal);
 
-                    _output = _String = _String[.._startIndex];
-                }
-                else
+            var _offset = 0;
+
+            if (!_RightToLeft)
+            {
+                var _regex = new Regex(_StartPattern);
+                var _searchOffset = 0;
+                
+                // ReSharper disable once InconsistentNaming
+                for (uint i = 1; i <= _Occurrence; i++)
                 {
-                    _startIndex = _String.IndexOf(_match, StringComparison.Ordinal) + _match.Length;
-                    
-                    if (i == _Occurence)
+                    var _match = _regex.Match(_Input, _searchOffset);
+
+                    if (!_match.Success)
                     {
-                        _output += _String[..(_startIndex - _match.Length)];
+                        return null;
+                    }
+                    
+                    if (i == _Occurrence)
+                    {
+                        _offset = _match.Index;
                     }
                     else
                     {
-                        _output += _String[.._startIndex];
+                        _searchOffset = _match.Index + _match.Length;
                     }
-                    
-                    _String = _String[_startIndex..];
                 }
             }
-
-            if (_Length > 0)
+            else
             {
-                _output = _output?[^_Length..];
+                var _regex = new Regex(_StartPattern, RegexOptions.RightToLeft);
+                var _searchLength = _Input.Length;
+                Match? _match = null;
+             
+                // ReSharper disable once InconsistentNaming
+                for (uint i = 0; i < _Occurrence; i++)
+                {
+                    _match = _regex.Match(_Input, 0, _searchLength);
+
+                    if (!_match.Success)
+                    {
+                        return null;
+                    }
+                    
+                    _searchLength = _match.Index;
+                }
+                
+                _offset = _match!.Index;
             }
             
-            return _output;
-        }
+            if (_Length > 0)
+            {
+                var _start = _offset > _Length ? _offset - _Length : 0;
+                
+                return _Input[_start.._offset];
+            }
 
+            return _Input[.._offset];
+        }
+        
         /// <summary>
         /// Extracts a substring from the specified string that is found between the given start and end patterns.
         /// </summary>
         /// <param name="_String">The string to search within.</param>
         /// <param name="_StartPattern">The start pattern to find.</param>
         /// <param name="_EndPattern">The end pattern to find.</param>
-        /// <param name="_Occurence">The occurrence number of the substring to extract.</param>
+        /// <param name="_Occurence">
+        /// The occurrence of the pattern to look for. <br/>
+        /// <i>Set to &lt; 1 to search for the last occurence.</i>
+        /// </param>
         /// <param name="_RightToLeft">Determines the direction of the search.</param>
         /// <returns>The extracted substring, or null if the patterns are not found.</returns>
         public static string? ExtractBetween(this string _String, string _StartPattern, string _EndPattern, uint _Occurence = 1, bool _RightToLeft = false)
         {
             return ExtractBetween(_String, _StartPattern, _EndPattern, _RightToLeft, _Occurence);
         }
-
+        
         /// <summary>
         /// Extracts a substring from the specified string that is found between the provided start and end patterns.
         /// </summary>
@@ -250,68 +288,69 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_StartPattern">The pattern marking the beginning of the substring to extract.</param>
         /// <param name="_EndPattern">The pattern marking the end of the substring to extract.</param>
         /// <param name="_RightToLeft">Indicates whether to search from right to left.</param>
-        /// <param name="_Occurence">The occurrence of the match to extract.</param>
+        /// <param name="_Occurence">
+        /// The occurrence of the pattern to look for. <br/>
+        /// <i>Set to &lt; 1 to search for the last occurence.</i>
+        /// </param>
         /// <returns>The extracted substring, or null if no match is found.</returns>
         public static string? ExtractBetween(this string _String, string _StartPattern, string _EndPattern, bool _RightToLeft, uint _Occurence = 1)
         {
-            var _output = _String;
-            var _regexOptions = _RightToLeft ? RegexOptions.RightToLeft : RegexOptions.None;
-            // ReSharper disable RedundantAssignment
-            var _startPatternMatch = string.Empty;
-            var _endPatternMatch = string.Empty;
-            // ReSharper restore RedundantAssignment
-            var _startIndex = -1;
-            var _length = 0;
-            
             if (_Occurence < 1)
             {
-                // Reverse the search order when the last occurence is requested.
                 _RightToLeft = !_RightToLeft;
-                _regexOptions = _RightToLeft ? RegexOptions.RightToLeft : RegexOptions.None;
                 _Occurence = 1;
             }
-            
-            // ReSharper disable once InconsistentNaming
-            for (var i = 1; i <= _Occurence; i++)
-            {
-                var _match = Regex.Match(_output, $"{_StartPattern}.*?{_EndPattern}", _regexOptions).Value;
 
-                if (_match == string.Empty)
+            var _searchStart = 0;
+            var _searchEnd = _String.Length;
+
+            var _combinedRegex = new Regex($"{_StartPattern}.*?{_EndPattern}", _RightToLeft ? RegexOptions.RightToLeft : RegexOptions.None);
+            var _startRegex = new Regex(_StartPattern);
+            var _endRegex = new Regex(_EndPattern);
+
+            var _start = -1;
+            var _length = 0;
+
+            // ReSharper disable once InconsistentNaming
+            for (uint i = 0; i < _Occurence; i++)
+            {
+                var _combinedMatch = _combinedRegex.Match(_String, _searchStart, _searchEnd - _searchStart);
+                if (!_combinedMatch.Success)
+                    return null;
+
+                var _startMatch = _startRegex.Match(_String, _combinedMatch.Index, _combinedMatch.Length);
+                if (!_startMatch.Success)
+                    return null;
+
+                var _startPatternEnd = _combinedMatch.Index + _startMatch.Length;
+                var _endSearchLength = _combinedMatch.Index + _combinedMatch.Length - _startPatternEnd;
+
+                var _endMatch = _endRegex.Match(_String, _startPatternEnd, _endSearchLength);
+                if (!_endMatch.Success)
+                    return null;
+
+                var _endPatternStart = _endMatch.Index;
+                var _contentLength = _endPatternStart - _startPatternEnd;
+
+                if (i == _Occurence - 1)
                 {
-                    _output = null;
-                    break;
+                    _start = _startPatternEnd;
+                    _length = _contentLength;
                 }
-                
-                _startPatternMatch = Regex.Match(_match, _StartPattern).Value;
-                _endPatternMatch = Regex.Match(_match, _EndPattern).Value;
-                _length = _match.Length - _startPatternMatch.Length - _endPatternMatch.Length;
                 
                 if (_RightToLeft)
                 {
-                    _startIndex = _output.LastIndexOf(_match, StringComparison.Ordinal) + _startPatternMatch.Length;
+                    _searchEnd = _endPatternStart;
                 }
                 else
                 {
-                    _startIndex = _output.IndexOf(_match, StringComparison.Ordinal) + _startPatternMatch.Length;
-                }
-                
-                if (i != _Occurence)
-                {
-                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-                    if (_RightToLeft)
-                    {
-                        _output = _output[..(_startIndex - _startPatternMatch.Length)];
-                    }
-                    else
-                    {
-                        _output = _output[(_startIndex + _length + _endPatternMatch.Length)..];
-                    }
+                    _searchStart = _startPatternEnd;
                 }
             }
-            
-            return _output?.Substring(_startIndex, _length);
-        }
 
+            return _start == -1 ? null : _String.Substring(_start, _length);
+        }
+        
         /// <summary>
         /// Finds the common characters at the beginning of every string in the given collection.
         /// </summary>
@@ -337,16 +376,14 @@ namespace MomSesImSpcl.Extensions
         /// <summary>
         /// Converts a hexadecimal color code to a Unity <see cref="Color"/>.
         /// </summary>
-        /// <param name="_HexColor">The hexadecimal color code as a <see cref="string"/>.</param>
-        /// <returns>A <see cref="Color"/> representing the RGB values of the hexadecimal color code.</returns>
+        /// <param name="_HexColor">Must be a valid Hexadecimal color and start with a <c>#</c>.</param>
+        /// <returns>A <see cref="Color"/> representing the RGB values of the Hexadecimal color code.</returns>
         public static Color HexToRGB(this string _HexColor)
         {
-            _HexColor = _HexColor.Replace("#", string.Empty);
-        
-            var _red = int.Parse(_HexColor.Substring(0, 2), NumberStyles.HexNumber);
-            var _green = int.Parse(_HexColor.Substring(2, 2), NumberStyles.HexNumber);
-            var _blue = int.Parse(_HexColor.Substring(4, 2), NumberStyles.HexNumber);
-
+            var _hexColor = _HexColor.AsSpan();
+            var _red = int.Parse(_hexColor.Slice(1, 2), NumberStyles.HexNumber);
+            var _green = int.Parse(_hexColor.Slice(3, 2), NumberStyles.HexNumber);
+            var _blue = int.Parse(_hexColor.Slice(5, 2), NumberStyles.HexNumber);
             var _color = System.Drawing.Color.FromArgb(_red, _green, _blue);
             
             return new Color(_color.R, _color.G, _color.B);
@@ -487,14 +524,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The processed <see cref="string"/> without rich text formatting tags.</returns>
         public static string RemoveRichText(this string _String)
         {
-            _String = Regex.Replace(_String, "</?b>", string.Empty);
-            _String = Regex.Replace(_String, "</?i>", string.Empty);
-            _String = Regex.Replace(_String, "</?u>", string.Empty);
-            _String = Regex.Replace(_String, "</?size(?:=\\d+)?>", string.Empty);
-            _String = Regex.Replace(_String, "</?color(?:=.*?)?>", string.Empty);
-            _String = Regex.Replace(_String, "</?a(?:\\s+[^>]*?>|>)", string.Empty);
-            
-            return _String;
+            return Regex.Replace(_String, @"</?(?:b|i|u|size(?:=\d+)?|color(?:=[^>]+)?|a(?:\s+[^>]*)?)>", string.Empty, RegexOptions.Compiled);
         }
 
         /// <summary>
@@ -504,12 +534,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The processed <see cref="string"/> with all ruby text elements removed.</returns>
         public static string RemoveRubyText(this string _String)
         {
-            _String = Regex.Replace(_String, "</?ruby.*?>", string.Empty);
-            _String = Regex.Replace(_String, "</?rb>", string.Empty);
-            _String = Regex.Replace(_String, "<rp>.*?</rp>", string.Empty);
-            _String = Regex.Replace(_String, "<rt>.*?</rt>", string.Empty);
-            
-            return _String;
+            return Regex.Replace(_String, "</?ruby.*?>|</?rb>|<rp>.*?</rp>|<rt>.*?</rt>", string.Empty, RegexOptions.Singleline);
         }
 
         /// <summary>
@@ -568,38 +593,7 @@ namespace MomSesImSpcl.Extensions
         {
             return _String.RemoveCharacters(' ');
         }
-
-        /// <summary>
-        /// Splits the specified string using the provided pattern and optional separator.
-        /// </summary>
-        /// <param name="_String">The string to split.</param>
-        /// <param name="_Pattern">The pattern to split the string by.</param>
-        /// <param name="_Separator">An optional separator to use within the split pattern. Default is an empty string.</param>
-        /// <returns>An array of strings that have been split by the specified pattern and separator.</returns>
-        public static string[] Split(this string _String, string _Pattern, string _Separator = "")
-        {
-            var _matches = Regex.Matches(_String, _Pattern);
-            var _splits = new string[_matches.Count + 1];
-
-            var _currentIndex = 0;
-
-            // ReSharper disable once InconsistentNaming
-            for (var i = 0; i < _matches.Count; i++)
-            {
-                var _value = _matches[i].Value;
-                var _patternIndex = _String.IndexOf(_value, _currentIndex, StringComparison.Ordinal);
-                var _separatorIndex = _value.IndexOf(_Separator, StringComparison.Ordinal);
-                var _length = _separatorIndex == -1 ? _value.Length : _separatorIndex;
         
-                _splits[i] = _String.Substring(_currentIndex, _patternIndex + _length - _currentIndex);
-                _currentIndex = _patternIndex + _length;
-            }
-            
-            _splits[^1] = _String[_currentIndex..];
-
-            return _splits;
-        }
-
         /// <summary>
         /// Converts the specified URI string to an HTML hyperlink.
         /// </summary>
