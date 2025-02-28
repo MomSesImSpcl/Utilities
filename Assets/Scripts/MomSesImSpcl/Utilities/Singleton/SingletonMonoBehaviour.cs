@@ -50,7 +50,7 @@ namespace MomSesImSpcl.Utilities.Singleton
                 this.Init();
             }
 #if UNITY_EDITOR
-            if (!Application.isPlaying && this.EditorInitialization)
+            else if (!Application.isPlaying && this.EditorInitialization)
             {
                 this.Init();
             }
