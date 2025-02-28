@@ -223,6 +223,17 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Calculates the midpoint (average) of two <see cref="Vector3"/>s.
+        /// </summary>
+        /// <param name="_First">First <see cref="Vector3"/>.</param>
+        /// <param name="_Second">Second <see cref="Vector3"/>.</param>
+        /// <returns>The midpoint (average) of two <see cref="Vector3"/>s.</returns>
+        public static Vector3 MidPoint(this Vector3 _First, Vector3 _Second)
+        {
+            return (_First + _Second) * .5f;
+        }
+        
+        /// <summary>
         /// Subtracts the specified value from the components of a <see cref="Vector3"/> along the given axis.
         /// </summary>
         /// <param name="_Vector3">The <see cref="Vector3"/> to be subtracted from.</param>
