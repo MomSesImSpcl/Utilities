@@ -10,6 +10,47 @@ namespace MomSesImSpcl.Extensions
     {
         #region Methods
         /// <summary>
+        /// Gets the distance from this <see cref="Transform"/> to a point at <c>_TargetHeight</c> in the <see cref="Transform"/>s <see cref="Transform.forward"/> direction.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the distance from.</param>
+        /// <param name="_TargetHeight">The <see cref="Vector3.y"/> coordinate of the point to get the distance to.</param>
+        /// <returns>The distance from this <see cref="Transform"/> to a point at <c>_TargetHeight</c> in the <see cref="Transform"/>s <see cref="Transform.forward"/> direction.</returns>
+        public static float GetDistanceToHeight(this Transform _Transform, float _TargetHeight)
+        {
+            var _heightDifference = _TargetHeight - _Transform.position.y;
+            var _forwardY = _Transform.forward.y;
+            
+            if (Mathf.Approximately(_forwardY, 0f))
+            {
+                return float.PositiveInfinity;
+            }
+
+            return _heightDifference / _forwardY;
+        }
+
+        /// <summary>
+        /// Get a point in <see cref="Direction"/> relative to this <see cref="Transform"/>s <see cref="Transform.position"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to calculate the point from.</param>
+        /// <param name="_Distance">The distance the target point should have to this <see cref="Transform"/>.</param>
+        /// <param name="_Direction">The direction of the target point relative to this <see cref="Transform"/>.</param>
+        /// <returns>A point in <see cref="Direction"/> relative to this <see cref="Transform"/>s <see cref="Transform.position"/>.</returns>
+        public static Vector3 GetPointAtDistance(this Transform _Transform, float _Distance, Direction _Direction = Direction.Forward)
+        {
+#pragma warning disable CS8524
+            return _Transform.position + _Direction switch
+#pragma warning restore CS8524
+            {
+                Direction.Up => _Transform.up,
+                Direction.Down => -_Transform.up,
+                Direction.Left => -_Transform.right,
+                Direction.Right => _Transform.right,
+                Direction.Forward => _Transform.forward,
+                Direction.Back => -_Transform.forward
+            } * _Distance;
+        }
+        
+        /// <summary>
         /// Calculates a world-space <see cref="Transform.position"/> offset from the <see cref="Transform"/>'s <see cref="Transform.localPosition"/> on the specified <see cref="Axis"/>.
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> whose <see cref="Transform.localPosition"/> will be used as a reference.</param>
