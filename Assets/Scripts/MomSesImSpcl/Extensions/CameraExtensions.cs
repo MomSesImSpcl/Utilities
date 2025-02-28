@@ -58,17 +58,6 @@ namespace MomSesImSpcl.Extensions
                 
                 _Camera.CalculateFrustumCorners(_normalizedViewportCoordinates, _DistanceFromCamera, Camera.MonoOrStereoscopicEye.Mono, _frustumCorners);
                 
-                var _halfFovRad = _Camera.fieldOfView * .5f * math.TORADIANS;
-                var _halfHeight = _DistanceFromCamera * math.tan(_halfFovRad);
-                var _halfWidth = _halfHeight * _Camera.aspect;
-                
-                // Define corners in camera space
-                _frustumCorners[0] = new Vector3(-_halfWidth, -_halfHeight, _DistanceFromCamera); // Bottom-left
-                _frustumCorners[1] = new Vector3(-_halfWidth, _halfHeight * 2, _DistanceFromCamera);  // To
-                                                                                                      // p-left
-                _frustumCorners[2] = new Vector3(_halfWidth * 2, _halfHeight, _DistanceFromCamera);   // Top-right
-                _frustumCorners[3] = new Vector3(_halfWidth * 2, -_halfHeight * 2, _DistanceFromCamera);  // Bottom-right
-                
                 // ReSharper disable once InconsistentNaming
                 for (var i = 0; i < _frustumCorners.Length; i++)
                 {
