@@ -1,5 +1,4 @@
 using MomSesImSpcl.Extensions;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Utilities
@@ -14,14 +13,15 @@ namespace MomSesImSpcl.Utilities
         /// Draws a visual representation of an angle from the given <c>_Center</c> <see cref="Transform.position"/>.
         /// </summary>
         /// <param name="_Center">The center <see cref="Transform.position"/> of the circle.</param>
+        /// <param name="_Direction">The direction around which the angle will be drawn.</param>
         /// <param name="_Radius">The radius of the circle.</param>
         /// <param name="_Angle">The angle (in degrees) at which to place the point on the circle's circumference.</param>
         /// <param name="_Duration">The duration (in seconds) for which the visualization remains visible.</param>
-        public static void Angle(Vector3 _Center, float _Radius, float _Angle, float _Duration = 1f)
+        public static void Angle(Vector3 _Center, Vector3 _Direction, float _Radius, float _Angle, float _Duration = 1f)
         {
-            var _point = _Center.ToVector2().GetPointAround(_Radius, _Angle);
+            var _point = _Center.GetPointAround(_Direction, _Radius, _Angle);
             
-            Circle(_Center, _Radius, Color.red, _Duration);
+            Circle(_Center, _Direction, _Radius, Color.red, _Duration);
             Sphere(_point, .5f, Color.green, _Duration);
             Debug.DrawLine(_Center, _point, Color.blue, _Duration);
         }
@@ -30,21 +30,19 @@ namespace MomSesImSpcl.Utilities
         /// Draws a 2D circle in the scene.
         /// </summary>
         /// <param name="_Center">The center <see cref="Transform.position"/> of the circle.</param>
+        /// <param name="_Direction">The direction around which the circle will be drawn.</param>
         /// <param name="_Radius">The radius of the circle.</param>
         /// <param name="_Color">The color of the sphere lines.</param>
         /// <param name="_Duration">The duration that the sphere will be visible. Default is 1 second.</param>
-        public static void Circle(Vector3 _Center, float _Radius, Color _Color, float _Duration = 1f)
+        public static void Circle(Vector3 _Center, Vector3 _Direction, float _Radius, Color _Color, float _Duration = 1f)
         {
             // Defines how smooth the circle will be, smaller value = smoother.
             const float _ANGLE_STEP = 1f; // DON'T SET TO 0!
-            var _previousPoint = _Center + Vector3.zero.WithX(_Radius);
+            var _previousPoint = _Center.GetPointAround(_Direction, _Radius, _ANGLE_STEP);
             
             for (var _angle = _ANGLE_STEP; _angle <= 360f; _angle += _ANGLE_STEP)
             {
-                var _rad = _angle * math.TORADIANS;
-                var _x = math.cos(_rad) * _Radius;
-                var _y = math.sin(_rad) * _Radius;
-                var _nextPoint = _Center + Vector3.zero.WithXY(_x, _y);
+                var _nextPoint = _Center.GetPointAround(_Direction, _Radius, _angle);
                 
                 Debug.DrawLine(_previousPoint, _nextPoint, _Color, _Duration);
                 
