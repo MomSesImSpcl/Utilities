@@ -94,6 +94,12 @@ namespace MomSesImSpcl.Utilities.Singleton
         {
             if (Instance is not null)
             {
+#if UNITY_EDITOR
+                if (!Application.isPlaying)
+                {
+                    return;
+                }
+#endif
                 Destroy(base.gameObject);
                 return;
             }
