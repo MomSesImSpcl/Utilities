@@ -12,6 +12,17 @@ namespace MomSesImSpcl.Extensions
     {
         #region Methods
         /// <summary>
+        /// Calculates the distance from this <see cref="Vector3"/> to the given <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="_From">From where to calculate the distance.</param>
+        /// <param name="_To">To where to calculate the distance.</param>
+        /// <returns>The distance between the two <see cref="Vector3"/>s.</returns>
+        public static float Distance(this Vector3 _From, Vector3 _To)
+        {
+            return math.distance(_From, _To);
+        }
+        
+        /// <summary>
         /// Divides the components of a <see cref="Vector3"/> by a specified value along the given axis.
         /// </summary>
         /// <param name="_Vector3">The <see cref="Vector3"/> to be divided.</param>
