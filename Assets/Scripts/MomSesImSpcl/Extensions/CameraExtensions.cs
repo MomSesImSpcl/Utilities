@@ -123,7 +123,7 @@ namespace MomSesImSpcl.Extensions
                         3 => "Bottom-Right"
                     };
                     
-                    Debug.LogWarning($"Frustum corner {_corner.Bold()} did not intersect at height {_TargetHeight.ToString(CultureInfo.InvariantCulture)}.");
+                    Debug.LogWarning($"Frustum corner {_corner.Bold()} did not intersect at height {_TargetHeight.ToString(CultureInfo.InvariantCulture).Bold()}.");
                 }
             }
             
