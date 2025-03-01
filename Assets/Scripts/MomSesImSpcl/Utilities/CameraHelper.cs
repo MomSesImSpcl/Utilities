@@ -1,4 +1,5 @@
 using System;
+using MomSesImSpcl.Extensions;
 using MomSesImSpcl.Utilities.Singleton;
 using UnityEngine;
 
@@ -9,18 +10,17 @@ namespace MomSesImSpcl.Utilities
     /// <b>Must not be on the same <see cref="GameObject"/> as the <see cref="UnityEngine.Camera"/> <see cref="Component"/>, this <see cref="Component"/> must be a child of the <see cref="Camera.main"/> <see cref="UnityEngine.Camera"/> <see cref="GameObject"/> in the scene.</b>
     /// </summary>
     [ExecuteInEditMode]
-    [RequireComponent(typeof(Canvas))]
     public sealed class CameraHelper : SingletonMonoBehaviour<CameraHelper>
     {
         #region Fields
         /// <summary>
         /// <see cref="Screen"/>.<see cref="Screen.width"/>.
         /// </summary>
-        private float width = Screen.width;
+        private int width = Screen.width;
         /// <summary>
         /// <see cref="Screen"/>.<see cref="Screen.height"/>.
         /// </summary>
-        private float height = Screen.height;
+        private int height = Screen.height;
         /// <summary>
         /// Reference to the <see cref="UnityEngine.Camera"/> in the scene.
         /// </summary>
@@ -48,23 +48,41 @@ namespace MomSesImSpcl.Utilities
         {
             base.Awake();
             this.camera = base.GetComponentInParent<Camera>();
-            var _canvas = base.GetComponent<Canvas>();
-            _canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            _canvas.worldCamera = this.camera;
+            
+            if (base.GetComponent<Camera>() == null) // Must not be "is", otherwise this will return "false" for some reason.
+            {
+                var _canvas = base.GetComponent<Canvas>();
+                
+                if (_canvas == null) // Must not be "is", must be "==".
+                {
+                    _canvas = base.gameObject.AddComponent<Canvas>();
+                }
+                
+                _canvas.renderMode = RenderMode.ScreenSpaceCamera;
+                _canvas.worldCamera = this.camera;
+            }
 #if UNITY_EDITOR
-            if (base.GetComponent<Camera>() is not null)
+            else
             {
                 Debug.LogWarning($"{nameof(CameraHelper)} must not be on the same GameObject as the Camera, it must be a child of the Camera GameObject.");
+                base.Invoke(nameof(DestroyThis), float.Epsilon);
             }
 #endif
         }
 
+#if UNITY_EDITOR
+        /// <summary>
+        /// Destroy this component.
+        /// </summary>
+        private void DestroyThis() => DestroyImmediate(this);
+#endif
+        
         private void OnRectTransformDimensionsChange()
         {
             var _width = Screen.width;
             var _height = Screen.height;
 
-            if (!Mathf.Approximately(_width, this.width) || !Mathf.Approximately(_height, this.height))
+            if (!_width.Approximately(this.width) || !_height.Approximately(this.height))
             {
                 this.width = _width;
                 this.height = _height;
