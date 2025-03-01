@@ -1,14 +1,25 @@
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
 {
     /// <summary>
     /// Contains extension methods for <see cref="float"/>.
     /// </summary>
-    // ReSharper disable once UnusedType.Global
     public static class FloatExtensions
     {
         #region Methods
+        /// <summary>
+        /// Compares two <see cref="float"/>s and returns <c>true</c> if they are similar.
+        /// </summary>
+        /// <param name="_Float1">The <see cref="float"/> to compare.</param>
+        /// <param name="_Float2">The <see cref="float"/> to compare with.</param>
+        /// <returns><c>true</c> if the two <see cref="float"/>s are similar, otherwise, <c>false</c>.</returns>
+        public static bool Approximately(this float _Float1, float _Float2)
+        {
+            return Mathf.Approximately(_Float1, _Float2);
+        }
+        
         /// <summary>
         /// Converts the given <see cref="float"/> to a <see cref="bool"/>.
         /// </summary>
