@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -10,17 +9,6 @@ namespace MomSesImSpcl.Extensions
     public static class IntExtensions
     {
         #region Methods
-        /// <summary>
-        /// Compares two <see cref="int"/>s and returns <c>true</c> if they are similar.
-        /// </summary>
-        /// <param name="_Int1">The <see cref="int"/> to compare.</param>
-        /// <param name="_Int2">The <see cref="int"/> to compare with.</param>
-        /// <returns><c>true</c> if the two <see cref="int"/>s are similar, otherwise, <c>false</c>.</returns>
-        public static bool Approximately(this int _Int1, int _Int2)
-        {
-            return Mathf.Approximately(_Int1, _Int2);
-        }
-        
         /// <summary>
         /// Casts this <see cref="int"/> to the given <see cref="Enum"/> <see cref="Type"/> <c>T</c>.
         /// </summary>
