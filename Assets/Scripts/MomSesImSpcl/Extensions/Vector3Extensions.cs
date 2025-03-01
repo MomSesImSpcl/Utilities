@@ -121,13 +121,13 @@ namespace MomSesImSpcl.Extensions
             _Up = _Up == default ? Vector3.up : _Up.normalized;
 
             // Handle collinear direction and up vectors.
-            if (math.abs(Vector3.Dot(_direction, _Up)) > .9999f)
+            if (math.abs(math.dot(_direction, _Up)) > .9999f)
             {
-                _Up = Vector3.Cross(_direction, Vector3.right).normalized;
+                _Up = math.cross(_direction, Vector3.right).Normalize();
                 
                 if (_Up.sqrMagnitude < .01f)
                 {
-                    _Up = Vector3.Cross(_direction, Vector3.forward).normalized;
+                    _Up = math.cross(_direction, Vector3.forward).Normalize();
                 }
             }
 
@@ -194,8 +194,8 @@ namespace MomSesImSpcl.Extensions
             var _direction = _TargetPosition - _OriginPosition;
 
             // Project these vectors onto the direction vector.
-            var _currentProjection = Vector3.Dot(_toCurrent, _direction);
-            var _targetProjection = Vector3.Dot(_toTarget, _direction) * _PercentageOffset;
+            var _currentProjection = math.dot(_toCurrent, _direction);
+            var _targetProjection = math.dot(_toTarget, _direction) * _PercentageOffset;
             
             // If the current projection exceeds the target projection, it has moved beyond.
             return _currentProjection >= _targetProjection;
