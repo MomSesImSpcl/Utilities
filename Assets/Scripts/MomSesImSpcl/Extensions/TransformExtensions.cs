@@ -1,4 +1,5 @@
 using MomSesImSpcl.Utilities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -9,6 +10,26 @@ namespace MomSesImSpcl.Extensions
     public static class TransformExtensions
     {
         #region Methods
+        /// <summary>
+        /// Returns the <see cref="Transform.eulerAngles"/> as a <see cref="float3"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.eulerAngles"/> from.</param>
+        /// <returns>The <see cref="Transform.eulerAngles"/> as a <see cref="float3"/></returns>
+        public static float3 EulerAngles(this Transform _Transform)
+        {
+            return new float3(_Transform.eulerAngles.x, _Transform.eulerAngles.y, _Transform.eulerAngles.z);
+        }
+        
+        /// <summary>
+        /// Returns the <see cref="Transform.localEulerAngles"/> as a <see cref="float3"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localEulerAngles"/> from.</param>
+        /// <returns>The <see cref="Transform.localEulerAngles"/> as a <see cref="float3"/></returns>
+        public static float3 LocalEulerAngles(this Transform _Transform)
+        {
+            return new float3(_Transform.localEulerAngles.x, _Transform.localEulerAngles.y, _Transform.localEulerAngles.z);
+        }
+        
         /// <summary>
         /// Gets the distance from this <see cref="Transform"/> to a point at <c>_TargetHeight</c> in the <see cref="Transform"/>s <see cref="Transform.forward"/> direction.
         /// </summary>
@@ -187,6 +208,26 @@ namespace MomSesImSpcl.Extensions
             }
 #endif
             return _position;
+        }
+
+        /// <summary>
+        /// Returns the <see cref="Transform.localPosition"/> as a <see cref="float3"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localPosition"/> from.</param>
+        /// <returns>The <see cref="Transform.localPosition"/> as a <see cref="float3"/></returns>
+        public static float3 LocalPosition(this Transform _Transform)
+        {
+            return new float3(_Transform.localPosition.x, _Transform.localPosition.y, _Transform.localPosition.z);
+        }
+        
+        /// <summary>
+        /// Returns the <see cref="Transform.position"/> as a <see cref="float3"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.position"/> from.</param>
+        /// <returns>The <see cref="Transform.position"/> as a <see cref="float3"/></returns>
+        public static float3 Position(this Transform _Transform)
+        {
+            return new float3(_Transform.position.x, _Transform.position.y, _Transform.position.z);
         }
         #endregion
     }
