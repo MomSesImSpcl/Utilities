@@ -211,11 +211,31 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Returns the <see cref="Transform.localPosition"/> as a <see cref="float2"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localPosition"/> from.</param>
+        /// <returns>The <see cref="Transform.localPosition"/> as a <see cref="float2"/></returns>
+        public static float2 LocalPosition2(this Transform _Transform)
+        {
+            return new float2(_Transform.localPosition.x, _Transform.localPosition.y);
+        }
+        
+        /// <summary>
+        /// Returns the <see cref="Transform.position"/> as a <see cref="float2"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.position"/> from.</param>
+        /// <returns>The <see cref="Transform.position"/> as a <see cref="float2"/></returns>
+        public static float2 Position2(this Transform _Transform)
+        {
+            return new float2(_Transform.position.x, _Transform.position.y);
+        }
+        
+        /// <summary>
         /// Returns the <see cref="Transform.localPosition"/> as a <see cref="float3"/>.
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localPosition"/> from.</param>
         /// <returns>The <see cref="Transform.localPosition"/> as a <see cref="float3"/></returns>
-        public static float3 LocalPosition(this Transform _Transform)
+        public static float3 LocalPosition3(this Transform _Transform)
         {
             return new float3(_Transform.localPosition.x, _Transform.localPosition.y, _Transform.localPosition.z);
         }
@@ -225,7 +245,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.position"/> from.</param>
         /// <returns>The <see cref="Transform.position"/> as a <see cref="float3"/></returns>
-        public static float3 Position(this Transform _Transform)
+        public static float3 Position3(this Transform _Transform)
         {
             return new float3(_Transform.position.x, _Transform.position.y, _Transform.position.z);
         }
