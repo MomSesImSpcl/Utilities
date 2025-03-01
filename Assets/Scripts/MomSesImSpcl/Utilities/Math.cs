@@ -128,9 +128,9 @@ namespace MomSesImSpcl.Utilities
         public static Vector3 NearestPointClamped(Vector3 _LineStart, Vector3 _LineEnd, Vector3 _Point)
         {
             var _fullDirection = _LineEnd - _LineStart;
-            var _lineDirection = Vector3.Normalize(_fullDirection);
-            var _closestPoint = Vector3.Dot(_Point - _LineStart, _lineDirection) / Vector3.Dot(_lineDirection, _lineDirection);
-            return _LineStart + math.clamp(_closestPoint, 0.0f, Vector3.Magnitude(_fullDirection)) * _lineDirection;
+            Vector3 _lineDirection = math.normalize(_fullDirection);
+            var _closestPoint = math.dot(_Point - _LineStart, _lineDirection) / math.dot(_lineDirection, _lineDirection);
+            return _LineStart + math.clamp(_closestPoint, 0.0f, math.length(_fullDirection)) * _lineDirection;
         }
 
         /// <summary>
@@ -143,8 +143,8 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 NearestPointLine(Vector3 _LineStart, Vector3 _LineEnd, Vector3 _Point)
         {
-            var _lineDirection = Vector3.Normalize(_LineEnd - _LineStart);
-            var _closestPoint = Vector3.Dot(_Point - _LineStart, _lineDirection) / Vector3.Dot(_lineDirection, _lineDirection);
+            Vector3 _lineDirection = math.normalize(_LineEnd - _LineStart);
+            var _closestPoint = math.dot(_Point - _LineStart, _lineDirection) / math.dot(_lineDirection, _lineDirection);
             return _LineStart + _closestPoint * _lineDirection;
         }
 
