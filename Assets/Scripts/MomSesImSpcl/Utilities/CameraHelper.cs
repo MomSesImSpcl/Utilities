@@ -1,5 +1,4 @@
 using System;
-using MomSesImSpcl.Extensions;
 using MomSesImSpcl.Utilities.Singleton;
 using UnityEngine;
 
@@ -82,7 +81,7 @@ namespace MomSesImSpcl.Utilities
             var _width = Screen.width;
             var _height = Screen.height;
 
-            if (!_width.Approximately(this.width) || !_height.Approximately(this.height))
+            if (_width != this.width || _height != this.height)
             {
                 this.width = _width;
                 this.height = _height;
