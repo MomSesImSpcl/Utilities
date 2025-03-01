@@ -183,7 +183,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Damp(Vector2 _Start, Vector2 _End, float _Smoothing, float _Speed)
         {
-            return Vector2.Lerp(_Start, _End, 1 - math.pow(_Smoothing, _Speed));
+            return math.lerp(_Start, _End, 1 - math.pow(_Smoothing, _Speed));
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Damp(Vector3 _Start, Vector3 _End, float _Smoothing, float _Speed)
         {
-            return Vector3.Lerp(_Start, _End, 1 - math.pow(_Smoothing, _Speed));
+            return math.lerp(_Start, _End, 1 - math.pow(_Smoothing, _Speed));
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector4 Damp(Vector4 _Start, Vector4 _End, float _Smoothing, float _Speed)
         {
-            return Vector4.Lerp(_Start, _End, 1 - math.pow(_Smoothing, _Speed));
+            return math.lerp(_Start, _End, 1 - math.pow(_Smoothing, _Speed));
         }
 
         /// <summary>
