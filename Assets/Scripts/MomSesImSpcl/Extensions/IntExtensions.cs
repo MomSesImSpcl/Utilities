@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -10,15 +11,16 @@ namespace MomSesImSpcl.Extensions
     {
         #region Methods
         /// <summary>
-        /// Determines whether the specified integer has a negative sign.
+        /// Compares two <see cref="int"/>s and returns <c>true</c> if they are similar.
         /// </summary>
-        /// <param name="_Int">The integer to check for a negative sign.</param>
-        /// <returns>
-        /// true if the specified integer is negative; otherwise, false.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasSign(this int _Int) => !(_Int >= 0f);
-
+        /// <param name="_Int1">The <see cref="int"/> to compare.</param>
+        /// <param name="_Int2">The <see cref="int"/> to compare with.</param>
+        /// <returns><c>true</c> if the two <see cref="int"/>s are similar, otherwise, <c>false</c>.</returns>
+        public static bool Approximately(this int _Int1, int _Int2)
+        {
+            return Mathf.Approximately(_Int1, _Int2);
+        }
+        
         /// <summary>
         /// Casts this <see cref="int"/> to the given <see cref="Enum"/> <see cref="Type"/> <c>T</c>.
         /// </summary>
@@ -30,6 +32,16 @@ namespace MomSesImSpcl.Extensions
         {
             return Unsafe.As<int,T>(ref _Int);
         }
+        
+        /// <summary>
+        /// Determines whether the specified integer has a negative sign.
+        /// </summary>
+        /// <param name="_Int">The integer to check for a negative sign.</param>
+        /// <returns>
+        /// true if the specified integer is negative; otherwise, false.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool HasSign(this int _Int) => !(_Int >= 0f);
         #endregion
     }
 }
