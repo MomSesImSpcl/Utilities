@@ -1,3 +1,5 @@
+#nullable enable
+using System;
 using MomSesImSpcl.Utilities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -28,6 +30,19 @@ namespace MomSesImSpcl.Extensions
         public static float3 LocalEulerAngles(this Transform _Transform)
         {
             return new float3(_Transform.localEulerAngles.x, _Transform.localEulerAngles.y, _Transform.localEulerAngles.z);
+        }
+        
+        /// <summary>
+        /// Searched for the given <see cref="Component"/> in the children of this <see cref="Transform"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to search under.</param>
+        /// <param name="_IncludeInactive">Whether to include inactive children in the search..</param>
+        /// <param name="_ExcludeSelf">Set to <c>true</c> to only search for the <see cref="Component"/> in the children and not on this <see cref="Transform"/>.</param>
+        /// <typeparam name="T">Must be of <see cref="Type"/> <see cref="Component"/>.</typeparam>
+        /// <returns>The <see cref="Component"/> of the given <see cref="Type"/>, or <c>null</c> if it couldn't be found.</returns>
+        public static T? GetComponentInChildren<T>(this Transform _Transform, bool _IncludeInactive, bool _ExcludeSelf) where T : Component
+        {
+            return _Transform.gameObject.GetComponentInChildren<T>(_IncludeInactive, _ExcludeSelf);
         }
         
         /// <summary>
