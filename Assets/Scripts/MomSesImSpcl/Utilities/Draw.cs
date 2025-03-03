@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MomSesImSpcl.Extensions;
 using UnityEngine;
 
@@ -78,6 +79,21 @@ namespace MomSesImSpcl.Utilities
             }
         }
 
+        /// <summary>
+        /// Draws wireframe spheres at the given positions with the specified radius, color, and duration.
+        /// </summary>
+        /// <param name="_Positions">The center positions of the spheres in world coordinates.</param>
+        /// <param name="_Radius">The radius of the spheres.</param>
+        /// <param name="_Color">The color of the sphere lines.</param>
+        /// <param name="_Duration">The duration that the spheres will be visible. Default is 1 second.</param>
+        public static void Spheres(IEnumerable<Vector3> _Positions, float _Radius, Color _Color, float _Duration = 1)
+        {
+            foreach (var _position in _Positions)
+            {
+                Sphere(_position, _Radius, _Color, _Duration);
+            }
+        }
+        
         /// <summary>
         /// Draws a wireframe square at the given positions with the specified color, and duration.
         /// </summary>
