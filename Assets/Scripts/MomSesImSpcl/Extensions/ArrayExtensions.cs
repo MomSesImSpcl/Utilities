@@ -16,7 +16,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Array">Can be any <see cref="Array"/>, even if it wasn't retrieved from the <see cref="ArrayPool{T}.arrayPool"/>.</param>
         /// <param name="_NewMaxAmount">The new <see cref="ArrayPool{T}.ArrayBucket.MaxAmount"/>.</param>
         /// <typeparam name="T">Must be a primitive <see cref="Type"/>.</typeparam>
-        public static void ReturnToArrayPool<T>(this T[] _Array, uint _NewMaxAmount = 1) where T : struct
+        public static void ReturnToArrayPool<T>(this T[] _Array, uint _NewMaxAmount = 1) where T : unmanaged
         {
             ArrayPool<T>.Return(_Array, _NewMaxAmount);
         }
@@ -27,7 +27,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Array">Can be any <see cref="Array"/>, even if it wasn't retrieved from the <see cref="ArrayPool{T}.concurrentArrayPool"/>.</param>
         /// <param name="_NewMaxAmount">The new <see cref="ArrayPool{T}.ArrayBucket.MaxAmount"/>.</param>
         /// <typeparam name="T">Must be a primitive <see cref="Type"/>.</typeparam>
-        public static void ReturnToConcurrentArrayPool<T>(this T[] _Array, uint _NewMaxAmount = 1) where T : struct
+        public static void ReturnToConcurrentArrayPool<T>(this T[] _Array, uint _NewMaxAmount = 1) where T : unmanaged
         {
             ArrayPool<T>.ReturnConcurrent(_Array, _NewMaxAmount);
         }
