@@ -6,7 +6,7 @@ namespace MomSesImSpcl.Utilities.Pooling
     /// <summary>
     /// Contains methods to initializes the <see cref="Array"/> elements in one method call.
     /// </summary>
-    public static partial class ArrayPool<T> where T : struct
+    public static partial class ArrayPool<T> where T : unmanaged
     {
         #region Methods
         /// <summary>
