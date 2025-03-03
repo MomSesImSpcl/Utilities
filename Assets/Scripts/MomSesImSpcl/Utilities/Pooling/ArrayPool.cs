@@ -9,7 +9,7 @@ namespace MomSesImSpcl.Utilities.Pooling
     /// Generic <see cref="arrayPool"/> for primitive <see cref="Type"/>s.
     /// </summary>
     /// <typeparam name="T">Must be a primitive <see cref="Type"/>.</typeparam>
-    public static partial class ArrayPool<T> where T : struct
+    public static partial class ArrayPool<T> where T : unmanaged
     {
         #region Fields
         /// <summary>
