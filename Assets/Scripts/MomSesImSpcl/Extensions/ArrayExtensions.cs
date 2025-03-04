@@ -1,6 +1,7 @@
 using System;
 using MomSesImSpcl.Utilities.Comparers;
 using MomSesImSpcl.Utilities.Pooling;
+using Random = UnityEngine.Random;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -10,6 +11,17 @@ namespace MomSesImSpcl.Extensions
     public static class ArrayExtensions
     {
         #region Methods
+        /// <summary>
+        /// Returns a random element from this <see cref="Array"/>.
+        /// </summary>
+        /// <param name="_Array">The <see cref="Array"/> to select a random element from.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the elements in the <see cref="Array"/>.</typeparam>
+        /// <returns>A randomly selected element from the <see cref="Array"/>.</returns>
+        public static T GetRandom<T>(this T[] _Array)
+        {
+            return _Array[Random.Range(0, _Array.Length)];
+        }
+        
         /// <summary>
         /// Returns this <see cref="Array"/> to <see cref="ArrayPool{T}"/>.<see cref="ArrayPool{T}.arrayPool"/>.
         /// </summary>
