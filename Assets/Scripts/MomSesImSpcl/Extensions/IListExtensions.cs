@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -24,6 +25,17 @@ namespace MomSesImSpcl.Extensions
             return _firstEntry;
         }
 
+        /// <summary>
+        /// Returns a random element from this <see cref="Array"/>.
+        /// </summary>
+        /// <param name="_List">The <see cref="Array"/> to select a random element from.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the elements in the <see cref="Array"/>.</typeparam>
+        /// <returns>A randomly selected element from the <see cref="Array"/>.</returns>
+        public static T GetRandom<T>(this IList<T> _List)
+        {
+            return _List[Random.Range(0, _List.Count)];
+        }
+        
         /// <summary>
         /// Moves an item from one index to another within the list.
         /// </summary>
@@ -78,7 +90,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The shuffled <see cref="IList{T}"/>.</returns>
         public static IList<T> Shuffle<T>(this IList<T> _List)
         {
-            var _random = new Random();
+            var _random = new System.Random();
             
             // ReSharper disable once InconsistentNaming
             for (var i = _List.Count - 1; i > 0; i--)
