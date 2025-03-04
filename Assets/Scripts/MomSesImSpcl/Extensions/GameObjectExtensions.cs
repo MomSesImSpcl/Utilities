@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -11,10 +12,10 @@ namespace MomSesImSpcl.Extensions
     {
         #region Methods
         /// <summary>
-        /// Searched for the given <see cref="Component"/> in the children of this <see cref="GameObject"/>.
+        /// Searches for the given <see cref="Component"/> in the children of this <see cref="GameObject"/>.
         /// </summary>
         /// <param name="_GameObject">The <see cref="GameObject"/> to search under.</param>
-        /// <param name="_IncludeInactive">Whether to include inactive children in the search..</param>
+        /// <param name="_IncludeInactive">Whether to include inactive children in the search.</param>
         /// <param name="_ExcludeSelf">Set to <c>true</c> to only search for the <see cref="Component"/> in the children and not on this <see cref="GameObject"/>.</param>
         /// <typeparam name="T">Must be of <see cref="Type"/> <see cref="Component"/>.</typeparam>
         /// <returns>The <see cref="Component"/> of the given <see cref="Type"/>, or <c>null</c> if it couldn't be found.</returns>
@@ -22,17 +23,19 @@ namespace MomSesImSpcl.Extensions
         {
             if (_ExcludeSelf)
             {
+                var _transform = _GameObject.transform;
+                
                 // ReSharper disable once InconsistentNaming
-                for (var i = 0; i < _GameObject.transform.childCount; i++)
+                for (var i = 0; i < _transform.childCount; i++)
                 {
-                    var _child = _GameObject.transform.GetChild(i);
+                    var _child = _transform.GetChild(i);
 
                     if (!_IncludeInactive && !_child.gameObject.activeSelf)
                     {
                         continue;
                     }
-                    
-                    if (_child.GetComponent<T>() is {} _component)
+
+                    foreach (var _component in _child.GetComponentsInChildren<T>(_IncludeInactive))
                     {
                         return _component;
                     }
@@ -44,6 +47,43 @@ namespace MomSesImSpcl.Extensions
             }
 
             return null;
+        }
+        
+        /// <summary>
+        /// Searches for the given <see cref="Component"/>s in the children of this <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="_GameObject">The <see cref="GameObject"/> to search under.</param>
+        /// <param name="_IncludeInactive">Whether to include inactive children in the search.</param>
+        /// <param name="_ExcludeSelf">Set to <c>true</c> to only search for the <see cref="Component"/> in the children and not on this <see cref="GameObject"/>.</param>
+        /// <typeparam name="T">Must be of <see cref="Type"/> <see cref="Component"/>.</typeparam>
+        /// <returns>The <see cref="Component"/>s of the given <see cref="Type"/>, or <c>null</c> if none could be found.</returns>
+        public static IEnumerable<T> GetComponentsInChildren<T>(this GameObject _GameObject, bool _IncludeInactive, bool _ExcludeSelf) where T : Component
+        {
+            if (!_ExcludeSelf)
+            {
+                foreach (var _component in _GameObject.GetComponents<T>())
+                {
+                    yield return _component;
+                }
+            }
+
+            var _transform = _GameObject.transform;
+
+            // ReSharper disable once InconsistentNaming
+            for (var i = 0; i < _transform.childCount; i++)
+            {
+                var _child = _transform.GetChild(i);
+
+                if (!_IncludeInactive && !_child.gameObject.activeSelf)
+                {
+                    continue;
+                }
+
+                foreach (var _component in _child.GetComponentsInChildren<T>(_IncludeInactive))
+                {
+                    yield return _component;
+                }
+            }
         }
         #endregion
     }
