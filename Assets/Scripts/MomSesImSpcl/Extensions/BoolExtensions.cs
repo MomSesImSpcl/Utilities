@@ -18,6 +18,17 @@ namespace MomSesImSpcl.Extensions
         {
             return *(byte*)&_Bool;
         }
+        
+        /// <summary>
+        /// Converts the specified <see cref="bool"/> to a <see cref="int"/> representation without any branching.
+        /// </summary>
+        /// <param name="_Bool">The boolean value to be converted.</param>
+        /// <returns>Returns 1 if the value is true, otherwise returns 0.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe int AsInt(this bool _Bool)
+        {
+            return *(int*)&_Bool;
+        }
         #endregion
     }
 }
