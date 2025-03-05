@@ -22,6 +22,17 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
+        /// Converts the given <see cref="int"/> to a <see cref="bool"/>.
+        /// </summary>
+        /// <param name="_Int">The <see cref="int"/> to convert.</param>
+        /// <returns><c>true</c> if the <see cref="int"/> can be converted to a <see cref="bool"/> representation, otherwise <c>false</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe bool AsBool(this int _Int)
+        {
+            return *(bool*)&_Int;
+        }
+        
+        /// <summary>
         /// Determines whether the specified integer has a negative sign.
         /// </summary>
         /// <param name="_Int">The integer to check for a negative sign.</param>
