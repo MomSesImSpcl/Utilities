@@ -4,10 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 using MomSesImSpcl.Data;
-using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -80,7 +77,7 @@ namespace MomSesImSpcl.Extensions
             
             return _DefaultValue;
         }
-
+        
         /// <summary>
         /// Iterates over each element in the <see cref="IEnumerable"/> and executes the provided <see cref="Action{T}"/>.
         /// </summary>
@@ -106,16 +103,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>A randomly selected element from the enumerable.</returns>
         public static T GetRandom<T>(this IEnumerable<T> _Enumerable)
         {
-            var _array = _Enumerable.ToArray();
-            var _index = Random.Range(0, _array.Length);
-            
-#if UNITY_EDITOR // TODO: Sometimes Index out of Range exception, no idea why.
-            if (_index == -1 || _index >= _array.Length || _array.Length == 0)
-            {
-                Debug.LogError($"Index: {_index} | Array: {_array.Length}");
-            }
-#endif
-            return _array[_index];
+            return _Enumerable.ToArray().GetRandom();
         }
         
         /// <summary>
@@ -132,35 +120,9 @@ namespace MomSesImSpcl.Extensions
         /// <exception cref="ArgumentException">Thrown if the enumerable does not contain enough unique elements.</exception>
         public static IEnumerable<T> GetRandom<T>(this IEnumerable<T> _Enumerable, uint _Amount, bool _CanContainDuplicates)
         {
-            var _array = _Enumerable.ToArray();
-            var _random = new System.Random();
-
-            switch (_CanContainDuplicates)
+            foreach (var _element in _Enumerable.ToArray().GetRandom(_Amount, _CanContainDuplicates))
             {
-                case false when _array.Length < _Amount:
-                    throw new ArgumentException($"The enumerable does not contain enough unique elements. Required: {_Amount}, Available: {_array.Length}");
-                case true:
-                {
-                    // ReSharper disable once InconsistentNaming
-                    for (var i = 0; i < _Amount; i++)
-                    {
-                        yield return _array[_random.Next(_array.Length)];
-                    }
-
-                    break;
-                }
-                default:
-                {
-                    _array.Shuffle();
-                    
-                    // ReSharper disable once InconsistentNaming
-                    for (var i = 0; i < _Amount; i++)
-                    {
-                        yield return _array[i];
-                    }
-
-                    break;
-                }
+                yield return _element;
             }
         }
         
@@ -201,7 +163,7 @@ namespace MomSesImSpcl.Extensions
                 throw new ArgumentException($"Not enough unique elements. Required: {_Amount}, Found: {_weightedElements.Count}");
             }
 
-            var _random = new System.Random();
+            var _random = new Random();
             
             if (_CanContainDuplicates)
             {
@@ -266,10 +228,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>A random subset of elements from the original collection</returns>
         public static IEnumerable<T> GetRandomAmount<T>(this IEnumerable<T> _Enumerable, int _MaxAmount = 0)
         {
-            var _array = _Enumerable.ToArray();
-            var _take = Random.Range(1, _MaxAmount > 0 ? _MaxAmount : _array.Length);
-            
-            return _array.OrderBy(_ => Guid.NewGuid()).Take(_take);
+            return _Enumerable.ToArray().GetRandomAmount(_MaxAmount);
         }
 
         /// <summary>
@@ -282,82 +241,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>A JSON string representing the collection with formatted entries and specified indentations.</returns>
         public static string PrettyJson<T>(this IEnumerable<T> _Enumerable, int _Indentations, params Expression<Func<T, object?>>[] _Entries)
         {
-            var _array = _Enumerable.ToArray();
-            var _entries = new List<Expression<Func<T, object?>>>(_Entries);
-            var _lengths = new int[_entries.Count];
-            var _output = new KeyValuePair<string, object?>[_array.Length][];
-            
-            // ReSharper disable once InconsistentNaming
-            for (var i = 0; i < _array.Length; i++)
-            {
-                _output[i] = new KeyValuePair<string, object?>[_entries.Count];
-
-                // ReSharper disable once InconsistentNaming
-                for (var j = 0; j < _entries.Count; j++)
-                {
-                    MemberExpression? _memberExpression;
-
-                    if (_entries[j].Body is UnaryExpression { Operand: MemberExpression } _unaryExpression)
-                    {
-                        // For boxed value types. (i.e., bool)
-                        _memberExpression = _unaryExpression.Operand as MemberExpression;
-                    }
-                    else
-                    {
-                        // For reference types or direct member expressions.
-                        _memberExpression = _entries[j].Body as MemberExpression;
-                    }
-                    
-                    var _name = $"\"{_memberExpression!.Member.Name}\": ";
-                    // ReSharper disable once RedundantAssignment
-                    var _value = string.Empty;
-                    var _lastElement = j != _entries.Count - 1 ? ", " : string.Empty;
-                    
-                    var _object = _entries[j].Compile().Invoke(_array[i]);
-                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-                    if (_object is IEnumerable _enumerable and not string)
-                    {
-                        _value = $"[{string.Join(", ", from object? _entry in _enumerable select $"\"{_entry}\"")}]{_lastElement}";
-                    }
-                    else
-                    {
-                        _value = $"{(_object != null ? $"\"{_object}\"" : "null")}{_lastElement}";
-                    }
-                    
-                    var _columnLength = _name.Length + _value.Length;
-                    
-                    _output[i][j] = new KeyValuePair<string, object?>(_name, _value);
-
-                    if (_lengths[j] < _columnLength)
-                    {
-                        _lengths[j] = _columnLength;
-                    }
-                }
-            }
-            
-            var _message = string.Empty;
-
-            // ReSharper disable once InconsistentNaming
-            for (var i = 0; i < _output.Length; i++)
-            {
-                _message += string.Empty.PadLeft(_Indentations) + "{ ";
-                
-                // ReSharper disable once InconsistentNaming
-                for (var j = 0; j < _output[i].Length; j++)
-                {
-                    var _name = _output[i][j].Key;
-                    var _value = _output[i][j].Value;
-                    var _length = _lengths[j];
-                    
-                    var _string = $"{_name}{_value}";
-                    
-                    _message += _string.PadRight(_length);
-                }
-
-                _message += " }" + (i != _output.Length - 1 ? ",\n" : string.Empty);
-            }
-            
-            return _message;
+            return _Enumerable.ToArray().PrettyJson(_Indentations, _Entries);
         }
 
         /// <summary>
@@ -399,172 +283,36 @@ namespace MomSesImSpcl.Extensions
         /// <returns>A formatted string representation of the collection elements.</returns>
         public static string PrintPretty<T>(this IEnumerable<T> _Enumerable, bool _PrintName = true, bool _AddNewLineAtEnd = true, Expression<Func<T, object?>>? _Title = null, params Expression<Func<T, object?>>[] _Entries)
         {
-            var _array = _Enumerable.ToArray();
-            var _entries = new List<Expression<Func<T, object?>>>(_Entries);
-
-            var _colon = string.Empty;
-            var _dash = string.Empty;
-            var _title = string.Empty;
-            var _additionalTitleCharacters = 1;
-            var _additionalColumnCharacters = 0;
-            
-            if (_Title != null)
-            {
-                _entries.Insert(0, _Title);
-                _title = "[{0}]";
-            }
-            
-            var _lengths = new int[_entries.Count];
-            var _output = new KeyValuePair<string, object?>[_array.Length][];
-            
-            _additionalTitleCharacters += Regex.Replace(_title, "[{]\\d+[}]", string.Empty).Length;
-            
-            if (_PrintName)
-            {
-                _colon = ": ";
-                
-                _additionalColumnCharacters += _colon.Length;   
-            }
-            // ReSharper disable once RedundantIfElseBlock
-            else
-            {
-                if (_Title == null)
-                {
-                    _dash = "-";
-                    
-                    _additionalColumnCharacters += _dash.Length;
-                }
-            }
-            
-            // ReSharper disable once InconsistentNaming
-            for (var i = 0; i < _array.Length; i++)
-            {
-                _output[i] = new KeyValuePair<string, object?>[_entries.Count];
-
-                // ReSharper disable once InconsistentNaming
-                for (var j = 0; j < _entries.Count; j++)
-                {
-                    var _name = string.Empty;
-                    
-                    if (_PrintName)
-                    {
-                        MemberExpression? _memberExpression;
-
-                        if (_entries[j].Body is UnaryExpression { Operand: MemberExpression } _unaryExpression)
-                        {
-                            // For boxed value types. (i.e., bool)
-                            _memberExpression = _unaryExpression.Operand as MemberExpression;
-                        }
-                        else
-                        {
-                            // For reference types or direct member expressions.
-                            _memberExpression = _entries[j].Body as MemberExpression;
-                        }   
-                        
-                        _name = _memberExpression!.Member.Name;
-                    }
-                    
-                    // ReSharper disable once RedundantAssignment
-                    var _value = string.Empty;
-                    var _object = _entries[j].Compile().Invoke(_array[i]);
-                    if (_object is IEnumerable _enumerable and not string)
-                    {
-                        _value = $"{string.Join(", ", from object? _entry in _enumerable select _entry)}";
-                    }
-                    else
-                    {
-                        _value = _object != null ? _object.ToString() : "null";
-                    }
-                    
-                    var _columnLength = _name.Length + (_value?.Length ?? 0);
-
-                    var _isTitle = _Title != null && j == 0;
-                    if (_isTitle)
-                    {
-                        _columnLength += _additionalTitleCharacters;
-                    }
-                    else
-                    {
-                        _columnLength += _additionalColumnCharacters;
-                    }
-                    
-                    _output[i][j] = new KeyValuePair<string, object?>(_name, _value);
-
-                    if (_lengths[j] < _columnLength)
-                    {
-                        _lengths[j] = _columnLength;
-                    }
-                }
-            }
-            
-            var _message = string.Empty;
-            
-            foreach (var _keyValuePairs in _output)
-            {
-                // ReSharper disable once InconsistentNaming
-                for (var i = 0; i < _keyValuePairs.Length; i++)
-                {
-                    var _name = _keyValuePairs[i].Key;
-                    var _value = _keyValuePairs[i].Value;
-                    var _length = _lengths[i];
-                    
-                    string _string;
-                    
-                    var _isTitle = _Title != null && i == 0;
-                    if (_isTitle)
-                    {
-                        _string = string.Format($"{_title} ", _value);
-                        _length -= _name.Length;
-                    }
-                    else
-                    {
-                        _string = i == 0 ? $"{_dash}{_name}{_colon}{_value}" : $"{_name}{_colon}{_value}";
-                    }
-                    
-                    _message += _string.PadRight(_length);
-                    
-                    var _isNotLast = i != _keyValuePairs.Length - 1;
-                    if (!_isTitle && _isNotLast)
-                    {
-                        _message += " | ";
-                    }
-                }
-
-                if (_AddNewLineAtEnd)
-                {
-                    _message += "\n";
-                }
-            }
-
-            return _message;
+            return _Enumerable.ToArray().PrintPretty(_PrintName, _AddNewLineAtEnd, _Title, _Entries);
         }
-
+        
         /// <summary>
         /// Returns the elements at the given <c>_Indices</c> in this <see cref="IEnumerable{T}"/>.
         /// </summary>
         /// <param name="_Enumerable">The <see cref="IEnumerable{T}"/> to be filtered.</param>
         /// <param name="_Indices">The indices of the elements in this <see cref="IEnumerable{T}"/> to return.</param>
         /// <typeparam name="T">Can be any <see cref="Type"/>.</typeparam>
-        /// <returns>A <see cref="List{T}"/> containing the elements of this <see cref="IEnumerable{T}"/> at the given <c>_Indices</c>.</returns>
-        public static List<T> Take<T>(this IEnumerable<T> _Enumerable, params int[] _Indices)
+        /// <returns>A <see cref="Array"/> containing the elements of this <see cref="IEnumerable{T}"/> at the given <c>_Indices</c>.</returns>
+        public static T[] Take<T>(this IEnumerable<T> _Enumerable, params int[] _Indices)
         {
             using var _enumerator = _Enumerable.GetEnumerator();
-            var _list = new List<T>(_Indices.Length);
-            var _counter = 0;
+            var _array = new T[_Indices.Length];
+            var _enumerableIndex = 0;
+            var _arrayIndex = 0;
             
             while (_enumerator.MoveNext())
             {
-                if (_Indices.Contains(_counter))
+                if (_Indices.Contains(_enumerableIndex))
                 {
-                    _list.Add(_enumerator.Current);
+                    _array[_arrayIndex++] = _enumerator.Current;
                 }
                 
-                _counter++;
+                _enumerableIndex++;
             }
 
-            return _list;
+            return _array;
         }
-
+        
 #if ODIN_INSPECTOR
         /// <summary>
         /// Creates a new <see cref="Data.SerializedDictionary{K,V}"/> from this <see cref="IEnumerable{T}"/>.
