@@ -1,76 +1,83 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace MomSesImSpcl.Utilities
 {
     /// <summary>
-    /// The FPSCounter class provides functionality to measure and display the frames per second (FPS) in a Unity application.
+    /// Utility struct to calculate the current frames per second.
     /// </summary>
-    /// <remarks>
-    /// This class requires a Text component to be attached to the same GameObject.
-    /// </remarks>
-    [RequireComponent(typeof(Text))]
-    public sealed class FPSCounter : MonoBehaviour
+    public struct FPSCounter
     {
-        #region Inspector Fields
-        [Tooltip("Time in seconds between the measurements")]
-        [SerializeField] private float measurePeriod = .5f;
+        #region Constants
+        /// <summary>
+        /// The default smoothing factor.
+        /// </summary>
+        private const float SMOOTING_FACTOR = .1f;
         #endregion
-
+        
         #region Fields
         /// <summary>
-        /// The Text component used to display the FPS on the UI.
+        /// Stores the smoothed <see cref="Time.deltaTime"/>, representing the duration of aframe.
         /// </summary>
-        private Text text;
+        private float deltaTime;
+        #endregion
+        
+        #region Operators
         /// <summary>
-        /// Stores the number of frames rendered within the measurement period.
+        /// Implicitly returns the value of <see cref="FloatFPS"/> as a <see cref="float"/>.
         /// </summary>
-        private int counter;
+        /// <param name="_FPSCounter">The <see cref="FPSCounter"/> to calculate the FPS with.</param>
+        /// <returns>The value of <see cref="FloatFPS"/> as a <see cref="float"/>.</returns>
+        public static implicit operator float(FPSCounter _FPSCounter) => _FPSCounter.FloatFPS();
         /// <summary>
-        /// The time, in seconds, at which the next FPS measurement will be taken.
+        /// Implicitly returns the value of <see cref="FloatFPS"/> as an <see cref="int"/>.
         /// </summary>
-        private float nextMeasurement;
+        /// <param name="_FPSCounter">The <see cref="FPSCounter"/> to calculate the FPS with.</param>
+        /// <returns>The value of <see cref="FloatFPS"/> as an <see cref="int"/>.</returns>
+        public static implicit operator int(FPSCounter _FPSCounter) => _FPSCounter.IntFPS();
         /// <summary>
-        /// Stores the current frames per second (FPS) calculated by the FPSCounter.
+        /// Implicitly returns the value of <see cref="FloatFPS"/> as an <see cref="uint"/>.
         /// </summary>
-        private int currentFPS;
+        /// <param name="_FPSCounter">The <see cref="FPSCounter"/> to calculate the FPS with.</param>
+        /// <returns>The value of <see cref="FloatFPS"/> as an <see cref="uint"/>.</returns>
+        public static implicit operator uint(FPSCounter _FPSCounter) => (uint)_FPSCounter.IntFPS();
+        /// <summary>
+        /// Implicitly returns the value of <see cref="FloatFPS"/> as a <see cref="string"/>.
+        /// </summary>
+        /// <param name="_FPSCounter">The <see cref="FPSCounter"/> to calculate the FPS with.</param>
+        /// <returns>The value of <see cref="FloatFPS"/> as a <see cref="string"/>.</returns>
+        public static implicit operator string(FPSCounter _FPSCounter) => _FPSCounter.ToString();
         #endregion
         
         #region Methods
-        private void Awake()
+        /// <summary>
+        /// Calculates the current Frames Per Second.
+        /// </summary>
+        /// <param name="_SmoothingFactor">
+        /// Higher values make the calculation more sensitive to changes, lower values make it more stable over time. <br/>
+        /// <b>Should be between <c>0</c> and <c>1</c>.</b>
+        /// </param>
+        /// <returns>The current Frames Per Second.</returns>
+        public float FloatFPS(float _SmoothingFactor = SMOOTING_FACTOR)
         {
-            this.text = base.GetComponent<Text>();
-        }
-        
-        private void Start()
-        {
-            this.nextMeasurement = Time.realtimeSinceStartup + measurePeriod;
-        }
-        
-        private void Update()
-        {
-            this.CalculateFPS();
+            return 1 / (this.deltaTime += (Time.unscaledDeltaTime - this.deltaTime) * _SmoothingFactor);
         }
 
         /// <summary>
-        /// Calculates the frames per second (FPS) by measuring the number of frames rendered within
-        /// a specified measurement period. Updates the display Text component with the calculated FPS.
+        /// Calculates the current Frames Per Second.
         /// </summary>
-        private void CalculateFPS()
+        /// <param name="_SmoothingFactor">
+        /// Higher values make the calculation more sensitive to changes, lower values make it more stable over time. <br/>
+        /// <b>Should be between <c>0</c> and <c>1</c>.</b>
+        /// </param>
+        /// <returns>The current Frames Per Second.</returns>
+        public int IntFPS(float _SmoothingFactor = SMOOTING_FACTOR)
         {
-            this.counter++;
-
-            if (Time.realtimeSinceStartup > this.nextMeasurement)
-            {
-                this.currentFPS = (int)(this.counter / this.measurePeriod);
-                this.counter = 0;
-                this.nextMeasurement += this.measurePeriod;
-
-                if (this.text is not null)
-                {
-                    this.text.text = $"FPS: {this.currentFPS.ToString()}";   
-                }
-            }
+            return Mathf.RoundToInt(this.FloatFPS(_SmoothingFactor));
+        }
+        
+        public override string ToString()
+        {
+            return this.IntFPS().ToString();
         }
         #endregion
     }
