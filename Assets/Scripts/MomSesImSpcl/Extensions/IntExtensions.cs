@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using MomSesImSpcl.Utilities;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -30,6 +31,16 @@ namespace MomSesImSpcl.Extensions
         public static unsafe bool AsBool(this int _Int)
         {
             return *(bool*)&_Int;
+        }
+        
+        /// <summary>
+        /// Creates a new <see cref="IntEnumerator"/> to iterate over a sequence of <see cref="int"/>, starting at <c>0</c> and ending at <c>_End</c>.
+        /// </summary>
+        /// <param name="_End"><see cref="IntEnumerator.end"/>.</param>
+        /// <returns>A new <see cref="IntEnumerator"/>.</returns>
+        public static IntEnumerator GetEnumerator(this int _End)
+        {
+            return new IntEnumerator(_End);
         }
         
         /// <summary>
