@@ -17,6 +17,17 @@ namespace MomSesImSpcl.Extensions
     {
         #region Methods
         /// <summary>
+        /// Casts this <see cref="object"/> to the given <see cref="Type"/>.
+        /// </summary>
+        /// <param name="_Object">The <see cref="object"/> to cast.</param>
+        /// <typeparam name="T">The <see cref="Type"/> to cast the <see cref="object"/> to.</typeparam>
+        /// <returns>This <see cref="object"/> cast to the given <see cref="Type"/>.</returns>
+        public static T As<T>(this object _Object)
+        {
+            return (T)_Object;
+        }
+        
+        /// <summary>
         /// Gets the value of an instance Field through reflection.
         /// </summary>
         /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
