@@ -34,13 +34,13 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
-        /// Creates a new <see cref="IntEnumerator"/> to iterate over a sequence of <see cref="int"/>, starting at <c>0</c> and ending at <c>_End</c>.
+        /// Creates a new <see cref="NumericEnumerator"/> to iterate over a sequence of <see cref="int"/>, starting at <c>0</c> and ending at <c>_End</c>.
         /// </summary>
-        /// <param name="_End"><see cref="IntEnumerator.end"/>.</param>
-        /// <returns>A new <see cref="IntEnumerator"/>.</returns>
-        public static IntEnumerator GetEnumerator(this int _End)
+        /// <param name="_End"><see cref="NumericEnumerator.end"/>.</param>
+        /// <returns>A new <see cref="NumericEnumerator"/>.</returns>
+        public static NumericEnumerator GetEnumerator(this int _End)
         {
-            return new IntEnumerator(_End);
+            return new NumericEnumerator(_End);
         }
         
         /// <summary>
