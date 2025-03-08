@@ -28,7 +28,7 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_End"><see cref="end"/>.</param>
         public NumericEnumerator(byte _End)
         {
-            this.Current = -1;
+            this.Current = 0;
             this.end = _End;
         }
         
@@ -38,7 +38,7 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_End"><see cref="end"/>.</param>
         public NumericEnumerator(sbyte _End)
         {
-            this.Current = -1;
+            this.Current = 0;
             this.end = _End;
         }
         
@@ -48,7 +48,7 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_End"><see cref="end"/>.</param>
         public NumericEnumerator(short _End)
         {
-            this.Current = -1;
+            this.Current = 0;
             this.end = _End;
         }
         
@@ -58,7 +58,7 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_End"><see cref="end"/>.</param>
         public NumericEnumerator(ushort _End)
         {
-            this.Current = -1;
+            this.Current = 0;
             this.end = _End;
         }
         
@@ -68,7 +68,7 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_End"><see cref="end"/>.</param>
         public NumericEnumerator(int _End)
         {
-            this.Current = -1;
+            this.Current = 0;
             this.end = _End;
         }
         
@@ -78,7 +78,7 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_End"><see cref="end"/>.</param>
         public NumericEnumerator(uint _End)
         {
-            this.Current = -1;
+            this.Current = 0;
             this.end = _End;
         }
         
@@ -88,7 +88,7 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_End"><see cref="end"/>.</param>
         public NumericEnumerator(long _End)
         {
-            this.Current = -1;
+            this.Current = 0;
             this.end = _End;
         }
         
