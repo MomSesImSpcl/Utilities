@@ -40,7 +40,7 @@ namespace MomSesImSpcl.Utilities.Comparers
         /// </returns>
         public int Compare(T _First, T _Second)
         {
-            return comparerKey(_First).CompareTo(comparerKey(_Second));
+            return this.comparerKey(_First).CompareTo(this.comparerKey(_Second));
         }
         #endregion
     }
