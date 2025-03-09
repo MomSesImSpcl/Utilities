@@ -99,6 +99,30 @@ namespace MomSesImSpcl.Extensions
             
             return _IList.OrderBy(_ => Guid.NewGuid()).Take(_take);
         }
+
+        /// <summary>
+        /// Returns the median value from a collection of numbers.
+        /// </summary>
+        /// <param name="_IList">The <see cref="IList{T}"/> to get the median of.</param>
+        /// <param name="_Sort">Set this to <c>false</c> if the collection is already sorted.</param>
+        /// <typeparam name="T">Must be a numeric <see cref="Type"/>.</typeparam>
+        /// <returns>The median value as a <see cref="decimal"/>.</returns>
+        public static decimal Median<T>(this IList<T> _IList, bool _Sort = true) where T : unmanaged, IFormattable, IConvertible
+        {
+            var _collection = _Sort ? _IList.OrderBy(_Numbers => _Numbers).ToArray() : _IList;
+            var _count = _collection.Count;
+            var _midIndex = _count / 2;
+            
+            if (_count % 2 == 0)
+            {
+                var _left = Convert.ToDecimal(_collection[_midIndex - 1]);
+                var _right = Convert.ToDecimal(_collection[_midIndex]);
+                
+                return (_left + _right) * .5m;
+            }
+
+            return Convert.ToDecimal(_collection[_midIndex]);
+        }
         
         /// <summary>
         /// Moves an item from one index to another within the list.
