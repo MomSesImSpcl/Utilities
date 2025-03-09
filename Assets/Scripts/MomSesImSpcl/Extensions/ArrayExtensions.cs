@@ -39,10 +39,22 @@ namespace MomSesImSpcl.Extensions
         /// <exception cref="ArgumentException">Thrown if the enumerable does not contain enough unique elements.</exception>
         public static IEnumerable<T> GetRandom<T>(this T[] _Array, uint _Amount, bool _CanContainDuplicates)
         {
-            foreach (var _element in ((IList<T>)_Array).GetRandom(_Amount, _CanContainDuplicates))
+            foreach (var _element in _Array.As<IList<T>>().GetRandom(_Amount, _CanContainDuplicates))
             {
                 yield return _element;
             }
+        }
+        
+        /// <summary>
+        /// Returns the median value from a collection of numbers.
+        /// </summary>
+        /// <param name="_Array">The <see cref="Array"/> to get the median of.</param>
+        /// <param name="_Sort">Set this to <c>false</c> if the collection is already sorted.</param>
+        /// <typeparam name="T">Must be a numeric <see cref="Type"/>.</typeparam>
+        /// <returns>The median value as a <see cref="decimal"/>.</returns>
+        public static decimal Median<T>(this T[] _Array, bool _Sort = true) where T : unmanaged, IFormattable, IConvertible
+        {
+            return _Array.As<IList<T>>().Median(_Sort);
         }
         
         /// <summary>
@@ -65,7 +77,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>A random subset of elements from the original collection</returns>
         public static IEnumerable<T> GetRandomAmount<T>(this T[] _Array, int _MaxAmount = 0)
         {
-            return ((IList<T>)_Array).GetRandomAmount(_MaxAmount);
+            return _Array.As<IList<T>>().GetRandomAmount(_MaxAmount);
         }
 
         /// <summary>
@@ -78,7 +90,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>A JSON string representing the collection with formatted entries and specified indentations.</returns>
         public static string PrettyJson<T>(this T[] _Array, int _Indentations, params Expression<Func<T, object?>>[] _Entries)
         {
-            return ((IList<T>)_Array).PrettyJson(_Indentations, _Entries);
+            return _Array.As<IList<T>>().PrettyJson(_Indentations, _Entries);
         }
         
         /// <summary>
@@ -120,7 +132,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>A formatted string representation of the collection elements.</returns>
         public static string PrintPretty<T>(this T[] _Array, bool _PrintName = true, bool _AddNewLineAtEnd = true, Expression<Func<T, object?>>? _Title = null, params Expression<Func<T, object?>>[] _Entries)
         {
-            return ((IList<T>)_Array).PrintPretty(_PrintName, _AddNewLineAtEnd, _Title, _Entries);
+            return _Array.As<IList<T>>().PrintPretty(_PrintName, _AddNewLineAtEnd, _Title, _Entries);
         }
         
         /// <summary>
