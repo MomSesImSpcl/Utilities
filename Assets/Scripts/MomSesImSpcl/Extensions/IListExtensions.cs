@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 namespace MomSesImSpcl.Extensions
 {
     /// <summary>
-    /// Contains extension methods for <see cref="List{T}"/>
+    /// Contains extension methods for <see cref="IList{T}"/>
     /// </summary>
     // ReSharper disable once InconsistentNaming
     public static class IListExtensions
