@@ -9,17 +9,15 @@ namespace MomSesImSpcl.Editor
     /// <summary>
     /// For displaying the progress of a process in the inspector.
     /// </summary>
-    [Serializable]
+    [Serializable, HideLabel]
     public sealed class ProgressBar
     {
         #region Inspector Fields
         [Tooltip("Displays the progress of a process.")]
         [ProgressBar(0, "$max")][HideLabel] // ReSharper disable once NotAccessedField.Local
         [SerializeField][ReadOnly] private ulong progressBar;
-        [Title("$remainingTime", horizontalLine: false, bold: false, titleAlignment: TitleAlignments.Centered)]
-        [Tooltip("The estimated remaining time.")]
-        [VerticalGroup(PaddingBottom = -20)]
-        [HideLabel, ShowIf(nameof(this.hasStarted))] // ReSharper disable once NotAccessedField.Local
+        [TitleGroup("$remainingTime", Alignment = TitleAlignments.Centered, BoldTitle = true, HorizontalLine = false, HideWhenChildrenAreInvisible = false, VisibleIf = nameof(this.inProgress))]
+        [HideIf(nameof(this.Hide))] // ReSharper disable once NotAccessedField.Local
         [SerializeField][ReadOnly] private string remainingTime;
         #endregion
         
@@ -32,7 +30,7 @@ namespace MomSesImSpcl.Editor
         /// Will be <c>true</c> once <see cref="Start"/> has been called.
         /// </summary>
 #pragma warning disable CS0414
-        private bool hasStarted;
+        private bool inProgress;
 #pragma warning restore CS0414
         /// <summary>
         /// The amount when the <see cref="progressBar"/> will be completed.
@@ -41,6 +39,10 @@ namespace MomSesImSpcl.Editor
         #endregion
         
         #region Properties
+        /// <summary>
+        /// Hides <see cref="remainingTime"/> in the inspector.
+        /// </summary>
+        private bool Hide => true;
         /// <summary>
         /// Returns the estimated time required to fill the <see cref="progressBar"/> as a <see cref="string"/>.
         /// </summary>
@@ -55,7 +57,7 @@ namespace MomSesImSpcl.Editor
         public void Start(ulong _Max)
         {
             this.startTime = DateTime.Now;
-            this.hasStarted = true;
+            this.inProgress = true;
             this.progressBar = 0;
             this.max = _Max;
         }
@@ -71,7 +73,7 @@ namespace MomSesImSpcl.Editor
 
             if (this.progressBar == this.max)
             {
-                this.hasStarted = false;
+                this.inProgress = false;
             }
         }
         
@@ -86,7 +88,7 @@ namespace MomSesImSpcl.Editor
             
             if (this.progressBar == this.max)
             {
-                this.hasStarted = false;
+                this.inProgress = false;
             }
         }
         
@@ -97,7 +99,7 @@ namespace MomSesImSpcl.Editor
         {
             this.progressBar = 0;
             this.max = 0;
-            this.hasStarted = false;
+            this.inProgress = false;
         }
         #endregion
     }
