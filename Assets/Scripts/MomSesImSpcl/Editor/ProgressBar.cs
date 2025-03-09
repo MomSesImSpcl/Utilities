@@ -18,7 +18,7 @@ namespace MomSesImSpcl.Editor
         [SerializeField][ReadOnly] private ulong progressBar;
         [TitleGroup("$remainingTime", Alignment = TitleAlignments.Centered, BoldTitle = true, HorizontalLine = false, HideWhenChildrenAreInvisible = false, VisibleIf = nameof(this.inProgress))]
         [HideIf(nameof(this.Hide))] // ReSharper disable once NotAccessedField.Local
-        [SerializeField][ReadOnly] private string remainingTime;
+        [SerializeField] private string remainingTime;
         #endregion
         
         #region Fields
