@@ -68,13 +68,7 @@ namespace MomSesImSpcl.Editor
         /// <param name="_Amount">WIll be added to <see cref="progressBar"/>.</param>
         public void Add(ulong _Amount = 1)
         {
-            this.progressBar += _Amount;
-            this.remainingTime = this.EstimatedTime;
-
-            if (this.progressBar == this.max)
-            {
-                this.inProgress = false;
-            }
+            this.Set(this.progressBar + _Amount);
         }
         
         /// <summary>
