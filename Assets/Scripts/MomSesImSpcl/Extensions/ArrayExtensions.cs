@@ -145,8 +145,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The sorted <see cref="Array"/>.</returns>
         public static T[] SortAscending<T,V>(this T[] _Array, Func<T,V> _SortBy) where V : IComparable<V>
         {
-            var _comparer = new AscendingComparer<T,V>(_SortBy);
-            Array.Sort(_Array, _comparer);
+            Array.Sort(_Array, new AscendingComparer<T,V>(_SortBy));
             return _Array;
         }
         
@@ -174,8 +173,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The sorted <see cref="Array"/>.</returns>
         public static T[] SortDescending<T,V>(this T[] _Array, Func<T,V> _SortBy) where V : IComparable<V>
         {
-            var _comparer = new DescendingComparer<T,V>(_SortBy);
-            Array.Sort(_Array, _comparer);
+            Array.Sort(_Array, new DescendingComparer<T,V>(_SortBy));
             return _Array;
         }
         
