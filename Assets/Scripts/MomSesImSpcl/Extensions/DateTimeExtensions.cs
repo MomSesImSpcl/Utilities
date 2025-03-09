@@ -17,7 +17,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_TotalSteps">The total number of steps required to complete the process.</param>
         /// <param name="_LastProgressUpdate">The time of the last progress update.</param>
         /// <returns>A <see cref="TimeSpan"/> representing the estimated remaining time to complete the process.</returns>
-        public static TimeSpan EstimateTime(this DateTime _StartTime, long _CurrentStep, long _TotalSteps, DateTime _LastProgressUpdate)
+        public static TimeSpan EstimateTime(this DateTime _StartTime, ulong _CurrentStep, ulong _TotalSteps, DateTime _LastProgressUpdate)
         {
             var _elapsedTime = DateTime.Now - _StartTime;
             var _timeSinceLastUpdate = DateTime.Now - _LastProgressUpdate;
