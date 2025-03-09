@@ -27,8 +27,9 @@ namespace MomSesImSpcl.Extensions
                 var _adjustedElapsedTime = _elapsedTime.Add(_timeSinceLastUpdate);
                 var _averageTimePerStep = _adjustedElapsedTime.TotalSeconds / math.max(_CurrentStep + 1, 1);
                 var _remainingSteps = _TotalSteps - _CurrentStep;
-
-                return TimeSpan.FromSeconds(_averageTimePerStep * _remainingSteps);
+                var _totalSeconds = _averageTimePerStep * _remainingSteps;
+                
+                return _totalSeconds > TimeSpan.MaxValue.TotalSeconds ? TimeSpan.MaxValue : TimeSpan.FromSeconds(_totalSeconds);
             }
 
             return TimeSpan.Zero;
