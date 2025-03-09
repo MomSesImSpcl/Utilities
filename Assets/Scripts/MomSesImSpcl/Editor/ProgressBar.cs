@@ -14,18 +14,13 @@ namespace MomSesImSpcl.Editor
     {
         #region Inspector Fields
         [Tooltip("Displays the progress of a process.")]
-        [ProgressBar(0, MAX)][HideLabel] // ReSharper disable once NotAccessedField.Local
+        [ProgressBar(0, "$max")][HideLabel] // ReSharper disable once NotAccessedField.Local
         [SerializeField][ReadOnly] private ulong progressBar;
+        [Title("$remainingTime", horizontalLine: false, bold: false, titleAlignment: TitleAlignments.Centered)]
         [Tooltip("The estimated remaining time.")]
-        [HideLabel][ShowIf(nameof(this.hasStarted))] // ReSharper disable once NotAccessedField.Local
+        [VerticalGroup(PaddingBottom = -20)]
+        [HideLabel, ShowIf(nameof(this.hasStarted))] // ReSharper disable once NotAccessedField.Local
         [SerializeField][ReadOnly] private string remainingTime;
-        #endregion
-        
-        #region Constants
-        /// <summary>
-        /// Refactor resistant name of <see cref="max"/> for <see cref="progressBar"/>.
-        /// </summary>
-        private const string MAX = nameof(max);
         #endregion
         
         #region Fields
