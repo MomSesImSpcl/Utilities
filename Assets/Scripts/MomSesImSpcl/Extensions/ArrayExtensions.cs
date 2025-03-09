@@ -151,6 +151,19 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
+        /// Sorts an <see cref="Array"/> in ascending order. <br/>
+        /// <b>This will sort the original <see cref="Array"/>.</b>
+        /// </summary>
+        /// <param name="_Array">The <see cref="Array"/> to sort.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="Array"/>.</typeparam>
+        /// <returns>The sorted <see cref="Array"/>.</returns>
+        public static T[] SortAscending<T>(this T[] _Array) where T : IComparable<T>
+        {
+            Array.Sort(_Array, (_First, _Second) => _First.CompareTo(_Second));
+            return _Array;
+        }
+        
+        /// <summary>
         /// Sorts an <see cref="Array"/> in descending order. <br/>
         /// <b>This will sort the original <see cref="Array"/>.</b>
         /// </summary>
@@ -163,6 +176,19 @@ namespace MomSesImSpcl.Extensions
         {
             var _comparer = new DescendingComparer<T,V>(_SortBy);
             Array.Sort(_Array, _comparer);
+            return _Array;
+        }
+        
+        /// <summary>
+        /// Sorts an <see cref="Array"/> in descending order. <br/>
+        /// <b>This will sort the original <see cref="Array"/>.</b>
+        /// </summary>
+        /// <param name="_Array">The <see cref="Array"/> to sort.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="Array"/>.</typeparam>
+        /// <returns>The sorted <see cref="Array"/>.</returns>
+        public static T[] SortDescending<T>(this T[] _Array) where T : IComparable<T>
+        {
+            Array.Sort(_Array, (_First, _Second) => _Second.CompareTo(_First));
             return _Array;
         }
         #endregion
