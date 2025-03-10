@@ -43,11 +43,11 @@ namespace MomSesImSpcl.Extensions
         /// <summary>
         /// Returns the <see cref="string"/> or <c>null</c> as a <see cref="string"/> if the <see cref="object"/> is <c>null</c>.
         /// </summary>
-        /// <param name="_Object">The <see cref="object"/> whose <c>ToString()</c> output to return.</param>
+        /// <param name="_Class">The <see cref="object"/> whose <c>ToString()</c> output to return.</param>
         /// <returns>The <see cref="object"/> or <c>null</c> as a <see cref="string"/>.</returns>
-        public static string OrNull<T>(this T? _Object) where T : class
+        public static string OrNull<T>(this T? _Class) where T : class
         {
-            return _Object != null ? _Object.ToString() : "null";
+            return _Class != null ? _Class.ToString() : "null";
         }
         
         /// <summary>
