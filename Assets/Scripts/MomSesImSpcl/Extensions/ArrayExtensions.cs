@@ -52,7 +52,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Sort">Set this to <c>false</c> if the collection is already sorted.</param>
         /// <typeparam name="T">Must be a numeric <see cref="Type"/>.</typeparam>
         /// <returns>The median value as a <see cref="decimal"/>.</returns>
-        public static decimal Median<T>(this T[] _Array, bool _Sort = true) where T : unmanaged, IFormattable, IConvertible
+        public static decimal Median<T>(this T[] _Array, bool _Sort = true) where T : unmanaged, IFormattable
         {
             return _Array.As<IList<T>>().Median(_Sort);
         }
