@@ -312,7 +312,11 @@ namespace MomSesImSpcl.Utilities
                     
                     foreach (var _ in _WarmupIterations)
                     {
-                        cancelBenchmark.Token.ThrowIfCancellationRequested();
+                        try
+                        {
+                            cancelBenchmark.Token.ThrowIfCancellationRequested();
+                        }
+                        catch (OperationCanceledException) { Debug.Log("Benchmark was canceled."); }
 
                         await _Func();
                         
@@ -327,7 +331,11 @@ namespace MomSesImSpcl.Utilities
 
                     foreach (uint _iteration in _Iterations)
                     {
-                        cancelBenchmark.Token.ThrowIfCancellationRequested();
+                        try
+                        {
+                            cancelBenchmark.Token.ThrowIfCancellationRequested();
+                        }
+                        catch (OperationCanceledException) { Debug.Log("Benchmark was canceled."); }
 
                         var _allocatedBefore = GC.GetTotalMemory(false);
                         var _startTicks = Stopwatch.GetTimestamp();
