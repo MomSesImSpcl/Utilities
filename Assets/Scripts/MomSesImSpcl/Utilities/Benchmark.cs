@@ -277,12 +277,12 @@ namespace MomSesImSpcl.Utilities
         /// <summary>
         /// Measures the median time and memory usage of the given <see cref="Func{Task}"/>.
         /// </summary>
-        /// <param name="_Action">The <see cref="Func{Task}"/> to measure the time of.</param>
+        /// <param name="_Func">The <see cref="Func{Task}"/> to measure the time of.</param>
         /// <param name="_WarmupIterations">The number of times to run the <see cref="Func{Task}"/> before the time is measured.</param>
         /// <param name="_Iterations">The number of iterations to measure the average time of.</param>
         /// <param name="_ProgressCallback">Callback that holds the current iteration count.</param>
         /// <returns>An awaitable <see cref="Task"/> that completes after all iterations have been run.</returns>
-        public static Task Run(Func<Task> _Action, uint _WarmupIterations = DEFAULT_WARMUP_ITERATION, uint _Iterations = DEFAULT_ITERATIONS, Action<uint> _ProgressCallback = null)
+        public static Task Run(Func<Task> _Func, uint _WarmupIterations = DEFAULT_WARMUP_ITERATION, uint _Iterations = DEFAULT_ITERATIONS, Action<uint> _ProgressCallback = null)
         {
             if (_Iterations == 0)
             {
@@ -314,7 +314,7 @@ namespace MomSesImSpcl.Utilities
                     {
                         cancelBenchmark.Token.ThrowIfCancellationRequested();
 
-                        await _Action();
+                        await _Func();
                         
                         _ProgressCallback?.Invoke(++_iterationCount);
                     }
@@ -332,7 +332,7 @@ namespace MomSesImSpcl.Utilities
                         var _allocatedBefore = GC.GetTotalMemory(false);
                         var _startTicks = Stopwatch.GetTimestamp();
 
-                        await _Action();
+                        await _Func();
 
                         var _endTicks = Stopwatch.GetTimestamp();
                         var _allocatedAfter = GC.GetTotalMemory(false);
