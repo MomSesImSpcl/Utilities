@@ -12,19 +12,6 @@ namespace MomSesImSpcl.Utilities
     {
         #region Methods
         /// <summary>
-        /// Tests if a floating-point value is approximately equal to another value within a specified range.
-        /// </summary>
-        /// <param name="_Value">The value to be compared.</param>
-        /// <param name="_About">The target value to compare against.</param>
-        /// <param name="_Range">The acceptable range within which the values are considered approximately equal.</param>
-        /// <returns>True if the difference between the values is less than the specified range; otherwise, false.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Approx(float _Value, float _About, float _Range)
-        {
-            return math.abs(_Value - _About) < _Range;
-        }
-
-        /// <summary>
         /// Tests if a Vector3 value is approximately equal to another Vector3 value within a specified range.
         /// </summary>
         /// <param name="_Value">The Vector3 value to be compared.</param>
@@ -32,7 +19,7 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_Range">The acceptable range within which the Vector3 values are considered approximately equal.</param>
         /// <returns>True if the squared magnitude of the difference between the Vector3 values is less than the squared range; otherwise, false.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)] 
-        public static bool Approx(Vector3 _Value, Vector3 _About, float _Range)
+        public static bool Approximately(Vector3 _Value, Vector3 _About, float _Range)
         {
             return (_Value - _About).sqrMagnitude < _Range * _Range;
         }
@@ -48,6 +35,18 @@ namespace MomSesImSpcl.Utilities
         public static bool Approximately(float _A, float _B)
         {
             return (double) math.abs(_B - _A) < (double) math.max(1E-06f * math.max(math.abs(_A), math.abs(_B)), math.EPSILON * 8f);
+        }
+        
+        /// <summary>
+        /// Compares two double values and returns true if they are similar.
+        /// </summary>
+        /// <param name="_A">Value to compare.</param>
+        /// <param name="_B">Value to compare with.</param>
+        /// <returns><c>true</c> if value <c>_A</c> is similar to value <c>_B</c>, otherwise <c>false</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Approximately(double _A, double _B)
+        {
+            return math.abs(_B - _A) < math.max(1E-12d * math.max(math.abs(_A), math.abs(_B)), double.Epsilon * 8d);
         }
         
         /// <summary>
