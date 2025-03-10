@@ -359,8 +359,8 @@ namespace MomSesImSpcl.Utilities
 
                 }, cancelBenchmark.Token);
             }
-            catch (TaskCanceledException) { /* No need to print the exception on cancel. */ }
-            catch (OperationCanceledException) { /* No need to print the exception on cancel. */ }
+            catch (TaskCanceledException) { Debug.Log("Benchmark was canceled."); }
+            catch (OperationCanceledException) { Debug.Log("Benchmark was canceled."); }
             finally
             {
                 lock (benchmarkLock)
