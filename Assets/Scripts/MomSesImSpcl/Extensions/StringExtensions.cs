@@ -31,11 +31,11 @@ namespace MomSesImSpcl.Extensions
         /// Wraps this <see cref="string"/> in a Rich Text color tag.
         /// </summary>
         /// <param name="_String">The <see cref="string"/> to wrap.</param>
-        /// <param name="_Color">The <see cref="RichTextColor"/> to wrap the <see cref="string"/> with.</param>
-        /// <returns>The <see cref="string"/> wrapped in an color tag.</returns>
+        /// <param name="_Color">The <see cref="RichTextColor"/> to display the <see cref="string"/> in.</param>
+        /// <returns>The <see cref="string"/> wrapped in a color tag.</returns>
         public static string Color(this string? _String, RichTextColor _Color)
         {
-            return $"<color={_Color}>{_String.OrNull()}</color>";
+            return $"<color={_Color.GetName()}>{_String.OrNull()}</color>";
         }
         
         /// <summary>
