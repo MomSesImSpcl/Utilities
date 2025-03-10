@@ -13,10 +13,11 @@ namespace MomSesImSpcl.Editor
     public sealed class ProgressBar
     {
         #region Inspector Fields
-        [Tooltip("Displays the progress of a process.")]
+        [Tooltip("Displays the progress bar and holds the current value.")]
         [ProgressBar(0, "$max")][HideLabel] // ReSharper disable once NotAccessedField.Local
         [SerializeField][ReadOnly] private ulong progressBar;
         [TitleGroup("$remainingTime", Alignment = TitleAlignments.Centered, BoldTitle = true, HorizontalLine = false, HideWhenChildrenAreInvisible = false, VisibleIf = nameof(this.inProgress))]
+        [Tooltip("Displays the estimated time required to fill the progress bar.")]
         [HideIf(nameof(this.Hide))] // ReSharper disable once NotAccessedField.Local
         [SerializeField] private string remainingTime;
         #endregion
