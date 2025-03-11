@@ -9,10 +9,10 @@ namespace MomSesImSpcl.Extensions
     {
         #region Methods
         /// <summary>
-        /// Converts the specified <see cref="bool"/> to a <see cref="byte"/> representation without any branching.
+        /// Converts this <see cref="bool"/> to a <see cref="byte"/>.
         /// </summary>
-        /// <param name="_Bool">The boolean value to be converted.</param>
-        /// <returns>Returns 1 if the value is true, otherwise returns 0.</returns>
+        /// <param name="_Bool">The <see cref="bool"/> convert.</param>
+        /// <returns><c>1</c> if the value is <c>true</c>, otherwise <c>0</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe byte AsByte(this bool _Bool)
         {
@@ -20,14 +20,25 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
-        /// Converts the specified <see cref="bool"/> to a <see cref="int"/> representation without any branching.
+        /// Converts this <see cref="bool"/> to an <see cref="int"/>.
         /// </summary>
-        /// <param name="_Bool">The boolean value to be converted.</param>
-        /// <returns>Returns 1 if the value is true, otherwise returns 0.</returns>
+        /// <param name="_Bool">The <see cref="bool"/> convert.</param>
+        /// <returns><c>1</c> if the value is <c>true</c>, otherwise <c>0</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe int AsInt(this bool _Bool)
         {
             return *(int*)&_Bool;
+        }
+
+        /// <summary>
+        /// Converts this <see cref="bool"/> to a signed <see cref="int"/>.
+        /// </summary>
+        /// <param name="_Bool">The <see cref="bool"/> value to be converted.</param>
+        /// <returns><c>1</c> if the value is <c>true</c>, otherwise <c>-1</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int AsSignedInt(this bool _Bool)
+        {
+            return (_Bool.AsByte() << 1) - 1;
         }
         #endregion
     }
