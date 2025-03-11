@@ -34,6 +34,18 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Clamps this <see cref="float"/> between the given min and max value.
+        /// </summary>
+        /// <param name="_Float">The <see cref="float"/> to clamp.</param>
+        /// <param name="_ClampMin">The minimum value this <see cref="float"/> can have.</param>
+        /// <param name="_ClampMax">The maximum value this <see cref="float"/> can have.</param>
+        /// <returns>This <see cref="float"/> clamped between the given min and max value.</returns>
+        public static float Clamp(this float _Float, float _ClampMin, float _ClampMax)
+        {
+            return math.clamp(_Float, _ClampMin, _ClampMax);
+        }
+        
+        /// <summary>
         /// Determines whether the given <see cref="float"/> has a sign (is negative).
         /// </summary>
         /// <param name="_Float">The <see cref="float"/> to check.</param>
@@ -46,17 +58,19 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Float">The <see cref="float"/> to oscillate around.</param>
         /// <param name="_OscillationSpeed">Controls the speed of the oscillation.</param>
+        /// <param name="_InvertDirection">Inverts the direction of the oscillation if <c>true</c>.</param>
         /// <param name="_NoiseMultiplier">Scales the Perlin noise, affecting the randomness.</param>
         /// <param name="_SineFrequency">Determines the frequency of the sine wave.</param>
         /// <param name="_Amplitude">Scales the amplitude of the final oscillated value.</param>
         /// <returns>This <see cref="float"/> with the applied oscillation.</returns>
-        public static float Oscillate(this float _Float, float _OscillationSpeed, float _NoiseMultiplier = .5f, float _SineFrequency = 1.5f, float _Amplitude = .5f)
+        public static float Oscillate(this float _Float, float _OscillationSpeed, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _SineFrequency = 1.5f, float _Amplitude = .5f)
         {
-            var _scaledTime = Time.time * _OscillationSpeed;
+            var _scaledTime = Time.realtimeSinceStartup * _OscillationSpeed;
             var _noise = Mathf.PerlinNoise1D(_scaledTime * _NoiseMultiplier) * 2 - 1;
             var _sin = math.sin(_scaledTime * _SineFrequency);
+            var _direction = (!_InvertDirection).AsSignedInt();
             
-            return _Float + (_noise + _sin) * _Amplitude;
+            return _Float * _direction + (_noise + _sin) * _Amplitude;
         }
         
         /// <summary>
@@ -65,13 +79,17 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Float">The <see cref="float"/> to oscillate around.</param>
         /// <param name="_OscillationSpeed">Controls the speed of the oscillation.</param>
         /// <param name="_ClampBetween">Clamps the final value between the negative and positive of this value.</param>
+        /// <param name="_InvertDirection">Inverts the direction of the oscillation if <c>true</c>.</param>
         /// <param name="_NoiseMultiplier">Scales the Perlin noise, affecting the randomness.</param>
         /// <param name="_SineFrequency">Determines the frequency of the sine wave.</param>
         /// <param name="_Amplitude">Scales the amplitude of the final oscillated value.</param>
         /// <returns>This <see cref="float"/> with the applied oscillation.</returns>
-        public static float OscillateClamped(this float _Float, float _OscillationSpeed, float _ClampBetween, float _NoiseMultiplier = .5f, float _SineFrequency = 1.5f, float _Amplitude = .5f)
+        public static float OscillateClamped(this float _Float, float _OscillationSpeed, float _ClampBetween, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _SineFrequency = 1.5f, float _Amplitude = .5f)
         {
-            return math.clamp(_Float.Oscillate(_OscillationSpeed, _NoiseMultiplier, _SineFrequency, _Amplitude), -_ClampBetween, _ClampBetween);
+            var _maxAmplitude = math.max((_ClampBetween - math.abs(_Float)) * .5f, 0f);
+            var _scaledAmplitude = math.min(_Amplitude, _maxAmplitude);
+
+            return _Float.Oscillate(_OscillationSpeed, _InvertDirection, _NoiseMultiplier, _SineFrequency, _scaledAmplitude);
         }
         #endregion
     }
