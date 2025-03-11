@@ -355,11 +355,43 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_Max">The maximum value of the input range.</param>
         /// <returns>A smoothly interpolated value between 0 and 1.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector2 SmoothStep(Vector2 _Vector, float _Min, float _Max)
+        public static Vector2 SmoothClamp(Vector2 _Vector, float _Min, float _Max)
         {
-            return new Vector2(SmoothStep(_Vector.x, _Min, _Max), SmoothStep(_Vector.y, _Min, _Max));
+            return new Vector2(SmoothClamp(_Vector.x, _Min, _Max), SmoothClamp(_Vector.y, _Min, _Max));
         }
 
+        /// <summary>
+        /// Interpolates smoothly between 0 and 1 based on the input value, _Value, clamped between _Min and _Max.
+        /// </summary>
+        /// <param name="_Vector">The input vector to interpolate.</param>
+        /// <param name="_XMin">The minimum value of the input range on the <see cref="Vector2.x"/>-axis.</param>
+        /// <param name="_XMax">The maximum value of the input range on the <see cref="Vector2.x"/>-axis.</param>
+        /// <param name="_YMin">The minimum value of the input range on the <see cref="Vector2.y"/>-axis.</param>
+        /// <param name="_YMax">The maximum value of the input range on the <see cref="Vector2.y"/>-axis.</param>
+        /// <returns>A smoothly interpolated value between 0 and 1.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 SmoothClamp(Vector2 _Vector, float _XMin, float _XMax, float _YMin, float _YMax)
+        {
+            return new Vector2(SmoothClamp(_Vector.x, _XMin, _XMax), SmoothClamp(_Vector.y, _YMin, _YMax));
+        }
+        
+        /// <summary>
+        /// Interpolates each component of a vector smoothly between 0 and 1 over the specified range using a cubic equation.
+        /// </summary>
+        /// <param name="_Vector">The vector to be interpolated.</param>
+        /// <param name="_XMin">The minimum value of the input range on the <see cref="Vector3.x"/>-axis.</param>
+        /// <param name="_XMax">The maximum value of the input range on the <see cref="Vector3.x"/>-axis.</param>
+        /// <param name="_YMin">The minimum value of the input range on the <see cref="Vector3.y"/>-axis.</param>
+        /// <param name="_YMax">The maximum value of the input range on the <see cref="Vector3.y"/>-axis.</param>
+        /// <param name="_ZMin">The minimum value of the input range on the <see cref="Vector3.z"/>-axis.</param>
+        /// <param name="_ZMax">The maximum value of the input range on the <see cref="Vector3.z"/>-axis.</param>
+        /// <returns>A vector with each component smoothly interpolated between 0 and 1 based on the specified range.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 SmoothClamp(Vector3 _Vector, float _XMin, float _XMax, float _YMin, float _YMax, float _ZMin, float _ZMax)
+        {
+            return new Vector3(SmoothClamp(_Vector.x, _XMin, _XMax), SmoothClamp(_Vector.y, _YMin, _YMax), SmoothClamp(_Vector.z, _ZMin, _ZMax));
+        }
+        
         /// <summary>
         /// Interpolates each component of a vector smoothly between 0 and 1 over the specified range using a cubic equation.
         /// </summary>
@@ -368,9 +400,9 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_Max">The upper edge of the range.</param>
         /// <returns>A vector with each component smoothly interpolated between 0 and 1 based on the specified range.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector3 SmoothStep(Vector3 _Vector, float _Min, float _Max)
+        public static Vector3 SmoothClamp(Vector3 _Vector, float _Min, float _Max)
         {
-            return new Vector3(SmoothStep(_Vector.x, _Min, _Max), SmoothStep(_Vector.y, _Min, _Max), SmoothStep(_Vector.z, _Min, _Max));
+            return new Vector3(SmoothClamp(_Vector.x, _Min, _Max), SmoothClamp(_Vector.y, _Min, _Max), SmoothClamp(_Vector.z, _Min, _Max));
         }
 
         /// <summary>
@@ -381,7 +413,7 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_Max">The maximum bound of the range.</param>
         /// <returns>The interpolated value between the specified minimum and maximum bounds.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float SmoothStep(float _Value, float _Min, float _Max)
+        public static float SmoothClamp(float _Value, float _Min, float _Max)
         {
             _Value = math.clamp(_Value, _Min, _Max);
             var _v1 = (_Value - _Min) / (_Max - _Min);
