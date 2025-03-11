@@ -42,14 +42,17 @@ namespace MomSesImSpcl.Extensions
         {
             return new NumericEnumerator(_End);
         }
-        
+
         /// <summary>
         /// Determines whether this <see cref="int"/> has a sign or not.
         /// </summary>
         /// <param name="_Int">The <see cref="int"/> to check the sign  of.</param>
         /// <returns><c>true</c> if this <see cref="int"/> is negative, <c>false</c> if it is positive.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasSign(this int _Int) => (_Int >> 31).AsBool();
+        public static bool HasSign(this int _Int)
+        {
+            return (_Int >> 31).AsBool();
+        }
         #endregion
     }
 }
