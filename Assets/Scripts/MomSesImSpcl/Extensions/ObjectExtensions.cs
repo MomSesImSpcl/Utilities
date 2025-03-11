@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using MomSesImSpcl.Utilities;
 
 namespace MomSesImSpcl.Extensions
@@ -17,6 +18,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Object">The <see cref="object"/> to cast.</param>
         /// <typeparam name="T">The <see cref="Type"/> to cast the <see cref="object"/> to.</typeparam>
         /// <returns>This <see cref="object"/> cast to the given <see cref="Type"/>, or <c>null</c> if the cast failed.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T? As<T>(this object _Object) where T : class
         {
             return _Object as T;
@@ -96,9 +98,10 @@ namespace MomSesImSpcl.Extensions
         /// Casts this <see cref="object"/> to the given <see cref="Type"/>.
         /// </summary>
         /// <param name="_Object">The <see cref="object"/> to cast.</param>
-        /// <typeparam name="T">The <see cref="Type"/> to cast the <see cref="object"/> to.</typeparam>
+        /// <typeparam name="T">Must be a reference <see cref="Type"/>.</typeparam>
         /// <returns>This <see cref="object"/> cast to the given <see cref="Type"/>.</returns>
-        public static T To<T>(this object _Object)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T To<T>(this object _Object) where T : class
         {
             return (T)_Object;
         }
