@@ -28,9 +28,9 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Int">The <see cref="int"/> to convert.</param>
         /// <returns><c>true</c> if the <see cref="int"/> can be converted to a <see cref="bool"/> representation, otherwise <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe bool AsBool(this int _Int)
+        public static bool AsBool(this int _Int)
         {
-            return *(bool*)&_Int;
+            return _Int != 0;
         }
         
         /// <summary>
