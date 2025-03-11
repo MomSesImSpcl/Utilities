@@ -10,7 +10,39 @@ namespace MomSesImSpcl.Extensions
     /// </summary>
     public static class Vector2Extensions
     {
-        #region Methods
+        #region
+        /// <summary>
+        /// Clamps this <see cref="Vector2"/> between the given min and max value.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to clamp.</param>
+        /// <param name="_ClampMin">The minimum value this <see cref="Vector2"/> can have.</param>
+        /// <param name="_ClampMax">The maximum value this <see cref="Vector2"/> can have.</param>
+        /// <returns>This <see cref="Vector2"/> clamped between the given min and max value.</returns>
+        public static Vector2 Clamp(this Vector2 _Vector2, float _ClampMin, float _ClampMax)
+        {
+            var _x = _Vector2.x.Clamp(_ClampMin, _ClampMax);
+            var _y = _Vector2.y.Clamp(_ClampMin, _ClampMax);
+            
+            return new Vector2(_x, _y);
+        }
+        
+        /// <summary>
+        /// Clamps this <see cref="Vector2"/> between the given min and max values.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to clamp.</param>
+        /// <param name="_XMin">The minimum value on the <see cref="Vector2.x"/> axis.</param>
+        /// <param name="_XMax">The maximum value on the <see cref="Vector2.x"/> axis.</param>
+        /// <param name="_YMin">The minimum value on the <see cref="Vector2.y"/> axis.</param>
+        /// <param name="_YMax">The maximum value on the <see cref="Vector2.y"/> axis.</param>
+        /// <returns>This <see cref="Vector2"/> clamped between the given min and max values.</returns>
+        public static Vector2 Clamp(this Vector2 _Vector2, float _XMin, float _XMax, float _YMin, float _YMax)
+        {
+            var _x = _Vector2.x.Clamp(_XMin, _XMax);
+            var _y = _Vector2.y.Clamp(_YMin, _YMax);
+            
+            return new Vector2(_x, _y);
+        }
+        
         /// <summary>
         /// Calculates the distance from this <see cref="Vector2"/> to the given <see cref="Vector2"/>.
         /// </summary>
@@ -270,21 +302,24 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Vector2">The <see cref="Vector2"/> to oscillate around.</param>
         /// <param name="_OscillationSpeed">Controls the speed of the oscillation.</param>
+        /// <param name="_InvertDirection">Inverts the direction of the oscillation if <c>true</c>.</param>
         /// <param name="_NoiseMultiplier">Scales the Perlin noise, affecting the randomness.</param>
         /// <param name="_XFrequency">Determines the frequency of the sine wave on the <see cref="Vector2.x"/>-axis.</param>
         /// <param name="_YFrequency">Determines the frequency of the sine wave on the <see cref="Vector2.y"/>-axis.</param>
         /// <param name="_XAmplitude">Scales the amplitude of the final oscillated value on the <see cref="Vector2.x"/>-axis.</param>
         /// <param name="_YAmplitude">Scales the amplitude of the final oscillated value on the <see cref="Vector2.y"/>-axis.</param>
         /// <returns>This <see cref="Vector2"/> with the applied oscillation.</returns>
-        public static Vector2 Oscillate(this Vector2 _Vector2, float _OscillationSpeed, float _NoiseMultiplier = .5f, float _XFrequency = 1.3f, float _YFrequency = 1.7f, float _XAmplitude = .5f, float _YAmplitude = .5f)
+        public static Vector2 Oscillate(this Vector2 _Vector2, float _OscillationSpeed, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _XFrequency = 1.3f, float _YFrequency = 1.7f, float _XAmplitude = .5f, float _YAmplitude = .5f)
         {
-            var _time = Time.time * _OscillationSpeed;
-            var _noiseX = Mathf.PerlinNoise(_time * _NoiseMultiplier, 0f) * 2 - 1;
-            var _noiseY = Mathf.PerlinNoise(0f, _time * _NoiseMultiplier) * 2 - 1;
+            var _time = Time.realtimeSinceStartup * _OscillationSpeed;
+            var _noise = _time * _NoiseMultiplier;
+            var _noiseX = Mathf.PerlinNoise(_noise, 0f) * 2 - 1;
+            var _noiseY = Mathf.PerlinNoise(0f, _noise) * 2 - 1;
             var _sinX = math.sin(_time * _XFrequency);
             var _sinY = math.sin(_time * _YFrequency);
-            var _x = _Vector2.x + (_noiseX + _sinX) * _XAmplitude;
-            var _y = _Vector2.y + (_noiseY + _sinY) * _YAmplitude;
+            var _direction = (!_InvertDirection).AsSignedInt();
+            var _x = _Vector2.x * _direction + (_noiseX + _sinX) * _XAmplitude;
+            var _y = _Vector2.y * _direction + (_noiseY + _sinY) * _YAmplitude;
 
             return _Vector2.WithXY(_x, _y);
         }
@@ -296,15 +331,21 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_OscillationSpeed">Controls the speed of the oscillation.</param>
         /// <param name="_XClamp">Clamps the final value on the <see cref="Vector2.x"/>-axis between the negative and positive of this value.</param>
         /// <param name="_YClamp">Clamps the final value on the <see cref="Vector2.y"/>-axis between the negative and positive of this value.</param>
+        /// <param name="_InvertDirection">Inverts the direction of the oscillation if <c>true</c>.</param>
         /// <param name="_NoiseMultiplier">Scales the Perlin noise, affecting the randomness.</param>
         /// <param name="_XFrequency">Determines the frequency of the sine wave on the <see cref="Vector2.x"/>-axis.</param>
         /// <param name="_YFrequency">Determines the frequency of the sine wave on the <see cref="Vector2.y"/>-axis.</param>
         /// <param name="_XAmplitude">Scales the amplitude of the final oscillated value on the <see cref="Vector2.x"/>-axis.</param>
         /// <param name="_YAmplitude">Scales the amplitude of the final oscillated value on the <see cref="Vector2.y"/>-axis.</param>
         /// <returns>This <see cref="Vector2"/> with the applied oscillation.</returns>
-        public static Vector2 OscillateClamped(this Vector2 _Vector2, float _OscillationSpeed, float _XClamp, float _YClamp, float _NoiseMultiplier = .5f, float _XFrequency = 1.3f, float _YFrequency = 1.7f, float _XAmplitude = .5f, float _YAmplitude = .5f)
+        public static Vector2 OscillateClamped(this Vector2 _Vector2, float _OscillationSpeed, float _XClamp, float _YClamp, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _XFrequency = 1.3f, float _YFrequency = 1.7f, float _XAmplitude = .5f, float _YAmplitude = .5f)
         {
-            return math.clamp(_Vector2.Oscillate(_OscillationSpeed, _NoiseMultiplier, _XFrequency, _YFrequency, _XAmplitude, _YAmplitude), _XClamp, _YClamp);
+            var _maxAmplitudeX = math.max((_XClamp - math.abs(_Vector2.x)) * .5f, 0f);
+            var _maxAmplitudeY = math.max((_YClamp - math.abs(_Vector2.y)) * .5f, 0f);
+            var _scaledAmplitudeX = math.min(_XAmplitude, _maxAmplitudeX);
+            var _scaledAmplitudeY = math.min(_YAmplitude, _maxAmplitudeY);
+
+            return _Vector2.Oscillate(_OscillationSpeed, _InvertDirection, _NoiseMultiplier, _XFrequency, _YFrequency, _scaledAmplitudeX, _scaledAmplitudeY);
         }
         
         /// <summary>
@@ -390,6 +431,16 @@ namespace MomSesImSpcl.Extensions
         public static Vector3 ToVector3(this Vector2 _Vector2)
         {
             return new Vector3(_Vector2.x, _Vector2.y, 0);
+        }
+
+        /// <summary>
+        /// Converts this <see cref="Vector2"/> to a <see cref="Quaternion"/>.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to convert to a <see cref="Quaternion"/>.</param>
+        /// <returns>This <see cref="Vector2"/> converted to a <see cref="Quaternion"/>.</returns>
+        public static Quaternion ToQuaternion(this Vector2 _Vector2)
+        {
+            return Quaternion.Euler(_Vector2);
         }
         
         /// <summary>
