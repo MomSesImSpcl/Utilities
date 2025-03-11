@@ -40,6 +40,14 @@ namespace MomSesImSpcl.Extensions
         {
             return (_Bool.AsByte() << 1) - 1;
         }
+        
+        /// <summary>
+        /// Reverses the value of this <see cref="bool"/>.
+        /// </summary>
+        /// <param name="_Bool">The <see cref="bool"/> to reverse.</param>
+        /// <returns>The reversed value of this <see cref="bool"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Reverse(this bool _Bool) => !_Bool;
         #endregion
     }
 }
