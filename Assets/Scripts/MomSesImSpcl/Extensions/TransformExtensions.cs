@@ -278,6 +278,66 @@ namespace MomSesImSpcl.Extensions
         {
             return new float3(_Transform.position.x, _Transform.position.y, _Transform.position.z);
         }
+
+        /// <summary>
+        /// Returns the <see cref="Transform.eulerAngles"/> rotation of this <see cref="Transform"/> with the <see cref="Vector3.z"/> value set to <c>0</c>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.eulerAngles"/> from.</param>
+        /// <returns>The <see cref="Transform.eulerAngles"/> rotation as a <see cref="Quaternion"/>.</returns>
+        public static Quaternion Rotation2D(this Transform _Transform)
+        {
+            return _Transform.eulerAngles.WithZ(0).ToQuaternion();
+        }
+        
+        /// <summary>
+        /// Returns the <see cref="Transform.localEulerAngles"/> rotation of this <see cref="Transform"/> with the <see cref="Vector3.z"/> value set to <c>0</c>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localEulerAngles"/> from.</param>
+        /// <returns>The <see cref="Transform.localEulerAngles"/> rotation as a <see cref="Quaternion"/>.</returns>
+        public static Quaternion LocalRotation2D(this Transform _Transform)
+        {
+            return _Transform.localEulerAngles.WithZ(0).ToQuaternion();
+        }
+        
+        /// <summary>
+        /// Returns the <see cref="Transform.eulerAngles"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.eulerAngles"/> from.</param>
+        /// <returns>The <see cref="Transform.eulerAngles"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.</returns>
+        public static Vector2 Vector2EulerAngles(this Transform _Transform)
+        {
+            return _Transform.eulerAngles.ToVector2();
+        }
+        
+        /// <summary>
+        /// Returns the <see cref="Transform.localEulerAngles"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localEulerAngles"/> from.</param>
+        /// <returns>The <see cref="Transform.localEulerAngles"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.</returns>
+        public static Vector2 LocalVector2EulerAngles(this Transform _Transform)
+        {
+            return _Transform.localEulerAngles.ToVector2();
+        }
+        
+        /// <summary>
+        /// Returns the <see cref="Transform.position"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.position"/> from.</param>
+        /// <returns>The <see cref="Transform.position"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.</returns>
+        public static Vector2 Vector2Position(this Transform _Transform)
+        {
+            return _Transform.position.ToVector2();
+        }
+        
+        /// <summary>
+        /// Returns the <see cref="Transform.localPosition"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localPosition"/> from.</param>
+        /// <returns>The <see cref="Transform.localPosition"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.</returns>
+        public static Vector2 LocalVector2Position(this Transform _Transform)
+        {
+            return _Transform.localPosition.ToVector2();
+        }
         #endregion
     }
 }
