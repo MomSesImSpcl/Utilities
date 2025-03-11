@@ -30,7 +30,7 @@ namespace MomSesImSpcl.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool AsBool(this float _Float)
         {
-            return _Float != 0;
+            return _Float != 0f;
         }
         
         /// <summary>
@@ -53,7 +53,7 @@ namespace MomSesImSpcl.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasSign(this float _Float)
         {
-            return BitConverter.SingleToInt32Bits(_Float).HasSign();
+            return _Float < 0f;
         }
         
         /// <summary>
