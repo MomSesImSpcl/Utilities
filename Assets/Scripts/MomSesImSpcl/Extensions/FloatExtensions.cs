@@ -55,7 +55,7 @@ namespace MomSesImSpcl.Extensions
         {
             return BitConverter.SingleToInt32Bits(_Float).HasSign();
         }
-
+        
         /// <summary>
         /// Oscillates around this <see cref="float"/>.
         /// </summary>
@@ -71,7 +71,7 @@ namespace MomSesImSpcl.Extensions
             var _scaledTime = Time.realtimeSinceStartup * _OscillationSpeed;
             var _noise = Mathf.PerlinNoise1D(_scaledTime * _NoiseMultiplier) * 2 - 1;
             var _sin = math.sin(_scaledTime * _SineFrequency);
-            var _direction = (!_InvertDirection).AsSignedInt();
+            var _direction = _InvertDirection.Reverse().AsSignedInt();
             
             return _Float * _direction + (_noise + _sin) * _Amplitude;
         }
