@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 using UnityEngine;
@@ -27,12 +28,11 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Float">The <see cref="float"/> to convert.</param>
         /// <returns><c>true</c> if the <see cref="float"/> can be converted to a <see cref="bool"/> representation, otherwise <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe bool AsBool(this float _Float)
+        public static bool AsBool(this float _Float)
         {
-            var _int = (int)_Float;
-            return *(bool*)&_int;
+            return BitConverter.SingleToInt32Bits(_Float) != 0;
         }
-
+        
         /// <summary>
         /// Clamps this <see cref="float"/> between the given min and max value.
         /// </summary>
@@ -44,14 +44,17 @@ namespace MomSesImSpcl.Extensions
         {
             return math.clamp(_Float, _ClampMin, _ClampMax);
         }
-        
+
         /// <summary>
         /// Determines whether the given <see cref="float"/> has a sign (is negative).
         /// </summary>
         /// <param name="_Float">The <see cref="float"/> to check.</param>
         /// <returns><c>true</c> if the <see cref="float"/> is negative; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasSign(float _Float) => !(_Float >= 0f);
+        public static bool HasSign(this float _Float)
+        {
+            return BitConverter.SingleToInt32Bits(_Float).HasSign();
+        }
 
         /// <summary>
         /// Oscillates around this <see cref="float"/>.
