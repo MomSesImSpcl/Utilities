@@ -14,9 +14,9 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Bool">The <see cref="bool"/> convert.</param>
         /// <returns><c>1</c> if the value is <c>true</c>, otherwise <c>0</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe byte AsByte(this bool _Bool)
+        public static byte AsByte(this bool _Bool)
         {
-            return *(byte*)&_Bool;
+            return (byte)(_Bool ? 1 : 0);
         }
         
         /// <summary>
@@ -25,9 +25,9 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Bool">The <see cref="bool"/> convert.</param>
         /// <returns><c>1</c> if the value is <c>true</c>, otherwise <c>0</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe int AsInt(this bool _Bool)
+        public static int AsInt(this bool _Bool)
         {
-            return *(int*)&_Bool;
+            return _Bool ? 1 : 0;
         }
 
         /// <summary>
