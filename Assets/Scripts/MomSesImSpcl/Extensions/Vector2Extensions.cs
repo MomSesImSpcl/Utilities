@@ -317,7 +317,7 @@ namespace MomSesImSpcl.Extensions
             var _noiseY = Mathf.PerlinNoise(0f, _noise) * 2 - 1;
             var _sinX = math.sin(_time * _XFrequency);
             var _sinY = math.sin(_time * _YFrequency);
-            var _direction = (!_InvertDirection).AsSignedInt();
+            var _direction = _InvertDirection.Reverse().AsSignedInt();
             var _x = _Vector2.x * _direction + (_noiseX + _sinX) * _XAmplitude;
             var _y = _Vector2.y * _direction + (_noiseY + _sinY) * _YAmplitude;
 
