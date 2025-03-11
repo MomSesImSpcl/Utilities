@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -39,6 +40,39 @@ namespace MomSesImSpcl.Extensions
         /// <returns><c>true</c> if the <see cref="float"/> is negative; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasSign(float _Float) => !(_Float >= 0f);
+
+        /// <summary>
+        /// Oscillates around this <see cref="float"/>.
+        /// </summary>
+        /// <param name="_Float">The <see cref="float"/> to oscillate around.</param>
+        /// <param name="_OscillationSpeed">Controls the speed of the oscillation.</param>
+        /// <param name="_NoiseMultiplier">Scales the Perlin noise, affecting the randomness.</param>
+        /// <param name="_SineFrequency">Determines the frequency of the sine wave.</param>
+        /// <param name="_Amplitude">Scales the amplitude of the final oscillated value.</param>
+        /// <returns>This <see cref="float"/> with the applied oscillation.</returns>
+        public static float Oscillate(this float _Float, float _OscillationSpeed, float _NoiseMultiplier = .5f, float _SineFrequency = 1.5f, float _Amplitude = .5f)
+        {
+            var _scaledTime = Time.time * _OscillationSpeed;
+            var _noise = Mathf.PerlinNoise1D(_scaledTime * _NoiseMultiplier) * 2 - 1;
+            var _sin = math.sin(_scaledTime * _SineFrequency);
+            
+            return _Float + (_noise + _sin) * _Amplitude;
+        }
+        
+        /// <summary>
+        /// Oscillates around this <see cref="float"/>.
+        /// </summary>
+        /// <param name="_Float">The <see cref="float"/> to oscillate around.</param>
+        /// <param name="_OscillationSpeed">Controls the speed of the oscillation.</param>
+        /// <param name="_ClampBetween">Clamps the final value between the negative and positive of this value.</param>
+        /// <param name="_NoiseMultiplier">Scales the Perlin noise, affecting the randomness.</param>
+        /// <param name="_SineFrequency">Determines the frequency of the sine wave.</param>
+        /// <param name="_Amplitude">Scales the amplitude of the final oscillated value.</param>
+        /// <returns>This <see cref="float"/> with the applied oscillation.</returns>
+        public static float OscillateClamped(this float _Float, float _OscillationSpeed, float _ClampBetween, float _NoiseMultiplier = .5f, float _SineFrequency = 1.5f, float _Amplitude = .5f)
+        {
+            return math.clamp(_Float.Oscillate(_OscillationSpeed, _NoiseMultiplier, _SineFrequency, _Amplitude), -_ClampBetween, _ClampBetween);
+        }
         #endregion
     }
 }
