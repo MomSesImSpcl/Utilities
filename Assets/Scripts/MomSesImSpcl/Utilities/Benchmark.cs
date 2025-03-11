@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MomSesImSpcl.Extensions;
@@ -356,14 +357,18 @@ namespace MomSesImSpcl.Utilities
                     _memoryAllocations.SortAscending();
 
                     var _medianTicks = _ticks.Median(false);
-                    var _medianMemory = _memoryAllocations.Median(false);
+                    var _medianMemoryAllocations = _memoryAllocations.Median(false);
+                    var _medianTime = GetAppropriateTimeResolution(_medianTicks, Stopwatch.Frequency, out var _medianTimeResolution);
+                    var _mediaMemory = GetAppropriateMemoryUnit(_medianMemoryAllocations, out var _medianMemoryUnit);
+                    var _medianOutputString = GetOutputString(_medianTime, _medianTimeResolution, _mediaMemory, _medianMemoryUnit);
+                    
+                    var _averageTicks = _ticks.Sum() / _Iterations;
+                    var _averageMemoryAllocations = _memoryAllocations.Sum() / _Iterations;
+                    var _averageTime = GetAppropriateTimeResolution(_averageTicks, Stopwatch.Frequency, out var _averageTimeResolution);
+                    var _averageMemory = GetAppropriateMemoryUnit(_averageMemoryAllocations, out var _averageMemoryUnit);
+                    var _averageOutputString = GetOutputString(_averageTime, _averageTimeResolution, _averageMemory, _averageMemoryUnit);
 
-                    var _time = GetAppropriateTimeResolution(_medianTicks, Stopwatch.Frequency, out var _timeResolution);
-                    var _memory = GetAppropriateMemoryUnit(_medianMemory, out var _memoryUnit);
-
-                    var _outputString = GetOutputString(_time, _timeResolution, _memory, _memoryUnit);
-
-                    Debug.Log(_outputString);
+                    Debug.Log($"{"[Median]".Bold()} {_medianOutputString}\n{"[Average]".Bold()} {_averageOutputString}");
 
                 }, cancelBenchmark.Token);
             }
