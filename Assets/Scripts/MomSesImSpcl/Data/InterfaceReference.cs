@@ -9,39 +9,42 @@ namespace MomSesImSpcl.Data
     /// </summary>
     /// <typeparam name="T">Should be an interface.</typeparam>
     [Serializable]
+#if ODIN_INSPECTOR
+    [Sirenix.OdinInspector.HideLabel]
+#endif
     public sealed class InterfaceReference<T> : ISerializationCallbackReceiver where T : class
     {
         #region Inspector Fields
         [Tooltip("Reference to the Object that implements the given interface of type T.")]
-        [SerializeField] private Object target;
+        [SerializeField] private Object interfaceReference;
         #endregion
         
         #region Properites
         /// <summary>
-        /// Returns <see cref="target"/> as the interface <c>T</c>.
+        /// Returns <see cref="interfaceReference"/> as the interface <c>T</c>.
         /// </summary>
-        public T Interface => this.target as T;
+        public T Interface => this.interfaceReference as T;
         #endregion
         
         #region Operators
         /// <summary>
-        /// Implicitly checks if <see cref="target"/> is not <c>null</c>.
+        /// Implicitly checks if <see cref="interfaceReference"/> is not <c>null</c>.
         /// </summary>
-        /// <param name="_InterfaceReference">The <see cref="InterfaceReference{T}"/> to check the <see cref="target"/> of.</param>
-        /// <returns><c>true</c> if <see cref="target"/> is not <c>null</c>, otherwise <c>false</c>.</returns>
-        public static implicit operator bool(InterfaceReference<T> _InterfaceReference) => _InterfaceReference.target is not null;
+        /// <param name="_InterfaceReference">The <see cref="InterfaceReference{T}"/> to check the <see cref="interfaceReference"/> of.</param>
+        /// <returns><c>true</c> if <see cref="interfaceReference"/> is not <c>null</c>, otherwise <c>false</c>.</returns>
+        public static implicit operator bool(InterfaceReference<T> _InterfaceReference) => _InterfaceReference.interfaceReference is not null;
         #endregion
         
         #region Methods
         private void OnValidate()
         {
 #if UNITY_EDITOR
-            if (this.target is T || this.target is not GameObject _gameObject)
+            if (this.interfaceReference is T || this.interfaceReference is not GameObject _gameObject)
             {
                 return;
             }
                 
-            this.target = null;
+            this.interfaceReference = null;
                     
             foreach (var _component in _gameObject.GetComponents<Component>())
             {
@@ -50,11 +53,11 @@ namespace MomSesImSpcl.Data
                     continue;
                 }
                         
-                this.target = _component;
+                this.interfaceReference = _component;
                 break;
             }
 
-            if (this.target is null)
+            if (this.interfaceReference is null)
             {
                 Debug.LogWarning($"The given GameObject doesn't implement the interface: {typeof(T).Name}");
             }
