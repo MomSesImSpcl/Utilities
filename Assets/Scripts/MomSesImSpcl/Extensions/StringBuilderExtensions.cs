@@ -22,6 +22,18 @@ namespace MomSesImSpcl.Extensions
 
             return _StringBuilder;
         }
+
+        /// <summary>
+        /// Clears this <see cref="StringBuilder"/> and returns the underlying <see cref="string"/>.
+        /// </summary>
+        /// <param name="_StringBuilder">The <see cref="StringBuilder"/> to return the <see cref="string"/> of.</param>
+        /// <returns>The underlying <see cref="string"/> of this <see cref="StringBuilder"/>.</returns>
+        public static string GetAndClear(this StringBuilder _StringBuilder)
+        {
+            var _string = _StringBuilder.ToString();
+            _StringBuilder.Clear();
+            return _string;
+        }
         
         /// <summary>
         /// Wraps the content of this <see cref="StringBuilder"/> around a <c>&lt;color&gt;&lt;/color&gt;</c> tag.
