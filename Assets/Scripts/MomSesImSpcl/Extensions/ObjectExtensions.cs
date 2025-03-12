@@ -115,7 +115,8 @@ namespace MomSesImSpcl.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T UnsafeAs<T>(this object _Object)
         {
-            return Unsafe.As<object, T>(ref _Object);
+            var _object = _Object;
+            return Unsafe.As<object, T>(ref _object);
         }
         #endregion
     }
