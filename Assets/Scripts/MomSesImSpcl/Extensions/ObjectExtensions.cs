@@ -105,6 +105,18 @@ namespace MomSesImSpcl.Extensions
         {
             return (T)_Object;
         }
+
+        /// <summary>
+        /// Casts this <see cref="object"/> to the given <see cref="Type"/> <c>T</c>, using <see cref="Unsafe"/>.<see cref="Unsafe.As{TFrom,TTo}"/>.
+        /// </summary>
+        /// <param name="_Object">The <see cref="object"/> to cast.</param>
+        /// <typeparam name="T">The <see cref="Type"/> to cast the <see cref="object"/> to.</typeparam>
+        /// <returns>This <see cref="object"/> cast to the given <see cref="Type"/> <c>T</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T UnsafeAs<T>(this object _Object)
+        {
+            return Unsafe.As<object, T>(ref _Object);
+        }
         #endregion
     }
 }
