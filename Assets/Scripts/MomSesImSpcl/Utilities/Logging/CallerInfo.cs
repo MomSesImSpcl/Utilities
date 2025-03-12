@@ -5,7 +5,7 @@ using MomSesImSpcl.Extensions;
 namespace MomSesImSpcl.Utilities.Logging
 {
     /// <summary>
-    /// Represents information about the caller of a method, including file path, member name, and line number.
+    /// Contains information about the caller of a member, including file path, member name, and line number.
     /// </summary>
     public sealed class CallerInfo
     {
@@ -16,6 +16,13 @@ namespace MomSesImSpcl.Utilities.Logging
         private readonly string callerInfo;
         #endregion
 
+        #region Properties
+        /// <summary>
+        /// Absolute filepath from where this <see cref="CallerInfo"/> <see cref="object"/> was created.
+        /// </summary>
+        public string FilePath { get; private set; }
+        #endregion
+        
         #region Operators
         /// <summary>
         /// Defines an implicit conversion from a <see cref="CallerInfo"/> to a string.
@@ -30,9 +37,11 @@ namespace MomSesImSpcl.Utilities.Logging
         /// <see cref="CallerInfo"/>.
         /// </summary>
         /// <param name="_CallerInfo"><see cref="callerInfo"/>.</param>
-        private CallerInfo(string _CallerInfo)
+        /// <param name="_FilePath"><see cref="FilePath"/>.</param>
+        private CallerInfo(string _CallerInfo, string _FilePath)
         {
             this.callerInfo = _CallerInfo;
+            this.FilePath = _FilePath;
         }
         #endregion
         
@@ -46,7 +55,7 @@ namespace MomSesImSpcl.Utilities.Logging
         /// <returns>An instance of <see cref="CallerInfo"/> containing the caller information.</returns>
         public static CallerInfo GetCallerInfo([CallerFilePath] string _FilePath = "", [CallerMemberName] string _MemberName = "", [CallerLineNumber] int _LineNumber = 0)
         {
-            return new CallerInfo(FormatCallerInfo(_FilePath, _MemberName, _LineNumber));
+            return new CallerInfo(FormatCallerInfo(_FilePath, _MemberName, _LineNumber), _FilePath);
         }
 
         /// <summary>
