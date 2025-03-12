@@ -553,25 +553,13 @@ namespace MomSesImSpcl.Extensions
         /// Removes the specified substring from the current instance of the string.
         /// </summary>
         /// <param name="_String">The <see cref="string"/> instance to perform the operation on.</param>
-        /// <param name="_StringToRemove">The <see cref="string"/> to remove from the current instance.</param>
+        /// <param name="_StringsToRemove">The <see cref="string"/>s to remove from the current instance.</param>
         /// <returns>A new <see cref="string"/> with the specified substring removed.</returns>
-        public static string RemoveStrings(this string _String, string _StringToRemove)
+        public static string RemoveStrings(this string _String, params string[] _StringsToRemove)
         {
-            return _String.RemoveStrings(StringComparison.Ordinal, _StringToRemove);
+            return _String.RemoveStrings(StringComparison.Ordinal, _StringsToRemove);
         }
-
-        /// <summary>
-        /// Removes the specified strings from the given string.
-        /// </summary>
-        /// <param name="_String">The <see cref="string"/> from which the strings will be removed.</param>
-        /// <param name="_StringsToRemove">An array of <see cref="string"/> containing the substrings to remove.</param>
-        /// <param name="_StringComparison">A <see cref="StringComparison"/> enumeration value that specifies the rules for the string comparison.</param>
-        /// <returns>The modified <see cref="string"/> with the specified strings removed.</returns>
-        public static string RemoveStrings(this string _String, string[] _StringsToRemove, StringComparison _StringComparison = StringComparison.Ordinal)
-        {
-            return _String.RemoveStrings(_StringComparison, _StringsToRemove);
-        }
-
+        
         /// <summary>
         /// Removes occurrences of the specified strings from the current string.
         /// </summary>
