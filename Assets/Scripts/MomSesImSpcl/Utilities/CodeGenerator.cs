@@ -66,7 +66,7 @@ namespace MomSesImSpcl.Utilities
                     this.stringBuilder.Append(_line);
                     this.stringBuilder.Append(Environment.NewLine);
                 }
-                else if (_line.Contains($"namespace {nameof(RogueDeck)}.{nameof(Utilities)}"))
+                else if (_line.Contains($"namespace {nameof(MomSesImSpcl)}.{nameof(Utilities)}"))
                 {
                     _beforeNamespace = false;
                     _UsingStatements = this.stringBuilder.GetAndClear();
