@@ -24,11 +24,12 @@ namespace MomSesImSpcl.Utilities
     /// </summary>
     public sealed class CodeGenerator : MonoBehaviour, ICodeGenerator
     {
+#if UNITY_EDITOR && ODIN_INSPECTOR
         #region Inspector Fields
         [Tooltip("Contains fields to dynamically compile and execute code during runtime.")]
         [SerializeField] private RuntimeCodeExecutor runtimeCodeExecutor;
         #endregion
-        
+#endif
         #region Fields
         /// <summary>
         /// The <see cref="StringBuilder"/> that builds the <see cref="string"/>s for the code and the using statements.
