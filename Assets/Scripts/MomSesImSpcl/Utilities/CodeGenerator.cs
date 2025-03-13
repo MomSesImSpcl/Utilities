@@ -1,15 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using DG.Tweening;
-using MomSesImSpcl.Extensions;
 using MomSesImSpcl.Interfaces;
 using MomSesImSpcl.Utilities;
 using MomSesImSpcl.Utilities.Logging;
-using RogueDeck.Cards;
-using RogueDeck.Cards.Effects;
-using RogueDeck.Settings;
 using UnityEngine;
 
 // ReSharper disable RedundantUsingDirective
@@ -30,46 +25,39 @@ namespace MomSesImSpcl.Utilities
         [SerializeField] private RuntimeCodeExecutor runtimeCodeExecutor;
         #endregion
 #endif
-        #region Fields
-        /// <summary>
-        /// The <see cref="StringBuilder"/> that builds the <see cref="string"/>s for the code and the using statements.
-        /// </summary>
-        private readonly StringBuilder stringBuilder = new();
-        #endregion
-        
         #region Methods
         /// <summary>
-        /// The body of this methods will be compiled and invoked in the <see cref="runtimeCodeExecutor"/>.
+        /// The body of this method will be compiled and invoked in the <see cref="runtimeCodeExecutor"/>.
         /// </summary>
         /// <param name="_Contexts">
         /// Use this to cast the elements to the needed <see cref="Type"/>. <br/>
         /// As long as the correct references are set in <see cref="RuntimeCodeExecutor.contexts"/> the cast will work.
         /// </param>
+        // ReSharper disable once UnusedParameter.Local
         private void Main(UnityEngine.Object[] _Contexts)
         {
             
         }
         
-        public string GetCode(out string _UsingStatements)
+        public List<string> GetCode(out List<string> _UsingStatements)
         {
-            _UsingStatements = string.Empty;
-            
             var _lineNumber = 1;
             var _beforeNamespace = true;
             var _mainMethodStartLine = 0;
             var _openBrackets = 0;
+
+            _UsingStatements = new List<string>();
+            var _methodBody = new List<string>();
             
             foreach (var _line in File.ReadLines(CallerInfo.GetCallerInfo().FilePath))
             {
                 if (_beforeNamespace && _line.Contains("using "))
                 {
-                    this.stringBuilder.Append(_line);
-                    this.stringBuilder.Append(Environment.NewLine);
+                    _UsingStatements.Add(_line + Environment.NewLine);
                 }
                 else if (_line.Contains($"namespace {nameof(MomSesImSpcl)}.{nameof(Utilities)}"))
                 {
                     _beforeNamespace = false;
-                    _UsingStatements = this.stringBuilder.GetAndClear();
                 }
                 else if (_line.Contains($"private void {nameof(Main)}"))
                 {
@@ -82,19 +70,18 @@ namespace MomSesImSpcl.Utilities
 
                     if (_lineNumber > _mainMethodStartLine + 1 && _openBrackets != 0)
                     {
-                        this.stringBuilder.Append(_line);
-                        this.stringBuilder.Append(Environment.NewLine);
+                        _methodBody.Add(_line + Environment.NewLine);
                     }
                     else if (_openBrackets == 0)
                     {
-                        return this.stringBuilder.GetAndClear();
+                        return _methodBody;
                     }
                 }
 
                 _lineNumber++;
             }
 
-            return string.Empty;
+            return _methodBody;
         }
         #endregion
     }
