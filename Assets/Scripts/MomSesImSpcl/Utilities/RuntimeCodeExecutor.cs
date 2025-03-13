@@ -63,9 +63,9 @@ namespace MomSesImSpcl.Utilities
 
             try
             {
-                if (await this.CompileScriptAsync(_ASSEMBLY_NAME, _NAMESPCE_NAME, _CLASS_NAME, _METHOD_NAME) is {} _scriptAssembly)
+                if (await this.CompileScriptAsync(_ASSEMBLY_NAME, _NAMESPCE_NAME, _CLASS_NAME, _METHOD_NAME) is {} _assembly)
                 {
-                    var _type = _scriptAssembly.GetType($"{_NAMESPCE_NAME}.{_CLASS_NAME}", true, false);
+                    var _type = _assembly.GetType($"{_NAMESPCE_NAME}.{_CLASS_NAME}", true, false);
                     var _method = _type.GetMethod(_METHOD_NAME, BindingFlags.Public | BindingFlags.Instance);
                     var _instance = Activator.CreateInstance(_type);
 
