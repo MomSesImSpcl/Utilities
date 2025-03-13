@@ -14,6 +14,7 @@ namespace MomSesImSpcl.Interfaces
         /// </summary>
         /// <param name="_UsingStatements">
         /// The using statements in the file. <br/>
+        /// Must only contain the method body, not the entire method. <br/>
         /// <i>Each element represents one line.</i>
         /// </param>
         /// <returns>
