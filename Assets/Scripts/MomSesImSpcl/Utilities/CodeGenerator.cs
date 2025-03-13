@@ -61,7 +61,7 @@ namespace MomSesImSpcl.Utilities
             
             foreach (var _line in File.ReadLines(CallerInfo.GetCallerInfo().FilePath))
             {
-                if (_beforeNamespace && _line.Contains("using"))
+                if (_beforeNamespace && _line.Contains("using "))
                 {
                     this.stringBuilder.Append(_line);
                     this.stringBuilder.Append(Environment.NewLine);
