@@ -151,7 +151,7 @@ namespace MomSesImSpcl.Utilities
                         
                         foreach (var _usingStatement in this.usingStatements.Split('\n'))
                         {
-                            this.stringBuilder.Append(_usingStatement.TrimStart().RemoveLast(Environment.NewLine));
+                            this.stringBuilder.Append(_usingStatement.RemoveLast(Environment.NewLine));
                             this.stringBuilder.Append(Environment.NewLine);
                         }
                         
