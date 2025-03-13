@@ -116,7 +116,7 @@ namespace MomSesImSpcl.Utilities
                                         .Where(_Assembly => !_Assembly.IsDynamic && !string.IsNullOrEmpty(_Assembly.Location))
                                         .Select(_Assembly => MetadataReference.CreateFromFile(_Assembly.Location)).ToArray();
                     
-                    var _compilation = CSharpCompilation.Create(_AssemblyName, new[]
+                    var _cSharpCompilation = CSharpCompilation.Create(_AssemblyName, new[]
                     {
                         CSharpSyntaxTree.ParseText
                         (
@@ -137,7 +137,7 @@ namespace MomSesImSpcl.Utilities
                         )
                     }, this.references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
                     
-                    if (_compilation.Emit(_memoryStream) is var _result && !_result.Success)
+                    if (_cSharpCompilation.Emit(_memoryStream) is var _result && !_result.Success)
                     {
                         foreach (var _error in _result.Diagnostics.Where(_Diagnostic => _Diagnostic.IsWarningAsError || _Diagnostic.Severity == DiagnosticSeverity.Error))
                         {
