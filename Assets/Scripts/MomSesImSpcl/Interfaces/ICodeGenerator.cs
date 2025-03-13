@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MomSesImSpcl.Utilities;
 
 namespace MomSesImSpcl.Interfaces
@@ -13,10 +14,12 @@ namespace MomSesImSpcl.Interfaces
         /// </summary>
         /// <param name="_UsingStatements">
         /// The using statements in the file. <br/>
-        /// <i>Every using statement must be separated by a new line.</i>
+        /// <i>Each element represents one line.</i>
         /// </param>
-        /// <returns>The code that will be compiled and invoked.</returns>
-        public string GetCode(out string _UsingStatements);
+        /// <returns>
+        /// The code that will be compiled and invoked. <br/>
+        /// <i>Each element represents one line.</i></returns>
+        public List<string> GetCode(out List<string> _UsingStatements);
         #endregion
     }
 }
