@@ -508,6 +508,39 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Tries to remove the last occurrence of the specified <see cref="char"/> in this <see cref="string"/>.
+        /// </summary>
+        /// <param name="_String">The <see cref="string"/> to remove the <see cref="char"/> in.</param>
+        /// <param name="_CharToRemove">The <see cref="char"/> to remove.</param>
+        /// <returns>This <see cref="string"/> with the removed <see cref="char"/> or the original <see cref="string"/> if the <see cref="char"/> couldn't be found.</returns>
+        public static string RemoveLast(this string _String, char _CharToRemove)
+        {
+            if (_String.LastIndexOf(_CharToRemove) is var _index && _index != -1)
+            {
+                return _String.Remove(_index, 1);
+            }
+
+            return _String;
+        }
+        
+        /// <summary>
+        /// Tries to remove the last occurrence of the specified <see cref="string"/> in this <see cref="string"/>.
+        /// </summary>
+        /// <param name="_String">The <see cref="string"/> to remove the <see cref="string"/> in.</param>
+        /// <param name="_StringToRemove">The <see cref="string"/> to remove.</param>
+        /// <param name="_StringComparison">The <see cref="StringComparison"/> to use when searching for the <see cref="string"/>.</param>
+        /// <returns>This <see cref="string"/> with the removed <see cref="string"/> or the original <see cref="string"/> if the <see cref="string"/> couldn't be found.</returns>
+        public static string RemoveLast(this string _String, string _StringToRemove, StringComparison _StringComparison = StringComparison.Ordinal)
+        {
+            if (_String.LastIndexOf(_StringToRemove, _StringComparison) is var _index && _index != -1)
+            {
+                return _String.Remove(_index, _StringToRemove.Length);
+            }
+
+            return _String;
+        }
+        
+        /// <summary>
         /// Removes all non-digit characters from the specified string.
         /// </summary>
         /// <param name="_String">The <see cref="string"/> to process.</param>
