@@ -13,11 +13,11 @@ using RogueDeck.Settings;
 using UnityEngine;
 
 // ReSharper disable RedundantUsingDirective
-using RogueDeck;
-using RogueDeck.Utilities;
+using MomSesImSpcl;
+using MomSesImSpcl.Utilities;
 // ReSharper restore RedundantUsingDirective
 
-namespace RogueDeck.Utilities
+namespace MomSesImSpcl.Utilities
 {
     /// <summary>
     /// Helper class for the <see cref="RuntimeCodeExecutor"/> to generate code from a <c>.cs</c>-file instead of from the inspector.
@@ -46,28 +46,7 @@ namespace RogueDeck.Utilities
         /// </param>
         private void Main(UnityEngine.Object[] _Contexts)
         {
-            var _effectDescription = _Contexts[0].Get<EffectDescription>()!;
-            var _cardBase = _Contexts[1].Get<CardBase>()!;
             
-            var _effectDescriptionTransform = _effectDescription.transform;
-            var _effectDescriptionRectTransform = _effectDescriptionTransform.As<RectTransform>()!;
-            var _cardRectTransform = _cardBase.transform.As<RectTransform>()!;
-            var _effectDescriptionExtends = _effectDescriptionRectTransform.rect.height * .5f;
-            var _cardExtends = _cardRectTransform.rect.height * .5f;
-            var _direction = _cardBase.EffectDescriptionYOffset.HasSign().Reverse().AsSignedInt();
-            var _yOffset = (_effectDescriptionExtends + _cardExtends) * _direction;// + _cardBase.EffectDescriptionYOffset;
-
-            _effectDescriptionTransform.DOKill();
-            _effectDescriptionTransform.localScale = Vector3.zero;
-            //_effectDescriptionTransform.position = _cardBase.transform.TransformPoint(_cardBase.transform.localPosition.Plus(Axis.Y, _yOffset));
-            _effectDescriptionTransform.localPosition = _cardBase.transform.localPosition.WithY(_yOffset);
-            //this.infoText.text = _cardBase.EffectDescription;
-
-            _effectDescription.gameObject.SetActive(true);
-            _effectDescriptionTransform.DOScale(Vector3.one, CardSettings.EffectDescriptionShowDuration.Key).SetEase(CardSettings.EffectDescriptionShowDuration.Value).OnUpdate(() =>
-            { 
-                // this.infoText.ForceMeshUpdate();
-            });
         }
         
         public string GetCode(out string _UsingStatements)
