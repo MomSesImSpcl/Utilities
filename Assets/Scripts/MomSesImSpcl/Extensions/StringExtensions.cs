@@ -614,6 +614,32 @@ namespace MomSesImSpcl.Extensions
         {
             return _String.RemoveCharacters(' ');
         }
+
+        /// <summary>
+        /// Removes the given <see cref="char"/> from the start of this <see cref="string"/>.
+        /// </summary>
+        /// <param name="_String">The <see cref="string"/> to remove the <see cref="char"/> from.</param>
+        /// <param name="_MaxAmount">Maximum amount of <see cref="char"/> that can be removed from this <see cref="string"/>.</param>
+        /// <param name="_Char">The <see cref="char"/> to remove.</param>
+        /// <returns>This <see cref="string"/> with the given <see cref="char"/> removed from the start.</returns>
+        public static string TrimStart(this string _String, int _MaxAmount, char _Char = ' ')
+        {
+            var _newStartIndex = 0;
+            var _maxRemovals = math.min(_MaxAmount, _String.Length);
+
+            // ReSharper disable once InconsistentNaming
+            for (var i = 0; i < _maxRemovals; i++)
+            {
+                if (_String[i] != _Char)
+                {
+                    break;
+                }
+                
+                _newStartIndex = i + 1;
+            }
+
+            return _newStartIndex > 0 ? _String[_newStartIndex..] : _String;
+        }
         
         /// <summary>
         /// Converts the specified URI string to an HTML hyperlink.
