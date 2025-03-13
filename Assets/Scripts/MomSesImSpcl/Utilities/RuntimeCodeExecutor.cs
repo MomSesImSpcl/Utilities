@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -23,7 +24,10 @@ namespace MomSesImSpcl.Utilities
     {
         #region Inspector Fields
         [Tooltip("Set this to true, to write the code in .cs file.\nSet this to false to write the code in the inspector.")]
+        [HorizontalGroup("Settings")]
         [PropertyOrder(1)][SerializeField] private bool useCodeFromFile;
+        [HorizontalGroup("Settings")]
+        [PropertyOrder(1)][SerializeField] private bool printGeneratedCode;
         [Tooltip("Reference to the file where the code is written in.")]
         [ShowIf(nameof(this.useCodeFromFile))]
         [PropertyOrder(2)][SerializeField] private InterfaceReference<ICodeGenerator> codeGenerator;
@@ -45,6 +49,10 @@ namespace MomSesImSpcl.Utilities
         private bool isCompiling;
 #pragma warning restore CS0414
         /// <summary>
+        /// Builds the contents of the generated code.
+        /// </summary>
+        private StringBuilder stringBuilder = new();
+        /// <summary>
         /// Contains all assemblies loaded in the current application domain.
         /// </summary>
         private PortableExecutableReference[] references;
@@ -63,7 +71,7 @@ namespace MomSesImSpcl.Utilities
 
             try
             {
-                if (await this.CompileScriptAsync(_ASSEMBLY_NAME, _NAMESPCE_NAME, _CLASS_NAME, _METHOD_NAME) is {} _assembly)
+                if (await this.CompileScriptAsync(_ASSEMBLY_NAME, _NAMESPCE_NAME, _CLASS_NAME, _METHOD_NAME) is { } _assembly)
                 {
                     var _type = _assembly.GetType($"{_NAMESPCE_NAME}.{_CLASS_NAME}", true, false);
                     var _method = _type.GetMethod(_METHOD_NAME, BindingFlags.Public | BindingFlags.Instance);
@@ -99,8 +107,12 @@ namespace MomSesImSpcl.Utilities
                 
                 await Task.Run(() =>
                 {
-                    var _usingStatements = this.usingStatements;
-                    var _code = this.code;
+                    const int _METHOD_BODY_PADDING = 12;
+                    
+                    // ReSharper disable RedundantAssignment
+                    var _methodBody = string.Empty;
+                    var _usingStatements = string.Empty;
+                    // ReSharper restore RedundantAssignment
                     
                     if (this.useCodeFromFile)
                     {
@@ -108,42 +120,97 @@ namespace MomSesImSpcl.Utilities
                         {
                             throw new NullReferenceException($"{nameof(this.codeGenerator).Bold()} must be assigned when {nameof(this.useCodeFromFile).Bold()} is set to true.");
                         }
+
+                        this.codeGenerator.Interface.GetCode(out var _usingStatementList).ForEach(_Line =>
+                        {
+                            this.stringBuilder.Append(string.Empty.PadLeft(_METHOD_BODY_PADDING));
+                            this.stringBuilder.Append(_Line.TrimStart(_METHOD_BODY_PADDING).RemoveLast(Environment.NewLine));
+                            this.stringBuilder.Append(Environment.NewLine);
+                        });
                         
-                        _code = this.codeGenerator.Interface.GetCode(out _usingStatements);
+                        _methodBody = this.stringBuilder.GetAndClear().RemoveLast(Environment.NewLine);
+                        
+                        _usingStatementList.ForEach(_UsingStatement =>
+                        {
+                            this.stringBuilder.Append(_UsingStatement.RemoveLast(Environment.NewLine));
+                            this.stringBuilder.Append(Environment.NewLine);
+                        });
+                        
+                        _usingStatements = this.stringBuilder.GetAndClear();
+                    }
+                    else
+                    {
+                        foreach (var _line in this.code.Split('\n'))
+                        {
+                            this.stringBuilder.Append(string.Empty.PadLeft(_METHOD_BODY_PADDING));
+                            this.stringBuilder.Append(_line.TrimStart(_METHOD_BODY_PADDING).RemoveLast(Environment.NewLine));
+                            this.stringBuilder.Append(Environment.NewLine);
+                        }
+                        
+                        _methodBody = this.stringBuilder.GetAndClear().RemoveLast(Environment.NewLine);
+                        
+                        foreach (var _usingStatement in this.usingStatements.Split('\n'))
+                        {
+                            this.stringBuilder.Append(_usingStatement.TrimStart().RemoveLast(Environment.NewLine));
+                            this.stringBuilder.Append(Environment.NewLine);
+                        }
+                        
+                        _usingStatements = this.stringBuilder.GetAndClear();
+
+                        if (string.IsNullOrWhiteSpace(this.usingStatements))
+                        {
+                            _usingStatements = _usingStatements.RemoveLast(Environment.NewLine);
+                        }
                     }
                     
+                    // ReSharper disable RedundantStringInterpolation
+                    var _code = $"using {nameof(UnityEngine)};"                                           + Environment.NewLine +
+                                      $"{(_usingStatements != string.Empty ? _usingStatements : string.Empty)}" + Environment.NewLine +
+                                      $"namespace {_NamespaceName}"                                             + Environment.NewLine +
+                                      $"{{"                                                                     + Environment.NewLine +
+                                      $"    public class {_ClassName}"                                          + Environment.NewLine +
+                                      $"    {{"                                                                 + Environment.NewLine +
+                                      $"        public void {_MethodName}(UnityEngine.Object[] _Contexts)"      + Environment.NewLine +
+                                      $"        {{"                                                             + Environment.NewLine +
+                                                 $"{_methodBody}"                                               + Environment.NewLine +
+                                      $"        }}"                                                             + Environment.NewLine +
+                                      $"    }}"                                                                 + Environment.NewLine +
+                                      $"}}";
+                    // ReSharper restore RedundantStringInterpolation
+
                     this.references ??= AppDomain.CurrentDomain.GetAssemblies()
                                         .Where(_Assembly => !_Assembly.IsDynamic && !string.IsNullOrEmpty(_Assembly.Location))
                                         .Select(_Assembly => MetadataReference.CreateFromFile(_Assembly.Location)).ToArray();
                     
-                    var _cSharpCompilation = CSharpCompilation.Create(_AssemblyName, new[]
+                    if (this.printGeneratedCode)
                     {
-                        CSharpSyntaxTree.ParseText
-                        (
-                            $@"
-                               using {nameof(UnityEngine)};
-                               {(_usingStatements != string.Empty ? _usingStatements : string.Empty)}
-                               namespace {_NamespaceName}
-                               {{
-                                   public class {_ClassName}
-                                   {{
-                                       public void {_MethodName}(UnityEngine.Object[] _Contexts)
-                                       {{
-                                           {_code}
-                                       }}
-                                   }}
-                               }}
-                            "
-                        )
-                    }, this.references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                        Debug.Log(_code);
+                    }
+                    
+                    var _cSharpCompilation = CSharpCompilation.Create(_AssemblyName, new[] { CSharpSyntaxTree.ParseText(_code) }, this.references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
                     
                     if (_cSharpCompilation.Emit(_memoryStream) is var _result && !_result.Success)
                     {
-                        foreach (var _error in _result.Diagnostics.Where(_Diagnostic => _Diagnostic.IsWarningAsError || _Diagnostic.Severity == DiagnosticSeverity.Error))
+                        foreach (var _diagnostic in _result.Diagnostics.Where(_Diagnostic => _Diagnostic.IsWarningAsError || _Diagnostic.Severity == DiagnosticSeverity.Error))
                         {
-                            Debug.LogError($"{_error.Id}: {_error.GetMessage()}");
+                            var _error = string.Empty;
+                            
+                            if (_diagnostic.Location.SourceTree is {} _syntaxTree)
+                            {
+                                var _lineSpan = _diagnostic.Location.GetLineSpan();
+                                var _startLinePosition = _lineSpan.StartLinePosition.Line;
+                                var _endLinePosition = _lineSpan.EndLinePosition.Line;
+
+                                var _errorLines = _syntaxTree.GetText().Lines.Skip(_startLinePosition).Take(_endLinePosition - _startLinePosition + 1);
+                                var _line = string.Join(Environment.NewLine, _errorLines.Select(_Line => _Line.ToString()));
+                                var _lineNumbers = _endLinePosition > _startLinePosition ? $"s [{(_startLinePosition + "-" + _endLinePosition).Bold()}]" : $" [{_startLinePosition.Bold()}]";
+
+                                _error = $"Error in line{_lineNumbers}: {_line.TrimStart().Italic()}{Environment.NewLine}";
+                            }
+                                
+                            Debug.LogError($"{_error}Diagnostic Id [{_diagnostic.Id.Bold()}]: {_diagnostic.GetMessage()}");
                         }
-                        
+                            
                         return null;
                     }
                         
@@ -154,6 +221,7 @@ namespace MomSesImSpcl.Utilities
                 
                 return Assembly.Load(_memoryStream.ToArray());
             }
+            catch (TaskCanceledException){ /* Errors will be printed through the Debug.LogError's above, no need to log the TaskCanceledException. */ }
             catch (Exception _exception)
             {
                 Debug.LogException(_exception);
