@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Text;
 using MomSesImSpcl.Utilities;
@@ -16,15 +17,23 @@ namespace MomSesImSpcl.Extensions
     /// </summary>
     public static class GenericExtensions
     {
+        #region Delegates
+        /// <summary>
+        /// Delegate for returning an <see cref="IntPtr"/> from the reference of an instance.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="Type"/> of the instance.</typeparam>
+        private delegate IntPtr FieldPointerDelegate<T>(ref T _Instance);
+        #endregion
+        
         #region Methods
         /// <summary>
         /// Returns the pointer for the given field in this instance.
         /// </summary>
-        /// <param name="_Instance">The instance where the field is declared.</param>
+        /// <param name="_Instance">The instance in which the field is declared.</param>
         /// <param name="_FieldName">The name of the field to get the pointer of.</param>
-        /// <typeparam name="T">Must be an unmanaged <see cref="Type"/>.</typeparam>
+        /// <typeparam name="T">Must be an <c>unmanaged</c> <see cref="Type"/>.</typeparam>
         /// <returns>The pointer to the field.</returns>
-        public static unsafe void* GetFieldPointer<T>(this ref T _Instance, string _FieldName) where T : unmanaged
+        public static unsafe void* GetPointer<T>(this ref T _Instance, string _FieldName) where T : unmanaged
         {
             var _offset = Marshal.OffsetOf<T>(_FieldName).ToInt32();
             
@@ -32,6 +41,81 @@ namespace MomSesImSpcl.Extensions
             {
                 return (byte*)_pointer + _offset;
             }
+        }
+        
+        /// <summary>
+        /// Returns the pointer for the given <see cref="FieldInfo"/>.
+        /// </summary>
+        /// <param name="_Instance">The instance in which the field is declared.</param>
+        /// <param name="_FieldInfo">The <see cref="FieldInfo"/> for which to get the pointer of.</param>
+        /// <typeparam name="T">Must be a <c>struct</c>.</typeparam>
+        /// <returns>The pointer for the given <see cref="FieldInfo"/>.</returns>
+        public static IntPtr GetPointer<T>(this ref T _Instance, FieldInfo _FieldInfo) where T : struct
+        {
+            var _method = new DynamicMethod(
+                name: nameof(GetPointer),
+                returnType: typeof(IntPtr),
+                parameterTypes: new[] { typeof(T).MakeByRefType() },
+                owner: typeof(T),
+                skipVisibility: true);
+        
+            var _ilGenerator = _method.GetILGenerator();
+        
+            _ilGenerator.Emit(OpCodes.Ldarg_0);
+        
+            if (_FieldInfo.DeclaringType is {} _declaringType)
+            {
+                if (!_declaringType.IsValueType)
+                {
+                    _ilGenerator.Emit(OpCodes.Ldind_Ref);
+                    
+                    if (_declaringType != typeof(T))
+                    {
+                        _ilGenerator.Emit(OpCodes.Castclass, _declaringType);
+                    }
+                }
+        
+                _ilGenerator.Emit(OpCodes.Ldflda, _FieldInfo);
+            }
+            
+            _ilGenerator.Emit(OpCodes.Conv_I);
+            _ilGenerator.Emit(OpCodes.Ret);
+        
+            var _delegateType = typeof(FieldPointerDelegate<>).MakeGenericType(typeof(T));
+            var _delegateInstance = _method.CreateDelegate(_delegateType);
+        
+            return ((FieldPointerDelegate<T>)_delegateInstance)(ref _Instance);
+        }
+        
+        /// <summary>
+        /// Returns the pointer for the given <see cref="FieldInfo"/>.
+        /// </summary>
+        /// <param name="_Instance">The instance in which the field is declared.</param>
+        /// <param name="_FieldInfo">The <see cref="FieldInfo"/> for which to get the pointer of.</param>
+        /// <typeparam name="T">Must be a <c>class</c>.</typeparam>
+        /// <returns>The pointer for the given <see cref="FieldInfo"/>.</returns>
+        public static IntPtr GetPointer<T>(this T _Instance, FieldInfo _FieldInfo) where T : class
+        {
+            var _method = new DynamicMethod
+            (
+                name:           nameof(GetPointer),
+                returnType:     typeof(IntPtr),
+                parameterTypes: new[] { typeof(T) },
+                owner:          typeof(T),
+                skipVisibility: true
+            );
+
+            var _iLGenerator = _method.GetILGenerator();
+            
+            _iLGenerator.Emit(OpCodes.Ldarg_0);
+            _iLGenerator.Emit(OpCodes.Castclass, _FieldInfo.DeclaringType);
+            _iLGenerator.Emit(OpCodes.Ldflda, _FieldInfo);
+            _iLGenerator.Emit(OpCodes.Conv_I);
+            _iLGenerator.Emit(OpCodes.Ret);
+            
+            var _delegate = (Func<T,IntPtr>)_method.CreateDelegate(typeof(Func<T,IntPtr>));
+            
+            return _delegate(_Instance);
         }
         
         /// <summary>
