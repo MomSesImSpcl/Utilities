@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Text;
 using MomSesImSpcl.Utilities;
@@ -36,38 +35,6 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
-        /// Returns the pointer for the given <see cref="FieldInfo"/>. <br/>
-        /// <b>The field must have an <c>unmanaged</c> <see cref="Type"/>.</b>
-        /// </summary>
-        /// <param name="_Instance">The instance where the field is declared.</param>
-        /// <param name="_FieldInfo">The <see cref="FieldInfo"/> for which to get the pointer of.</param>
-        /// <typeparam name="T">The <see cref="Type"/> in which the field is declared in.</typeparam>
-        /// <returns>The pointer for the given <see cref="FieldInfo"/>.</returns>
-        public static IntPtr GetFieldPointer<T>(this T _Instance, FieldInfo _FieldInfo)
-        {
-            var _method = new DynamicMethod
-            (
-                name:           nameof(GetFieldPointer),
-                returnType:     typeof(IntPtr),
-                parameterTypes: new[] { typeof(T) },
-                owner:          typeof(T),
-                skipVisibility: true
-            );
-
-            var _iLGenerator = _method.GetILGenerator();
-            
-            _iLGenerator.Emit(OpCodes.Ldarg_0);
-            _iLGenerator.Emit(OpCodes.Castclass, _FieldInfo.DeclaringType);
-            _iLGenerator.Emit(OpCodes.Ldflda, _FieldInfo);
-            _iLGenerator.Emit(OpCodes.Conv_I);
-            _iLGenerator.Emit(OpCodes.Ret);
-            
-            var _delegate = (Func<T,IntPtr>)_method.CreateDelegate(typeof(Func<T,IntPtr>));
-            
-            return _delegate(_Instance);
-        }
-        
-        /// <summary>
         /// Sets the value of an instance Field through reflection.
         /// </summary>
         /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
@@ -81,11 +48,11 @@ namespace MomSesImSpcl.Extensions
         {
             var _fieldName = _Field.GetMemberName();
             
-            return SetMemberValue<T,V,FieldInfo>(_fieldName, _InstanceType => _InstanceType.GetField(_fieldName, (BindingFlags)_CombinedBindingFlags), _FieldInfo =>
+            return SetMemberValue<T,V,FieldInfo>(_fieldName, _InstanceType => _InstanceType.GetField(_fieldName, _CombinedBindingFlags.AsBindingFlags()), _FieldInfo =>
             {
                 _FieldInfo.SetValue(_Instance, _Value);
                 
-            }, _Value, _InstanceType => _InstanceType.GetFields((BindingFlags)CombinedBindingFlags.All));
+            }, _Value, _InstanceType => _InstanceType.GetFields((CombinedBindingFlags.All.AsBindingFlags())));
         }
         
         /// <summary>
@@ -100,11 +67,11 @@ namespace MomSesImSpcl.Extensions
         /// <returns><c>true</c> if the value of the member was successfully set, otherwise <c>false</c>.</returns>
         public static bool SetFieldValue<T,V>(this T _Instance, string _FieldName, V _Value, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All) where T : notnull
         {
-            return SetMemberValue<T,V,FieldInfo>(_FieldName, _InstanceType => _InstanceType.GetField(_FieldName, (BindingFlags)_CombinedBindingFlags), _FieldInfo =>
+            return SetMemberValue<T,V,FieldInfo>(_FieldName, _InstanceType => _InstanceType.GetField(_FieldName, _CombinedBindingFlags.AsBindingFlags()), _FieldInfo =>
             {
                 _FieldInfo.SetValue(_Instance, _Value);
                 
-            }, _Value, _InstanceType => _InstanceType.GetFields((BindingFlags)CombinedBindingFlags.All));
+            }, _Value, _InstanceType => _InstanceType.GetFields(CombinedBindingFlags.All.AsBindingFlags()));
         }
         
         /// <summary>
@@ -121,11 +88,11 @@ namespace MomSesImSpcl.Extensions
         {
             var _propertyName = _Property.GetMemberName();
             
-            return SetMemberValue<T,V,PropertyInfo>(_propertyName, _InstanceType => _InstanceType.GetProperty(_propertyName, (BindingFlags)_CombinedBindingFlags), _PropertyInfo =>
+            return SetMemberValue<T,V,PropertyInfo>(_propertyName, _InstanceType => _InstanceType.GetProperty(_propertyName, _CombinedBindingFlags.AsBindingFlags()), _PropertyInfo =>
             {
                 _PropertyInfo.SetValue(_Instance, _Value);
                 
-            }, _Value, _InstanceType => _InstanceType.GetProperties((BindingFlags)CombinedBindingFlags.All));
+            }, _Value, _InstanceType => _InstanceType.GetProperties(CombinedBindingFlags.All.AsBindingFlags()));
         }
         
         /// <summary>
@@ -140,11 +107,11 @@ namespace MomSesImSpcl.Extensions
         /// <returns><c>true</c> if the value of the member was successfully set, otherwise <c>false</c>.</returns>
         public static bool SetPropertyValue<T,V>(this T _Instance, string _PropertyName, V _Value, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All) where T : notnull
         {
-            return SetMemberValue<T,V,PropertyInfo>(_PropertyName, _InstanceType => _InstanceType.GetProperty(_PropertyName, (BindingFlags)_CombinedBindingFlags), _PropertyInfo =>
+            return SetMemberValue<T,V,PropertyInfo>(_PropertyName, _InstanceType => _InstanceType.GetProperty(_PropertyName, _CombinedBindingFlags.AsBindingFlags()), _PropertyInfo =>
             {
                 _PropertyInfo.SetValue(_Instance, _Value);
                 
-            }, _Value, _InstanceType => _InstanceType.GetProperties((BindingFlags)CombinedBindingFlags.All));
+            }, _Value, _InstanceType => _InstanceType.GetProperties(CombinedBindingFlags.All.AsBindingFlags()));
         }
         
         /// <summary>
