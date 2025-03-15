@@ -62,8 +62,8 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_OscillationSpeed">Controls the speed of the oscillation.</param>
         /// <param name="_Amplitude">Controls how far the value can move from its original value.</param>
         /// <param name="_InvertDirection">Inverts the direction of the oscillation if <c>true</c>.</param>
-        /// <param name="_NoiseMultiplier">Scales the Perlin noise, affecting the randomness.</param>
-        /// <param name="_SineFrequency">Determines the frequency of the sine wave.</param>
+        /// <param name="_NoiseMultiplier">Higher values increase the randomness, but also the speed.</param>
+        /// <param name="_SineFrequency">Controls the oscillation speed.</param>
         /// <returns>This <see cref="float"/> with the applied oscillation.</returns>
         public static float Oscillate(this float _Float, float _OscillationSpeed, float _Amplitude, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _SineFrequency = 1.5f)
         {
