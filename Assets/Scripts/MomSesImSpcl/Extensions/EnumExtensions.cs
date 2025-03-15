@@ -1,5 +1,7 @@
 using System;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using MomSesImSpcl.Utilities;
 using Sirenix.Utilities;
 
 namespace MomSesImSpcl.Extensions
@@ -10,6 +12,16 @@ namespace MomSesImSpcl.Extensions
     public static class EnumExtensions
     {
         #region Methods
+        /// <summary>
+        /// Casts this <see cref="CombinedBindingFlags"/> to a <see cref="BindingFlags"/> <see cref="object"/>.
+        /// </summary>
+        /// <param name="_CombinedBindingFlags">The <see cref="CombinedBindingFlags"/> to cast to <see cref="BindingFlags"/>.</param>
+        /// <returns>This <see cref="CombinedBindingFlags"/> as a <see cref="CombinedBindingFlags"/> <see cref="object"/>.</returns>
+        public static BindingFlags AsBindingFlags(this CombinedBindingFlags _CombinedBindingFlags)
+        {
+            return (BindingFlags)_CombinedBindingFlags;
+        }
+        
         /// <summary>
         /// Returns the name of the given <see cref="Enum"/> value.
         /// </summary>
