@@ -45,8 +45,8 @@ namespace MomSesImSpcl.Extensions
         {
             // ReSharper disable VariableHidesOuterVariable
             return _Type.GetMemberValue<V,FieldInfo>(_FieldName, 
-                _Type => _Type.GetField(_FieldName, (BindingFlags)_CombinedBindingFlags), 
-                _Type => _Type.GetFields((BindingFlags)CombinedBindingFlags.All));
+                _Type => _Type.GetField(_FieldName, _CombinedBindingFlags.AsBindingFlags()), 
+                _Type => _Type.GetFields(CombinedBindingFlags.All.AsBindingFlags()));
             // ReSharper restore VariableHidesOuterVariable
         }
         
@@ -62,8 +62,8 @@ namespace MomSesImSpcl.Extensions
         {
             // ReSharper disable VariableHidesOuterVariable
             return _Type.GetMemberValue<V,PropertyInfo>(_PropertyName, 
-                _Type => _Type.GetProperty(_PropertyName, (BindingFlags)_CombinedBindingFlags), 
-                _Type => _Type.GetProperties((BindingFlags)CombinedBindingFlags.All));
+                _Type => _Type.GetProperty(_PropertyName, _CombinedBindingFlags.AsBindingFlags()), 
+                _Type => _Type.GetProperties(CombinedBindingFlags.All.AsBindingFlags()));
             // ReSharper restore VariableHidesOuterVariable
         }
         
@@ -102,7 +102,7 @@ namespace MomSesImSpcl.Extensions
                 throw new InvalidCastException($"The given Type: [{typeof(V).Name.Bold()}], does not match the Type of [{_MemberName.Bold()}]: [{_memberValue.GetType().Name.Bold()}].");
             }
 
-            throw new InvalidOperationException(ObjectExtensions.FallbackMemberMessage(_Type, _MemberName, _FallbackMembers));
+            throw new InvalidOperationException(GenericExtensions.FallbackMemberMessage(_Type, _MemberName, _FallbackMembers));
         }
         
         /// <summary>
@@ -117,11 +117,11 @@ namespace MomSesImSpcl.Extensions
         public static bool SetFieldValue<V>(this Type _Type, string _FieldName, V _Value, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
         {
             // ReSharper disable VariableHidesOuterVariable
-            return SetMemberValue(_Type, _FieldName, _Type => _Type.GetField(_FieldName, (BindingFlags)_CombinedBindingFlags), _FieldInfo =>
+            return SetMemberValue(_Type, _FieldName, _Type => _Type.GetField(_FieldName, _CombinedBindingFlags.AsBindingFlags()), _FieldInfo =>
             {
                 _FieldInfo.SetValue(null, _Value);
                 
-            }, _Value, _Type => _Type.GetFields((BindingFlags)CombinedBindingFlags.All));
+            }, _Value, _Type => _Type.GetFields(CombinedBindingFlags.All.AsBindingFlags()));
             // ReSharper restore VariableHidesOuterVariable
         }
         
@@ -137,11 +137,11 @@ namespace MomSesImSpcl.Extensions
         public static bool SetPropertyValue<V>(this Type _Type, string _PropertyName, V _Value, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
         {
             // ReSharper disable VariableHidesOuterVariable
-            return SetMemberValue(_Type, _PropertyName, _Type => _Type.GetProperty(_PropertyName, (BindingFlags)_CombinedBindingFlags), _PropertyInfo =>
+            return SetMemberValue(_Type, _PropertyName, _Type => _Type.GetProperty(_PropertyName, _CombinedBindingFlags.AsBindingFlags()), _PropertyInfo =>
             {
                 _PropertyInfo.SetValue(null, _Value);
                 
-            }, _Value, _Type => _Type.GetProperties((BindingFlags)CombinedBindingFlags.All));
+            }, _Value, _Type => _Type.GetProperties(CombinedBindingFlags.All.AsBindingFlags()));
             // ReSharper restore VariableHidesOuterVariable
         }
 
@@ -180,7 +180,7 @@ namespace MomSesImSpcl.Extensions
                 return true;
             }
 
-            Debug.LogError(ObjectExtensions.FallbackMemberMessage(_Type, _MemberName, _FallbackMembers));
+            Debug.LogError(GenericExtensions.FallbackMemberMessage(_Type, _MemberName, _FallbackMembers));
             return false;
         }
         #endregion
