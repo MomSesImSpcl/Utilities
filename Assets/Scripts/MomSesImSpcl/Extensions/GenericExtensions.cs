@@ -17,6 +17,23 @@ namespace MomSesImSpcl.Extensions
     {
         #region Methods
         /// <summary>
+        /// Returns the pointer for the given field in this instance.
+        /// </summary>
+        /// <param name="_Instance">The instance where the field is declared.</param>
+        /// <param name="_FieldName">The name of the field to get the pointer of.</param>
+        /// <typeparam name="T">Must be an unmanaged <see cref="Type"/>.</typeparam>
+        /// <returns>The pointer to the field.</returns>
+        public static unsafe void* GetFieldPointer<T>(this ref T _Instance, string _FieldName) where T : unmanaged
+        {
+            var _offset = Marshal.OffsetOf<T>(_FieldName).ToInt32();
+            
+            fixed (T* _pointer = &_Instance)
+            {
+                return (byte*)_pointer + _offset;
+            }
+        }
+            
+        /// <summary>
         /// Sets the value of an instance Field through reflection.
         /// </summary>
         /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
