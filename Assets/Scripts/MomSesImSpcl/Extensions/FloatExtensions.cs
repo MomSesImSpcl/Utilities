@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 using UnityEngine;
@@ -61,38 +60,20 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Float">The <see cref="float"/> to oscillate around.</param>
         /// <param name="_OscillationSpeed">Controls the speed of the oscillation.</param>
+        /// <param name="_Amplitude">Controls how far the value can move from its original value.</param>
         /// <param name="_InvertDirection">Inverts the direction of the oscillation if <c>true</c>.</param>
         /// <param name="_NoiseMultiplier">Scales the Perlin noise, affecting the randomness.</param>
         /// <param name="_SineFrequency">Determines the frequency of the sine wave.</param>
-        /// <param name="_Amplitude">Scales the amplitude of the final oscillated value.</param>
         /// <returns>This <see cref="float"/> with the applied oscillation.</returns>
-        public static float Oscillate(this float _Float, float _OscillationSpeed, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _SineFrequency = 1.5f, float _Amplitude = .5f)
+        public static float Oscillate(this float _Float, float _OscillationSpeed, float _Amplitude, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _SineFrequency = 1.5f)
         {
+            var _amplitude = math.max((_Amplitude - math.abs(_Float)) * .5f, 0f);
             var _scaledTime = Time.realtimeSinceStartup * _OscillationSpeed;
             var _noise = Mathf.PerlinNoise1D(_scaledTime * _NoiseMultiplier) * 2 - 1;
             var _sin = math.sin(_scaledTime * _SineFrequency);
             var _direction = _InvertDirection.Reverse().AsSignedInt();
             
-            return _Float * _direction + (_noise + _sin) * _Amplitude;
-        }
-        
-        /// <summary>
-        /// Oscillates around this <see cref="float"/>.
-        /// </summary>
-        /// <param name="_Float">The <see cref="float"/> to oscillate around.</param>
-        /// <param name="_OscillationSpeed">Controls the speed of the oscillation.</param>
-        /// <param name="_ClampBetween">Clamps the final value between the negative and positive of this value.</param>
-        /// <param name="_InvertDirection">Inverts the direction of the oscillation if <c>true</c>.</param>
-        /// <param name="_NoiseMultiplier">Scales the Perlin noise, affecting the randomness.</param>
-        /// <param name="_SineFrequency">Determines the frequency of the sine wave.</param>
-        /// <param name="_Amplitude">Scales the amplitude of the final oscillated value.</param>
-        /// <returns>This <see cref="float"/> with the applied oscillation.</returns>
-        public static float OscillateClamped(this float _Float, float _OscillationSpeed, float _ClampBetween, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _SineFrequency = 1.5f, float _Amplitude = .5f)
-        {
-            var _maxAmplitude = math.max((_ClampBetween - math.abs(_Float)) * .5f, 0f);
-            var _scaledAmplitude = math.min(_Amplitude, _maxAmplitude);
-
-            return _Float.Oscillate(_OscillationSpeed, _InvertDirection, _NoiseMultiplier, _SineFrequency, _scaledAmplitude);
+            return _Float * _direction + (_noise + _sin) * _amplitude;
         }
         #endregion
     }
