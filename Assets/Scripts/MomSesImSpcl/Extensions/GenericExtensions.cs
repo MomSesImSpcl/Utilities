@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.InteropServices;
 using System.Text;
 using MomSesImSpcl.Utilities;
 using UnityEngine;
@@ -32,7 +34,7 @@ namespace MomSesImSpcl.Extensions
                 return (byte*)_pointer + _offset;
             }
         }
-
+        
         /// <summary>
         /// Returns the pointer for the given <see cref="FieldInfo"/>. <br/>
         /// <b>The field must have an <c>unmanaged</c> <see cref="Type"/>.</b>
