@@ -28,7 +28,7 @@ namespace MomSesImSpcl.Utilities.Singleton
         // ReSharper disable once VirtualMemberNeverOverridden.Global
         protected new virtual bool DontDestroyOnLoad => false;
         /// <summary>
-        /// Set this to <c>true</c> to also initialize this singleon in edit mode inside the <see cref="OnEnable"/>. <br/>
+        /// Set this to <c>true</c> to also initialize this singleton in edit mode inside the <see cref="OnEnable"/>. <br/>
         /// <i>The <see cref="ExecuteInEditMode"/> or <see cref="ExecuteAlways"/> attribute must be added to the inheriting class for this to work.</i>
         /// </summary>
         protected virtual bool EditorInitialization => false;
@@ -37,7 +37,7 @@ namespace MomSesImSpcl.Utilities.Singleton
         #region Methods
         protected virtual void Awake()
         {
-            if (this.InitializationMethod == InitializationMethod.Awake)//
+            if (this.InitializationMethod == InitializationMethod.Awake)
             {
                 this.Init();
             }
