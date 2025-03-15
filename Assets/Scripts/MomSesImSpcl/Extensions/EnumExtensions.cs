@@ -17,6 +17,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_CombinedBindingFlags">The <see cref="CombinedBindingFlags"/> to cast to <see cref="BindingFlags"/>.</param>
         /// <returns>This <see cref="CombinedBindingFlags"/> as a <see cref="CombinedBindingFlags"/> <see cref="object"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BindingFlags AsBindingFlags(this CombinedBindingFlags _CombinedBindingFlags)
         {
             return (BindingFlags)_CombinedBindingFlags;
