@@ -35,8 +35,8 @@ namespace MomSesImSpcl.Extensions
         public static V GetFieldValue<V>(this object _Instance, string _FieldName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
         {
             return _Instance.GetMemberValue<V,FieldInfo>(_FieldName, 
-                _InstanceType => _InstanceType.GetField(_FieldName, (BindingFlags)_CombinedBindingFlags), 
-                _InstanceType => _InstanceType.GetFields((BindingFlags)CombinedBindingFlags.All));
+                _InstanceType => _InstanceType.GetField(_FieldName, _CombinedBindingFlags.AsBindingFlags()), 
+                _InstanceType => _InstanceType.GetFields(CombinedBindingFlags.All.AsBindingFlags()));
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace MomSesImSpcl.Extensions
         public static V GetPropertyValue<V>(this object _Instance, string _PropertyName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
         {
             return _Instance.GetMemberValue<V,PropertyInfo>(_PropertyName, 
-                _InstanceType => _InstanceType.GetProperty(_PropertyName, (BindingFlags)_CombinedBindingFlags), 
-                _InstanceType => _InstanceType.GetProperties((BindingFlags)CombinedBindingFlags.All));
+                _InstanceType => _InstanceType.GetProperty(_PropertyName, _CombinedBindingFlags.AsBindingFlags()), 
+                _InstanceType => _InstanceType.GetProperties(CombinedBindingFlags.All.AsBindingFlags()));
         }
         
         /// <summary>
