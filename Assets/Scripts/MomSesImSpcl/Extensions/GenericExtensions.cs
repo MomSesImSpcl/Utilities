@@ -32,7 +32,39 @@ namespace MomSesImSpcl.Extensions
                 return (byte*)_pointer + _offset;
             }
         }
+
+        /// <summary>
+        /// Returns the pointer for the given <see cref="FieldInfo"/>. <br/>
+        /// <b>The field must have an <c>unmanaged</c> <see cref="Type"/>.</b>
+        /// </summary>
+        /// <param name="_Instance">The instance where the field is declared.</param>
+        /// <param name="_FieldInfo">The <see cref="FieldInfo"/> for which to get the pointer of.</param>
+        /// <typeparam name="T">The <see cref="Type"/> in which the field is declared in.</typeparam>
+        /// <returns>The pointer for the given <see cref="FieldInfo"/>.</returns>
+        public static IntPtr GetFieldPointer<T>(this T _Instance, FieldInfo _FieldInfo)
+        {
+            var _method = new DynamicMethod
+            (
+                name:           nameof(GetFieldPointer),
+                returnType:     typeof(IntPtr),
+                parameterTypes: new[] { typeof(T) },
+                owner:          typeof(T),
+                skipVisibility: true
+            );
+
+            var _iLGenerator = _method.GetILGenerator();
             
+            _iLGenerator.Emit(OpCodes.Ldarg_0);
+            _iLGenerator.Emit(OpCodes.Castclass, _FieldInfo.DeclaringType);
+            _iLGenerator.Emit(OpCodes.Ldflda, _FieldInfo);
+            _iLGenerator.Emit(OpCodes.Conv_I);
+            _iLGenerator.Emit(OpCodes.Ret);
+            
+            var _delegate = (Func<T,IntPtr>)_method.CreateDelegate(typeof(Func<T,IntPtr>));
+            
+            return _delegate(_Instance);
+        }
+        
         /// <summary>
         /// Sets the value of an instance Field through reflection.
         /// </summary>
