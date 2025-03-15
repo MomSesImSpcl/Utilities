@@ -305,9 +305,9 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_XAmplitude">Controls how far the <see cref="Vector2.x"/> value can move from its original value.</param>
         /// <param name="_YAmplitude">Controls how far the <see cref="Vector2.y"/> value can move from its original value.</param>
         /// <param name="_InvertDirection">Inverts the direction of the oscillation if <c>true</c>.</param>
-        /// <param name="_NoiseMultiplier">Scales the Perlin noise, affecting the randomness.</param>
-        /// <param name="_XFrequency">Determines the frequency of the sine wave on the <see cref="Vector2.x"/>-axis.</param>
-        /// <param name="_YFrequency">Determines the frequency of the sine wave on the <see cref="Vector2.y"/>-axis.</param>
+        /// <param name="_NoiseMultiplier">Higher values increase the randomness, but also the speed.</param>
+        /// <param name="_XFrequency">Controls the oscillation speed on the <see cref="Vector2.x"/>-axis.</param>
+        /// <param name="_YFrequency">Controls the oscillation speed on the <see cref="Vector2.y"/>-axis.</param>
         /// <returns>This <see cref="Vector2"/> with the applied oscillation.</returns>
         public static Vector2 Oscillate(this Vector2 _Vector2, float _OscillationSpeed, float _XAmplitude, float _YAmplitude, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _XFrequency = 1.3f, float _YFrequency = 1.7f)
         {
