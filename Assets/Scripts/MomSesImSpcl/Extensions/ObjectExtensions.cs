@@ -40,6 +40,20 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Gets the value of an instance Field through reflection.
+        /// </summary>
+        /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
+        /// <param name="_DerivedType">Specify a <see cref="Type"/> this <see cref="object"/> derives from, to get the field of that <see cref="Type"/>.</param>
+        /// <param name="_FieldName">The name of the Field.</param>
+        /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Field.</param>
+        /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
+        /// <returns>The Field value.</returns>
+        public static V GetFieldValue<V>(this object _Instance, Type _DerivedType, string _FieldName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
+        {
+            return _DerivedType.GetFieldValue<V>(_Instance, _FieldName, _CombinedBindingFlags);
+        }
+        
+        /// <summary>
         /// Gets the value of an instance Property through reflection.
         /// </summary>
         /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Property.</param>
@@ -52,6 +66,20 @@ namespace MomSesImSpcl.Extensions
             return _Instance.GetMemberValue<V,PropertyInfo>(_PropertyName, 
                 _InstanceType => _InstanceType.GetProperty(_PropertyName, _CombinedBindingFlags.AsBindingFlags()), 
                 _InstanceType => _InstanceType.GetProperties(CombinedBindingFlags.All.AsBindingFlags()));
+        }
+        
+        /// <summary>
+        /// Gets the value of an instance Property through reflection.
+        /// </summary>
+        /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Property.</param>
+        /// <param name="_DerivedType">Specify a <see cref="Type"/> this <see cref="object"/> derives from, to get the property of that <see cref="Type"/>.</param>
+        /// <param name="_PropertyName">The name of the Property.</param>
+        /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Property.</param>
+        /// <typeparam name="V">The <see cref="Type"/> of the Property.</typeparam>
+        /// <returns>The Property value.</returns>
+        public static V GetPropertyValue<V>(this object _Instance, Type _DerivedType, string _PropertyName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
+        {
+            return _DerivedType.GetPropertyValue<V>(_Instance, _PropertyName, _CombinedBindingFlags);
         }
         
         /// <summary>
