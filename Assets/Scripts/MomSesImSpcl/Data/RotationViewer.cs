@@ -1,4 +1,5 @@
 using UnityEngine;
+
 // ReSharper disable UnusedMember.Global
 
 namespace MomSesImSpcl.Data
@@ -10,7 +11,9 @@ namespace MomSesImSpcl.Data
     {
 #if UNITY_EDITOR
         #region Inspector Fields
+#if !ODIN_INSPECTOR
         [Header("Rotation")]
+#endif
         [Tooltip("Unsigned Euler Angles.")]
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.FoldoutGroup("Rotation")]
@@ -30,7 +33,9 @@ namespace MomSesImSpcl.Data
 #endif
         [SerializeField] private Quaternion rotation;
         
+#if !ODIN_INSPECTOR
         [Header("Local Rotation")]
+#endif
         [Tooltip("Unsigned Local Euler Angles.")]
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.FoldoutGroup("Local Rotation")]
