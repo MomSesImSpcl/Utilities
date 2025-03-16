@@ -10,14 +10,17 @@ using UnityEngine;
 // ReSharper disable RedundantUsingDirective
 using MomSesImSpcl;
 using MomSesImSpcl.Utilities;
+using Object = UnityEngine.Object;
 // ReSharper restore RedundantUsingDirective
+
+#pragma warning disable CS1998
 
 namespace MomSesImSpcl.Utilities
 {
     /// <summary>
     /// Helper class for the <see cref="RuntimeCodeExecutor"/> to generate code from a <c>.cs</c>-file instead of from the inspector.
     /// </summary>
-    public sealed class CodeGenerator : MonoBehaviour, ICodeGenerator
+    internal sealed class CodeGenerator : MonoBehaviour, ICodeGenerator
     {
 #if UNITY_EDITOR && ODIN_INSPECTOR
         #region Inspector Fields
@@ -25,6 +28,10 @@ namespace MomSesImSpcl.Utilities
         [SerializeField] private RuntimeCodeExecutor runtimeCodeExecutor;
         #endregion
 #endif
+        // ReSharper disable once EmptyRegion
+        #region Fields
+        #endregion
+        
         #region Methods
         /// <summary>
         /// The body of this method will be compiled and invoked in the <see cref="runtimeCodeExecutor"/>.
@@ -34,19 +41,21 @@ namespace MomSesImSpcl.Utilities
         /// As long as the correct references are set in <see cref="RuntimeCodeExecutor.contexts"/> the cast will work.
         /// </param>
         // ReSharper disable once UnusedParameter.Local
-        private void Main(UnityEngine.Object[] _Contexts)
+        private async void Main(Object[] _Contexts)
         {
             
         }
         
-        public List<string> GetCode(out List<string> _UsingStatements)
+        public List<string> GetCode(out List<string> _UsingStatements, out List<string> _Fields)
         {
             var _lineNumber = 1;
             var _beforeNamespace = true;
+            var _fields = false;
             var _mainMethodStartLine = 0;
             var _openBrackets = 0;
 
             _UsingStatements = new List<string>();
+            _Fields = new List<string>();
             var _methodBody = new List<string>();
             
             foreach (var _line in File.ReadLines(CallerInfo.GetCallerInfo().FilePath))
@@ -59,7 +68,22 @@ namespace MomSesImSpcl.Utilities
                 {
                     _beforeNamespace = false;
                 }
-                else if (_line.Contains($"private void {nameof(Main)}"))
+                else if (_line.Contains("#region Fields"))
+                {
+                    _fields = true;
+                }
+                else if (_fields)
+                {
+                    if (_line.Contains("#endregion"))
+                    {
+                        _fields = false;
+                    }
+                    else
+                    {
+                        _Fields.Add(_line + Environment.NewLine);
+                    }
+                }
+                else if (_line.Contains($"void {nameof(Main)}({nameof(Object)}[] _Contexts)"))
                 {
                     _mainMethodStartLine = _lineNumber;
                 }
