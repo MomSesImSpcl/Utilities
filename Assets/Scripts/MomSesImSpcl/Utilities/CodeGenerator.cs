@@ -41,6 +41,7 @@ namespace MomSesImSpcl.Utilities
         /// As long as the correct references are set in <see cref="RuntimeCodeExecutor.contexts"/> the cast will work.
         /// </param>
         // ReSharper disable once UnusedParameter.Local
+        // ReSharper disable once AsyncVoidMethod
         private async void Main(Object[] _Contexts)
         {
             
