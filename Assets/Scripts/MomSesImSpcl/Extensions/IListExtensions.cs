@@ -151,7 +151,21 @@ namespace MomSesImSpcl.Extensions
             _IList.Remove(_Item);
             _IList.Insert(_NewIndex, _Item);
         }
-
+        
+        /// <summary>
+        /// Populates this <see cref="IList{T}"/> with elements from the given <c>_Factory</c>-method.
+        /// </summary>
+        /// <param name="_IList">The <see cref="IList{T}"/> to populate.</param>
+        /// <param name="_Amount">The number of elements to <see cref="IList{T}.Add"/> to the <see cref="IList{T}"/>.</param>
+        /// <param name="_Factory">Defines how the elements should be created.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="IList{T}"/>.</typeparam>
+        /// <typeparam name="N">Must be a numeric <see cref="Type"/> that fits inside a <see cref="uint"/>.</typeparam>
+        /// <returns>The populated <see cref="IList{T}"/>.</returns>
+        public static IList<T> Populate<T,N>(this IList<T> _IList, N _Amount, Func<T> _Factory) where N : unmanaged, IFormattable
+        {
+            return _IList.As<ICollection<T>>().Populate(_Amount, _Factory).As<IList<T>>()!;
+        }
+        
         /// <summary>
         /// Converts an <see cref="IList{T}"/> to a formatted JSON string with specified indentations and selected properties.
         /// </summary>
