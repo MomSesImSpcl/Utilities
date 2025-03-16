@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MomSesImSpcl.Utilities;
 using Unity.Mathematics;
 using UnityEngine;
+using Math = MomSesImSpcl.Utilities.Math;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -297,6 +298,26 @@ namespace MomSesImSpcl.Extensions
         public static Quaternion LocalRotation2D(this Transform _Transform)
         {
             return _Transform.localEulerAngles.WithZ(0).ToQuaternion();
+        }
+
+        /// <summary>
+        /// Returns the signed values of the <see cref="Transform.eulerAngles"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.eulerAngles"/> from.</param>
+        /// <returns>The signed values of the <see cref="Transform.eulerAngles"/>.</returns>
+        public static Vector3 SignedEulerAngles(this Transform _Transform)
+        {
+            return Math.UnsignedToSignedAngle(_Transform.eulerAngles);
+        }
+        
+        /// <summary>
+        /// Returns the signed values of the <see cref="Transform.eulerAngles"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.eulerAngles"/> from.</param>
+        /// <returns>The signed values of the <see cref="Transform.eulerAngles"/>.</returns>
+        public static Vector3 SignedLocalEulerAngles(this Transform _Transform)
+        {
+            return Math.UnsignedToSignedAngle(_Transform.localEulerAngles);
         }
         
         /// <summary>
