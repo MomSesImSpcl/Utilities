@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Reflection;
 using MomSesImSpcl.Utilities;
@@ -44,7 +45,25 @@ namespace MomSesImSpcl.Extensions
         public static V GetFieldValue<V>(this Type _Type, string _FieldName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
         {
             // ReSharper disable VariableHidesOuterVariable
-            return _Type.GetMemberValue<V,FieldInfo>(_FieldName, 
+            return _Type.GetMemberValue<V,FieldInfo>(null, _FieldName, 
+                _Type => _Type.GetField(_FieldName, _CombinedBindingFlags.AsBindingFlags()), 
+                _Type => _Type.GetFields(CombinedBindingFlags.All.AsBindingFlags()));
+            // ReSharper restore VariableHidesOuterVariable
+        }
+        
+        /// <summary>
+        /// Gets the value of a Field through reflection.
+        /// </summary>
+        /// <param name="_Type">The <see cref="Type"/> in which the Field is located.</param>
+        /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Field.</param>
+        /// <param name="_FieldName">The name of the Field.</param>
+        /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Field.</param>
+        /// <typeparam name="V">The <see cref="Type"/> of the Field.</typeparam>
+        /// <returns>The Field value.</returns>
+        public static V GetFieldValue<V>(this Type _Type, object _Instance, string _FieldName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
+        {
+            // ReSharper disable VariableHidesOuterVariable
+            return _Type.GetMemberValue<V,FieldInfo>(_Instance, _FieldName, 
                 _Type => _Type.GetField(_FieldName, _CombinedBindingFlags.AsBindingFlags()), 
                 _Type => _Type.GetFields(CombinedBindingFlags.All.AsBindingFlags()));
             // ReSharper restore VariableHidesOuterVariable
@@ -61,7 +80,25 @@ namespace MomSesImSpcl.Extensions
         public static V GetPropertyValue<V>(this Type _Type, string _PropertyName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
         {
             // ReSharper disable VariableHidesOuterVariable
-            return _Type.GetMemberValue<V,PropertyInfo>(_PropertyName, 
+            return _Type.GetMemberValue<V,PropertyInfo>(null, _PropertyName, 
+                _Type => _Type.GetProperty(_PropertyName, _CombinedBindingFlags.AsBindingFlags()), 
+                _Type => _Type.GetProperties(CombinedBindingFlags.All.AsBindingFlags()));
+            // ReSharper restore VariableHidesOuterVariable
+        }
+        
+        /// <summary>
+        /// Gets the value of a Property through reflection.
+        /// </summary>
+        /// <param name="_Type">The <see cref="Type"/> in which the Property is located.</param>
+        /// <param name="_Instance">The instance of the <see cref="object"/> that holds the Property.</param>
+        /// <param name="_PropertyName">The name of the Property.</param>
+        /// <param name="_CombinedBindingFlags">Optional <see cref="CombinedBindingFlags"/> to find the Property.</param>
+        /// <typeparam name="V">The <see cref="Type"/> of the Property.</typeparam>
+        /// <returns>The Property value.</returns>
+        public static V GetPropertyValue<V>(this Type _Type, object _Instance, string _PropertyName, CombinedBindingFlags _CombinedBindingFlags = CombinedBindingFlags.All)
+        {
+            // ReSharper disable VariableHidesOuterVariable
+            return _Type.GetMemberValue<V,PropertyInfo>(_Instance, _PropertyName, 
                 _Type => _Type.GetProperty(_PropertyName, _CombinedBindingFlags.AsBindingFlags()), 
                 _Type => _Type.GetProperties(CombinedBindingFlags.All.AsBindingFlags()));
             // ReSharper restore VariableHidesOuterVariable
@@ -71,6 +108,7 @@ namespace MomSesImSpcl.Extensions
         /// Sets the value of a static member through reflection.
         /// </summary>
         /// <param name="_Type">The <see cref="Type"/> in which the member is located.</param>
+        /// <param name="_Instance">The instance of the <see cref="object"/> that holds the member, or <c>null</c> if the member is static.</param>
         /// <param name="_MemberName">The name of the member whose value to get.</param>
         /// <param name="_GetMember">Should be <see cref="Type.GetField(string,BindingFlags)"/> or <see cref="Type.GetProperty(string,BindingFlags)"/>.</param>
         /// <param name="_FallbackMembers">
@@ -83,14 +121,14 @@ namespace MomSesImSpcl.Extensions
         /// <exception cref="NotSupportedException">When the <see cref="MemberInfo"/> is not a <see cref="FieldInfo"/> or <see cref="PropertyInfo"/>.</exception>
         /// <exception cref="InvalidCastException">When the given <see cref="Type"/> <c>V</c> does not match the <see cref="Type"/> of the member"/>.</exception>
         /// <exception cref="InvalidOperationException">When the given <see cref="Type"/> <c>T</c> does not contain a member with the given name.</exception>
-        private static V GetMemberValue<V,I>(this Type _Type, string _MemberName, Func<Type,I> _GetMember, Func<Type,I[]> _FallbackMembers) where I : MemberInfo
+        private static V GetMemberValue<V,I>(this Type _Type, object? _Instance, string _MemberName, Func<Type,I> _GetMember, Func<Type,I[]> _FallbackMembers) where I : MemberInfo
         {
             if (_GetMember(_Type) is {} _memberInfo)
             {
                 var _memberValue = _memberInfo switch
                 {
-                    FieldInfo _fieldInfo => _fieldInfo.GetValue(null),
-                    PropertyInfo _propertyInfo => _propertyInfo.GetValue(null),
+                    FieldInfo _fieldInfo => _fieldInfo.GetValue(_Instance),
+                    PropertyInfo _propertyInfo => _propertyInfo.GetValue(_Instance),
                     _ => throw new NotSupportedException($"The Member: [{_MemberName.Bold()}], is not a Field or Property and cannot be accessed using GetValue.")
                 };
                 
