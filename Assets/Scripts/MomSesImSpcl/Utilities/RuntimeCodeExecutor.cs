@@ -108,9 +108,11 @@ namespace MomSesImSpcl.Utilities
                 await Task.Run(() =>
                 {
                     const int _METHOD_BODY_PADDING = 12;
+                    const int _FIELD_PADDING = 8;
                     
                     // ReSharper disable RedundantAssignment
                     var _methodBody = string.Empty;
+                    var _fields = string.Empty;
                     var _usingStatements = string.Empty;
                     // ReSharper restore RedundantAssignment
                     
@@ -121,7 +123,7 @@ namespace MomSesImSpcl.Utilities
                             throw new NullReferenceException($"{nameof(this.codeGenerator).Bold()} must be assigned when {nameof(this.useCodeFromFile).Bold()} is set to true.");
                         }
 
-                        this.codeGenerator.Interface.GetCode(out var _usingStatementList).ForEach(_Line =>
+                        this.codeGenerator.Interface.GetCode(out var _usingStatementList, out var _fieldsList).ForEach(_Line =>
                         {
                             this.stringBuilder.Append(string.Empty.PadLeft(_METHOD_BODY_PADDING));
                             this.stringBuilder.Append(_Line.TrimStart(_METHOD_BODY_PADDING).RemoveLast(Environment.NewLine));
@@ -129,6 +131,15 @@ namespace MomSesImSpcl.Utilities
                         });
                         
                         _methodBody = this.stringBuilder.GetAndClear().RemoveLast(Environment.NewLine);
+                        
+                        _fieldsList.ForEach(_Field =>
+                        {
+                            this.stringBuilder.Append(string.Empty.PadLeft(_FIELD_PADDING));
+                            this.stringBuilder.Append(_Field.RemoveLast(Environment.NewLine));
+                            this.stringBuilder.Append(Environment.NewLine);
+                        });
+
+                        _fields = this.stringBuilder.GetAndClear();
                         
                         _usingStatementList.ForEach(_UsingStatement =>
                         {
@@ -164,17 +175,18 @@ namespace MomSesImSpcl.Utilities
                     }
                     
                     // ReSharper disable RedundantStringInterpolation
-                    var _code = $"using {nameof(UnityEngine)};"                                           + Environment.NewLine +
-                                      $"{(_usingStatements != string.Empty ? _usingStatements : string.Empty)}" + Environment.NewLine +
-                                      $"namespace {_NamespaceName}"                                             + Environment.NewLine +
-                                      $"{{"                                                                     + Environment.NewLine +
-                                      $"    public class {_ClassName}"                                          + Environment.NewLine +
-                                      $"    {{"                                                                 + Environment.NewLine +
-                                      $"        public void {_MethodName}(UnityEngine.Object[] _Contexts)"      + Environment.NewLine +
-                                      $"        {{"                                                             + Environment.NewLine +
-                                                 $"{_methodBody}"                                               + Environment.NewLine +
-                                      $"        }}"                                                             + Environment.NewLine +
-                                      $"    }}"                                                                 + Environment.NewLine +
+                    var _code = $"using {nameof(UnityEngine)};"                                            + Environment.NewLine +
+                                      $"{(_usingStatements != string.Empty ? _usingStatements : string.Empty)}"  + Environment.NewLine +
+                                      $"namespace {_NamespaceName}"                                              + Environment.NewLine +
+                                      $"{{"                                                                      + Environment.NewLine +
+                                      $"    public class {_ClassName}"                                           + Environment.NewLine +
+                                      $"    {{"                                                                  + Environment.NewLine +
+                                             $"{_fields}"                                                        + Environment.NewLine +
+                                      $"        public async void {_MethodName}(UnityEngine.Object[] _Contexts)" + Environment.NewLine +
+                                      $"        {{"                                                              + Environment.NewLine +
+                                                 $"{_methodBody}"                                                + Environment.NewLine +
+                                      $"        }}"                                                              + Environment.NewLine +
+                                      $"    }}"                                                                  + Environment.NewLine +
                                       $"}}";
                     // ReSharper restore RedundantStringInterpolation
 
