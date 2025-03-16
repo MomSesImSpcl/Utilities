@@ -182,6 +182,21 @@ namespace MomSesImSpcl.Utilities
 
             return _Angle;
         }
+        
+        /// <summary>
+        /// Converts unsigned angles to their signed equivalent.
+        /// </summary>
+        /// <param name="_Angles">The unsigned angles to be converted.</param>
+        /// <returns>The signed angle equivalents.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 UnsignedToSignedAngle(Vector3 _Angles)
+        {
+            var _x = UnsignedToSignedAngle(_Angles.x);
+            var _y = UnsignedToSignedAngle(_Angles.y);
+            var _z = UnsignedToSignedAngle(_Angles.z);
+            
+            return new Vector3(_x, _y, _z);
+        }
         #endregion
     }
 }
