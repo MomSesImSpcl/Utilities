@@ -6,7 +6,6 @@ namespace MomSesImSpcl.Data
     /// <summary>
     /// Helper class to display every rotation value of a <see cref="Transform"/> in the inspector.
     /// </summary>
-    [ExecuteAlways]
     public sealed class RotationViewer : MonoBehaviour
     {
 #if UNITY_EDITOR
