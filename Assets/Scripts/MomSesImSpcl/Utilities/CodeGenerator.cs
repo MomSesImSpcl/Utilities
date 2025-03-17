@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using MomSesImSpcl.Interfaces;
@@ -20,7 +21,7 @@ namespace MomSesImSpcl.Utilities
     /// <summary>
     /// Helper class for the <see cref="RuntimeCodeExecutor"/> to generate code from a <c>.cs</c>-file instead of from the inspector.
     /// </summary>
-    internal sealed class CodeGenerator : MonoBehaviour, ICodeGenerator
+    public sealed class CodeGenerator : MonoBehaviour, ICodeGenerator
     {
 #if UNITY_EDITOR && ODIN_INSPECTOR
         #region Inspector Fields
@@ -28,9 +29,11 @@ namespace MomSesImSpcl.Utilities
         [SerializeField] private RuntimeCodeExecutor runtimeCodeExecutor;
         #endregion
 #endif
+#pragma warning disable CS0414
         // ReSharper disable once EmptyRegion
         #region Fields
         #endregion
+#pragma warning restore CS0414
         
         #region Methods
         /// <summary>
@@ -38,8 +41,9 @@ namespace MomSesImSpcl.Utilities
         /// </summary>
         /// <param name="_Contexts">
         /// Use this to cast the elements to the needed <see cref="Type"/>. <br/>
-        /// As long as the correct references are set in <see cref="RuntimeCodeExecutor.contexts"/> the cast will work.
+        /// <i>Use the <c>Get()</c>-extension to get the correct <see cref="Type"/>.</i>.
         /// </param>
+        [SuppressMessage("ReSharper", "ArrangeStaticMemberQualifier")]
         // ReSharper disable once UnusedParameter.Local
         // ReSharper disable once AsyncVoidMethod
         private async void Main(Object[] _Contexts)
