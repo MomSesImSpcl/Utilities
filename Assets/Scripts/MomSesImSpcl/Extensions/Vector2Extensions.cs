@@ -311,17 +311,36 @@ namespace MomSesImSpcl.Extensions
         /// <returns>This <see cref="Vector2"/> with the applied oscillation.</returns>
         public static Vector2 Oscillate(this Vector2 _Vector2, float _OscillationSpeed, float _XAmplitude, float _YAmplitude, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _XFrequency = 1.3f, float _YFrequency = 1.7f)
         {
-            var _xAmplitude = math.max((_XAmplitude - math.abs(_Vector2.x)) * .5f, 0f);
-            var _yAmplitude = math.max((_YAmplitude - math.abs(_Vector2.y)) * .5f, 0f);
-            var _time = Time.realtimeSinceStartup * _OscillationSpeed;
+            return _Vector2.Oscillate(0, _OscillationSpeed, _XAmplitude, _YAmplitude, _InvertDirection, _NoiseMultiplier, _XFrequency, _YFrequency);
+        }
+        
+        /// <summary>
+        /// Oscillates around this <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to oscillate around.</param>
+        /// <param name="_StartTime">
+        /// When the oscillation is stopped and started frequently, the start can look janky if <see cref="Time.realtimeSinceStartup"/> has a high value. <br/>
+        /// In this case cache the timestamp when this method is first started again and pass it in.
+        /// </param>
+        /// <param name="_OscillationSpeed">Controls the speed of the oscillation.</param>
+        /// <param name="_XAmplitude">Controls how far the <see cref="Vector2.x"/> value can move from its original value.</param>
+        /// <param name="_YAmplitude">Controls how far the <see cref="Vector2.y"/> value can move from its original value.</param>
+        /// <param name="_InvertDirection">Inverts the direction of the oscillation if <c>true</c>.</param>
+        /// <param name="_NoiseMultiplier">Higher values increase the randomness, but also the speed.</param>
+        /// <param name="_XFrequency">Controls the oscillation speed on the <see cref="Vector2.x"/>-axis.</param>
+        /// <param name="_YFrequency">Controls the oscillation speed on the <see cref="Vector2.y"/>-axis.</param>
+        /// <returns>This <see cref="Vector2"/> with the applied oscillation.</returns>
+        public static Vector2 Oscillate(this Vector2 _Vector2, float _StartTime, float _OscillationSpeed, float _XAmplitude, float _YAmplitude, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _XFrequency = 1.3f, float _YFrequency = 1.7f)
+        {
+            var _time = (Time.realtimeSinceStartup - _StartTime) * _OscillationSpeed;
+            var _sinX = math.sin(_time * _XFrequency);
+            var _sinY = math.sin(_time * _YFrequency);
             var _noise = _time * _NoiseMultiplier;
             var _noiseX = Mathf.PerlinNoise(_noise, 0f) * 2 - 1;
             var _noiseY = Mathf.PerlinNoise(0f, _noise) * 2 - 1;
-            var _sinX = math.sin(_time * _XFrequency);
-            var _sinY = math.sin(_time * _YFrequency);
             var _direction = _InvertDirection.Reverse().AsSignedInt();
-            var _x = _Vector2.x * _direction + (_noiseX + _sinX) * _xAmplitude;
-            var _y = _Vector2.y * _direction + (_noiseY + _sinY) * _yAmplitude;
+            var _x = _Vector2.x + (_sinX + _noiseX) * (_XAmplitude * .5f) * _direction;
+            var _y = _Vector2.y + (_sinY + _noiseY) * (_YAmplitude * .5f) * _direction;
 
             return _Vector2.WithXY(_x, _y);
         }
