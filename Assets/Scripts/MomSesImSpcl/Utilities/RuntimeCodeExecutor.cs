@@ -13,6 +13,7 @@ using MomSesImSpcl.Extensions;
 using MomSesImSpcl.Interfaces;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace MomSesImSpcl.Utilities
 {
@@ -38,7 +39,7 @@ namespace MomSesImSpcl.Utilities
         [HideIf(nameof(this.useCodeFromFile))]
         [PropertyOrder(4)][SerializeField][TextArea(1, 50)] private string code;
         [Tooltip("Assign all needed references for the generated code here.")]
-        [PropertyOrder(6)][SerializeField][CanBeNull] private UnityEngine.Object[] contexts;
+        [PropertyOrder(6)][SerializeField][CanBeNull] private Object[] contexts;
         #endregion
         
         #region Fields
@@ -55,7 +56,7 @@ namespace MomSesImSpcl.Utilities
         /// <summary>
         /// Contains all assemblies loaded in the current application domain.
         /// </summary>
-        private PortableExecutableReference[] references;
+        private PortableExecutableReference[] assemblies;
         #endregion
         
         #region Methods
@@ -71,7 +72,7 @@ namespace MomSesImSpcl.Utilities
 
             try
             {
-                if (await this.CompileScriptAsync(_ASSEMBLY_NAME, _NAMESPCE_NAME, _CLASS_NAME, _METHOD_NAME) is { } _assembly)
+                if (await this.CompileScriptAsync(_ASSEMBLY_NAME, _NAMESPCE_NAME, _CLASS_NAME, _METHOD_NAME) is {} _assembly)
                 {
                     var _type = _assembly.GetType($"{_NAMESPCE_NAME}.{_CLASS_NAME}", true, false);
                     var _method = _type.GetMethod(_METHOD_NAME, BindingFlags.Public | BindingFlags.Instance);
@@ -182,7 +183,7 @@ namespace MomSesImSpcl.Utilities
                                       $"    public class {_ClassName}"                                           + Environment.NewLine +
                                       $"    {{"                                                                  + Environment.NewLine +
                                              $"{_fields}"                                                        + Environment.NewLine +
-                                      $"        public async void {_MethodName}(UnityEngine.Object[] _Contexts)" + Environment.NewLine +
+                                      $"        public async void {_MethodName}({nameof(Object)}[] _Contexts)"   + Environment.NewLine +
                                       $"        {{"                                                              + Environment.NewLine +
                                                  $"{_methodBody}"                                                + Environment.NewLine +
                                       $"        }}"                                                              + Environment.NewLine +
@@ -190,7 +191,7 @@ namespace MomSesImSpcl.Utilities
                                       $"}}";
                     // ReSharper restore RedundantStringInterpolation
 
-                    this.references ??= AppDomain.CurrentDomain.GetAssemblies()
+                    this.assemblies ??= AppDomain.CurrentDomain.GetAssemblies()
                                         .Where(_Assembly => !_Assembly.IsDynamic && !string.IsNullOrEmpty(_Assembly.Location))
                                         .Select(_Assembly => MetadataReference.CreateFromFile(_Assembly.Location)).ToArray();
                     
@@ -199,7 +200,7 @@ namespace MomSesImSpcl.Utilities
                         Debug.Log(_code);
                     }
                     
-                    var _cSharpCompilation = CSharpCompilation.Create(_AssemblyName, new[] { CSharpSyntaxTree.ParseText(_code) }, this.references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                    var _cSharpCompilation = CSharpCompilation.Create(_AssemblyName, new[] { CSharpSyntaxTree.ParseText(_code) }, this.assemblies, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
                     
                     if (_cSharpCompilation.Emit(_memoryStream) is var _result && !_result.Success)
                     {
