@@ -30,8 +30,30 @@ namespace MomSesImSpcl.Editor.CustomEditors
 #endif
         OnEnable()
         {
+#if ODIN_INSPECTOR
+            base.OnEnable();
+#endif
             this.rotationViewer = base.target.To<RotationViewer>();
+            EditorApplication.update += this.RepaintInspector;
         }
+
+#if ODIN_INSPECTOR
+        protected override void
+#else
+        private void
+#endif
+        OnDisable()
+        {
+#if ODIN_INSPECTOR
+            base.OnDisable();
+#endif
+            EditorApplication.update -= this.RepaintInspector;
+        }
+
+        /// <summary>
+        /// Repaints the inspector in <see cref="EditorApplication"/>.<see cref="EditorApplication.update"/>.
+        /// </summary>
+        private void RepaintInspector() => base.Repaint();
 
         public override void OnInspectorGUI()
         {
