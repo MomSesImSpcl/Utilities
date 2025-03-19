@@ -42,6 +42,16 @@ namespace MomSesImSpcl.Extensions
             
             return new Vector2(_x, _y);
         }
+
+        /// <summary>
+        /// Computes the diagonal lenght of this <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to compute the diagonal lenght for.</param>
+        /// <returns>The diagonal length of this <see cref="Vector2"/>.</returns>
+        public static float Diagonal(this Vector2 _Vector2)
+        {
+            return math.sqrt(_Vector2.x * _Vector2.x + _Vector2.y * _Vector2.y);
+        }
         
         /// <summary>
         /// Calculates the distance from this <see cref="Vector2"/> to the given <see cref="Vector2"/>.
