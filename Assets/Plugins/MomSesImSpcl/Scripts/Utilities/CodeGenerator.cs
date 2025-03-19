@@ -32,7 +32,7 @@ namespace MomSesImSpcl.Utilities
         // ReSharper disable once EmptyRegion
         #region Fields
         // ReSharper disable once ArrangeStaticMemberQualifier
-        private CodeGenerator CodeGeneratorInstance { get; } = GameObject.FindFirstObjectByType<CodeGenerator>();
+        private static CodeGenerator CodeGeneratorInstance => GameObject.FindFirstObjectByType<CodeGenerator>();
         #endregion
 #pragma warning restore CS0414
         
