@@ -41,6 +41,32 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the first occurrence within the entire
+        /// </summary>
+        /// <param name="_IEnumerable">The <see cref="IEnumerable{T}"/> to search on</param>
+        /// <param name="_Item">The item that is being searched for.</param>
+        /// <param name="_Match">The condition to search for</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, -1</returns>
+        public static int FindIndex<T>(this IEnumerable<T> _IEnumerable, T _Item, Func<T,T,bool> _Match)
+        {
+            var _count = 0;
+            using var _enumerator = _IEnumerable.GetEnumerator();
+            
+            while (_enumerator.MoveNext())
+            {
+                if (_Match(_enumerator.Current, _Item))
+                {
+                    return _count;
+                }
+            
+                _count++;
+            }
+            
+            return -1;
+        }
+        
+        /// <summary>
         /// Searches for an element that matches the conditions defined by the specified predicate in parallel, and returns the zero-based index of the first occurrence within the entire sequence.
         /// </summary>
         /// <param name="_IEnumerable">The <see cref="IEnumerable{T}"/> to search on</param>
