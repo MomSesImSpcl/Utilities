@@ -319,6 +319,17 @@ namespace MomSesImSpcl.Extensions
         {
             return Math.UnsignedToSignedAngle(_Transform.localEulerAngles);
         }
+
+        /// <summary>
+        /// Transforms a point from this <see cref="Transform"/> into world coordinates.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to transform the point from.</param>
+        /// <param name="_Point">A local point in this <see cref="Transform"/>.</param>
+        /// <returns>The world coordinates of the point.</returns>
+        public static Vector3 ToWorld(this Transform _Transform, Func<Transform, Vector3> _Point)
+        {
+            return _Transform.TransformPoint(_Point(_Transform));
+        }
         
         /// <summary>
         /// Returns the <see cref="Transform.eulerAngles"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.
