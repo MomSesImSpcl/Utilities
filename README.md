@@ -1,6 +1,6 @@
 Collection of extension/utility methods for Unity.
 
-Unity Project version: 2021.3.0f1 <br/>
+Unity Project version: 6000.0.32f1 <br/>
 C# version: 9.0 <br/>
 .NET Version: Framework v4.7.1 <br/>
 
