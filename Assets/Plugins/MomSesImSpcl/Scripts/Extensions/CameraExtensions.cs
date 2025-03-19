@@ -32,6 +32,26 @@ namespace MomSesImSpcl.Extensions
         /// Calculates the points of the camera frustum at a given distance from the camera.
         /// </summary>
         /// <param name="_Camera">The Camera from which the frustum points are calculated.</param>
+        /// <param name="_DistanceFrom">The world <see cref="Transform.position"/> to calculate the distance to the <see cref="Camera"/> from.</param>
+        /// <param name="_ReturnMidpoints">Set to <c>true</c> to return the midpoints instead of the corners.</param>
+        /// <param name="_Visualize">Set to <c>true</c> visualize the calculated points in the scene.</param>
+        /// <returns>
+        /// An array containing the positions of the four points that form the corners of the frustum at the given distance. <br/>
+        /// <b>[0]:</b> Bottom-Left. <br/>
+        /// <b>[1]:</b> Top-Left. <br/>
+        /// <b>[2]:</b> Top-Right. <br/>
+        /// <b>[3]:</b> Bottom-Right.
+        /// </returns>
+        public static Vector3[] CalculateFrustumPoints(this Camera _Camera, Vector3 _DistanceFrom, bool _ReturnMidpoints = false, bool _Visualize = false)
+        {
+            var _distance = _Camera.transform.position.Distance(_DistanceFrom);
+            return _Camera.CalculateFrustumPoints(_distance, _ReturnMidpoints, _Visualize);
+        }
+        
+        /// <summary>
+        /// Calculates the points of the camera frustum at a given distance from the camera.
+        /// </summary>
+        /// <param name="_Camera">The Camera from which the frustum points are calculated.</param>
         /// <param name="_DistanceFromCamera">The distance from the camera at which to calculate the frustum points.</param>
         /// <param name="_ReturnMidpoints">Set to <c>true</c> to return the midpoints instead of the corners.</param>
         /// <param name="_Visualize">Set to <c>true</c> visualize the calculated points in the scene.</param>
