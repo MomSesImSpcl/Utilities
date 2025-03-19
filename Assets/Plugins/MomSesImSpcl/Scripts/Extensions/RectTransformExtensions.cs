@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -8,6 +9,17 @@ namespace MomSesImSpcl.Extensions
     public static class RectTransformExtensions
     {
         #region Methods
+        /// <summary>
+        /// Transforms a point from this <see cref="RectTransform"/> into world coordinates.
+        /// </summary>
+        /// <param name="_RectTransform">The <see cref="RectTransform"/> to transform the point from.</param>
+        /// <param name="_Point">A local point in this <see cref="RectTransform"/>.</param>
+        /// <returns>The world coordinates of the point.</returns>
+        public static Vector3 ToWorld(this RectTransform _RectTransform, Func<RectTransform, Vector3> _Point)
+        {
+            return _RectTransform.TransformPoint(_Point(_RectTransform));
+        }
+        
         /// <summary>
         /// Converts a point from Viewport coordinates to Canvas coordinates.
         /// </summary>
