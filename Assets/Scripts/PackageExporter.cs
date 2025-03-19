@@ -27,6 +27,7 @@ namespace MomSesImSpcl
         /// The export process is initiated by opening a file save dialog where the user specifies the destination path.
         /// If the user cancels the dialog or no valid path is provided, the export process will be aborted.
         /// </summary>
+        // ReSharper disable once AsyncVoidMethod
         internal async void ExportPackageAsync()
         {
             var _exportPath = EditorUtility.SaveFilePanel("Export Package", "Downloads", "Utilities", "unitypackage");

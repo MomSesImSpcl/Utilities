@@ -280,7 +280,7 @@ namespace CustomScriptTemplates
 		private void CreateMenuItem(StringBuilder _StringBuilder, string _TemplateName, string _FileExtension, int _IndentAmount, bool _IsPackageImport, string _CreateMethod = nameof(ScriptTemplates.CreateCSharpScript))
 		{
 			var _templatePath = string.Empty;
-			var _templateName = _TemplateName.RemoveAllWhitespaces();
+			var _templateName = _TemplateName.RemoveWhitespaces();
 			
 #if CUSTOM_SCRIPT_TEMPLATES
 			_templateName = _templateName.Replace("Template", string.Empty);

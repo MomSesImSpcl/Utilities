@@ -190,20 +190,20 @@ namespace CustomScriptTemplates
 		/// <returns>The namespace for the created file.</returns>
 		private static string GetNamespace(string _AbsoluteFilePath)
 		{
-			var _folders = new List<string>();
+			var _folderPaths = new List<string>();
 			// ReSharper disable once PossibleNullReferenceException
 			var _currentDirectory = Directory.GetParent(_AbsoluteFilePath).FullName;
 			var _relativeFilePath = _currentDirectory.RemovePath(ScriptTemplatesSettings.RootParentFolderPath);
 			
 			do
 			{
-				_folders.Add(_currentDirectory.RemovePath(ScriptTemplatesSettings.RootParentFolderPath));
+				_folderPaths.Add(_currentDirectory.RemovePath(ScriptTemplatesSettings.RootParentFolderPath));
 				
 				var _rootNamespace = GetAssemblyDefinitionNamespace(_currentDirectory, out var _assemblyName);
 			
 				if (_assemblyName != string.Empty)
 				{
-					return CreateNamespacePath(_assemblyName, _rootNamespace, _folders);
+					return CreateNamespacePath(_assemblyName, _rootNamespace, _folderPaths);
 				}
 				
 				// ReSharper disable once PossibleNullReferenceException
@@ -213,7 +213,7 @@ namespace CustomScriptTemplates
 
 			var _assembly = GetAssembly(_relativeFilePath);
 			
-			return CreateNamespacePath(_assembly, EditorSettings.projectGenerationRootNamespace, _folders);
+			return CreateNamespacePath(_assembly, EditorSettings.projectGenerationRootNamespace, _folderPaths);
 		}
 		
 		/// <summary>
@@ -345,29 +345,24 @@ namespace CustomScriptTemplates
 		/// The root namespace of this Unity project, or any Assembly Definition file. <br/>
 		/// <i>Can be <see cref="string.Empty"/>.</i>
 		/// </param>
-		/// <param name="_Folders">
-		/// Every folder, starting from the folder where the script is being created, to either the first found Assembly Definition file or the <see cref="ScriptTemplatesSettings.RootFolder"/>. <br/>
+		/// <param name="_FolderPaths">
+		/// Every folder path, starting from the folder where the script is being created, to either the first found Assembly Definition file or the <see cref="ScriptTemplatesSettings.RootFolder"/>. <br/>
 		/// <b>The order of the <see cref="List{T}"/> elements must be: <br/> <i><c>Script Folder</c> -> <see cref="ScriptTemplatesSettings.RootFolder"/></i>.</b>
 		/// </param>
 		/// <returns>A concatenated namespace from the <c>_RootNamespace</c> + all <c>_Folders</c> that are not excluded as namespace provider.</returns>
-		private static string CreateNamespacePath(string _AssemblyName, string _RootNamespace, List<string> _Folders)
+		private static string CreateNamespacePath(string _AssemblyName, string _RootNamespace, List<string> _FolderPaths)
 		{
 			var _excludedFolders = GetNamespaceExclusions(_AssemblyName);
 			
-			_Folders.RemoveAll(_Namespace => _excludedFolders.Contains(_Namespace, StringComparer.OrdinalIgnoreCase));
-			_Folders.Reverse();
-
-			// When the namespace is from an Assembly Definition file.
-			if (_RootNamespace.IsEmptyOrWhitespace())
-			{
-				_RootNamespace = EditorSettings.projectGenerationRootNamespace;
-			}
+			_FolderPaths.RemoveAll(_FolderPath => _excludedFolders.Contains(_FolderPath, StringComparer.OrdinalIgnoreCase));
+			_FolderPaths.Reverse();
+			
 			if (!_RootNamespace.IsEmptyOrWhitespace())
 			{
-				_Folders.Insert(0, _RootNamespace);
+				_FolderPaths.Insert(0, _RootNamespace);
 			}
 			
-			return string.Join(".", _Folders.Select(_Folder => Path.GetFileName(_Folder).ReplaceWhitespaces()));
+			return string.Join(".", _FolderPaths.Select(_FolderPath => Path.GetFileName(_FolderPath).ReplaceWhitespaces()));
 		}
 		
 		/// <summary>
