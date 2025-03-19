@@ -50,6 +50,15 @@ namespace MomSesImSpcl.Utilities
                 _previousPoint = _nextPoint;
             }
         }
+
+        /// <summary>
+        /// Draws a <see cref="Color.red"/> spehere at the given <see cref="Transform.position"/> for one second.
+        /// </summary>
+        /// <param name="_Position">The <see cref="Transform.position"/> to draw there sphere at.</param>
+        public static void Sphere(Vector3 _Position)
+        {
+            Sphere(_Position, 1f, Color.red, 1);
+        }
         
         /// <summary>
         /// Draws a wireframe sphere at the given position with the specified radius, color, and duration.
