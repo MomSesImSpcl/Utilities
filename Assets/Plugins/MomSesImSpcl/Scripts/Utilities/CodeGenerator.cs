@@ -31,6 +31,8 @@ namespace MomSesImSpcl.Utilities
 #pragma warning disable CS0414
         // ReSharper disable once EmptyRegion
         #region Fields
+        // ReSharper disable once ArrangeStaticMemberQualifier
+        private readonly CodeGenerator codeGenerator = GameObject.FindFirstObjectByType<CodeGenerator>();
         #endregion
 #pragma warning restore CS0414
         
