@@ -34,7 +34,7 @@ namespace MomSesImSpcl.Editor.Updater
             {
                 EditorPrefs.SetBool(UPDATER_KEY, true);
                 
-                if (GetVersion(await new HttpClient().GetStringAsync("https://raw.githubusercontent.com/MomSesImSpcl/Utilities/refs/heads/main/Assets/Scripts/MomSesImSpcl/Version.txt"), out var _latestVersion))
+                if (GetVersion(await new HttpClient().GetStringAsync("https://raw.githubusercontent.com/MomSesImSpcl/Utilities/refs/heads/main/Assets/Plugins/MomSesImSpcl/Version.txt"), out var _latestVersion))
                 {
                     if (Directory.GetParent(GetFilePath())?.Parent?.Parent is {} _rootFolder)
                     {
