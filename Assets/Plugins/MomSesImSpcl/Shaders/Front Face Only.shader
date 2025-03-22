@@ -28,11 +28,9 @@ Shader "MomSesImSpcl/2D/Front Face Only"
  
              #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-             CBUFFER_START(UnityPerMaterial)
              TEXTURE2D(_MainTex);
              SAMPLER(sampler_MainTex);
              float4 _Color;
-             CBUFFER_END
              
              struct appdata
              {
