@@ -12,6 +12,16 @@ namespace MomSesImSpcl.Extensions
     {
         #region Methods
         /// <summary>
+        /// Returns the average value of all three axes of this <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to get the axis avcerage from.</param>
+        /// <returns>The average value of all three axes of this <see cref="Vector3"/>.</returns>
+        public static float Average(this Vector3 _Vector3)
+        {
+            return (_Vector3.x + _Vector3.y + _Vector3.z) / 3f;
+        }
+        
+        /// <summary>
         /// Calculates the distance from this <see cref="Vector3"/> to the given <see cref="Vector3"/>.
         /// </summary>
         /// <param name="_From">From where to calculate the distance.</param>
