@@ -12,6 +12,16 @@ namespace MomSesImSpcl.Extensions
     {
         #region
         /// <summary>
+        /// Returns the average value of all three axes of this <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to get the axis avcerage from.</param>
+        /// <returns>The average value of all three axes of this <see cref="Vector2"/>.</returns>
+        public static float Average(this Vector2 _Vector2)
+        {
+            return (_Vector2.x + _Vector2.y) / 2f;
+        }
+        
+        /// <summary>
         /// Clamps this <see cref="Vector2"/> between the given min and max value.
         /// </summary>
         /// <param name="_Vector2">The <see cref="Vector2"/> to clamp.</param>
