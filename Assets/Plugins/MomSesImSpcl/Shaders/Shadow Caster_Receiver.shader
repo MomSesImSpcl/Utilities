@@ -21,7 +21,7 @@ Shader "MomSesImSpcl/2D/Shadow Caster_Receiver"
             Name "ForwardLit"
             Tags { "LightMode"="UniversalForward" }
             
-            Cull off
+            Cull back
             AlphaToMask On
             Blend SrcAlpha OneMinusSrcAlpha
             HLSLPROGRAM
@@ -54,7 +54,6 @@ Shader "MomSesImSpcl/2D/Shadow Caster_Receiver"
                 TEXTURE2D(_MainTex);
                 SAMPLER(sampler_MainTex);
                 float4 _Color;
-                int _FlipX;
             CBUFFER_END
 
             Varyings vert(Attributes IN)
@@ -67,11 +66,8 @@ Shader "MomSesImSpcl/2D/Shadow Caster_Receiver"
                 return OUT;
             }
             
-            half4 frag(Varyings IN, bool isFrontFace : SV_IsFrontFace) : SV_Target
+            half4 frag(Varyings IN) : SV_Target
             {
-                if ((_FlipX == 1 && isFrontFace) || (_FlipX == 0 && !isFrontFace))
-                    discard;
-                
                 half4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
                 half4 col = texColor * IN.color;
                 
@@ -89,7 +85,7 @@ Shader "MomSesImSpcl/2D/Shadow Caster_Receiver"
             Name "ShadowCaster"
             Tags { "LightMode"="ShadowCaster" }
             
-            Cull Off
+            Cull off
             AlphaToMask On
             HLSLPROGRAM
 
