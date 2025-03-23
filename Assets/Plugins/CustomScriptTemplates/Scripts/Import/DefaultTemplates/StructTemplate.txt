@@ -1,8 +1,0 @@
-#NAMESPACE#
-/// <summary>
-/// 
-/// </summary>
-internal struct #SCRIPTNAME#
-{
-    
-}
