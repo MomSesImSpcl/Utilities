@@ -12,6 +12,13 @@ namespace MomSesImSpcl.Data
         [Tooltip("Use this to add a description to a GameObject in the inspector.")]
         [SerializeField][TextArea] private string comment;
         #endregion
+        
+        #region Properties
+        /// <summary>
+        /// <see cref="comment"/>.
+        /// </summary>
+        public string Comment { get => comment; set => comment = value; }
+        #endregion
 #endif
         #region Methods
         private void Awake()
