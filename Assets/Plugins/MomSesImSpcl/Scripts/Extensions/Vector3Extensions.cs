@@ -12,6 +12,20 @@ namespace MomSesImSpcl.Extensions
     {
         #region Methods
         /// <summary>
+        /// Calculates the angle between this <see cref="Vector3"/> and the given target.
+        /// </summary>
+        /// <param name="_Origin">The <see cref="Transform.position"/> to calculate the angle from.</param>
+        /// <param name="_Target">The <see cref="Transform.position"/> to calculate the angle to.</param>
+        /// <returns>The angle between this <see cref="Vector3"/> and the given target.</returns>
+        public static float Angle(this Vector3 _Origin, Vector3 _Target)
+        {
+            var _direction = _Origin.Direction(_Target);
+            var _mouseAngle = math.atan2(-_direction.y, _direction.x) * math.TODEGREES;
+
+            return _mouseAngle;
+        }
+        
+        /// <summary>
         /// Returns the average value of all three axes of this <see cref="Vector3"/>.
         /// </summary>
         /// <param name="_Vector3">The <see cref="Vector3"/> to get the axis avcerage from.</param>
@@ -29,7 +43,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The direction vector from this <see cref="Vector3"/> to the given <see cref="Vector3"/>.</returns>
         public static Vector3 Direction(this Vector3 _From, Vector3 _To)
         {
-            return (_To - _From).normalized;
+            return _To - _From;
         }
         
         /// <summary>
@@ -122,7 +136,7 @@ namespace MomSesImSpcl.Extensions
                 return _DefaultRotation ?? Quaternion.identity;
             }
 
-            var _angle = math.atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+            var _angle = math.atan2(_direction.y, _direction.x) * math.TODEGREES;
             
             return Quaternion.Euler(0f, 0f, _angle + _OffsetDegrees);
         }
