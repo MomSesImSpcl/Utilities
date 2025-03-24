@@ -12,6 +12,20 @@ namespace MomSesImSpcl.Extensions
     {
         #region
         /// <summary>
+        /// Calculates the angle between this <see cref="Vector2"/> and the given target.
+        /// </summary>
+        /// <param name="_Origin">The <see cref="Transform.position"/> to calculate the angle from.</param>
+        /// <param name="_Target">The <see cref="Transform.position"/> to calculate the angle to.</param>
+        /// <returns>The angle between this <see cref="Vector2"/> and the given target.</returns>
+        public static float Angle(this Vector2 _Origin, Vector2 _Target)
+        {
+            var _direction = _Origin.Direction(_Target);
+            var _mouseAngle = math.atan2(-_direction.y, _direction.x) * math.TODEGREES;
+
+            return _mouseAngle;
+        }
+        
+        /// <summary>
         /// Returns the average value of all three axes of this <see cref="Vector2"/>.
         /// </summary>
         /// <param name="_Vector2">The <see cref="Vector2"/> to get the axis avcerage from.</param>
@@ -71,7 +85,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The direction vector from this <see cref="Vector2"/> to the given <see cref="Vector2"/>.</returns>
         public static Vector2 Direction(this Vector2 _From, Vector2 _To)
         {
-            return (_To - _From).normalized;
+            return _To - _From;
         }
         
         /// <summary>
