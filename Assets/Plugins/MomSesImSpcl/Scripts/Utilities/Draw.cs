@@ -57,7 +57,7 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_Position">The <see cref="Transform.position"/> to draw there sphere at.</param>
         public static void Sphere(Vector3 _Position)
         {
-            Sphere(_Position, 1f, Color.red, 1);
+            Sphere(_Position, 1f, Color.red);
         }
         
         /// <summary>
