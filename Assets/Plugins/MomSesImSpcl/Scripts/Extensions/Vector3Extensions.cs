@@ -20,6 +20,17 @@ namespace MomSesImSpcl.Extensions
         {
             return (_Vector3.x + _Vector3.y + _Vector3.z) / 3f;
         }
+
+        /// <summary>
+        /// Computes the direction vector from this <see cref="Vector3"/> to the given <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="_From">Origin <see cref="Transform.position"/>.</param>
+        /// <param name="_To">Target <see cref="Transform.position"/>.</param>
+        /// <returns>The direction vector from this <see cref="Vector3"/> to the given <see cref="Vector3"/>.</returns>
+        public static Vector3 Direction(this Vector3 _From, Vector3 _To)
+        {
+            return (_To - _From).normalized;
+        }
         
         /// <summary>
         /// Calculates the distance from this <see cref="Vector3"/> to the given <see cref="Vector3"/>.
