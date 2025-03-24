@@ -64,6 +64,17 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
+        /// Computes the direction vector from this <see cref="Vector2"/> to the given <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_From">Origin <see cref="Transform.position"/>.</param>
+        /// <param name="_To">Target <see cref="Transform.position"/>.</param>
+        /// <returns>The direction vector from this <see cref="Vector2"/> to the given <see cref="Vector2"/>.</returns>
+        public static Vector2 Direction(this Vector2 _From, Vector2 _To)
+        {
+            return (_To - _From).normalized;
+        }
+        
+        /// <summary>
         /// Calculates the distance from this <see cref="Vector2"/> to the given <see cref="Vector2"/>.
         /// </summary>
         /// <param name="_From">From where to calculate the distance.</param>
