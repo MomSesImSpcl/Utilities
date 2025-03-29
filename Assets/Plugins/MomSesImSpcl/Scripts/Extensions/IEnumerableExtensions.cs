@@ -46,9 +46,10 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_IEnumerable">The <see cref="IEnumerable{T}"/> to search on</param>
         /// <param name="_Item">The item that is being searched for.</param>
         /// <param name="_Match">The condition to search for</param>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The <see cref="Type"/> of the collection.</typeparam>
+        /// <typeparam name="U">The <see cref="Type"/> of the condition to search for.</typeparam>
         /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, -1</returns>
-        public static int FindIndex<T>(this IEnumerable<T> _IEnumerable, T _Item, Func<T,T,bool> _Match)
+        public static int FindIndex<T,U>(this IEnumerable<T> _IEnumerable, U _Item, Func<T,U,bool> _Match)
         {
             var _count = 0;
             using var _enumerator = _IEnumerable.GetEnumerator();
