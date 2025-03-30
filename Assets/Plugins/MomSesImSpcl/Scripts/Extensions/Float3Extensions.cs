@@ -14,6 +14,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Float3">The <see cref="float3"/> to convert.</param>
         /// <returns>This <see cref="float3"/> as a <see cref="Vector3"/>.</returns>
+        // [Unity.Burst.BurstCompile]
         public static Vector3 AsVector3(this float3 _Float3)
         {
             return new Vector3(_Float3.x, _Float3.y, _Float3.z);
