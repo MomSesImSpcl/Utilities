@@ -14,7 +14,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Float3">The <see cref="float3"/> to convert.</param>
         /// <returns>This <see cref="float3"/> as a <see cref="Vector3"/>.</returns>
-        // [Unity.Burst.BurstCompile]
+        [Unity.Burst.BurstCompile]
         public static Vector3 AsVector3(this float3 _Float3)
         {
             return new Vector3(_Float3.x, _Float3.y, _Float3.z);
@@ -47,7 +47,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_XFrequency">Controls the oscillation speed on the <see cref="float3.x"/>-axis.</param>
         /// <param name="_YFrequency">Controls the oscillation speed on the <see cref="float3.y"/>-axis.</param>
         /// <returns>This <see cref="Vector2"/> with the applied oscillation.</returns>
-        // [Unity.Burst.BurstCompile]
+        [Unity.Burst.BurstCompile]
         public static float3 Oscillate(this float3 _Float3, float _RealtimeSinceStartup, float _StartTime, float _OscillationSpeed, float _XAmplitude, float _YAmplitude, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _XFrequency = 1.3f, float _YFrequency = 1.7f)
         {
             var _time = (_RealtimeSinceStartup - _StartTime) * _OscillationSpeed;
@@ -68,9 +68,10 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Float3">The <see cref="float3"/> to convert.</param>
         /// <returns>This <see cref="float3"/> as a <see cref="Quaternion"/>.</returns>
-        public static Quaternion ToQuaternion(this float3 _Float3)
+        [Unity.Burst.BurstCompile]
+        public static quaternion ToQuaternion(this float3 _Float3)
         {
-            return Quaternion.Euler(_Float3);
+            return quaternion.Euler(math.radians(_Float3));
         }
         #endregion
     }
