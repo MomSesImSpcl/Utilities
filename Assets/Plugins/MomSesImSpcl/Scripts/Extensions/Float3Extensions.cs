@@ -47,14 +47,15 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_XFrequency">Controls the oscillation speed on the <see cref="float3.x"/>-axis.</param>
         /// <param name="_YFrequency">Controls the oscillation speed on the <see cref="float3.y"/>-axis.</param>
         /// <returns>This <see cref="Vector2"/> with the applied oscillation.</returns>
+        // [Unity.Burst.BurstCompile]
         public static float3 Oscillate(this float3 _Float3, float _RealtimeSinceStartup, float _StartTime, float _OscillationSpeed, float _XAmplitude, float _YAmplitude, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _XFrequency = 1.3f, float _YFrequency = 1.7f)
         {
             var _time = (_RealtimeSinceStartup - _StartTime) * _OscillationSpeed;
             var _sinX = math.sin(_time * _XFrequency);
             var _sinY = math.sin(_time * _YFrequency);
             var _noise = _time * _NoiseMultiplier;
-            var _noiseX = Mathf.PerlinNoise(_noise, 0f) * 2 - 1;
-            var _noiseY = Mathf.PerlinNoise(0f, _noise) * 2 - 1;
+            var _noiseX = noise.snoise(new float2(_noise, 0f)) * 2 - 1;
+            var _noiseY = noise.snoise(new float2(0f, _noise)) * 2 - 1;
             var _direction = _InvertDirection.Reverse().AsSignedInt();
             var _x = _Float3.x + (_sinX + _noiseX) * (_XAmplitude * .5f) * _direction;
             var _y = _Float3.y + (_sinY + _noiseY) * (_YAmplitude * .5f) * _direction;
