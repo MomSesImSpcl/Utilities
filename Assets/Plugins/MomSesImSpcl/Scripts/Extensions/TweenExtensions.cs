@@ -19,7 +19,20 @@ namespace MomSesImSpcl.Extensions
         /// <returns>This <see cref="Tween"/>.</returns>
         public static T OnFinish<T>(this T _Tween, Action _Action) where T : Tween
         {
-            return _Tween.OnKill(() => _Action()).OnComplete(() => _Action());
+            var _onKill = _Tween.onKill;
+            var _onComplete = _Tween.onComplete;
+            
+            return _Tween.OnKill(() =>
+            {
+                _onKill?.Invoke();
+                _Action();
+
+            }).OnComplete(() =>
+            {
+                _onComplete?.Invoke();
+                _Action();
+                
+            });
         }
         #endregion
     }
