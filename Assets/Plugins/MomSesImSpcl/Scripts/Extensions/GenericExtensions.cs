@@ -1,10 +1,12 @@
 #nullable enable
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using MomSesImSpcl.Utilities;
@@ -116,6 +118,37 @@ namespace MomSesImSpcl.Extensions
             var _delegate = (Func<T,IntPtr>)_method.CreateDelegate(typeof(Func<T,IntPtr>));
             
             return _delegate(_Instance);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="string"/> of this instance without any boxing.
+        /// </summary>
+        /// <param name="_Instance">The instance to convert into a <see cref="string"/>.</param>
+        /// <typeparam name="T">Must be an <c>unmanaged</c> <see cref="Type"/>.</typeparam>
+        /// <returns>This instance as a <see cref="string"/>.</returns>
+        public static string GetStringValue<T>(this T _Instance) where T : unmanaged
+        {
+            var _type = typeof(T);
+            
+            return _type switch
+            {
+                _ when _type == typeof(byte)    => Unsafe.As<T, byte>(ref _Instance).ToString(),
+                _ when _type == typeof(sbyte)   => Unsafe.As<T, sbyte>(ref _Instance).ToString(),
+                _ when _type == typeof(short)   => Unsafe.As<T, short>(ref _Instance).ToString(),
+                _ when _type == typeof(ushort)  => Unsafe.As<T, ushort>(ref _Instance).ToString(),
+                _ when _type == typeof(int)     => Unsafe.As<T, int>(ref _Instance).ToString(),
+                _ when _type == typeof(uint)    => Unsafe.As<T, uint>(ref _Instance).ToString(),
+                _ when _type == typeof(long)    => Unsafe.As<T, long>(ref _Instance).ToString(),
+                _ when _type == typeof(ulong)   => Unsafe.As<T, ulong>(ref _Instance).ToString(),
+                _ when _type == typeof(nint)    => Unsafe.As<T, nint>(ref _Instance).ToString(),
+                _ when _type == typeof(nuint)   => Unsafe.As<T, nuint>(ref _Instance).ToString(),
+                _ when _type == typeof(float)   => Unsafe.As<T, float>(ref _Instance).ToString(CultureInfo.InvariantCulture),
+                _ when _type == typeof(double)  => Unsafe.As<T, double>(ref _Instance).ToString(CultureInfo.InvariantCulture),
+                _ when _type == typeof(decimal) => Unsafe.As<T, decimal>(ref _Instance).ToString(CultureInfo.InvariantCulture),
+                _ when _type == typeof(char)    => Unsafe.As<T, char>(ref _Instance).ToString(),
+                _ when _type == typeof(bool)    => Unsafe.As<T, bool>(ref _Instance).ToString(),
+                _ => default(T).ToString()
+            };
         }
         
         /// <summary>
