@@ -17,7 +17,7 @@ namespace MomSesImSpcl.Editor.PropertyDrawers
             
             foreach (var _child in base.Property.Children)
             {
-                if (_child.Name == _attribute.Member)
+                if (_child.Name == _attribute.MemberName)
                 {
                     _child.Label.text = _attribute.NewLabel;
                 }
