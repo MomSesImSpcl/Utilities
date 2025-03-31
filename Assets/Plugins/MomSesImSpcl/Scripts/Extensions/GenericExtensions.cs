@@ -12,6 +12,10 @@ using System.Text;
 using MomSesImSpcl.Utilities;
 using UnityEngine;
 
+#if ACTK_IS_HERE
+using CodeStage.AntiCheat.ObscuredTypes;
+#endif
+
 namespace MomSesImSpcl.Extensions
 {
     /// <summary>
@@ -147,6 +151,21 @@ namespace MomSesImSpcl.Extensions
                 _ when _type == typeof(decimal) => Unsafe.As<T, decimal>(ref _Instance).ToString(CultureInfo.InvariantCulture),
                 _ when _type == typeof(char)    => Unsafe.As<T, char>(ref _Instance).ToString(),
                 _ when _type == typeof(bool)    => Unsafe.As<T, bool>(ref _Instance).ToString(),
+#if ACTK_IS_HERE
+                _ when _type == typeof(ObscuredByte)    => Unsafe.As<T, ObscuredByte>(ref _Instance).ToString(),
+                _ when _type == typeof(ObscuredSByte)   => Unsafe.As<T, ObscuredSByte>(ref _Instance).ToString(),
+                _ when _type == typeof(ObscuredShort)   => Unsafe.As<T, ObscuredShort>(ref _Instance).ToString(),
+                _ when _type == typeof(ObscuredUShort)  => Unsafe.As<T, ObscuredUShort>(ref _Instance).ToString(),
+                _ when _type == typeof(ObscuredInt)     => Unsafe.As<T, ObscuredInt>(ref _Instance).ToString(),
+                _ when _type == typeof(ObscuredUInt)    => Unsafe.As<T, ObscuredUInt>(ref _Instance).ToString(),
+                _ when _type == typeof(ObscuredLong)    => Unsafe.As<T, ObscuredLong>(ref _Instance).ToString(),
+                _ when _type == typeof(ObscuredULong)   => Unsafe.As<T, ObscuredULong>(ref _Instance).ToString(),
+                _ when _type == typeof(ObscuredFloat)   => Unsafe.As<T, ObscuredFloat>(ref _Instance).ToString(CultureInfo.InvariantCulture),
+                _ when _type == typeof(ObscuredDouble)  => Unsafe.As<T, ObscuredDouble>(ref _Instance).ToString(CultureInfo.InvariantCulture),
+                _ when _type == typeof(ObscuredDecimal) => Unsafe.As<T, ObscuredDecimal>(ref _Instance).ToString(CultureInfo.InvariantCulture),
+                _ when _type == typeof(ObscuredChar)    => Unsafe.As<T, ObscuredChar>(ref _Instance).ToString(),
+                _ when _type == typeof(ObscuredBool)    => Unsafe.As<T, ObscuredBool>(ref _Instance).ToString(),
+#endif
                 _ => default(T).ToString()
             };
         }
