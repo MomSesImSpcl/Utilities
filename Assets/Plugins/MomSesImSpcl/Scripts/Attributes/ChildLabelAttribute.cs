@@ -15,7 +15,7 @@ namespace MomSesImSpcl.Attributes
         /// <summary>
         /// The field/property to change the label of.
         /// </summary>
-        public string Member { get; }
+        public string MemberName { get; }
         /// <summary>
         /// The new label name.
         /// </summary>
@@ -26,11 +26,11 @@ namespace MomSesImSpcl.Attributes
         /// <summary>
         /// <see cref="ChildLabelAttribute"/>.
         /// </summary>
-        /// <param name="_Member"><see cref="Member"/>.</param>
+        /// <param name="_MemberName"><see cref="MemberName"/>.</param>
         /// <param name="_NewLabel"><see cref="NewLabel"/>.</param>
-        public ChildLabelAttribute(string _Member, string _NewLabel)
+        public ChildLabelAttribute(string _MemberName, string _NewLabel)
         {
-            this.Member = _Member;
+            this.MemberName = _MemberName;
             this.NewLabel = _NewLabel;
         }
         #endregion
