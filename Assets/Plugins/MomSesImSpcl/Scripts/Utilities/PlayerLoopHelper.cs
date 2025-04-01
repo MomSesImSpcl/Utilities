@@ -94,6 +94,48 @@ namespace MomSesImSpcl.Utilities
             
             PlayerLoop.SetPlayerLoop(_playerLoopSystem);
         }
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Prints every <see cref="PlayerLoop"/> to the console. <br/>
+        /// <b>Only works in editor.</b>
+        /// </summary>
+        /// <param name="_OnlyUnityLoops">Set to <c>false</c> to also print non unity player loops.</param>
+        public static void PrintCurrentPlayerLoops(bool _OnlyUnityLoops = true)
+        {
+            var _playerLoopSystem = PlayerLoop.GetCurrentPlayerLoop();
+            var _output = string.Empty;
+            
+            TraversePlayerLoops(_playerLoopSystem, ref _output, _OnlyUnityLoops);
+
+            Debug.Log(_output);
+        }
+
+        /// <summary>
+        /// Recursively traverses every <see cref="PlayerLoopSystem"/>. <br/>
+        /// <b>Only works in editor.</b>
+        /// </summary>
+        /// <param name="_PlayerLoopSystem">The <see cref="PlayerLoopSystem"/> to get the <see cref="Type"/> of.</param>
+        /// <param name="_Output">The <see cref="Type"/> of the <see cref="PlayerLoopSystem"/> will be concatenated to this <see cref="string"/>.</param>
+        /// <param name="_OnlyUnityLoops">Set to <c>false</c> to also traverse every <see cref="PlayerLoopSystem.subSystemList"/> of this <see cref="PlayerLoopSystem"/>.</param>
+        private static void TraversePlayerLoops(PlayerLoopSystem _PlayerLoopSystem, ref string _Output, bool _OnlyUnityLoops)
+        {
+            if (_PlayerLoopSystem.subSystemList is null)
+            {
+                return;
+            }
+            
+            foreach (var _playerLoopSubSystem in _PlayerLoopSystem.subSystemList)
+            {
+                _Output += _playerLoopSubSystem.type + Environment.NewLine;
+
+                if (!_OnlyUnityLoops)
+                {
+                    TraversePlayerLoops(_playerLoopSubSystem, ref _Output, false);
+                }
+            }
+        }
+#endif
         #endregion
     }
 }
