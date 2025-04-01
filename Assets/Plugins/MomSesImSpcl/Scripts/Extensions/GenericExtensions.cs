@@ -166,7 +166,7 @@ namespace MomSesImSpcl.Extensions
                 _ when _type == typeof(ObscuredChar)    => Unsafe.As<T, ObscuredChar>(ref _Instance).ToString(),
                 _ when _type == typeof(ObscuredBool)    => Unsafe.As<T, ObscuredBool>(ref _Instance).ToString(),
 #endif
-                _ => default(T).ToString()
+                _ => throw new ArgumentException($"The Type: [{_type.Name}] is not supported.")
             };
         }
         
