@@ -132,41 +132,39 @@ namespace MomSesImSpcl.Extensions
         /// <returns>This instance as a <see cref="string"/>.</returns>
         public static string GetStringValue<T>(this T _Instance) where T : unmanaged
         {
-            var _type = typeof(T);
-            
-            return _type switch
+            return typeof(T) switch
             {
-                _ when _type == typeof(byte)    => Unsafe.As<T, byte>(ref _Instance).ToString(),
-                _ when _type == typeof(sbyte)   => Unsafe.As<T, sbyte>(ref _Instance).ToString(),
-                _ when _type == typeof(short)   => Unsafe.As<T, short>(ref _Instance).ToString(),
-                _ when _type == typeof(ushort)  => Unsafe.As<T, ushort>(ref _Instance).ToString(),
-                _ when _type == typeof(int)     => Unsafe.As<T, int>(ref _Instance).ToString(),
-                _ when _type == typeof(uint)    => Unsafe.As<T, uint>(ref _Instance).ToString(),
-                _ when _type == typeof(long)    => Unsafe.As<T, long>(ref _Instance).ToString(),
-                _ when _type == typeof(ulong)   => Unsafe.As<T, ulong>(ref _Instance).ToString(),
-                _ when _type == typeof(nint)    => Unsafe.As<T, nint>(ref _Instance).ToString(),
-                _ when _type == typeof(nuint)   => Unsafe.As<T, nuint>(ref _Instance).ToString(),
-                _ when _type == typeof(float)   => Unsafe.As<T, float>(ref _Instance).ToString(CultureInfo.InvariantCulture),
-                _ when _type == typeof(double)  => Unsafe.As<T, double>(ref _Instance).ToString(CultureInfo.InvariantCulture),
-                _ when _type == typeof(decimal) => Unsafe.As<T, decimal>(ref _Instance).ToString(CultureInfo.InvariantCulture),
-                _ when _type == typeof(char)    => Unsafe.As<T, char>(ref _Instance).ToString(),
-                _ when _type == typeof(bool)    => Unsafe.As<T, bool>(ref _Instance).ToString(),
+                var _type when _type == typeof(byte)    => Unsafe.As<T, byte>(ref _Instance).ToString(),
+                var _type when _type == typeof(sbyte)   => Unsafe.As<T, sbyte>(ref _Instance).ToString(),
+                var _type when _type == typeof(short)   => Unsafe.As<T, short>(ref _Instance).ToString(),
+                var _type when _type == typeof(ushort)  => Unsafe.As<T, ushort>(ref _Instance).ToString(),
+                var _type when _type == typeof(int)     => Unsafe.As<T, int>(ref _Instance).ToString(),
+                var _type when _type == typeof(uint)    => Unsafe.As<T, uint>(ref _Instance).ToString(),
+                var _type when _type == typeof(long)    => Unsafe.As<T, long>(ref _Instance).ToString(),
+                var _type when _type == typeof(ulong)   => Unsafe.As<T, ulong>(ref _Instance).ToString(),
+                var _type when _type == typeof(nint)    => Unsafe.As<T, nint>(ref _Instance).ToString(),
+                var _type when _type == typeof(nuint)   => Unsafe.As<T, nuint>(ref _Instance).ToString(),
+                var _type when _type == typeof(float)   => Unsafe.As<T, float>(ref _Instance).ToString(CultureInfo.InvariantCulture),
+                var _type when _type == typeof(double)  => Unsafe.As<T, double>(ref _Instance).ToString(CultureInfo.InvariantCulture),
+                var _type when _type == typeof(decimal) => Unsafe.As<T, decimal>(ref _Instance).ToString(CultureInfo.InvariantCulture),
+                var _type when _type == typeof(char)    => Unsafe.As<T, char>(ref _Instance).ToString(),
+                var _type when _type == typeof(bool)    => Unsafe.As<T, bool>(ref _Instance).ToString(),
 #if ACTK_IS_HERE
-                _ when _type == typeof(ObscuredByte)    => Unsafe.As<T, ObscuredByte>(ref _Instance).ToString(),
-                _ when _type == typeof(ObscuredSByte)   => Unsafe.As<T, ObscuredSByte>(ref _Instance).ToString(),
-                _ when _type == typeof(ObscuredShort)   => Unsafe.As<T, ObscuredShort>(ref _Instance).ToString(),
-                _ when _type == typeof(ObscuredUShort)  => Unsafe.As<T, ObscuredUShort>(ref _Instance).ToString(),
-                _ when _type == typeof(ObscuredInt)     => Unsafe.As<T, ObscuredInt>(ref _Instance).ToString(),
-                _ when _type == typeof(ObscuredUInt)    => Unsafe.As<T, ObscuredUInt>(ref _Instance).ToString(),
-                _ when _type == typeof(ObscuredLong)    => Unsafe.As<T, ObscuredLong>(ref _Instance).ToString(),
-                _ when _type == typeof(ObscuredULong)   => Unsafe.As<T, ObscuredULong>(ref _Instance).ToString(),
-                _ when _type == typeof(ObscuredFloat)   => Unsafe.As<T, ObscuredFloat>(ref _Instance).ToString(CultureInfo.InvariantCulture),
-                _ when _type == typeof(ObscuredDouble)  => Unsafe.As<T, ObscuredDouble>(ref _Instance).ToString(CultureInfo.InvariantCulture),
-                _ when _type == typeof(ObscuredDecimal) => Unsafe.As<T, ObscuredDecimal>(ref _Instance).ToString(CultureInfo.InvariantCulture),
-                _ when _type == typeof(ObscuredChar)    => Unsafe.As<T, ObscuredChar>(ref _Instance).ToString(),
-                _ when _type == typeof(ObscuredBool)    => Unsafe.As<T, ObscuredBool>(ref _Instance).ToString(),
+                var _type when _type == typeof(ObscuredByte)    => Unsafe.As<T, ObscuredByte>(ref _Instance).ToString(),
+                var _type when _type == typeof(ObscuredSByte)   => Unsafe.As<T, ObscuredSByte>(ref _Instance).ToString(),
+                var _type when _type == typeof(ObscuredShort)   => Unsafe.As<T, ObscuredShort>(ref _Instance).ToString(),
+                var _type when _type == typeof(ObscuredUShort)  => Unsafe.As<T, ObscuredUShort>(ref _Instance).ToString(),
+                var _type when _type == typeof(ObscuredInt)     => Unsafe.As<T, ObscuredInt>(ref _Instance).ToString(),
+                var _type when _type == typeof(ObscuredUInt)    => Unsafe.As<T, ObscuredUInt>(ref _Instance).ToString(),
+                var _type when _type == typeof(ObscuredLong)    => Unsafe.As<T, ObscuredLong>(ref _Instance).ToString(),
+                var _type when _type == typeof(ObscuredULong)   => Unsafe.As<T, ObscuredULong>(ref _Instance).ToString(),
+                var _type when _type == typeof(ObscuredFloat)   => Unsafe.As<T, ObscuredFloat>(ref _Instance).ToString(CultureInfo.InvariantCulture),
+                var _type when _type == typeof(ObscuredDouble)  => Unsafe.As<T, ObscuredDouble>(ref _Instance).ToString(CultureInfo.InvariantCulture),
+                var _type when _type == typeof(ObscuredDecimal) => Unsafe.As<T, ObscuredDecimal>(ref _Instance).ToString(CultureInfo.InvariantCulture),
+                var _type when _type == typeof(ObscuredChar)    => Unsafe.As<T, ObscuredChar>(ref _Instance).ToString(),
+                var _type when _type == typeof(ObscuredBool)    => Unsafe.As<T, ObscuredBool>(ref _Instance).ToString(),
 #endif
-                _ => throw new ArgumentException($"The Type: [{_type.Name}] is not supported.")
+                _ => throw new ArgumentException($"The Type: [{typeof(T).Name}] is not supported.")
             };
         }
         
