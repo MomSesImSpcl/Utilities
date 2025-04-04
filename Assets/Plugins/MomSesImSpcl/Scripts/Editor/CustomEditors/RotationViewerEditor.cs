@@ -58,14 +58,16 @@ namespace MomSesImSpcl.Editor.CustomEditors
         public override void OnInspectorGUI()
         {
             base.DrawDefaultInspector();
+
+            var _transform = this.rotationViewer.transform;
             
-            this.rotationViewer.EulerAngles = this.rotationViewer.transform.eulerAngles;
-            this.rotationViewer.SignedEulerAngles = this.rotationViewer.transform.SignedEulerAngles();
-            this.rotationViewer.Rotation = this.rotationViewer.transform.rotation;
+            this.rotationViewer.EulerAngles = _transform.eulerAngles;
+            this.rotationViewer.SignedEulerAngles = _transform.SignedEulerAngles();
+            this.rotationViewer.Rotation = _transform.rotation;
             
-            this.rotationViewer.LocalEulerAngles = this.rotationViewer.transform.localEulerAngles;
-            this.rotationViewer.SignedLocalEulerAngles = this.rotationViewer.transform.SignedLocalEulerAngles();
-            this.rotationViewer.LocalRotation = this.rotationViewer.transform.localRotation;
+            this.rotationViewer.LocalEulerAngles = _transform.localEulerAngles;
+            this.rotationViewer.SignedLocalEulerAngles = _transform.SignedLocalEulerAngles();
+            this.rotationViewer.LocalRotation = _transform.localRotation;
         }
         #endregion
     }
