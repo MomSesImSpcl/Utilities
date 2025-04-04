@@ -62,6 +62,7 @@ namespace MomSesImSpcl.Editor.CustomEditors
             this.rotationViewer.EulerAngles = this.rotationViewer.transform.eulerAngles;
             this.rotationViewer.SignedEulerAngles = this.rotationViewer.transform.SignedEulerAngles();
             this.rotationViewer.Rotation = this.rotationViewer.transform.rotation;
+            
             this.rotationViewer.LocalEulerAngles = this.rotationViewer.transform.localEulerAngles;
             this.rotationViewer.SignedLocalEulerAngles = this.rotationViewer.transform.SignedLocalEulerAngles();
             this.rotationViewer.LocalRotation = this.rotationViewer.transform.localRotation;
