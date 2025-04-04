@@ -14,45 +14,51 @@ namespace MomSesImSpcl.Data
 #if !ODIN_INSPECTOR
         [Header("Rotation")]
 #endif
+            
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.FoldoutGroup("Rotation")]
+        [Sirenix.OdinInspector.ReadOnly]
+#endif
         [Tooltip("Unsigned Euler Angles.")]
-#if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.FoldoutGroup("Rotation")]
-        [Sirenix.OdinInspector.ReadOnly]
-#endif
         [SerializeField] private Vector3 eulerAngles;
+        
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.FoldoutGroup("Rotation")]
+        [Sirenix.OdinInspector.ReadOnly]
+#endif
         [Tooltip("Signed Euler Angles.")]
-#if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.FoldoutGroup("Rotation")]
-        [Sirenix.OdinInspector.ReadOnly]
-#endif
         [SerializeField] private Vector3 signedEulerAngles;
-        [Tooltip("Quaternion Rotation.")]
+        
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.FoldoutGroup("Rotation")]
         [Sirenix.OdinInspector.ReadOnly]
 #endif
+        [Tooltip("Quaternion Rotation.")]
         [SerializeField] private Quaternion rotation;
         
 #if !ODIN_INSPECTOR
         [Header("Local Rotation")]
 #endif
+            
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.FoldoutGroup("Local Rotation")]
+        [Sirenix.OdinInspector.ReadOnly]
+#endif
         [Tooltip("Unsigned Local Euler Angles.")]
-#if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.FoldoutGroup("Local Rotation")]
-        [Sirenix.OdinInspector.ReadOnly]
-#endif
         [SerializeField] private Vector3 localEulerAngles;
+        
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.FoldoutGroup("Local Rotation")]
+        [Sirenix.OdinInspector.ReadOnly]
+#endif
         [Tooltip("Signed Local Euler Angles.")]
-#if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.FoldoutGroup("Local Rotation")]
-        [Sirenix.OdinInspector.ReadOnly]
-#endif
         [SerializeField] private Vector3 signedLocalEulerAngles;
-        [Tooltip("Local Quaternion Rotation.")]
+        
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.FoldoutGroup("Local Rotation")]
         [Sirenix.OdinInspector.ReadOnly]
 #endif
+        [Tooltip("Local Quaternion Rotation.")]
         [SerializeField] private Quaternion localRotation;
         #endregion
         
