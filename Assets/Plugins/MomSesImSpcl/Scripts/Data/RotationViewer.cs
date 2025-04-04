@@ -12,50 +12,50 @@ namespace MomSesImSpcl.Data
 #if UNITY_EDITOR
         #region Inspector Fields
 #if !ODIN_INSPECTOR
-        [Header("Rotation")]
+        [Header("World")]
 #endif
             
 #if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.FoldoutGroup("Rotation")]
+        [Sirenix.OdinInspector.FoldoutGroup("World")]
         [Sirenix.OdinInspector.ReadOnly]
 #endif
         [Tooltip("Unsigned Euler Angles.")]
         [SerializeField] private Vector3 eulerAngles;
         
 #if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.FoldoutGroup("Rotation")]
+        [Sirenix.OdinInspector.FoldoutGroup("World")]
         [Sirenix.OdinInspector.ReadOnly]
 #endif
         [Tooltip("Signed Euler Angles.")]
         [SerializeField] private Vector3 signedEulerAngles;
         
 #if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.FoldoutGroup("Rotation")]
+        [Sirenix.OdinInspector.FoldoutGroup("World")]
         [Sirenix.OdinInspector.ReadOnly]
 #endif
         [Tooltip("Quaternion Rotation.")]
         [SerializeField] private Quaternion rotation;
         
 #if !ODIN_INSPECTOR
-        [Header("Local Rotation")]
+        [Header("Local")]
 #endif
             
 #if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.FoldoutGroup("Local Rotation")]
+        [Sirenix.OdinInspector.FoldoutGroup("Local")]
         [Sirenix.OdinInspector.ReadOnly]
 #endif
         [Tooltip("Unsigned Local Euler Angles.")]
         [SerializeField] private Vector3 localEulerAngles;
         
 #if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.FoldoutGroup("Local Rotation")]
+        [Sirenix.OdinInspector.FoldoutGroup("Local")]
         [Sirenix.OdinInspector.ReadOnly]
 #endif
         [Tooltip("Signed Local Euler Angles.")]
         [SerializeField] private Vector3 signedLocalEulerAngles;
         
 #if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.FoldoutGroup("Local Rotation")]
+        [Sirenix.OdinInspector.FoldoutGroup("Local")]
         [Sirenix.OdinInspector.ReadOnly]
 #endif
         [Tooltip("Local Quaternion Rotation.")]
