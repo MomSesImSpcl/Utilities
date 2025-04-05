@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using MomSesImSpcl.Extensions;
 using Unity.Mathematics;
@@ -95,6 +97,20 @@ namespace MomSesImSpcl.Utilities
         /// Returns a random <c>10</c> <see cref="char"/> long <see cref="string"/>.
         /// </summary>
         public static Func<string> String => () => GetString(10);
+        /// <summary>
+        /// Contains <c>5</c> specialized prime numbers for each <see cref="PrimeNumberUseCase"/>.
+        /// </summary>
+        public static ReadOnlyDictionary<PrimeNumberUseCase, int[]> PrimeNumberSeeds = new(new Dictionary<PrimeNumberUseCase, int[]>
+        {
+            { PrimeNumberUseCase.BitMixing,            new[] { 73856093,   19349663,   83492791,  1299827,   600029     } },
+            { PrimeNumberUseCase.DeterministicRandom,  new[] { 198491317,  6542989,    357239,    104729,    49979693   } },
+            { PrimeNumberUseCase.Hashing,              new[] { 16777619,   1000003,    314159,    2653589,   1618033    } },
+            { PrimeNumberUseCase.PerfectHashing,       new[] { 1000003,    1610612741, 32452843,  179424691, 982451653  } },
+            { PrimeNumberUseCase.PRNG,                 new[] { 16807,      2147483647, 48271,     2796203,   12207031   } },
+            { PrimeNumberUseCase.ProceduralGeneration, new[] { 1610612741, 12582917,   198491317, 999331,    324161900  } },
+            { PrimeNumberUseCase.SpatialHashing,       new[] { 73856093,   19349663,   83492791,  600001,    1500450271 } },
+            { PrimeNumberUseCase.UniqueIdGeneration,   new[] { 15485863,   32452843,   49979687,  982451653, 179424673  } }
+        });
         #endregion
         
         #region Methods
@@ -359,6 +375,7 @@ namespace MomSesImSpcl.Utilities
             return _string;
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         /// <summary>
         /// Throws an <see cref="ArgumentOutOfRangeException"/> if <c>_Min</c> is greater than <c>_Max</c>.
         /// </summary>
@@ -367,6 +384,22 @@ namespace MomSesImSpcl.Utilities
         private static void ThrowArgumentOutOfRangeException<T>(T _Min, T _Max) where T : unmanaged, IFormattable
         {
             throw new ArgumentOutOfRangeException($"{nameof(_Min).Bold()} cannot be greater than {nameof(_Max).Bold()}.\nMin: [{_Min.ToString().Bold()}] | Max: [{_Max.ToString().Bold()}]");
+        }
+
+        /// <summary>
+        /// Generates a deterministic seed, based on the given <see cref="PrimeNumberUseCase"/> and up to five seed values.
+        /// </summary>
+        /// <param name="_PrimeNumberUseCase"><see cref="PrimeNumberUseCase"/>.</param>
+        /// <param name="_Seed1">Typically a game state, player ID, or other random input.</param>
+        /// <param name="_Seed2">Typically a game state, player ID, or other random input.</param>
+        /// <param name="_Seed3">Typically a game state, player ID, or other random input.</param>
+        /// <param name="_Seed4">Typically a game state, player ID, or other random input.</param>
+        /// <param name="_Seed5">Typically a game state, player ID, or other random input.</param>
+        /// <returns>A deterministic <see cref="int"/> seed that can be used in random number generation or other game systems requiring randomness.</returns>
+        public static int GetSeed(PrimeNumberUseCase _PrimeNumberUseCase, int _Seed1 = 1, int _Seed2 = 1, int _Seed3 = 1, int _Seed4 = 1, int _Seed5 = 1)
+        {
+            var _primeNumbers = PrimeNumberSeeds[_PrimeNumberUseCase];
+            return (_primeNumbers[0] * _Seed1) ^ (_primeNumbers[1] * _Seed2) ^ (_primeNumbers[2] * _Seed3) ^ (_primeNumbers[3] * _Seed4) ^ (_primeNumbers[4] * _Seed5);
         }
         #endregion
     }
