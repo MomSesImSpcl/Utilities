@@ -16,11 +16,33 @@ namespace MomSesImSpcl.Extensions
     {
         #region Methods
         /// <summary>
+        /// Returns a sequence that contains all elements from this <see cref="IEnumerable{T}"/> except the specified match element.
+        /// </summary>
+        /// <param name="_IEnumerable">The <see cref="IEnumerable{T}"/> to search on.</param>
+        /// <param name="_Match">The element to exclude from the sequence.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of elements in the sequence.</typeparam>
+        /// <returns>An <see cref="IEnumerable{T}"/> that excludes the specified element.</returns>
+        public static IEnumerable<T> Exclude<T>(this IEnumerable<T> _IEnumerable, T _Match)
+        {
+            using var _enumerator = _IEnumerable.GetEnumerator();
+
+            while (_enumerator.MoveNext())
+            {
+                var _current = _enumerator.Current;
+                
+                if (!EqualityComparer<T>.Default.Equals(_current, _Match))
+                {
+                    yield return _current;
+                }
+            }
+        }
+        
+        /// <summary>
         /// Searches for an element that matches the conditions defined by the specified predicate, and returns the zero-based index of the first occurrence within the entire
         /// </summary>
-        /// <param name="_IEnumerable">The <see cref="IEnumerable{T}"/> to search on</param>
+        /// <param name="_IEnumerable">The <see cref="IEnumerable{T}"/> to search on.</param>
         /// <param name="_Match">The condition to search for</param>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The <see cref="Type"/> of elements in the sequence.</typeparam>
         /// <returns>The zero-based index of the first occurrence of an element that matches the conditions defined by match, if found; otherwise, -1</returns>
         public static int FindIndex<T>(this IEnumerable<T> _IEnumerable, Predicate<T> _Match)
         {
