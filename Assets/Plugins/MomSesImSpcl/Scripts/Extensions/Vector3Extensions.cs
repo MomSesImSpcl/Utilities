@@ -36,6 +36,22 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Clamps this <see cref="Vector3"/> between the min and max of the given <see cref="Vector3"/>s.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to clamp.</param>
+        /// <param name="_Min">The min values for this <see cref="Vector3"/>.</param>
+        /// <param name="_Max">The max values for this <see cref="Vector3"/>.</param>
+        /// <returns>This <see cref="Vector3"/> clamped between the given min and max values.</returns>
+        public static Vector3 Clamp(this Vector3 _Vector3, Vector3 _Min, Vector3 _Max)
+        {
+            var _x = math.clamp(_Vector3.x, _Min.x, _Max.x);
+            var _y = math.clamp(_Vector3.y, _Min.y, _Max.y);
+            var _z = math.clamp(_Vector3.z, _Min.z, _Max.z);
+            
+            return new Vector3(_x, _y, _z);
+        }
+        
+        /// <summary>
         /// Computes the direction vector from this <see cref="Vector3"/> to the given <see cref="Vector3"/>.
         /// </summary>
         /// <param name="_From">Origin <see cref="Transform.position"/>.</param>
