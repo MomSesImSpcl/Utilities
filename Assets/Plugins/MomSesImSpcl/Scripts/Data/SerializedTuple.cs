@@ -49,6 +49,15 @@ namespace MomSesImSpcl.Data
         public T Item2 { get => this.item2; set => this.item2 = value; }
         #endregion
         
+        #region Operators
+        /// <summary>
+        /// Implicitly converts this <see cref="SerializedTuple{T}"/> to a <see cref="Tuple{T1, T2}"/>.
+        /// </summary>
+        /// <param name="_SerializedTuple">The <see cref="SerializedTuple{T}"/> to convert.</param>
+        /// <returns>A <see cref="Tuple{T1, T2}"/> with the values of this <see cref="SerializedTuple{T}"/>.</returns>
+        public static implicit operator (T, T) (SerializedTuple<T> _SerializedTuple) => (_SerializedTuple.item1, _SerializedTuple.item2);
+        #endregion
+        
         #region Constructors
         /// <summary>
         /// Creates a new <see cref="SerializedTuple{T}"/> <see cref="object"/>.
