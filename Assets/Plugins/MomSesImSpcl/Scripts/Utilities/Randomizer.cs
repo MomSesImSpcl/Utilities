@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using MomSesImSpcl.Extensions;
-using Unity.Mathematics;
 using Random = System.Random;
 
 namespace MomSesImSpcl.Utilities
@@ -362,7 +361,7 @@ namespace MomSesImSpcl.Utilities
         /// <returns>A <see cref="string"/> containing random character.</returns>
         public static string GetString(int _Length) // TODO: Add overload to get a string from a specific char-array.
         {
-            var _length = math.abs(_Length);
+            var _length = MathF.Abs(_Length);
             
             // ReSharper disable once InconsistentNaming
             for (var i = 0; i < _length; i++)
