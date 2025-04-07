@@ -14,7 +14,7 @@ namespace MomSesImSpcl.Attributes
         /// <summary>
         /// The <see cref="Type"/> of the <see cref="Enum"/> to display the value as.
         /// </summary>
-        public Type EnumType { get; }
+        internal Type EnumType { get; }
         #endregion
         
         #region Constructors
