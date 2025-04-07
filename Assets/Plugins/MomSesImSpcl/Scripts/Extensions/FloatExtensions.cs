@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -42,7 +41,7 @@ namespace MomSesImSpcl.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Clamp(this float _Float, float _ClampMin, float _ClampMax)
         {
-            return math.clamp(_Float, _ClampMin, _ClampMax);
+            return Mathf.Clamp(_Float, _ClampMin, _ClampMax);
         }
 
         /// <summary>
@@ -68,10 +67,10 @@ namespace MomSesImSpcl.Extensions
         /// <returns>This <see cref="float"/> with the applied oscillation.</returns>
         public static float Oscillate(this float _Float, float _OscillationSpeed, float _Amplitude, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _SineFrequency = 1.5f)
         {
-            var _amplitude = math.max((_Amplitude - math.abs(_Float)) * .5f, 0f);
+            var _amplitude = Mathf.Max((_Amplitude - Mathf.Abs(_Float)) * .5f, 0f);
             var _scaledTime = Time.realtimeSinceStartup * _OscillationSpeed;
             var _noise = Mathf.PerlinNoise1D(_scaledTime * _NoiseMultiplier) * 2 - 1;
-            var _sin = math.sin(_scaledTime * _SineFrequency);
+            var _sin = Mathf.Sin(_scaledTime * _SineFrequency);
             var _direction = _InvertDirection.Reverse().AsSignedInt();
             
             return _Float * _direction + (_noise + _sin) * _amplitude;
