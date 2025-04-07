@@ -34,7 +34,7 @@ namespace MomSesImSpcl.Utilities
         [SuppressMessage("ReSharper", "RedundantCast")]
         public static bool Approximately(float _A, float _B)
         {
-            return (double) math.abs(_B - _A) < (double) math.max(1E-06f * math.max(math.abs(_A), math.abs(_B)), math.EPSILON * 8f);
+            return (double)Mathf.Abs(_B - _A) < (double)Mathf.Max(1E-06f * Mathf.Max(Mathf.Abs(_A), Mathf.Abs(_B)), float.Epsilon * 8f);
         }
         
         /// <summary>
@@ -57,8 +57,8 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static float CeilAbsolute(float _Value)
         {
-            var _absoluteValue = math.abs(_Value);
-            var _ceiled = math.ceil(_absoluteValue);
+            var _absoluteValue = Mathf.Abs(_Value);
+            var _ceiled = Mathf.Ceil(_absoluteValue);
 
             return _ceiled;
         }
@@ -86,7 +86,7 @@ namespace MomSesImSpcl.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float DecibelToLinear(float _Decibel)
         {
-            return _Decibel * math.pow(10.0f, _Decibel / 20.0f);
+            return _Decibel * Mathf.Pow(10.0f, _Decibel / 20.0f);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace MomSesImSpcl.Utilities
             float _decibel;
 
             if (_Linear != 0)
-                _decibel = 20.0f * math.log10(_Linear);
+                _decibel = 20.0f * Mathf.Log10(_Linear);
             else
                 _decibel = -144.0f;
 
@@ -129,7 +129,7 @@ namespace MomSesImSpcl.Utilities
             var _fullDirection = _LineEnd - _LineStart;
             Vector3 _lineDirection = math.normalize(_fullDirection);
             var _closestPoint = math.dot(_Point - _LineStart, _lineDirection) / math.dot(_lineDirection, _lineDirection);
-            return _LineStart + math.clamp(_closestPoint, 0.0f, math.length(_fullDirection)) * _lineDirection;
+            return _LineStart + Mathf.Clamp(_closestPoint, 0.0f, math.length(_fullDirection)) * _lineDirection;
         }
 
         /// <summary>
