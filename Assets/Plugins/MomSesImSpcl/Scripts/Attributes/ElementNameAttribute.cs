@@ -13,11 +13,11 @@ namespace MomSesImSpcl.Attributes
         /// <summary>
         /// The custom name to display for the annotated element in the Unity inspector.
         /// </summary>
-        public string ElementName { get; }
+        internal string ElementName { get; }
         /// <summary>
         /// Indicates whether the index of the element should be displayed alongside its custom name in the Unity inspector.
         /// </summary>
-        public bool DisplayIndex { get; }
+        internal bool DisplayIndex { get; }
         #endregion
         
         #region Constructors
