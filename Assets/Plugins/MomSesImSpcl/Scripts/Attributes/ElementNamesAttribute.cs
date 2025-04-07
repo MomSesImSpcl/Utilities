@@ -14,11 +14,11 @@ namespace MomSesImSpcl.Attributes
         /// <summary>
         /// Gets the custom names assigned to the elements in an array or list for display in the Unity Editor.
         /// </summary>
-        public string[] ElementNames { get; }
+        internal string[] ElementNames { get; }
         /// <summary>
         /// Indicates whether to display the index of each element in the array or list alongside its custom name in the Unity Editor.
         /// </summary>
-        public bool DisplayIndex { get; }
+        internal bool DisplayIndex { get; }
         #endregion
         
         #region Constructors
