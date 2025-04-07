@@ -18,11 +18,11 @@ namespace MomSesImSpcl.Attributes
         /// <summary>
         /// Gets the label for the first item of the tuple.
         /// </summary>
-        public string Item1Label { get; }
+        internal string Item1Label { get; }
         /// <summary>
         /// Gets the label for the second item of the tuple.
         /// </summary>
-        public string Item2Label { get; }
+        internal string Item2Label { get; }
         #endregion
         
         #region Constructors
