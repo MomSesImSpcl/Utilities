@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using MomSesImSpcl.Utilities.Logging;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -163,7 +162,7 @@ namespace MomSesImSpcl.Extensions
                 _offset = _match!.Index + _match.Length;
             }
             
-            var _end = _Length > 0 ? math.min(_offset + _Length, _Input.Length) : _Input.Length;
+            var _end = _Length > 0 ? Mathf.Min(_offset + _Length, _Input.Length) : _Input.Length;
                 
             return _Input[_offset.._end];
         }
@@ -625,7 +624,7 @@ namespace MomSesImSpcl.Extensions
         public static string TrimStart(this string _String, int _MaxAmount, char _Char = ' ')
         {
             var _newStartIndex = 0;
-            var _maxRemovals = math.min(_MaxAmount, _String.Length);
+            var _maxRemovals = Mathf.Min(_MaxAmount, _String.Length);
 
             // ReSharper disable once InconsistentNaming
             for (var i = 0; i < _maxRemovals; i++)
