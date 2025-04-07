@@ -1,5 +1,5 @@
 using System;
-using Unity.Mathematics;
+using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -25,7 +25,7 @@ namespace MomSesImSpcl.Extensions
             if (_CurrentStep != _TotalSteps)
             {
                 var _adjustedElapsedTime = _elapsedTime.Add(_timeSinceLastUpdate);
-                var _averageTimePerStep = _adjustedElapsedTime.TotalSeconds / math.max(_CurrentStep + 1, 1);
+                var _averageTimePerStep = _adjustedElapsedTime.TotalSeconds / Mathf.Max(_CurrentStep + 1, 1);
                 var _remainingSteps = _TotalSteps - _CurrentStep;
                 var _totalSeconds = _averageTimePerStep * _remainingSteps;
                 
