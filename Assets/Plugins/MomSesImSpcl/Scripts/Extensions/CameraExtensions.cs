@@ -227,7 +227,7 @@ namespace MomSesImSpcl.Extensions
         {
             var _screenPosition = _Camera.WorldToScreenPoint(_WorldPosition);
             var _direction = Input.mousePosition - _screenPosition;
-            var _mouseAngle = math.atan2(_direction.y, _direction.x) * math.TODEGREES;
+            var _mouseAngle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
 
             return _mouseAngle;
         }
