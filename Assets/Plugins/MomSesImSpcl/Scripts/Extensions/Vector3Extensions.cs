@@ -20,7 +20,7 @@ namespace MomSesImSpcl.Extensions
         public static float Angle(this Vector3 _Origin, Vector3 _Target)
         {
             var _direction = _Origin.Direction(_Target);
-            var _mouseAngle = math.atan2(-_direction.y, _direction.x) * math.TODEGREES;
+            var _mouseAngle = Mathf.Atan2(-_direction.y, _direction.x) * Mathf.Rad2Deg;
 
             return _mouseAngle;
         }
@@ -44,9 +44,9 @@ namespace MomSesImSpcl.Extensions
         /// <returns>This <see cref="Vector3"/> clamped between the given min and max values.</returns>
         public static Vector3 Clamp(this Vector3 _Vector3, Vector3 _Min, Vector3 _Max)
         {
-            var _x = math.clamp(_Vector3.x, _Min.x, _Max.x);
-            var _y = math.clamp(_Vector3.y, _Min.y, _Max.y);
-            var _z = math.clamp(_Vector3.z, _Min.z, _Max.z);
+            var _x = Mathf.Clamp(_Vector3.x, _Min.x, _Max.x);
+            var _y = Mathf.Clamp(_Vector3.y, _Min.y, _Max.y);
+            var _z = Mathf.Clamp(_Vector3.z, _Min.z, _Max.z);
             
             return new Vector3(_x, _y, _z);
         }
@@ -152,7 +152,7 @@ namespace MomSesImSpcl.Extensions
                 return _DefaultRotation ?? Quaternion.identity;
             }
 
-            var _angle = math.atan2(_direction.y, _direction.x) * math.TODEGREES;
+            var _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
             
             return Quaternion.Euler(0f, 0f, _angle + _OffsetDegrees);
         }
@@ -183,7 +183,7 @@ namespace MomSesImSpcl.Extensions
             _Up = _Up == default ? Vector3.up : _Up.normalized;
 
             // Handle collinear direction and up vectors.
-            if (math.abs(math.dot(_direction, _Up)) > .9999f)
+            if (Mathf.Abs(math.dot(_direction, _Up)) > .9999f)
             {
                 _Up = math.cross(_direction, Vector3.right).Normalize();
                 
@@ -226,7 +226,7 @@ namespace MomSesImSpcl.Extensions
             var _normal = math.normalize(_Direction);
             math.orthonormal_basis(_normal, out var _tangent, out var _bitangent);
             var _radians = _Angle * math.PI / 180f;
-            Vector3 _offset = _Radius * (math.cos(_radians) * _tangent + math.sin(_radians) * _bitangent);
+            Vector3 _offset = _Radius * (Mathf.Cos(_radians) * _tangent + Mathf.Sin(_radians) * _bitangent);
             
 #if UNITY_EDITOR
             if (_Visualize)
@@ -415,8 +415,8 @@ namespace MomSesImSpcl.Extensions
         public static Vector3 Oscillate(this Vector3 _Vector3, float _StartTime, float _OscillationSpeed, float _XAmplitude, float _YAmplitude, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _XFrequency = 1.3f, float _YFrequency = 1.7f)
         {
             var _time = (Time.realtimeSinceStartup - _StartTime) * _OscillationSpeed;
-            var _sinX = math.sin(_time * _XFrequency);
-            var _sinY = math.sin(_time * _YFrequency);
+            var _sinX = Mathf.Sin(_time * _XFrequency);
+            var _sinY = Mathf.Sin(_time * _YFrequency);
             var _noise = _time * _NoiseMultiplier;
             var _noiseX = Mathf.PerlinNoise(_noise, 0f) * 2 - 1;
             var _noiseY = Mathf.PerlinNoise(0f, _noise) * 2 - 1;
