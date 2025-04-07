@@ -20,7 +20,7 @@ namespace MomSesImSpcl.Extensions
         public static float Angle(this Vector2 _Origin, Vector2 _Target)
         {
             var _direction = _Origin.Direction(_Target);
-            var _mouseAngle = math.atan2(-_direction.y, _direction.x) * math.TODEGREES;
+            var _mouseAngle = Mathf.Atan2(-_direction.y, _direction.x) * Mathf.Rad2Deg;
 
             return _mouseAngle;
         }
@@ -74,7 +74,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The diagonal length of this <see cref="Vector2"/>.</returns>
         public static float Diagonal(this Vector2 _Vector2)
         {
-            return math.sqrt(_Vector2.x * _Vector2.x + _Vector2.y * _Vector2.y);
+            return Mathf.Sqrt(_Vector2.x * _Vector2.x + _Vector2.y * _Vector2.y);
         }
         
         /// <summary>
@@ -164,13 +164,13 @@ namespace MomSesImSpcl.Extensions
         public static Quaternion Get2DLookAtRotation(this Vector2 _Source, Vector2 _Target, float _OffsetDegrees = -90f, Quaternion? _DefaultRotation = null)
         {
             var _direction = _Target - _Source;
-
+            
             if (_direction.sqrMagnitude < math.EPSILON)
             {
                 return _DefaultRotation ?? Quaternion.identity;
             }
 
-            var _angle = math.atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+            var _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
             
             return Quaternion.Euler(0f, 0f, _angle + _OffsetDegrees);
         }
@@ -199,7 +199,7 @@ namespace MomSesImSpcl.Extensions
             var _normal = math.normalize(_Direction);
             math.orthonormal_basis(_normal, out var _tangent, out var _bitangent);
             var _radians = _Angle * math.PI / 180f;
-            Vector3 _offset = _Radius * (math.cos(_radians) * _tangent + math.sin(_radians) * _bitangent);
+            Vector3 _offset = _Radius * (Mathf.Cos(_radians) * _tangent + Mathf.Sin(_radians) * _bitangent);
             
 #if UNITY_EDITOR
             if (_Visualize)
@@ -378,8 +378,8 @@ namespace MomSesImSpcl.Extensions
         public static Vector2 Oscillate(this Vector2 _Vector2, float _StartTime, float _OscillationSpeed, float _XAmplitude, float _YAmplitude, bool _InvertDirection = false, float _NoiseMultiplier = .5f, float _XFrequency = 1.3f, float _YFrequency = 1.7f)
         {
             var _time = (Time.realtimeSinceStartup - _StartTime) * _OscillationSpeed;
-            var _sinX = math.sin(_time * _XFrequency);
-            var _sinY = math.sin(_time * _YFrequency);
+            var _sinX = Mathf.Sin(_time * _XFrequency);
+            var _sinY = Mathf.Sin(_time * _YFrequency);
             var _noise = _time * _NoiseMultiplier;
             var _noiseX = Mathf.PerlinNoise(_noise, 0f) * 2 - 1;
             var _noiseY = Mathf.PerlinNoise(0f, _noise) * 2 - 1;
