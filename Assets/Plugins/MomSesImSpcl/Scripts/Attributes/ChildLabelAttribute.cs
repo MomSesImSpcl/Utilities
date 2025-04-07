@@ -15,11 +15,11 @@ namespace MomSesImSpcl.Attributes
         /// <summary>
         /// The field/property to change the label of.
         /// </summary>
-        public string MemberName { get; }
+        internal string MemberName { get; }
         /// <summary>
         /// The new label name.
         /// </summary>
-        public string NewLabel { get; }
+        internal string NewLabel { get; }
         #endregion
         
         #region Constructors
