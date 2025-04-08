@@ -1,12 +1,10 @@
 #nullable enable
 using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using MomSesImSpcl.Utilities;
@@ -118,34 +116,6 @@ namespace MomSesImSpcl.Extensions
             var _delegate = (Func<T,IntPtr>)_method.CreateDelegate(typeof(Func<T,IntPtr>));
             
             return _delegate(_Instance);
-        }
-
-        /// <summary>
-        /// Returns the <see cref="string"/> of this instance without any boxing.
-        /// </summary>
-        /// <param name="_Instance">The instance to convert into a <see cref="string"/>.</param>
-        /// <typeparam name="T">Must be an <c>unmanaged</c> <see cref="Type"/>.</typeparam>
-        /// <returns>This instance as a <see cref="string"/>.</returns>
-        public static string GetStringValue<T>(this T _Instance) where T : unmanaged
-        {
-            // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
-            return Type.GetTypeCode(typeof(T)) switch
-            {
-                TypeCode.Boolean => Unsafe.As<T, bool>(ref _Instance).ToString(),
-                TypeCode.Byte    => Unsafe.As<T, byte>(ref _Instance).ToString(),
-                TypeCode.SByte   => Unsafe.As<T, sbyte>(ref _Instance).ToString(),
-                TypeCode.Int16   => Unsafe.As<T, short>(ref _Instance).ToString(),
-                TypeCode.UInt16  => Unsafe.As<T, ushort>(ref _Instance).ToString(),
-                TypeCode.Int32   => Unsafe.As<T, int>(ref _Instance).ToString(),
-                TypeCode.UInt32  => Unsafe.As<T, uint>(ref _Instance).ToString(),
-                TypeCode.Int64   => Unsafe.As<T, long>(ref _Instance).ToString(),
-                TypeCode.UInt64  => Unsafe.As<T, ulong>(ref _Instance).ToString(),
-                TypeCode.Single  => Unsafe.As<T, float>(ref _Instance).ToString(CultureInfo.InvariantCulture),
-                TypeCode.Double  => Unsafe.As<T, double>(ref _Instance).ToString(CultureInfo.InvariantCulture),
-                TypeCode.Decimal => Unsafe.As<T, decimal>(ref _Instance).ToString(CultureInfo.InvariantCulture),
-                TypeCode.Char    => Unsafe.As<T, char>(ref _Instance).ToString(),
-                _ => throw new ArgumentException($"The Type: [{typeof(T).Name}] is not supported.")
-            };
         }
         
         /// <summary>
