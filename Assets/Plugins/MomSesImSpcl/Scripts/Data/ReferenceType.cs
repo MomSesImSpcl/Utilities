@@ -1,17 +1,30 @@
 using System;
+using UnityEngine;
 
 namespace MomSesImSpcl.Data
 {
     /// <summary>
     /// Wrapper class that contains a primitive <see cref="Type"/> to use it as a reference <see cref="Type"/>.
     /// </summary>
+    [Serializable]
+#if ODIN_INSPECTOR
+    [Sirenix.OdinInspector.InlineProperty]
+#endif
     public sealed class ReferenceType<T> where T : struct
     {
+        #region Inspector Fields
+        [Tooltip("The value of the Reference Type wrapper.")]
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.HideLabel]
+#endif
+        [SerializeField] private T value;
+        #endregion
+        
         #region Properties
         /// <summary>
         /// Contains the value of the primitive <see cref="Type"/>.
         /// </summary>
-        public T Value { get; set; }
+        public T Value { get => this.value; set => this.value = value; }
         #endregion
         
         #region Operators
