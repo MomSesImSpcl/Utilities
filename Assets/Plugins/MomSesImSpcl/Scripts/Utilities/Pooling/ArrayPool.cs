@@ -106,6 +106,7 @@ namespace MomSesImSpcl.Utilities.Pooling
             return Get(concurrentArrayPool, _Length, _LogArrayBucket, _ForceStopLogging);
         }
         
+        // ReSharper disable Unity.PerformanceAnalysis
         /// <summary>
         /// Retrieves an <see cref="Array"/> of the given <see cref="Array.Length"/> from the <c>_ArrayPool</c>, or creates a new one if none are available.
         /// </summary>
