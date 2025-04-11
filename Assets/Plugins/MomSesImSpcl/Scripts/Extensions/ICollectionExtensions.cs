@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -10,6 +11,18 @@ namespace MomSesImSpcl.Extensions
     public static class ICollectionExtensions
     {
         #region Methods
+        /// <summary>
+        /// Returns the index of the last element in this <see cref="ICollection{T}"/>.
+        /// </summary>
+        /// <param name="_ICollection">The <see cref="ICollection{T}"/> to get the index in.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="ICollection{T}"/>.</typeparam>
+        /// <returns>The index of the last element in this <see cref="ICollection{T}"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int LastIndex<T>(this ICollection<T> _ICollection)
+        {
+            return _ICollection.Count - 1;
+        }
+        
         /// <summary>
         /// Populates this <see cref="ICollection{T}"/> with elements from the given <c>_Factory</c>-method.
         /// </summary>
