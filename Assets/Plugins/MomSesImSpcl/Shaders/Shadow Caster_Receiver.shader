@@ -3,7 +3,7 @@ Shader "MomSesImSpcl/2D/Shadow Caster_Receiver"
     Properties
     {
         _MainTex("Sprite Texture", 2D) = "white" {}
-        [HDR] _Color("Color", Color) = (1,1,1,1)
+        _Color("Color", Color) = (1,1,1,1)
         _Cutoff("Alpha Cutoff", Range(0,1)) = 0.004
     }
     SubShader
