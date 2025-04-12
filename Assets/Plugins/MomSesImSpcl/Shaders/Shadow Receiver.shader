@@ -3,7 +3,7 @@ Shader "MomSesImSpcl/2D/Shadow Receiver"
     Properties
     {
         _MainTex("Sprite Texture", 2D) = "white" {}
-        [HDR] _Color("Color", Color) = (1,1,1,1)
+        _Color("Color", Color) = (1,1,1,1)
     }
     SubShader
     {
