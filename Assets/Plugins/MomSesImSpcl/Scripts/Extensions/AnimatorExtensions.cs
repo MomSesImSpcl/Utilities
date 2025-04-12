@@ -1,3 +1,4 @@
+#if ANIMATION // TODO: Add this to the scripting define symbols when the "Animation" package is enabled.
 using System;
 using System.Linq;
 using UnityEngine;
@@ -89,3 +90,4 @@ namespace MomSesImSpcl.Extensions
         #endregion
     }
 }
+#endif
