@@ -3,7 +3,7 @@ Shader "MomSesImSpcl/2D/Front Face Only"
      Properties
      {
          _MainTex ("Texture", 2D) = "white" {}
-         [HDR] _Color ("Tint", Color) = (1,1,1,1)
+         _Color ("Tint", Color) = (1,1,1,1)
      }
      SubShader
      {
