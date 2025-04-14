@@ -641,6 +641,89 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Replaces the first occurence of the old value with the new value.
+        /// </summary>
+        /// <param name="_String">The <see cref="string"/> to replace in.</param>
+        /// <param name="_OldValue">The old <see cref="string"/> to replace.</param>
+        /// <param name="_NewValue">The <see cref="string"/> to replace the old <see cref="string"/> with.</param>
+        /// <param name="_StringComparison"><see cref="StringComparison"/>.</param>
+        /// <returns>This <see cref="string"/> with the first occurence of the old value replaced with the new value, or the original <see cref="string"/> if the old value couldn't be found.</returns>
+        public static string ReplaceFirst(this string _String, string _OldValue, string _NewValue, StringComparison _StringComparison = StringComparison.Ordinal)
+        {
+            var _span = _String.AsSpan();
+            var _index = _span.IndexOf(_OldValue, _StringComparison);
+            
+            if (_index < 0)
+            {
+                return _String;
+            }
+            
+            return _span[.._index].ToString() + _NewValue + _span[(_index + _OldValue.Length)..].ToString();
+        }
+        
+        /// <summary>
+        /// Replaces the last occurence of the old value with the new value.
+        /// </summary>
+        /// <param name="_String">The <see cref="string"/> to replace in.</param>
+        /// <param name="_OldValue">The old <see cref="string"/> to replace.</param>
+        /// <param name="_NewValue">The <see cref="string"/> to replace the old <see cref="string"/> with.</param>
+        /// <returns>This <see cref="string"/> with the last occurence of the old value replaced with the new value, or the original <see cref="string"/> if the old value couldn't be found.</returns>
+        public static string ReplaceLast(this string _String, string _OldValue, string _NewValue)
+        {
+            var _span = _String.AsSpan();
+            var _index = _span.LastIndexOf(_OldValue);
+
+            if (_index < 0)
+            {
+                return _String;
+            }
+
+            return _span[.._index].ToString() + _NewValue + _span[(_index + _OldValue.Length)..].ToString();
+        }
+        
+        /// <summary>
+        /// Replaces the nth occurence of the old value with the new value.
+        /// </summary>
+        /// <param name="_String">The <see cref="string"/> to replace in.</param>
+        /// <param name="_OldValue">The old <see cref="string"/> to replace.</param>
+        /// <param name="_NewValue">The <see cref="string"/> to replace the old <see cref="string"/> with.</param>
+        /// <param name="_Occurrence">The occurence to replace.</param>
+        /// <param name="_StringComparison"><see cref="StringComparison"/>.</param>
+        /// <returns>This <see cref="string"/> with the nth occurence of the old value replaced with the new value, or the original <see cref="string"/> if the old value couldn't be found.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When <c>_Occurrence</c> is <c>&lt; 1</c>.</exception>
+        public static string ReplaceNth(this string _String, string _OldValue, string _NewValue, int _Occurrence, StringComparison _StringComparison = StringComparison.Ordinal)
+        {
+            if (_Occurrence < 1)
+                throw new ArgumentOutOfRangeException(nameof(_Occurrence), "Occurrence must be greater than 0.");
+
+            var _span = _String.AsSpan();
+            var _oldSpan = _OldValue.AsSpan();
+            var _currentOccurrence = 0;
+            var _index = 0;
+            var _lastIndex = 0;
+            
+            while (_currentOccurrence < _Occurrence)
+            {
+                _index = _span[_lastIndex..].IndexOf(_oldSpan, _StringComparison);
+        
+                if (_index == -1)
+                {
+                    return _String;
+                }
+                
+                _index += _lastIndex;
+                _currentOccurrence++;
+        
+                if (_currentOccurrence < _Occurrence)
+                {
+                    _lastIndex = _index + _OldValue.Length;
+                }
+            }
+
+            return _span[.._index].ToString() + _NewValue + _span[(_index + _OldValue.Length)..].ToString();
+        }
+        
+        /// <summary>
         /// Removes the given <see cref="char"/> from the start of this <see cref="string"/>.
         /// </summary>
         /// <param name="_String">The <see cref="string"/> to remove the <see cref="char"/> from.</param>
