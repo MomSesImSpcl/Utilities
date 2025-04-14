@@ -409,6 +409,32 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
+        /// Counts the leading whitespaces in this <see cref="string"/>.
+        /// </summary>
+        /// <param name="_Input">The <see cref="string"/> to count thw whitespaces in.</param>
+        /// <returns>The number of whitespaces before the first non whitespace <see cref="char"/>.</returns>
+        public static int LeadingWhitespacesCount(this string _Input)
+        {
+            var _count = 0;
+            
+            // ReSharper disable once InconsistentNaming
+            // ReSharper disable once ForCanBeConvertedToForeach
+            for (var i = 0; i < _Input.Length; i++)
+            {
+                if (char.IsWhiteSpace(_Input[i]))
+                {
+                    _count++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+            return _count;
+        }
+        
+        /// <summary>
         /// Finds the nth occurrence of a specified value in the given string.
         /// </summary>
         /// <param name="_String">The string to search within.</param>
