@@ -31,8 +31,7 @@ Shader "MomSesImSpcl/2D/Front Face Only"
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 3.0
-            // Enable this to support instancing.
-            //#pragma multi_compile_instancing
+            //#pragma multi_compile_instancing // Uncomment this to support instancing.
             
 	    UNITY_INSTANCING_BUFFER_START(Props)
 		UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
