@@ -34,9 +34,9 @@ Shader "MomSesImSpcl/2D/Front Face Only"
             // Enable this to support instancing.
             //#pragma multi_compile_instancing
             
-			UNITY_INSTANCING_BUFFER_START(Props)
-				UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
-			UNITY_INSTANCING_BUFFER_END(Props)
+	    UNITY_INSTANCING_BUFFER_START(Props)
+		UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
+	    UNITY_INSTANCING_BUFFER_END(Props)
             
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
