@@ -7,11 +7,17 @@ namespace MomSesImSpcl.Data
     /// Contains a <see cref="UnityEngine.Color"/> field that is displayed as HDR in the inspector.
     /// </summary>
     [Serializable]
+#if ODIN_INSPECTOR
+    [Sirenix.OdinInspector.InlineProperty]
+#endif
     public struct HDRColor
     {
         #region Inspector Fields
         [Tooltip("A HDR Color.")]
         [ColorUsage(true, true)]
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.HideLabel]
+#endif
         [SerializeField] private Color hdrColor;
         #endregion
         
