@@ -24,11 +24,11 @@ namespace MomSesImSpcl.Data
         
         #region Operators
         /// <summary>
-        /// Implicitly returns the <see cref="Color"/> value from the given <see cref="HDRColor"/>.
+        /// Implicitly returns the <see cref="hdrColor"/> value from the given <see cref="HDRColor"/>.
         /// </summary>
-        /// <param name="_Color"><see cref="HDRColor"/>.</param>
+        /// <param name="_HDRColor"><see cref="HDRColor"/>.</param>
         /// <returns><see cref="hdrColor"/>.</returns>
-        public static implicit operator Color(HDRColor _Color) => _Color.Color;
+        public static implicit operator Color(HDRColor _HDRColor) => _HDRColor.hdrColor;
         /// <summary>
         /// Implicitly creates a new <see cref="HDRColor"/> <see cref="object"/> from the given <see cref="UnityEngine.Color"/>.
         /// </summary>
