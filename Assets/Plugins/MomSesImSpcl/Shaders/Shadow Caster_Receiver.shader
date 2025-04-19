@@ -10,30 +10,35 @@ Shader "MomSesImSpcl/2D/Shadow Caster_Receiver"
     {
         Tags
         {
+            "RenderPipeline"="UniversalPipeline"
             "RenderType"="Transparent"
             "Queue"="Transparent"
-            "RenderPipeline"="UniversalPipeline"
+            "PreviewType"="Plane"
             "IgnoreProjector"="True"
             "CanUseSpriteAtlas"="True"
         }
         Pass
         {
             Name "ForwardLit"
-            Tags { "LightMode"="UniversalForward" }
+            Tags
+            {
+                "LightMode"="UniversalForward"
+            }
             
             Cull back
             AlphaToMask On
-            Blend SrcAlpha OneMinusSrcAlpha
+            Blend One OneMinusSrcAlpha, One OneMinusSrcAlpha
+            
             HLSLPROGRAM
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             
             #pragma vertex vert
             #pragma fragment frag
+            #pragma target 3.0
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
             #pragma multi_compile _ _SHADOWS_SOFT
             
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-
             struct Attributes
             {
                 float4 vertex : POSITION;
@@ -44,18 +49,20 @@ Shader "MomSesImSpcl/2D/Shadow Caster_Receiver"
             struct Varyings
             {
                 float4 position : SV_POSITION;
-                half2 uv : TEXCOORD0;
-                half4 color : COLOR;
+                float2 uv : TEXCOORD0;
+                float4 color : COLOR;
                 float3 worldPos : TEXCOORD1;
             };
-
+            
             CBUFFER_START(UnityPerMaterial)
-                float4 _MainTex_ST;
-                TEXTURE2D(_MainTex);
-                SAMPLER(sampler_MainTex);
-                float4 _Color;
+                uniform float4 _MainTex_ST;
+                uniform float4 _Color;
+                uniform float _Cutoff;
             CBUFFER_END
 
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+            
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
@@ -66,10 +73,11 @@ Shader "MomSesImSpcl/2D/Shadow Caster_Receiver"
                 return OUT;
             }
             
-            half4 frag(Varyings IN) : SV_Target
+            float4 frag(Varyings IN) : SV_Target
             {
-                half4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
-                half4 col = texColor * IN.color;
+                UNITY_SETUP_INSTANCE_ID(IN);
+                float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
+                float4 col = texColor * IN.color;
                 
                 float4 shadowCoord = TransformWorldToShadowCoord(IN.worldPos);
                 Light mainLight = GetMainLight(shadowCoord);
@@ -83,23 +91,30 @@ Shader "MomSesImSpcl/2D/Shadow Caster_Receiver"
         Pass
         {
             Name "ShadowCaster"
-            Tags { "LightMode"="ShadowCaster" }
+            Tags
+            {
+                "LightMode"="ShadowCaster"
+            }
             
             Cull off
             AlphaToMask On
             HLSLPROGRAM
 
-            #pragma vertex shadowVert
-            #pragma fragment shadowFrag
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 3.0
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-
+            
             CBUFFER_START(UnityPerMaterial)
-                TEXTURE2D(_MainTex);
-                SAMPLER(sampler_MainTex);
-                float _Cutoff;
+                uniform float4 _MainTex_ST;
+                uniform float4 _Color;
+                uniform float _Cutoff;
             CBUFFER_END
 
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+            
             struct Attributes
             {
                 float4 vertex : POSITION;
@@ -112,7 +127,7 @@ Shader "MomSesImSpcl/2D/Shadow Caster_Receiver"
                 float2 uv : TEXCOORD0;
             };
 
-            Varyings shadowVert(Attributes IN)
+            Varyings vert(Attributes IN)
             {
                 Varyings OUT;
                 float3 positionWS = TransformObjectToWorld(IN.vertex.xyz);
@@ -121,9 +136,9 @@ Shader "MomSesImSpcl/2D/Shadow Caster_Receiver"
                 return OUT;
             }
 
-            half4 shadowFrag(Varyings IN) : SV_Target
+            float4 frag(Varyings IN) : SV_Target
             {
-                half4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
+                float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
                 clip(texColor.a - _Cutoff);
                 
                 return 0;
@@ -131,5 +146,5 @@ Shader "MomSesImSpcl/2D/Shadow Caster_Receiver"
             ENDHLSL
         }
     }
-    FallBack "Universal Forward"
+    FallBack Off
 }
