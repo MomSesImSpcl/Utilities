@@ -33,9 +33,9 @@ Shader "MomSesImSpcl/2D/Front Face Only"
             #pragma target 3.0
             //#pragma multi_compile_instancing // Uncomment this to support instancing.
             
-	    UNITY_INSTANCING_BUFFER_START(Props)
-		UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
-	    UNITY_INSTANCING_BUFFER_END(Props)
+			UNITY_INSTANCING_BUFFER_START(Props)
+				UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
+			UNITY_INSTANCING_BUFFER_END(Props)
             
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
@@ -67,7 +67,7 @@ Shader "MomSesImSpcl/2D/Front Face Only"
                 return OUT;
             }
 
-            half4 frag(v2f IN) : SV_Target
+            float4 frag(v2f IN) : SV_Target
             {
                 UNITY_SETUP_INSTANCE_ID(IN);
                 return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv) * IN.color;
