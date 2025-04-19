@@ -9,26 +9,32 @@ Shader "MomSesImSpcl/2D/Shadow Receiver"
     {
         Tags
         {
+            "RenderPipeline"="UniversalPipeline"
             "RenderType"="Transparent"
             "Queue"="Transparent"
-            "RenderPipeline"="UniversalPipeline"
+            "PreviewType"="Plane"
             "IgnoreProjector"="True"
             "CanUseSpriteAtlas"="True"
         }
         Pass
         {
             Name "ForwardLit"
-            Tags { "LightMode"="UniversalForward" }
+            Tags
+            {
+                "LightMode"="UniversalForward"
+            }
+            
+            Cull back
             
             HLSLPROGRAM
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             
             #pragma vertex vert
             #pragma fragment frag
+            #pragma target 3.0
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
             #pragma multi_compile _ _SHADOWS_SOFT
-            
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
             struct Attributes
             {
@@ -40,18 +46,19 @@ Shader "MomSesImSpcl/2D/Shadow Receiver"
             struct Varyings
             {
                 float4 position : SV_POSITION;
-                half2 uv : TEXCOORD0;
-                half4 color : COLOR;
+                float2 uv : TEXCOORD0;
+                float4 color : COLOR;
                 float3 worldPos : TEXCOORD1;
             };
 
             CBUFFER_START(UnityPerMaterial)
-                float4 _MainTex_ST;
-                TEXTURE2D(_MainTex);
-                SAMPLER(sampler_MainTex);
-                float4 _Color;
+                uniform float4 _MainTex_ST;
+                uniform float4 _Color;
             CBUFFER_END
 
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+            
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
@@ -62,10 +69,10 @@ Shader "MomSesImSpcl/2D/Shadow Receiver"
                 return OUT;
             }
             
-            half4 frag(Varyings IN) : SV_Target
+            float4 frag(Varyings IN) : SV_Target
             {
-                half4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
-                half4 col = texColor * IN.color;
+                float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
+                float4 col = texColor * IN.color;
                 
                 float4 shadowCoord = TransformWorldToShadowCoord(IN.worldPos);
                 Light mainLight = GetMainLight(shadowCoord);
@@ -76,5 +83,5 @@ Shader "MomSesImSpcl/2D/Shadow Receiver"
             ENDHLSL
         }
     }
-    FallBack "Universal Forward"
+    FallBack Off
 }
