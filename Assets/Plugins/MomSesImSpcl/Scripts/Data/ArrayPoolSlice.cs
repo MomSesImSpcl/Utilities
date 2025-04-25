@@ -4,59 +4,94 @@ using System.Buffers;
 namespace MomSesImSpcl.Data
 {
     /// <summary>
-    /// Contains an <see cref="Array"/> that will be returned to the <see cref="ArrayPool{T}.Shared"/> <see cref="ArrayPool{T}"/> on dispose.
+    /// Contains an <see cref="System.Array"/> that will be returned to the <see cref="ArrayPool{T}.Shared"/> <see cref="ArrayPool{T}"/> on dispose.
     /// </summary>
-    /// <typeparam name="T">The <see cref="Type"/> of the <see cref="Array"/>.</typeparam>
+    /// <typeparam name="T">The <see cref="Type"/> of the <see cref="System.Array"/>.</typeparam>
     public readonly struct ArrayPoolSlice<T> : IDisposable
     {
-        #region Fields
+        #region Properties
         /// <summary>
-        /// The <see cref="Array"/> of this <see cref="ArrayPoolSlice{T}"/>.
+        /// The <see cref="System.Array"/> of this <see cref="ArrayPoolSlice{T}"/>.
         /// </summary>
-        private readonly T[] array;
+        private T[] Array { get; }
         /// <summary>
-        /// The size of the used elements in <see cref="array"/>. <br/>
+        /// The size of the used elements in <see cref="Array"/>. <br/>
         /// <i>Can differ from the <see cref="Array.Length"/>.</i>
         /// </summary>
-        private readonly int size;
+        private int Size { get; }
+        #endregion
+        
+        #region Operators
+        /// <summary>
+        /// Implicitly returns the <see cref="Array"/> of the given <see cref="ArrayPoolSlice{T}"/>.
+        /// </summary>
+        /// <param name="_ArrayPoolSlice"><see cref="ArrayPoolSlice{T}"/>.</param>
+        /// <returns><see cref="Array"/>.</returns>
+        public static implicit operator T[](ArrayPoolSlice<T> _ArrayPoolSlice) => _ArrayPoolSlice.Array;
+        /// <summary>
+        /// Implicitly returns the <see cref="Size"/> of the given <see cref="ArrayPoolSlice{T}"/>.
+        /// </summary>
+        /// <param name="_ArrayPoolSlice"><see cref="ArrayPoolSlice{T}"/>.</param>
+        /// <returns><see cref="Size"/>.</returns>
+        public static implicit operator int(ArrayPoolSlice<T> _ArrayPoolSlice) => _ArrayPoolSlice.Size;
         #endregion
         
         #region Constructors
         /// <summary>
         /// <see cref="ArrayPoolSlice{T}"/>.
         /// </summary>
-        /// <param name="_Array"><see cref="array"/>.</param>
-        /// <param name="_Size"><see cref="size"/>.</param>
+        /// <param name="_Array"><see cref="Array"/>.</param>
+        /// <param name="_Size"><see cref="Size"/>.</param>
         public ArrayPoolSlice(T[] _Array, int _Size)
         {
-            this.array = _Array;
-            this.size = _Size;
+            this.Array = _Array;
+            this.Size = _Size;
         }
         
         /// <summary>
         /// <see cref="ArrayPoolSlice{T}"/>.
         /// </summary>
-        /// <param name="_ArrayTuple">(<see cref="array"/>, <see cref="size"/>).</param>
+        /// <param name="_ArrayTuple">(<see cref="Array"/>, <see cref="Size"/>).</param>
         public ArrayPoolSlice((T[] Array, int Size) _ArrayTuple)
         {
-            this.array = _ArrayTuple.Array;
-            this.size = _ArrayTuple.Size;
+            this.Array = _ArrayTuple.Array;
+            this.Size = _ArrayTuple.Size;
         }
         #endregion
         
         #region Methods
         /// <summary>
-        /// Creates a slice of <see cref="array"/> from <c>0</c> to <see cref="size"/>.
+        /// Creates a slice of <see cref="Array"/> from <c>0</c> to <see cref="Size"/>.
         /// </summary>
-        /// <returns>A slice of <see cref="array"/> from <c>0</c> to <see cref="size"/>.</returns>
+        /// <returns>A slice of <see cref="Array"/> from <c>0</c> to <see cref="Size"/>.</returns>
         public Span<T> GetSlice()
         {
-            return this.array.AsSpan(0, this.size);
+            return this.GetSlice(0, this.Size);
+        }
+        
+        /// <summary>
+        /// Creates a slice of <see cref="Array"/> from <c>0</c> to <see cref="Size"/>.
+        /// </summary>
+        /// <param name="_StartIndex">The index in <see cref="Array"/> to start the slice at.</param>
+        /// <param name="_Length">The number of elements to include in the slice.</param>
+        /// <returns>A slice of <see cref="Array"/> from <c>0</c> to <see cref="Size"/>.</returns>
+        public Span<T> GetSlice(int _StartIndex, int _Length)
+        {
+            return this.Array.AsSpan(_StartIndex, _Length);
         }
         
         public void Dispose()
         {
-            ArrayPool<T>.Shared.Return(this.array, true);
+            ArrayPool<T>.Shared.Return(this.Array, true);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="ToString"/> value of <see cref="Array"/>.
+        /// </summary>
+        /// <returns>The <see cref="ToString"/> value of <see cref="Array"/>.</returns>
+        public override string ToString()
+        {
+            return this.Array.ToString();
         }
         #endregion
     }
