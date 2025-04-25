@@ -175,7 +175,23 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The sorted <see cref="Array"/>.</returns>
         public static T[] SortAscending<T,V>(this T[] _Array, Func<T,V> _SortBy) where V : IComparable<V>
         {
-            Array.Sort(_Array, new AscendingComparer<T,V>(_SortBy));
+            return _Array.SortAscending(_SortBy, 0, _Array.Length);
+        }
+        
+        /// <summary>
+        /// Sorts an <see cref="Array"/> in ascending order. <br/>
+        /// <b>This will sort the original <see cref="Array"/>.</b>
+        /// </summary>
+        /// <param name="_Array">The <see cref="Array"/> to sort.</param>
+        /// <param name="_SortBy">The value to sort by.</param>
+        /// <param name="_StartIndex">The index at which the sorting should start.</param>
+        /// <param name="_Length">The number of elements to sort from the starting index.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="Array"/>.</typeparam>
+        /// <typeparam name="V">The <see cref="Type"/> of the value to sort by.</typeparam>
+        /// <returns>The sorted <see cref="Array"/>.</returns>
+        public static T[] SortAscending<T,V>(this T[] _Array, Func<T,V> _SortBy, int _StartIndex, int _Length) where V : IComparable<V>
+        {
+            Array.Sort(_Array, _StartIndex, _Length, new AscendingComparer<T,V>(_SortBy));
             return _Array;
         }
         
@@ -193,6 +209,21 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
+        /// Sorts an <see cref="Array"/> in ascending order. <br/>
+        /// <b>This will sort the original <see cref="Array"/>.</b>
+        /// </summary>
+        /// <param name="_Array">The <see cref="Array"/> to sort.</param>
+        /// <param name="_StartIndex">The index at which the sorting should start.</param>
+        /// <param name="_Length">The number of elements to sort from the starting index.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="Array"/>.</typeparam>
+        /// <returns>The sorted <see cref="Array"/>.</returns>
+        public static T[] SortAscending<T>(this T[] _Array, int _StartIndex, int _Length) where T : IComparable<T>
+        {
+            Array.Sort(_Array, _StartIndex, _Length, Comparer<T>.Create((_First, _Second) => _First.CompareTo(_Second)));
+            return _Array;
+        }
+        
+        /// <summary>
         /// Sorts an <see cref="Array"/> in descending order. <br/>
         /// <b>This will sort the original <see cref="Array"/>.</b>
         /// </summary>
@@ -203,7 +234,23 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The sorted <see cref="Array"/>.</returns>
         public static T[] SortDescending<T,V>(this T[] _Array, Func<T,V> _SortBy) where V : IComparable<V>
         {
-            Array.Sort(_Array, new DescendingComparer<T,V>(_SortBy));
+            return _Array.SortDescending(_SortBy, 0, _Array.Length);
+        }
+        
+        /// <summary>
+        /// Sorts an <see cref="Array"/> in descending order. <br/>
+        /// <b>This will sort the original <see cref="Array"/>.</b>
+        /// </summary>
+        /// <param name="_Array">The <see cref="Array"/> to sort.</param>
+        /// <param name="_SortBy">The value to sort by.</param>
+        /// <param name="_StartIndex">The index at which the sorting should start.</param>
+        /// <param name="_Length">The number of elements to sort from the starting index.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="Array"/>.</typeparam>
+        /// <typeparam name="V">The <see cref="Type"/> of the value to sort by.</typeparam>
+        /// <returns>The sorted <see cref="Array"/>.</returns>
+        public static T[] SortDescending<T,V>(this T[] _Array, Func<T,V> _SortBy, int _StartIndex, int _Length) where V : IComparable<V>
+        {
+            Array.Sort(_Array, _StartIndex, _Length, new DescendingComparer<T,V>(_SortBy));
             return _Array;
         }
         
@@ -217,6 +264,21 @@ namespace MomSesImSpcl.Extensions
         public static T[] SortDescending<T>(this T[] _Array) where T : IComparable<T>
         {
             Array.Sort(_Array, (_First, _Second) => _Second.CompareTo(_First));
+            return _Array;
+        }
+        
+        /// <summary>
+        /// Sorts an <see cref="Array"/> in descending order. <br/>
+        /// <b>This will sort the original <see cref="Array"/>.</b>
+        /// </summary>
+        /// <param name="_Array">The <see cref="Array"/> to sort.</param>
+        /// <param name="_StartIndex">The index at which the sorting should start.</param>
+        /// <param name="_Length">The number of elements to sort from the starting index.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="Array"/>.</typeparam>
+        /// <returns>The sorted <see cref="Array"/>.</returns>
+        public static T[] SortDescending<T>(this T[] _Array, int _StartIndex, int _Length) where T : IComparable<T>
+        {
+            Array.Sort(_Array, _StartIndex, _Length, Comparer<T>.Create((_First, _Second) => _Second.CompareTo(_First)));
             return _Array;
         }
         #endregion
