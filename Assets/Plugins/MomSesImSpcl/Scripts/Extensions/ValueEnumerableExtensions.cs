@@ -18,7 +18,7 @@ namespace MomSesImSpcl.Extensions
         /// <typeparam name="E">The <see cref="Type"/> of the <see cref="ValueEnumerator{TEnumerator,T}"/>.</typeparam>
         /// <typeparam name="A">The <see cref="Type"/> of the <see cref="Array"/>.</typeparam>
         /// <returns><see cref="ArrayPoolSlice{T}"/>.</returns>
-        public static ArrayPoolSlice<A> ToSlicedArrayPool<E,A>(this ValueEnumerable<E,A> _ValueEnumerable, out Span<A> _Slice) where E : struct, IValueEnumerator<A>
+        public static ArrayPoolSlice<A> ToArrayPoolSlice<E,A>(this ValueEnumerable<E,A> _ValueEnumerable, out Span<A> _Slice) where E : struct, IValueEnumerator<A>
         {
             var _arrayTuple = _ValueEnumerable.ToArrayPool();
             var _arrayPoolSlice = new ArrayPoolSlice<A>(_arrayTuple);
@@ -34,7 +34,7 @@ namespace MomSesImSpcl.Extensions
         /// <typeparam name="E">The <see cref="Type"/> of the <see cref="ValueEnumerator{TEnumerator,T}"/>.</typeparam>
         /// <typeparam name="A">The <see cref="Type"/> of the <see cref="Array"/>.</typeparam>
         /// <returns><see cref="ArrayPoolSlice{T}"/>.</returns>
-        public static ArrayPoolSlice<A> ToSlicedArrayPool<E,A>(this ValueEnumerable<E,A> _ValueEnumerable) where E : struct, IValueEnumerator<A>
+        public static ArrayPoolSlice<A> ToArrayPoolSlice<E,A>(this ValueEnumerable<E,A> _ValueEnumerable) where E : struct, IValueEnumerator<A>
         {
             var _arrayTuple = _ValueEnumerable.ToArrayPool();
             return new ArrayPoolSlice<A>(_arrayTuple);
