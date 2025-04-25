@@ -23,6 +23,14 @@ namespace MomSesImSpcl.Data
         public int Size { get; }
         #endregion
         
+        #region Indexer
+        /// <summary>
+        /// Index accessor for <see cref="Array"/>.
+        /// </summary>
+        /// <param name="_Index">The index in <see cref="Array"/> to access.</param>
+        public T this[int _Index] => this.Array[_Index];
+        #endregion
+        
         #region Operators
         /// <summary>
         /// Implicitly returns the <see cref="Array"/> of the given <see cref="ArrayPoolSlice{T}"/>.
