@@ -79,6 +79,15 @@ namespace MomSesImSpcl.Data
         {
             return this.Array.AsSpan(_StartIndex, _Length);
         }
+
+        /// <summary>
+        /// Returns <c>true</c> if <see cref="Array"/> is not <c>null</c> and <see cref="Size"/> is greater then <c>0</c>:
+        /// </summary>
+        /// <returns><c>true</c> if <see cref="Array"/> is not <c>null</c> and <see cref="Size"/> is greater then <c>0</c>:</returns>
+        public bool Any()
+        {
+            return this.Array is not null && this.Size > 0;
+        }
         
         public void Dispose()
         {
