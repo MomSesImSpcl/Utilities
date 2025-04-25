@@ -13,12 +13,12 @@ namespace MomSesImSpcl.Data
         /// <summary>
         /// The <see cref="System.Array"/> of this <see cref="ArrayPoolSlice{T}"/>.
         /// </summary>
-        private T[] Array { get; }
+        public T[] Array { get; }
         /// <summary>
         /// The size of the used elements in <see cref="Array"/>. <br/>
         /// <i>Can differ from the <see cref="Array.Length"/>.</i>
         /// </summary>
-        private int Size { get; }
+        public int Size { get; }
         #endregion
         
         #region Operators
