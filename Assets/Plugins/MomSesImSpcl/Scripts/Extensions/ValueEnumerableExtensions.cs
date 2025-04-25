@@ -26,6 +26,19 @@ namespace MomSesImSpcl.Extensions
             _Slice = _arrayPoolSlice.GetSlice();
             return _arrayPoolSlice;
         }
+        
+        /// <summary>
+        /// Materializes the <see cref="ValueEnumerable{TEnumerator,T}"/> into an <see cref="ArrayPoolSlice{T}"/>.
+        /// </summary>
+        /// <param name="_ValueEnumerable"><see cref="ValueEnumerable{TEnumerator,T}"/>.</param>
+        /// <typeparam name="E">The <see cref="Type"/> of the <see cref="ValueEnumerator{TEnumerator,T}"/>.</typeparam>
+        /// <typeparam name="A">The <see cref="Type"/> of the <see cref="Array"/>.</typeparam>
+        /// <returns><see cref="ArrayPoolSlice{T}"/>.</returns>
+        public static ArrayPoolSlice<A> ToSlicedArrayPool<E,A>(this ValueEnumerable<E,A> _ValueEnumerable) where E : struct, IValueEnumerator<A>
+        {
+            var _arrayTuple = _ValueEnumerable.ToArrayPool();
+            return new ArrayPoolSlice<A>(_arrayTuple);
+        }
         #endregion
     }
 }
