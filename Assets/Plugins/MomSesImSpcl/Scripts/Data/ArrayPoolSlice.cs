@@ -4,14 +4,16 @@ using System.Buffers;
 namespace MomSesImSpcl.Data
 {
     /// <summary>
-    /// Contains an <see cref="System.Array"/> that will be returned to the <see cref="ArrayPool{T}.Shared"/> <see cref="ArrayPool{T}"/> on dispose.
+    /// Contains an <see cref="System.Array"/> that will be returned to the <see cref="ArrayPool{T}.Shared"/> <see cref="ArrayPool{T}"/> on dispose. <br/>
+    /// Can be used to get a slice from an <see cref="ArrayPool{T}"/> <see cref="Array"/> that contains only the used elements.
     /// </summary>
     /// <typeparam name="T">The <see cref="Type"/> of the <see cref="System.Array"/>.</typeparam>
     public readonly struct ArrayPoolSlice<T> : IDisposable
     {
         #region Properties
         /// <summary>
-        /// The <see cref="System.Array"/> of this <see cref="ArrayPoolSlice{T}"/>.
+        /// The <see cref="System.Array"/> of this <see cref="ArrayPoolSlice{T}"/>. <br/>
+        /// <b>Might contain unused elements if this was created through <see cref="ArrayPool{T}"/>.</b>
         /// </summary>
         public T[] Array { get; }
         /// <summary>
