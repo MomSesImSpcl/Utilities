@@ -1,5 +1,7 @@
 using System;
 using System.Buffers;
+using MomSesImSpcl.Extensions;
+using MomSesImSpcl.Utilities.Pooling.Wrappers;
 
 namespace MomSesImSpcl.Data
 {
@@ -10,6 +12,13 @@ namespace MomSesImSpcl.Data
     /// <typeparam name="T">The <see cref="Type"/> of the <see cref="System.Array"/>.</typeparam>
     public readonly struct ArrayPoolSlice<T> : IDisposable
     {
+        #region Fields
+        /// <summary>
+        /// If <c>true</c>, the <see cref="Array"/> will be cleared on <see cref="Dispose"/>.
+        /// </summary>
+        private readonly bool clearOnDispose;
+        #endregion
+        
         #region Properties
         /// <summary>
         /// The <see cref="System.Array"/> of this <see cref="ArrayPoolSlice{T}"/>. <br/>
@@ -52,20 +61,24 @@ namespace MomSesImSpcl.Data
         /// </summary>
         /// <param name="_Array"><see cref="Array"/>.</param>
         /// <param name="_Size"><see cref="Size"/>.</param>
-        public ArrayPoolSlice(T[] _Array, int _Size)
+        /// <param name="_ClearOnDispose"><see cref="clearOnDispose"/>.</param>
+        public ArrayPoolSlice(T[] _Array, int _Size, bool _ClearOnDispose = false)
         {
             this.Array = _Array;
             this.Size = _Size;
+            this.clearOnDispose = _ClearOnDispose;
         }
         
         /// <summary>
         /// <see cref="ArrayPoolSlice{T}"/>.
         /// </summary>
         /// <param name="_ArrayTuple">(<see cref="Array"/>, <see cref="Size"/>).</param>
-        public ArrayPoolSlice((T[] Array, int Size) _ArrayTuple)
+        /// <param name="_ClearOnDispose"><see cref="clearOnDispose"/>.</param> 
+        public ArrayPoolSlice((T[] Array, int Size) _ArrayTuple, bool _ClearOnDispose = false)
         {
             this.Array = _ArrayTuple.Array;
             this.Size = _ArrayTuple.Size;
+            this.clearOnDispose = _ClearOnDispose;
         }
         #endregion
         
@@ -101,16 +114,12 @@ namespace MomSesImSpcl.Data
         
         public void Dispose()
         {
-            ArrayPool<T>.Shared.Return(this.Array, true);
+            ArrayPool<T>.Shared.Return(this.Array, this.clearOnDispose);
         }
-
-        /// <summary>
-        /// Returns the <see cref="ToString"/> value of <see cref="Array"/>.
-        /// </summary>
-        /// <returns>The <see cref="ToString"/> value of <see cref="Array"/>.</returns>
+        
         public override string ToString()
         {
-            return this.Array.ToString();
+            return StringBuilderPoolWrapper.Append(this.Array.ToString(), " | ", "Size: ", this.Size.Bold(), " | ", "Length: ", this.Array.Length.Bold());
         }
         #endregion
     }
