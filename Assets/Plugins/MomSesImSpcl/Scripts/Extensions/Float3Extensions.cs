@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Unity.Burst;
 using Unity.Mathematics;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Float3">The <see cref="float3"/> to convert.</param>
         /// <returns>This <see cref="float3"/> as a <see cref="Vector3"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 AsVector3(this float3 _Float3)
         {
             return new Vector3(_Float3.x, _Float3.y, _Float3.z);
@@ -25,7 +27,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Float3">The <see cref="float3"/> to get the axis avcerage from.</param>
         /// <returns>The average value of all three axes of this <see cref="float3"/>.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Average(this float3 _Float3)
         {
             return (_Float3.x + _Float3.y + _Float3.z) / 3f;
@@ -36,7 +38,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Float3">The <see cref="float3"/> to normalize.</param>
         /// <returns>This <see cref="float3"/> with normalized values.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 Normalize(this float3 _Float3)
         {
             return math.normalize(_Float3);
@@ -90,7 +92,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Float3">The <see cref="float3"/> to convert.</param>
         /// <returns>This <see cref="float3"/> as a <see cref="Quaternion"/>.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static quaternion ToQuaternion(this float3 _Float3)
         {
             return quaternion.Euler(math.radians(_Float3));
@@ -102,7 +104,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Float3">The <see cref="float3"/> to modify.</param>
         /// <param name="_X">The new value for the x component.</param>
         /// <returns>A new <see cref="float3"/> with the modified x component.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 WithX(this float3 _Float3, float _X)
         {
             _Float3.x = _X;
@@ -115,7 +117,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Float3">The <see cref="float3"/> whose Y component is to be modified.</param>
         /// <param name="_Y">The value to set or add to the Y component.</param>
         /// <returns>A new <see cref="float3"/> with the modified Y component.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 WithY(this float3 _Float3, float _Y)
         {
             _Float3.y = _Y;
@@ -128,7 +130,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Float3">The <see cref="float3"/> to modify.</param>
         /// <param name="_Z">The value to set or add to the Z component.</param>
         /// <returns>A new <see cref="float3"/> with the modified Z component.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 WithZ(this float3 _Float3, float _Z)
         {
             _Float3.z = _Z;
@@ -142,7 +144,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_X">The new value for the x component.</param>
         /// <param name="_Y">The new value for the y component.</param>
         /// <returns>A new <see cref="float3"/> with the updated x and y values.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 WithXY(this float3 _Float3, float _X, float _Y)
         {
             _Float3.x = _X;
@@ -157,7 +159,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Float3">The <see cref="float3"/> instance to modify.</param>
         /// <param name="_Value">The new value to set to every axis.</param>
         /// <returns>The modified <see cref="float3"/>.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 WithXY(this float3 _Float3, float _Value)
         {
             _Float3.x = _Value;
@@ -173,7 +175,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_X">The value to set or add to the x component.</param>
         /// <param name="_Z">The value to set or add to the z component.</param>
         /// <returns>A new Vector3 with the adjusted x and z components.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 WithXZ(this float3 _Float3, float _X, float _Z)
         {
             _Float3.x = _X;
@@ -188,7 +190,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Float3">The <see cref="float3"/> instance to modify.</param>
         /// <param name="_Value">The new value to set to every axis.</param>
         /// <returns>The modified <see cref="float3"/>.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 WithXZ(this float3 _Float3, float _Value)
         {
             _Float3.x = _Value;
@@ -204,7 +206,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Y">The value to set (or add to) the Y component.</param>
         /// <param name="_Z">The value to set (or add to) the Z component.</param>
         /// <returns>The modified <see cref="float3"/>.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 WithYZ(this float3 _Float3, float _Y, float _Z)
         {
             _Float3.y = _Y;
@@ -219,7 +221,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Float3">The <see cref="float3"/> instance to modify.</param>
         /// <param name="_Value">The new value to set to every axis.</param>
         /// <returns>The modified <see cref="float3"/>.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 WithYZ(this float3 _Float3, float _Value)
         {
             _Float3.y = _Value;
@@ -236,7 +238,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Y">The new y value or the value to add to the current y component.</param>
         /// <param name="_Z">The new z value or the value to add to the current z component.</param>
         /// <returns>The modified <see cref="float3"/>.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 WithXYZ(this float3 _Float3, float _X, float _Y, float _Z)
         {
             _Float3.x = _X;
@@ -252,7 +254,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Float3">The <see cref="float3"/> instance to modify.</param>
         /// <param name="_Value">The new value to set to every axis.</param>
         /// <returns>The modified <see cref="float3"/>.</returns>
-        [BurstCompile]
+        [BurstCompile, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 WithXYZ(this float3 _Float3, float _Value)
         {
             _Float3.x = _Value;
