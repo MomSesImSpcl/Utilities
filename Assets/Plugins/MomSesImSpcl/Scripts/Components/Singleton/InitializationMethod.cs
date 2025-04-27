@@ -1,4 +1,4 @@
-namespace MomSesImSpcl.Utilities.Singleton
+namespace MomSesImSpcl.Components.Singleton
 {
     /// <summary>
     /// Specifies the method in which the singleton instance should be initialized.

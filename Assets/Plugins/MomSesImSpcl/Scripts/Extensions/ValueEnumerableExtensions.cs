@@ -1,3 +1,4 @@
+#if ZLINQ
 using System;
 using MomSesImSpcl.Data;
 using ZLinq;
@@ -44,3 +45,4 @@ namespace MomSesImSpcl.Extensions
         #endregion
     }
 }
+#endif

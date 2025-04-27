@@ -1,7 +1,7 @@
 #nullable enable
 using UnityEngine;
 
-namespace MomSesImSpcl.Utilities.Singleton
+namespace MomSesImSpcl.Components.Singleton
 {
     /// <summary>
     /// A generic base class for creating singleton <see cref="MonoBehaviour"/> instances in Unity.

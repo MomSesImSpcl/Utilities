@@ -2,7 +2,7 @@
 #nullable enable
 using Sirenix.OdinInspector;
 
-namespace MomSesImSpcl.Utilities.Singleton
+namespace MomSesImSpcl.Components.Singleton
 {
     /// <summary>
     /// A generic base class for creating singleton <see cref="SerializedMonoBehaviour"/> instances in Unity.

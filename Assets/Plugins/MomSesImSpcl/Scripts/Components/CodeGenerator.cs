@@ -4,18 +4,16 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using MomSesImSpcl.Interfaces;
+using MomSesImSpcl.Utilities;
 using MomSesImSpcl.Utilities.Logging;
 using UnityEngine;
-
 // ReSharper disable RedundantUsingDirective
-using MomSesImSpcl;
-using MomSesImSpcl.Utilities;
 using Object = UnityEngine.Object;
 // ReSharper restore RedundantUsingDirective
 
 #pragma warning disable CS1998
 
-namespace MomSesImSpcl.Utilities
+namespace MomSesImSpcl.Components
 {
     /// <summary>
     /// Helper class for the <see cref="RuntimeCodeExecutor"/> to generate code from a <c>.cs</c>-file instead of from the inspector.

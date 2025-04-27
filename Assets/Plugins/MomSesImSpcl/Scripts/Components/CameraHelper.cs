@@ -1,21 +1,15 @@
-using System;
-using System.Globalization;
-using JetBrains.Annotations;
-using MomSesImSpcl.Extensions;
-using MomSesImSpcl.Utilities.Singleton;
-using Unity.Mathematics;
-using UnityEngine;
-
 #if DOTWEEN
 using DG.Tweening;
 #endif
 #if UNITASK
 using Cysharp.Threading.Tasks;
 #else
-using System.Threading.Tasks;
 #endif
+using System;
+using MomSesImSpcl.Components.Singleton;
+using UnityEngine;
 
-namespace MomSesImSpcl.Utilities
+namespace MomSesImSpcl.Components
 {
     /// <summary>
     /// Contains helper methods and an instance of the <see cref="UnityEngine.Camera"/>. <br/>

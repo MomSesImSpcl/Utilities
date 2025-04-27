@@ -6,10 +6,26 @@
   <component name="ChangeListManager">
     <list default="true" id="6d707ed9-23b4-4378-b2ba-58c6e20a1763" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Utilities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Utilities/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Extensions/NGO/NGOReference.asmref" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Extensions/NGO/NGOReference.asmref" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Extensions/ValueEnumerableExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Extensions/ValueEnumerableExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/MomSesImSpcl.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/MomSesImSpcl.asmdef" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/AngleFinder.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/AngleFinder.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/CameraHelper.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/CameraHelper.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/CodeGenerator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/CodeGenerator.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/Rotator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/Rotator.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/Singleton.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/Singleton/InitializationMethod.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/Singleton/InitializationMethod.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/Singleton/SerializedSingletonMonoBehaviour.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/Singleton/SerializedSingletonMonoBehaviour.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/Singleton/SingletonMonoBehaviour.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/Singleton/SingletonMonoBehaviour.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Version.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Version.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,8 +50,8 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/../CustomScriptTemplates/Assets/Scripts/PackageExporter.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../CustomScriptTemplates/Assets/Scripts/PackageExporterEditor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Plugins/CustomScriptTemplates/Scripts/Extensions/CustomScriptTemplateExtensions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/MomSesImSpcl/Utilities/Randomizer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Components/Singleton/InitializationMethod.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Components/SwingingLineRenderer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PackageExporter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PackageExporterEditor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../YGO-Deck-Builder_old/Assets/Scripts/Editor/PropertyDrawers/SelectableEntryDrawer.cs" root0="SKIP_HIGHLIGHTING" />
@@ -131,7 +147,8 @@
       <workItem from="1742408396714" duration="5106000" />
       <workItem from="1742414181916" duration="52000" />
       <workItem from="1742414239001" duration="112000" />
-      <workItem from="1742414762933" duration="875000" />
+      <workItem from="1742414762933" duration="1056000" />
+      <workItem from="1745786994369" duration="898000" />
     </task>
     <servers />
   </component>

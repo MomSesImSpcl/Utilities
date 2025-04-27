@@ -1,0 +1,108 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <style>
+            body {
+                margin: 0;
+                background: rgb(45, 45, 45);
+                color: #D0D0D0;
+                font-family: Consolas, sans-serif;
+                text-align: center;
+                overflow-x: hidden;
+            }
+            h1 {
+                line-height: 2em;
+                border-top: 1px solid rgba(131, 131, 128, .75);
+                border-bottom: 1px solid rgba(131, 131, 128, .75);
+            }
+            #container {
+                width: 100vw;
+                height: 100vh;
+                display: grid;
+                display: -ms-grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr 1fr 1fr;
+            }
+            .content {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+            .content > div {
+                width: 50%;
+            }
+            .infoText {
+                font-size: small;
+                margin-top: -.9em;
+                font-style: italic;
+            }
+            .hr {
+                height: 2px;
+                background-image: linear-gradient(to right, rgba(50, 50, 50, .5), rgba(131, 131, 128, .75), rgba(50, 50, 50, .5));
+            }
+        </style>
+        <title>Custom Script Templates</title>
+        <link rel="icon" type="image/png" sizes="310x310" href="Images/Favicon.png">
+    </head>
+    <body>
+    <div id="container">
+        <section class="section">
+            <h1>OVERVIEW</h1>
+            <div class="content">
+                <div>
+                    <p>After importing the package, you will have an additional MenuItem "<b>Custom Script Templates</b>" under the "<b>Create</b>" menu.</p>
+                    <p class="infoText">(Right click into the "Project" window.)</p>
+                    <p>The position of the "<b>Custom Script Templates</b>" menu item might be different from the one on  the right, depending on the Unity version.</p>
+                </div>
+                <div>
+                    <img src="Images/MenuItem.png" alt="Menu Item">
+                </div>
+                <div style="width: 100%" class="hr"></div>
+                <div>
+                    <p>This MenuItem holds all Templates.</p>
+                    <p>You can customize the default ones, delete items you don't want, or create your own Templates.</p>
+                </div>
+                <div>
+                    <img style="margin-top: 1.5em" src="Images/Templates.png" alt="Templates">
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <h1>TEMPLATES</h1>
+            <div class="content">
+                <div>
+                    <p>Templates are stored in .txt-files under: <i>Assets/Plugins/CustomScriptTemplates/Templates/Resources</i></p>
+                    <div class="hr"></div>
+                    <p><b>#SCRIPTNAME#</b> will be replaces with the actual name you gave the file.</p>
+                    <p><b>#NAMESPACE#</b> will be replaced with the Namespace.</p>
+                    <p class="infoText">(#NAMESPACE# is optional, you can remove it if you don't want a Namespace.)</p>
+                    <p>The Namespace will be set based on the folder structure where the file is located.</p>
+                    <p>The root Namespace from the Unity project or any Assembly Definition file will be added as well.</p>
+                    <p class="infoText">(Only if a root Namespace is set and the file is located under a Assembly Definition file.)</p>
+                    <p>If you're working in Rider or have ReSharper installed,<br/>folder that are excluded as a Namespace provider will not be included in the Namespace.</p>
+                </div>
+                <div>
+                    <img src="Images/Template.png" alt="Template">
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <h1>SETTINGS</h1>
+            <div class="content">
+                <div>
+                    <p>The "<b>Settings</b>" asset will be under: <i>Assets/Plugins/CustomScriptTemplates</i></p>
+                    <div class="hr"></div>
+                    <p>The "<b>Templates</b>" list contains all .txt-file Templates.</p>
+                    <p>After you created a new Template,<br/>you have to add it to the "<b>Templates</b>" list and press the "<b>Compile Menu Items</b>" button.</p>
+                    <p>If you want to be able to create Text/Json/XML files from the drop-down menu, just check the box in the inspector.</p>
+                    <p>The "<b>Indent Amount</b>" is the number of whitespaces between the border and the class declaration.</p>
+                    <p class="infoText">(Will only have an effect if you're using a Namespace.)</p>
+                </div>
+                <div style="align-self: center">
+                    <img src="Images/Settings.png" alt="Settings">
+                </div>
+            </div>
+        </section>
+    </div>
+    </body>
+</html>
