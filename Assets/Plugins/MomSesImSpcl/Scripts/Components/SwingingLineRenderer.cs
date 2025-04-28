@@ -8,6 +8,7 @@ using UnityEngine.Jobs;
 
 namespace MomSesImSpcl.Components
 {
+    // TODO: Use a static update to be able to swing multiple LineRenderers.
     /// <summary>
     /// Swings a <see cref="LineRenderer"/> on the <see cref="Vector2.x"/> axis.
     /// </summary>
@@ -16,6 +17,9 @@ namespace MomSesImSpcl.Components
     {
         #region Inspector Fields
         [Header("References")]
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.ChildGameObjectsOnly]
+#endif
         [Tooltip("The object that is attached to the end of the line renderer.")]
         [SerializeField] private Transform attachedObject;
         
@@ -26,13 +30,17 @@ namespace MomSesImSpcl.Components
         [SerializeField] private float swingAngle = 30f;
         [Tooltip("The amount by which the line will be curved while swinging.")]
         [SerializeField] private float curvatureAmount = 0.25f;
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.OnValueChanged(nameof(this.SetLineRendererLength))]
+#endif
         [Tooltip("The length of the line renderer.")]
         [SerializeField] private float lineRendererLength = 10f;
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.OnValueChanged(nameof(this.SetLineRendererSegments))]
 #endif
         [Tooltip("The number of positions that will be created in the line renderer.")]
-        [SerializeField] private int lineRendererSegments = 10;
+        [Range(2, byte.MaxValue)]
+        [SerializeField] private byte lineRendererSegments = 10;
         #endregion
         
         #region Fields
@@ -63,6 +71,13 @@ namespace MomSesImSpcl.Components
         #endregion
         
         #region Methods
+#if UNITY_EDITOR
+        private void Reset()
+        {
+            this.SetLineRendererSegments(this.lineRendererSegments);
+            this.lineRenderer.useWorldSpace = false; // Makes visualizing the line in edit mode easier, will be set to true in Awake at runtime.
+        }
+#endif
         private void Awake()
         {
             this.lineRenderer = base.GetComponent<LineRenderer>();
@@ -89,18 +104,22 @@ namespace MomSesImSpcl.Components
         {
             this.swingTime += Time.deltaTime;
 
-            var _position = base.transform.Position3();
+            var _transform = base.transform;
+            var _position = _transform.Position3();
+            quaternion _rotation = _transform.rotation;
             var _angle = math.sin(this.swingTime * this.swingSpeed) * this.swingAngle;
             var _attachedObjectJob = new AttachedObjectJob
             (
                 _Angle:              _angle,
                 _LineRendererLength: this.lineRendererLength,
-                _AnchorPosition:     _position
+                _AnchorPosition:     _position,
+                _AnchorRotation:     _rotation
             );
             var _lineRendererJob = new LineRendererJob
             (
                 _LineRendererPositions:  this.lineRendererPositions,
                 _AnchorPosition:         _position,
+                _AnchorRotation:         _rotation,
                 _AttachedObjectPosition: this.attachedObject.Position3(),
                 _CurvatureAmount:        this.curvatureAmount,
                 _Angle:                  _angle,
@@ -110,8 +129,6 @@ namespace MomSesImSpcl.Components
             
             this.attachedObjectJobHandle = _attachedObjectJob.Schedule(this.attachedObjectTransform);
             this.lineRendererJobHandle = _lineRendererJob.Schedule(this.attachedObjectJobHandle);
-            
-            JobHandle.ScheduleBatchedJobs();
         }
         
         private void LateUpdate()
@@ -121,18 +138,61 @@ namespace MomSesImSpcl.Components
             this.lineRenderer.SetPositions(this.lineRendererPositions);
         }
         
+#if UNITY_EDITOR
+        /// <summary>
+        /// Sets the lenght of the <see cref="lineRenderer"/>. <br/>
+        /// <b>Editor only.</b>
+        /// </summary>
+        /// <param name="_LineRendererLength"><see cref="lineRendererLength"/>.</param>
+        private void SetLineRendererLength(float _LineRendererLength)
+        {
+            if (Application.isPlaying)
+            {
+                return;
+            }
+            
+            if (this.lineRenderer == null)
+            {
+                this.lineRenderer = base.GetComponent<LineRenderer>();    
+            }
+            
+            this.lineRenderer.SetPosition(this.lineRenderer.positionCount - 1, Vector3.zero.WithY(-_LineRendererLength));
+
+            if (this.attachedObject != null)
+            {
+                this.attachedObject.position = base.transform.TransformPoint(Vector3.zero.WithY(-_LineRendererLength));
+            }
+        }
+#endif
          /// <summary>
          /// Sets the position count in the <see cref="lineRenderer"/>.
          /// </summary>
          /// <param name="_LineRendererSegments">The number of positions the <see cref="lineRenderer"/> should have.</param>
-        private void SetLineRendererSegments(int _LineRendererSegments)
+        private void SetLineRendererSegments(byte _LineRendererSegments)
         {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                if (this.lineRenderer == null)
+                {
+                    this.lineRenderer = base.GetComponent<LineRenderer>();    
+                }
+                
+                this.lineRenderer.positionCount = _LineRendererSegments;
+                this.lineRendererPositions = new NativeArray<Vector3>(this.lineRenderer.positionCount, Allocator.Temp).Populate(() => Vector3.zero);
+                this.lineRendererPositions[^1] = Vector3.zero.WithY(-this.lineRendererLength);
+                this.lineRenderer.SetPositions(this.lineRendererPositions);
+                this.lineRendererPositions.Dispose();
+                
+                return;
+            }
+#endif
             if (this.lineRendererPositions.IsCreated)
             {
                 this.lineRendererPositions.Dispose();
             }
             
-            this.lineRendererPositions = new NativeArray<Vector3>(_LineRendererSegments + 1, Allocator.Persistent);
+            this.lineRendererPositions = new NativeArray<Vector3>(_LineRendererSegments, Allocator.Persistent);
             this.lineRenderer.positionCount = this.lineRendererPositions.Length;
         }
         #endregion
@@ -157,6 +217,10 @@ namespace MomSesImSpcl.Components
             /// The root <see cref="Transform.position"/> from where the swinging is calculated.
             /// </summary>
             [ReadOnly] private readonly float3 anchorPosition;
+            /// <summary>
+            /// The <see cref="Transform.rotation"/> of the <see cref="GameObject"/> this <see cref="SwingingLineRenderer"/> component is attached to.
+            /// </summary>
+            [ReadOnly] private readonly quaternion anchorRotation;
             #endregion
             
             #region Constructors
@@ -166,11 +230,13 @@ namespace MomSesImSpcl.Components
             /// <param name="_Angle"><see cref="angle"/>.</param>
             /// <param name="_LineRendererLength"><see cref="lineRendererLength"/>.</param>
             /// <param name="_AnchorPosition"><see cref="anchorPosition"/>.</param>
-            internal AttachedObjectJob(float _Angle, float _LineRendererLength, float3 _AnchorPosition)
+            /// <param name="_AnchorRotation"><see cref="anchorRotation"/>.</param>
+            internal AttachedObjectJob(float _Angle, float _LineRendererLength, float3 _AnchorPosition, quaternion _AnchorRotation)
             {
                 this.angle = _Angle;
                 this.lineRendererLength = _LineRendererLength;
                 this.anchorPosition = _AnchorPosition;
+                this.anchorRotation = _AnchorRotation;
             }
             #endregion
             
@@ -178,10 +244,12 @@ namespace MomSesImSpcl.Components
             public void Execute(int _, TransformAccess _Transform)
             {
                 var _radians = this.angle * math.PI / 180f;
-                var _offset = new float3(math.sin(_radians) * this.lineRendererLength, -math.cos(_radians) * this.lineRendererLength, 0f);
-                var _objectPosition = this.anchorPosition + _offset;
-                var _objectRotation = quaternion.AxisAngle(new float3(0, 0, 1), _radians);
-                
+                var _localOffset = new float3(math.sin(_radians) * this.lineRendererLength, -math.cos(_radians) * this.lineRendererLength, 0f);
+                var _worldOffset = math.mul(this.anchorRotation, _localOffset);
+                var _objectPosition = this.anchorPosition + _worldOffset;
+                var _localSwingRotation = quaternion.AxisAngle(new float3(0, 0, 1), _radians);
+                var _objectRotation = math.mul(this.anchorRotation, _localSwingRotation);
+    
                 _Transform.position = _objectPosition;
                 _Transform.rotation = _objectRotation;
             }
@@ -204,6 +272,10 @@ namespace MomSesImSpcl.Components
             /// </summary>
             [ReadOnly] private readonly float3 anchorPosition;
             /// <summary>
+            /// The <see cref="Transform.rotation"/> of the <see cref="GameObject"/> this <see cref="SwingingLineRenderer"/> component is attached to.
+            /// </summary>
+            [ReadOnly] private readonly quaternion anchorRotation;
+            /// <summary>
             /// The <see cref="Transform.position"/> of the <see cref="attachedObject"/>.
             /// </summary>
             [ReadOnly] private readonly float3 attachedObjectPosition;
@@ -222,7 +294,7 @@ namespace MomSesImSpcl.Components
             /// <summary>
             /// <see cref="SwingingLineRenderer.lineRendererSegments"/>.
             /// </summary>
-            [ReadOnly] private readonly int lineRendererSegments;
+            [ReadOnly] private readonly byte lineRendererSegments;
             #endregion
             
             #region Constructors
@@ -231,15 +303,17 @@ namespace MomSesImSpcl.Components
             /// </summary>
             /// <param name="_LineRendererPositions"><see cref="lineRendererPositions"/>.</param>
             /// <param name="_AnchorPosition"><see cref="anchorPosition"/>.</param>
+            /// <param name="_AnchorRotation"><see cref="anchorRotation"/>.</param>
             /// <param name="_AttachedObjectPosition"><see cref="attachedObjectPosition"/>.</param>
             /// <param name="_CurvatureAmount"><see cref="curvatureAmount"/>.</param>
             /// <param name="_Angle"><see cref="angle"/>.</param>
             /// <param name="_SwingAngle"><see cref="swingAngle"/>.</param>
             /// <param name="_LineRendererSegments"><see cref="lineRendererSegments"/>.</param>
-            internal LineRendererJob(NativeArray<Vector3> _LineRendererPositions, float3 _AnchorPosition, float3 _AttachedObjectPosition, float _CurvatureAmount, float _Angle, float _SwingAngle, int _LineRendererSegments)
+            internal LineRendererJob(NativeArray<Vector3> _LineRendererPositions, float3 _AnchorPosition, quaternion _AnchorRotation, float3 _AttachedObjectPosition, float _CurvatureAmount, float _Angle, float _SwingAngle, byte _LineRendererSegments)
             {
                 this.lineRendererPositions = _LineRendererPositions;
                 this.anchorPosition = _AnchorPosition;
+                this.anchorRotation = _AnchorRotation;
                 this.attachedObjectPosition = _AttachedObjectPosition;
                 this.curvatureAmount = _CurvatureAmount;
                 this.angle = _Angle;
@@ -252,13 +326,15 @@ namespace MomSesImSpcl.Components
             public void Execute()
             {
                 this.lineRendererPositions[0] = this.anchorPosition;
-                this.lineRendererPositions[this.lineRendererSegments] = this.attachedObjectPosition;
+                this.lineRendererPositions[^1] = this.attachedObjectPosition;
                 
                 var _directionVector = this.attachedObjectPosition - this.anchorPosition;
-                var _perpendicularDirection = math.normalize(new float3(-_directionVector.y, _directionVector.x, 0));
+                var _localDirection = math.mul(math.inverse(this.anchorRotation), _directionVector);
+                var _localPerpendicular = math.normalizesafe(new float3(-_localDirection.y, _localDirection.x, 0f), new float3(0f));
+                var _worldPerpendicular = math.mul(this.anchorRotation, _localPerpendicular);
                 var _curveStrength = this.curvatureAmount * math.sign(this.angle) * math.abs(this.angle) / this.swingAngle;
-                var _controlOffset = _perpendicularDirection * _curveStrength;
-                
+                var _controlOffset = _worldPerpendicular * _curveStrength;
+    
                 // ReSharper disable once InconsistentNaming
                 for (var i = 1; i < this.lineRendererSegments; i++)
                 {
@@ -266,7 +342,7 @@ namespace MomSesImSpcl.Components
                     var _straightPosition = math.lerp(this.anchorPosition, this.attachedObjectPosition, _t);
                     var _curveFactor = 4 * _t * (1 - _t);
                     var _curveOffset = _controlOffset * _curveFactor;
-                    
+        
                     this.lineRendererPositions[i] = _straightPosition + _curveOffset;
                 }
             }
