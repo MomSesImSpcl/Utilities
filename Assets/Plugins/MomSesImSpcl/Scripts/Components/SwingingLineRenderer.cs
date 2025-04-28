@@ -29,12 +29,12 @@ namespace MomSesImSpcl.Components
         [Tooltip("The maximum angle the line will swing to.")]
         [SerializeField] private float swingAngle = 30f;
         [Tooltip("The amount by which the line will be curved while swinging.")]
-        [SerializeField] private float curvatureAmount = 0.25f;
+        [SerializeField] private float curvatureAmount = .25f;
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.OnValueChanged(nameof(this.SetLineRendererLength))]
 #endif
         [Tooltip("The length of the line renderer.")]
-        [SerializeField] private float lineRendererLength = 10f;
+        [SerializeField] private float lineRendererLength = 15f;
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.OnValueChanged(nameof(this.SetLineRendererSegments))]
 #endif
