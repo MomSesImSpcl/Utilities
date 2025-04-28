@@ -74,8 +74,8 @@ namespace MomSesImSpcl.Components
 #if UNITY_EDITOR
         private void Reset()
         {
-            this.SetLineRendererSegments(this.lineRendererSegments);
             this.lineRenderer.useWorldSpace = false; // Makes visualizing the line in edit mode easier, will be set to true in Awake at runtime.
+            this.SetLineRendererSegments(this.lineRendererSegments);        
         }
 #endif
         private void Awake()
