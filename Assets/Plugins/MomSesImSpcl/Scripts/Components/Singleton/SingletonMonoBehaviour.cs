@@ -22,13 +22,12 @@ namespace MomSesImSpcl.Components.Singleton
         /// </summary>
         protected abstract InitializationMethod InitializationMethod { get; }
         /// <summary>
-        /// Indicates whether the singleton instance should persist across scene loads.
-        /// If true, the instance will not be destroyed when loading a new scene.
+        /// Indicates whether the singleton instance should persist across scene loads. <br/>
+        /// If <c>true</c>, the instance will not be destroyed when loading a new scene.
         /// </summary>
-        // ReSharper disable once VirtualMemberNeverOverridden.Global
         protected new virtual bool DontDestroyOnLoad => false;
         /// <summary>
-        /// Set this to <c>true</c> to also initialize this singleton in edit mode inside the <see cref="OnEnable"/>. <br/>
+        /// Set this to <c>true</c> to also initialize this singleton in edit mode inside the <see cref="OnEnable"/> method. <br/>
         /// <i>The <see cref="ExecuteInEditMode"/> or <see cref="ExecuteAlways"/> attribute must be added to the inheriting class for this to work.</i>
         /// </summary>
         protected virtual bool EditorInitialization => false;
