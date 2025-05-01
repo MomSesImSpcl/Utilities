@@ -18,7 +18,7 @@ namespace MomSesImSpcl.Components.Singleton
         /// </summary>
         Start,
         /// <summary>
-        /// When the singleton should initialized manually.
+        /// When the singleton should be initialized manually.
         /// </summary>
         Manual,
 #if UNITY_EDITOR
