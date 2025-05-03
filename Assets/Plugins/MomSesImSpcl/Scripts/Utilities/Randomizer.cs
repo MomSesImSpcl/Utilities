@@ -99,7 +99,7 @@ namespace MomSesImSpcl.Utilities
         /// <summary>
         /// Contains <c>5</c> specialized prime numbers for each <see cref="PrimeNumberUseCase"/>.
         /// </summary>
-        public static ReadOnlyDictionary<PrimeNumberUseCase, int[]> PrimeNumberSeeds = new(new Dictionary<PrimeNumberUseCase, int[]>
+        public static readonly ReadOnlyDictionary<PrimeNumberUseCase, int[]> PrimeNumberSeeds = new(new Dictionary<PrimeNumberUseCase, int[]>
         {
             { PrimeNumberUseCase.BitMixing,            new[] { 73856093,   19349663,   83492791,  1299827,   600029     } },
             { PrimeNumberUseCase.DeterministicRandom,  new[] { 198491317,  6542989,    357239,    104729,    49979693   } },
