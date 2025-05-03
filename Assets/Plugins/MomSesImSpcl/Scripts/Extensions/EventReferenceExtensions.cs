@@ -62,7 +62,7 @@ namespace MomSesImSpcl.Extensions
             {
                 eventInstances.Add(_Type, new Dictionary<EventReference, EventInstance>(EventReferenceComparer.Instance)
                 {
-                    {  _EventReference, _NewEventInstance }
+                    { _EventReference, _NewEventInstance }
                 });
             }
 
