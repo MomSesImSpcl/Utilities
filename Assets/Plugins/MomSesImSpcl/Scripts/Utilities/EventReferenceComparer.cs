@@ -22,9 +22,9 @@ namespace MomSesImSpcl.Utilities
             return _First.Guid.Equals(_Second.Guid);
         }
 
-        public int GetHashCode(EventReference _Object)
+        public int GetHashCode(EventReference _EventReference)
         {
-            return _Object.Guid.GetHashCode();
+            return _EventReference.Guid.GetHashCode();
         }
         #endregion
     }
