@@ -5,6 +5,7 @@ using FMOD.Studio;
 using FMODUnity;
 using MomSesImSpcl.Data;
 using MomSesImSpcl.Utilities;
+using MomSesImSpcl.Utilities.Pooling;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -148,6 +149,30 @@ namespace MomSesImSpcl.Extensions
         /// Plays the audio for the given <see cref="EventReference"/> and set the value for the parameter with the given <see cref="PARAMETER_ID"/>.
         /// </summary>
         /// <param name="_EventReference">The <see cref="EventReference"/> of the audio event to play.</param>
+        /// <param name="_ParameterNames">The names of the parameters in FMOD.</param>
+        /// <param name="_ParameterValues">The values to set the parameters to.</param>
+        public static void PlayOneShot(this EventReference _EventReference, string[] _ParameterNames, float[] _ParameterValues)
+        {
+            var _length = _ParameterNames.Length;
+            var _parameterIds = ArrayPool<PARAMETER_ID>.Get(_length);
+            var _eventInstance = RuntimeManager.CreateInstance(_EventReference);
+            
+            // ReSharper disable once InconsistentNaming
+            for (var i = 0; i < _ParameterNames.Length; i++)
+            {
+                _parameterIds[i] = GetCachedParameterId(_EventReference, _ParameterNames[i]);
+            }
+            
+            _eventInstance.setParametersByIDs(_parameterIds, _ParameterValues, _length);
+            _eventInstance.start();
+            _eventInstance.release();
+            _parameterIds.ReturnToArrayPool();
+        }
+        
+        /// <summary>
+        /// Plays the audio for the given <see cref="EventReference"/> and set the value for the parameter with the given <see cref="PARAMETER_ID"/>.
+        /// </summary>
+        /// <param name="_EventReference">The <see cref="EventReference"/> of the audio event to play.</param>
         /// <param name="_Type">Identifier from where this is called from.</param>
         /// <param name="_StopMode">Determines how the previous event should be stopped.</param>
         /// <param name="_ParameterName">The name of the parameter in FMOD.</param>
@@ -160,14 +185,80 @@ namespace MomSesImSpcl.Extensions
                 _previousEventInstance.stop(_StopMode);
                 _previousEventInstance.release();
             }
+
+            var _parameterId = GetCachedParameterId(_EventReference, _ParameterName);
             
-            _newEventInstance.setParameterByID(GetCachedParameterId(_EventReference, _ParameterName), _ParameterValue);
+            _newEventInstance.setParameterByID(_parameterId, _ParameterValue);
             _newEventInstance.start();
 
             if (_Release)
             {
                 _newEventInstance.release();
             }
+        }
+        
+        /// <summary>
+        /// Plays the audio for the given <see cref="EventReference"/> and set the value for the parameter with the given <see cref="PARAMETER_ID"/>.
+        /// </summary>
+        /// <param name="_EventReference">The <see cref="EventReference"/> of the audio event to play.</param>
+        /// <param name="_Type">Identifier from where this is called from.</param>
+        /// <param name="_StopMode">Determines how the previous event should be stopped.</param>
+        /// <param name="_ParameterNames">The names of the parameters in FMOD.</param>
+        /// <param name="_ParameterValues">The values to set the parameters to.</param>
+        /// <param name="_Release">Set to <c>true</c> to immediately release the <see cref="EventInstance"/> after starting it.</param>
+        public static void PlayOneShot(this EventReference _EventReference, Type _Type, STOP_MODE _StopMode, string[] _ParameterNames, float[] _ParameterValues, bool _Release)
+        {
+            if (GetEventInstances(_Type, _EventReference, out var _previousEventInstance, out var _newEventInstance))
+            {
+                _previousEventInstance.stop(_StopMode);
+                _previousEventInstance.release();
+            }
+
+            var _length = _ParameterNames.Length;
+            var _parameterIds = ArrayPool<PARAMETER_ID>.Get(_length);
+
+            // ReSharper disable once InconsistentNaming
+            for (var i = 0; i < _ParameterNames.Length; i++)
+            {
+                _parameterIds[i] = GetCachedParameterId(_EventReference, _ParameterNames[i]);
+            }
+            
+            _newEventInstance.setParametersByIDs(_parameterIds, _ParameterValues, _length);
+            _newEventInstance.start();
+
+            if (_Release)
+            {
+                _newEventInstance.release();
+            }
+            
+            _parameterIds.ReturnToArrayPool();
+        }
+
+        /// <summary>
+        /// Stops the <see cref="EventInstance"/> for the given <see cref="EventReference"/> and <see cref="Type"/>.
+        /// </summary>
+        /// <param name="_EventReference">The <see cref="EventReference"/> of the <see cref="EventInstance"/> to stop.</param>
+        /// <param name="_Type">Identifier in <see cref="eventInstances"/>.</param>
+        /// <param name="_StopMode"><see cref="STOP_MODE"/>.</param>
+        public static void Stop(this EventReference _EventReference, Type _Type, STOP_MODE _StopMode)
+        {
+            if (!eventInstances.TryGetValue(_Type, out var _eventReferences))
+            {
+                return;
+            }
+
+            if (!_eventReferences.TryGetValue(_EventReference, out var _eventInstance))
+            {
+                return;
+            }
+
+            if (!_eventInstance.isValid())
+            {
+                return;
+            }
+
+            _eventInstance.stop(_StopMode);
+            _eventInstance.release();
         }
         #endregion
     }
