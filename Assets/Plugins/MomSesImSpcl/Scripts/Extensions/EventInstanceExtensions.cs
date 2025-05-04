@@ -22,6 +22,18 @@ namespace MomSesImSpcl.Extensions
 
             return _parameterDescription.id;
         }
+
+        /// <summary>
+        /// Releases this <see cref="EventInstance"/> if it is valid.
+        /// </summary>
+        /// <param name="_EventInstance">The <see cref="EventInstance"/> to release.</param>
+        public static void ReleaseIfValid(this EventInstance _EventInstance)
+        {
+            if (_EventInstance.isValid())
+            {
+                _EventInstance.release();
+            }
+        }
         #endregion
     }
 }
