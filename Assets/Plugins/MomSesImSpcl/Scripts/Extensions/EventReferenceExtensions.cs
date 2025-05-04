@@ -112,22 +112,16 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_EventReference">The <see cref="EventReference"/> of the audio event to play.</param>
         /// <param name="_Type">Identifier from where this is called from.</param>
         /// <param name="_StopMode">Determines how the previous event should be stopped.</param>
-        /// <param name="_Release">Set to <c>true</c> to immediately release the <see cref="EventInstance"/> after starting it.</param>
         /// <returns>The <see cref="EventInstance"/> that was created to play the sound.</returns>
-        public static void PlayOneShot(this EventReference _EventReference, Type _Type, STOP_MODE _StopMode, bool _Release)
+        public static void PlayOneShot(this EventReference _EventReference, Type _Type, STOP_MODE _StopMode)
         {
             if (GetEventInstances(_Type, _EventReference, out var _previousEventInstance, out var _newEventInstance))
             {
                 _previousEventInstance.stop(_StopMode);
-                _previousEventInstance.release();
+                _previousEventInstance.ReleaseIfValid();
             }
             
             _newEventInstance.start();
-            
-            if (_Release)
-            {
-                _newEventInstance.release();
-            }
         }
         
         /// <summary>
@@ -177,24 +171,18 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_StopMode">Determines how the previous event should be stopped.</param>
         /// <param name="_ParameterName">The name of the parameter in FMOD.</param>
         /// <param name="_ParameterValue">The value to set the parameter to.</param>
-        /// <param name="_Release">Set to <c>true</c> to immediately release the <see cref="EventInstance"/> after starting it.</param>
-        public static void PlayOneShot(this EventReference _EventReference, Type _Type, STOP_MODE _StopMode, string _ParameterName, float _ParameterValue, bool _Release)
+        public static void PlayOneShot(this EventReference _EventReference, Type _Type, STOP_MODE _StopMode, string _ParameterName, float _ParameterValue)
         {
             if (GetEventInstances(_Type, _EventReference, out var _previousEventInstance, out var _newEventInstance))
             {
                 _previousEventInstance.stop(_StopMode);
-                _previousEventInstance.release();
+                _previousEventInstance.ReleaseIfValid();
             }
 
             var _parameterId = GetCachedParameterId(_EventReference, _ParameterName);
             
             _newEventInstance.setParameterByID(_parameterId, _ParameterValue);
             _newEventInstance.start();
-
-            if (_Release)
-            {
-                _newEventInstance.release();
-            }
         }
         
         /// <summary>
@@ -205,13 +193,12 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_StopMode">Determines how the previous event should be stopped.</param>
         /// <param name="_ParameterNames">The names of the parameters in FMOD.</param>
         /// <param name="_ParameterValues">The values to set the parameters to.</param>
-        /// <param name="_Release">Set to <c>true</c> to immediately release the <see cref="EventInstance"/> after starting it.</param>
-        public static void PlayOneShot(this EventReference _EventReference, Type _Type, STOP_MODE _StopMode, string[] _ParameterNames, float[] _ParameterValues, bool _Release)
+        public static void PlayOneShot(this EventReference _EventReference, Type _Type, STOP_MODE _StopMode, string[] _ParameterNames, float[] _ParameterValues)
         {
             if (GetEventInstances(_Type, _EventReference, out var _previousEventInstance, out var _newEventInstance))
             {
                 _previousEventInstance.stop(_StopMode);
-                _previousEventInstance.release();
+                _previousEventInstance.ReleaseIfValid();
             }
 
             var _length = _ParameterNames.Length;
@@ -225,12 +212,6 @@ namespace MomSesImSpcl.Extensions
             
             _newEventInstance.setParametersByIDs(_parameterIds, _ParameterValues, _length);
             _newEventInstance.start();
-
-            if (_Release)
-            {
-                _newEventInstance.release();
-            }
-            
             _parameterIds.ReturnToArrayPool();
         }
 
@@ -258,7 +239,7 @@ namespace MomSesImSpcl.Extensions
             }
 
             _eventInstance.stop(_StopMode);
-            _eventInstance.release();
+            _eventInstance.ReleaseIfValid();
         }
         #endregion
     }
