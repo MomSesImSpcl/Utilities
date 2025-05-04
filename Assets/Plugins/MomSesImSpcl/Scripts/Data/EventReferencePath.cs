@@ -1,3 +1,4 @@
+#if FMOD
 using System;
 using FMODUnity;
 
@@ -101,3 +102,4 @@ namespace MomSesImSpcl.Data
         #endregion
     }
 }
+#endif
