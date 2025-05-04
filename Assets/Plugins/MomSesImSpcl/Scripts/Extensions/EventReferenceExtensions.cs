@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
+using MomSesImSpcl.Data;
 using MomSesImSpcl.Utilities;
 
 namespace MomSesImSpcl.Extensions
@@ -17,6 +18,10 @@ namespace MomSesImSpcl.Extensions
         /// Maps every created <see cref="EventInstance"/> to the <see cref="EventReference"/> they were created from and the <see cref="Type"/> they were created under.
         /// </summary>
         private static readonly Dictionary<Type, Dictionary<EventReference, EventInstance>> eventInstances = new();
+        /// <summary>
+        /// Maps every <see cref="PARAMETER_ID"/> of a <see cref="EventReference"/> to their name.
+        /// </summary>
+        private static readonly Dictionary<EventReferencePath, Dictionary<string, PARAMETER_ID>> parameterIds = new();
         #endregion
         
         #region Methods
@@ -70,6 +75,37 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
+        /// Retrieves or adds a cached <see cref="PARAMETER_ID"/> from/to <see cref="parameterIds"/> for the given <see cref="EventReference"/>.
+        /// </summary>
+        /// <param name="_EventReference">The <see cref="EventReference"/> to get the <see cref="PARAMETER_ID"/> for.</param>
+        /// <param name="_ParameterName">The FMOD parameter to get the <see cref="PARAMETER_ID"/> of.</param>
+        /// <returns>The <see cref="PARAMETER_ID"/> for the given parameter name.</returns>
+        private static PARAMETER_ID GetCachedParameterId(EventReference _EventReference, string _ParameterName)
+        {
+            var _eventReferencePath = new EventReferencePath(_EventReference);
+            PARAMETER_ID _parameterId;
+
+            if (parameterIds.TryGetValue(_eventReferencePath, out var _parameterIds))
+            {
+                if (!_parameterIds.TryGetValue(_ParameterName, out _parameterId))
+                {
+                    _parameterId = _EventReference.GetParameterId(_ParameterName);
+                    _parameterIds.Add(_ParameterName, _parameterId);   
+                }
+            }
+            else
+            {
+                _parameterId = _EventReference.GetParameterId(_ParameterName);
+                parameterIds.Add(_eventReferencePath, new Dictionary<string, PARAMETER_ID>()
+                {
+                    { _ParameterName, _parameterId }
+                });
+            }
+
+            return _parameterId;
+        }
+        
+        /// <summary>
         /// Plays the audio for the given <see cref="EventReference"/> and set the value for the parameter with the given <see cref="PARAMETER_ID"/>.
         /// </summary>
         /// <param name="_EventReference">The <see cref="EventReference"/> of the audio event to play.</param>
@@ -97,12 +133,13 @@ namespace MomSesImSpcl.Extensions
         /// Plays the audio for the given <see cref="EventReference"/> and set the value for the parameter with the given <see cref="PARAMETER_ID"/>.
         /// </summary>
         /// <param name="_EventReference">The <see cref="EventReference"/> of the audio event to play.</param>
-        /// <param name="_ParameterId">The id of the parameter in FMOD.</param>
+        /// <param name="_ParameterName">The name of the parameter in FMOD.</param>
         /// <param name="_ParameterValue">The value to set the parameter to.</param>
-        public static void PlayOneShot(this EventReference _EventReference, PARAMETER_ID _ParameterId, float _ParameterValue)
+        public static void PlayOneShot(this EventReference _EventReference, string _ParameterName, float _ParameterValue)
         {
+            var _parameterId = GetCachedParameterId(_EventReference, _ParameterName);
             var _eventInstance = RuntimeManager.CreateInstance(_EventReference);
-            _eventInstance.setParameterByID(_ParameterId, _ParameterValue);
+            _eventInstance.setParameterByID(_parameterId, _ParameterValue);
             _eventInstance.start();
             _eventInstance.release();
         }
@@ -113,10 +150,10 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_EventReference">The <see cref="EventReference"/> of the audio event to play.</param>
         /// <param name="_Type">Identifier from where this is called from.</param>
         /// <param name="_StopMode">Determines how the previous event should be stopped.</param>
-        /// <param name="_ParameterId">The id of the parameter in FMOD.</param>
+        /// <param name="_ParameterName">The name of the parameter in FMOD.</param>
         /// <param name="_ParameterValue">The value to set the parameter to.</param>
         /// <param name="_Release">Set to <c>true</c> to immediately release the <see cref="EventInstance"/> after starting it.</param>
-        public static void PlayOneShot(this EventReference _EventReference, Type _Type, STOP_MODE _StopMode, PARAMETER_ID _ParameterId, float _ParameterValue, bool _Release)
+        public static void PlayOneShot(this EventReference _EventReference, Type _Type, STOP_MODE _StopMode, string _ParameterName, float _ParameterValue, bool _Release)
         {
             if (GetEventInstances(_Type, _EventReference, out var _previousEventInstance, out var _newEventInstance))
             {
@@ -124,7 +161,7 @@ namespace MomSesImSpcl.Extensions
                 _previousEventInstance.release();
             }
             
-            _newEventInstance.setParameterByID(_ParameterId, _ParameterValue);
+            _newEventInstance.setParameterByID(GetCachedParameterId(_EventReference, _ParameterName), _ParameterValue);
             _newEventInstance.start();
 
             if (_Release)
