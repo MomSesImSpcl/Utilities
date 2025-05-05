@@ -1,0 +1,8 @@
+ACTK_IS_HERE   - https://assetstore.unity.com/packages/tools/utilities/anti-cheat-toolkit-202695
+DOTWEEN        - https://assetstore.unity.com/packages/tools/visual-scripting/dotween-pro-32416
+FMOD           - https://assetstore.unity.com/packages/tools/audio/fmod-for-unity-2-02-161631
+NETCODE        - https://docs-multiplayer.unity3d.com/netcode/current/about/
+ODIN_INSPECTOR - https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041
+TMP            - https://learn.unity.com/tutorial/working-with-textmesh-pro#
+UNITASK        - https://github.com/Cysharp/UniTask
+ZLINQ          - https://github.com/Cysharp/ZLinq
