@@ -611,22 +611,24 @@ namespace MomSesImSpcl.Extensions
         /// Removes the specified substring from the current instance of the string.
         /// </summary>
         /// <param name="_String">The <see cref="string"/> instance to perform the operation on.</param>
-        /// <param name="_StringsToRemove">The <see cref="string"/>s to remove from the current instance.</param>
+        /// <param name="_StringToRemove">The <see cref="string"/>s to remove from the current instance.</param>
+        /// <param name="_StringComparison">The type of string comparison to perform.</param>
         /// <returns>A new <see cref="string"/> with the specified substring removed.</returns>
-        public static string RemoveStrings(this string _String, params string[] _StringsToRemove)
+        public static string RemoveString(this string _String, string _StringToRemove, StringComparison _StringComparison = StringComparison.Ordinal)
         {
-            return _String.RemoveStrings(StringComparison.Ordinal, _StringsToRemove);
+            return _String.Replace(_StringToRemove, string.Empty, _StringComparison);
         }
         
         /// <summary>
         /// Removes occurrences of the specified strings from the current string.
         /// </summary>
         /// <param name="_String">The string to process.</param>
-        /// <param name="_StringComparison">The type of string comparison to perform.</param>
         /// <param name="_StringsToRemove">The strings to remove from the current string.</param>
+        /// <param name="_StringComparison">The type of string comparison to perform.</param>
         /// <returns>The processed string with the specified strings removed.</returns>
-        public static string RemoveStrings(this string _String, StringComparison _StringComparison, params string[] _StringsToRemove)
+        public static string RemoveStrings(this string _String, string[] _StringsToRemove, StringComparison _StringComparison = StringComparison.Ordinal)
         {
+            // TODO: Remove closure allocation from StringComparison in Aggregate method.
             return _StringsToRemove.Aggregate(_String, (_Current, _StringToRemove) => _Current.Replace(_StringToRemove, string.Empty, _StringComparison));
         }
 
