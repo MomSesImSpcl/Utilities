@@ -1,3 +1,4 @@
+#if FMOD
 using FMOD.Studio;
 
 namespace MomSesImSpcl.Extensions
@@ -20,3 +21,4 @@ namespace MomSesImSpcl.Extensions
         #endregion
     }
 }
+#endif
