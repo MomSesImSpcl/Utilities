@@ -30,6 +30,17 @@ namespace MomSesImSpcl.Extensions
         {
             return _Float != 0f;
         }
+
+        /// <summary>
+        /// Casts this <see cref="float"/> into an <see cref="int"/>.
+        /// </summary>
+        /// <param name="_Float">The <see cref="float"/> to cast into an <see cref="int"/>.</param>
+        /// <returns>This <see cref="float"/> as an <see cref="int"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int AsInt(this float _Float)
+        {
+            return Unsafe.As<float, int>(ref _Float);
+        }
         
         /// <summary>
         /// Clamps this <see cref="float"/> between the given min and max value.
