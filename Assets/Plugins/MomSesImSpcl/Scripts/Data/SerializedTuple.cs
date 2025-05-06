@@ -1,4 +1,5 @@
 using System;
+using MomSesImSpcl.Extensions;
 using UnityEditor;
 using UnityEngine;
 
@@ -82,9 +83,18 @@ namespace MomSesImSpcl.Data
         /// <param name="_Item1"><see cref="item1"/>.</param>
         /// <param name="_Item2"><see cref="item2"/>.</param>
         public void Deconstruct(out T _Item1, out T _Item2)
+        { 
+            _Item1 = this.item1;
+            _Item2 = this.item2;
+        }
+
+        /// <summary>
+        /// Returns the value of <see cref="item1"/> and <see cref="item2"/>.
+        /// </summary>
+        /// <returns>The value of <see cref="item1"/> and <see cref="item2"/>.</returns>
+        public override string ToString()
         {
-                _Item1 = this.item1;
-                _Item2 = this.item2;
+            return $"{nameof(this.Item1)}: {this.item1.ToString().Bold()} | {nameof(this.Item2)}: {this.item2.ToString().Bold()}";
         }
         #endregion
     } 
