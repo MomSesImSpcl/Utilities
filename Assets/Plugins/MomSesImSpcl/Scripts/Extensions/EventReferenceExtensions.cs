@@ -254,8 +254,8 @@ namespace MomSesImSpcl.Extensions
                 return;
             }
 
-            _EventReferences[_EventReference] = default;
             _EventInstance.ReleaseIfValid();
+            _EventReferences[_EventReference] = default;
         }
         #endregion
     }
