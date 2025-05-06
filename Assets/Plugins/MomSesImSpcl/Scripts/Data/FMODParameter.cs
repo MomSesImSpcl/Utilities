@@ -1,0 +1,80 @@
+#if FMOD
+using System;
+using FMOD;
+using FMOD.Studio;
+using MomSesImSpcl.Extensions;
+
+namespace MomSesImSpcl.Data
+{
+    /// <summary>
+    /// Contains info for a <see cref="PARAMETER_DESCRIPTION"/> and the <see cref="EventDescriptionId"/> it belongs to.
+    /// </summary>
+    [Serializable]
+    public struct FMODParameter
+    {
+        #region Fields
+        /// <summary>
+        /// The name of the parameter in FMOD.
+        /// </summary>
+        private string parameterName;
+        /// <summary>
+        /// The <see cref="GUID"/> of the <see cref="EventDescription"/> the <see cref="PARAMETER_DESCRIPTION"/> belongs to.
+        /// </summary>
+        private GUID eventDescriptionId;
+        /// <summary>
+        /// The <see cref="PARAMETER_ID"/> of the <see cref="PARAMETER_DESCRIPTION"/>.
+        /// </summary>
+        private SerializedParameterId parameterDescriptionId;
+        #endregion
+        
+        #region Properties
+        /// <summary>
+        /// <see cref="parameterName"/>.
+        /// </summary>
+        public string ParameterName => this.parameterName;
+        /// <summary>
+        /// <see cref="eventDescriptionId"/>.
+        /// </summary>
+        public GUID EventDescriptionId => this.eventDescriptionId;
+        /// <summary>
+        /// <see cref="parameterDescriptionId"/>.
+        /// </summary>
+        public PARAMETER_ID ParameterDescriptionId => this.parameterDescriptionId.ParameterId;
+        #endregion
+        
+        #region Operators
+        /// <summary>
+        /// Implicitly returns the <see cref="parameterName"/>.
+        /// </summary>
+        /// <param name="_FMODParameter">The <see cref="FMODParameter"/> to get the <see cref="parameterName"/> of.</param>
+        /// <returns><see cref="parameterName"/>.</returns>
+        public static implicit operator string(FMODParameter _FMODParameter) => _FMODParameter.parameterName;
+        #endregion
+        
+        #region Constructors
+        /// <summary>
+        /// <see cref="FMODParameter"/>.
+        /// </summary>
+        /// <param name="_EventDescription"><see cref="eventDescriptionId"/>.</param>
+        /// <param name="_ParameterDescription"><see cref="parameterDescriptionId"/>.</param>
+        internal FMODParameter(EventDescription _EventDescription, PARAMETER_DESCRIPTION _ParameterDescription)
+        {
+            _EventDescription.getID(out this.eventDescriptionId);
+            this.parameterDescriptionId = new SerializedParameterId(_ParameterDescription.id);
+            this.parameterName = _ParameterDescription.GetName();
+        }
+        #endregion
+        
+        #region Methods
+        /// <summary>
+        /// Returns the <see cref="parameterName"/>.
+        /// </summary>
+        /// <returns><see cref="parameterName"/>.</returns>
+        public override string ToString()
+        {
+            return this.parameterName;
+        }
+        #endregion
+    }
+}
+#endif
