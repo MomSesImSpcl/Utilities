@@ -34,6 +34,18 @@ namespace MomSesImSpcl.Extensions
                 _EventInstance.release();
             }
         }
+
+        /// <summary>
+        /// Starts the <see cref="EventInstance"/> if it is valid.
+        /// </summary>
+        /// <param name="_EventInstance">The <see cref="EventInstance"/> to start.</param>
+        public static void StartIfValid(this EventInstance _EventInstance)
+        {
+            if (_EventInstance.isValid())
+            {
+                _EventInstance.start();
+            }
+        }
         #endregion
     }
 }
