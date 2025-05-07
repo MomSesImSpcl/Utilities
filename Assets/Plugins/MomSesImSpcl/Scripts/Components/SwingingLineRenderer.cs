@@ -43,6 +43,10 @@ namespace MomSesImSpcl.Components
         [Tooltip("The number of positions that will be created in the line renderer.")]
         [Range(2, byte.MaxValue)]
         [SerializeField] private byte lineRendererSegments = 10;
+        [Tooltip("Invokes the OnEvent callback whenever the line renderer crosses its initial position.")]
+        [SerializeField] private bool callbackWhenOriginIsCrossed;
+        [Tooltip("Invokes the OnEvent callback whenever the line renderer reaches its maximum angle.")]
+        [SerializeField] private bool callbackWhenMaximumIsReached;
         #endregion
         
         #region Fields
@@ -140,7 +144,7 @@ namespace MomSesImSpcl.Components
                 _LineRendererSegments:   this.lineRendererSegments
             );
             
-            this.MaxSwingAngleReached(_angle);
+            this.InvokeEvent(_angle);
             
             this.attachedObjectJobHandle = _attachedObjectJob.Schedule(this.attachedObjectTransform);
             this.lineRendererJobHandle = _lineRendererJob.Schedule(this.attachedObjectJobHandle);
@@ -154,12 +158,15 @@ namespace MomSesImSpcl.Components
         }
 
         /// <summary>
-        /// Fires <see cref="OnEvent"/> when the <see cref="lineRenderer"/> reaches the max <see cref="swingAngle"/>.
+        /// Fires <see cref="OnEvent"/> when <see cref="callbackWhenOriginIsCrossed"/> or <see cref="callbackWhenMaximumIsReached"/> are <c>true</c>.
         /// </summary>
-        /// <param name="_CurrentAngle"></param>
-        private void MaxSwingAngleReached(float _CurrentAngle)
+        /// <param name="_CurrentAngle">The currentl angle of the <see cref="lineRenderer"/>.</param>
+        private void InvokeEvent(float _CurrentAngle)
         {
-            if (Mathf.Abs(_CurrentAngle) >= this.swingAngle - 1)
+            var _originCrossed = this.callbackWhenOriginIsCrossed && Mathf.Abs(_CurrentAngle) < 1;
+            var _maximumReached = this.callbackWhenMaximumIsReached && Mathf.Abs(_CurrentAngle) >= this.swingAngle - 1;
+            
+            if (_originCrossed || _maximumReached)
             {
                 if (!this.maxAngleReachedForCurrentSwing)
                 {
