@@ -28,6 +28,16 @@ namespace MomSesImSpcl.Extensions
         
         #region Methods
         /// <summary>
+        /// Returns the <see cref="EventDescription"/> for this <see cref="EventReference"/>.
+        /// </summary>
+        /// <param name="_EventReference">The <see cref="EventReference"/> to get the <see cref="EventDescription"/> of.</param>
+        /// <returns>The <see cref="EventDescription"/> for this <see cref="EventReference"/>.</returns>
+        public static EventDescription GetEventDescription(this EventReference _EventReference)
+        {
+            return RuntimeManager.GetEventDescription(_EventReference);
+        }
+        
+        /// <summary>
         /// Returns the <see cref="PARAMETER_ID"/> for the given name.
         /// </summary>
         /// <param name="_EventReference">The <see cref="EventReference"/> to get the parameter from.</param>
