@@ -25,7 +25,7 @@ namespace MomSesImSpcl.Data
         [Sirenix.OdinInspector.ReadOnly]
 #endif
         [Tooltip("The GUID of the EventDescription this FMODParameter belongs to.")] 
-        [SerializeField] private GUID eventDescriptionId;
+        [SerializeField] private SerializedGUID eventDescriptionId;
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.ReadOnly]
 #endif
@@ -43,7 +43,7 @@ namespace MomSesImSpcl.Data
         /// <summary>
         /// <see cref="eventDescriptionId"/>.
         /// </summary>
-        public GUID EventDescriptionId => this.eventDescriptionId;
+        public GUID EventDescriptionId => this.eventDescriptionId.GUID;
         /// <summary>
         /// <see cref="parameterId"/>.
         /// </summary>
@@ -68,7 +68,8 @@ namespace MomSesImSpcl.Data
         /// <param name="_ParameterDescription"><see cref="parameterId"/>.</param>
         internal FMODParameter(EventDescription _EventDescription, PARAMETER_DESCRIPTION _ParameterDescription)
         {
-            _EventDescription.getID(out this.eventDescriptionId);
+            _EventDescription.getID(out var _eventDescriptionId);
+            this.eventDescriptionId = new SerializedGUID(_eventDescriptionId);
             this.parameterId = new SerializedParameterId(_ParameterDescription.id);
 #if UNITY_EDITOR
             this.parameterName = _ParameterDescription.GetName();
@@ -83,7 +84,7 @@ namespace MomSesImSpcl.Data
         /// <returns><c>true</c> if this <see cref="FMODParameter"/> has been correctly initialized, otherwise <c>false</c>.</returns>
         public bool IsValid()
         {
-            return !this.eventDescriptionId.IsNull;
+            return !this.eventDescriptionId.GUID.IsNull;
         }
         
 #if UNITY_EDITOR
