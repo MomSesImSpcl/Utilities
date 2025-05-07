@@ -23,11 +23,13 @@ namespace MomSesImSpcl.Data
 #endif
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.ReadOnly]
+        [Sirenix.OdinInspector.InlineProperty]
 #endif
         [Tooltip("The GUID of the EventDescription this FMODParameter belongs to.")] 
         [SerializeField] private SerializedGUID eventDescriptionId;
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.ReadOnly]
+        [Sirenix.OdinInspector.InlineProperty]
 #endif
         [Tooltip("The PARAMETER_ID of the PARAMETER_DESCRIPTION.")] 
         [SerializeField] private SerializedParameterId parameterId;
