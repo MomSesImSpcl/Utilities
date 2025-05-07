@@ -1,4 +1,6 @@
+using System;
 using MomSesImSpcl.Extensions;
+using MomSesImSpcl.Interfaces;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -13,7 +15,7 @@ namespace MomSesImSpcl.Components
     /// Swings a <see cref="LineRenderer"/> on the <see cref="Vector2.x"/> axis.
     /// </summary>
     [RequireComponent(typeof(LineRenderer))]
-    public sealed class SwingingLineRenderer : MonoBehaviour
+    public sealed class SwingingLineRenderer : MonoBehaviour, IEventNotifier
     {
         #region Inspector Fields
         [Header("References")]
@@ -68,6 +70,17 @@ namespace MomSesImSpcl.Components
         /// <see cref="JobHandle"/> for the <see cref="LineRendererJob"/>.
         /// </summary>
         private JobHandle lineRendererJobHandle;
+        /// <summary>
+        /// Determines whether the max angle for the current swing direction has been reached.
+        /// </summary>
+        private bool maxAngleReachedForCurrentSwing;
+        #endregion
+        
+        #region Events
+        /// <summary>
+        /// Will be fired every time the <see cref="lineRenderer"/> reaches the max <see cref="swingAngle"/>.
+        /// </summary>
+        public event Action OnEvent;
         #endregion
         
         #region Methods
@@ -75,7 +88,7 @@ namespace MomSesImSpcl.Components
         private void Reset()
         {
             this.lineRenderer.useWorldSpace = false; // Makes visualizing the line in edit mode easier, will be set to true in Awake at runtime.
-            this.SetLineRendererSegments(this.lineRendererSegments);        
+            this.SetLineRendererSegments(this.lineRendererSegments);
         }
 #endif
         private void Awake()
@@ -127,6 +140,8 @@ namespace MomSesImSpcl.Components
                 _LineRendererSegments:   this.lineRendererSegments
             );
             
+            this.MaxSwingAngleReached(_angle);
+            
             this.attachedObjectJobHandle = _attachedObjectJob.Schedule(this.attachedObjectTransform);
             this.lineRendererJobHandle = _lineRendererJob.Schedule(this.attachedObjectJobHandle);
         }
@@ -136,6 +151,26 @@ namespace MomSesImSpcl.Components
             this.attachedObjectJobHandle.Complete();
             this.lineRendererJobHandle.Complete();
             this.lineRenderer.SetPositions(this.lineRendererPositions);
+        }
+
+        /// <summary>
+        /// Fires <see cref="OnEvent"/> when the <see cref="lineRenderer"/> reaches the max <see cref="swingAngle"/>.
+        /// </summary>
+        /// <param name="_CurrentAngle"></param>
+        private void MaxSwingAngleReached(float _CurrentAngle)
+        {
+            if (Mathf.Abs(_CurrentAngle) >= this.swingAngle - 1)
+            {
+                if (!this.maxAngleReachedForCurrentSwing)
+                {
+                    this.maxAngleReachedForCurrentSwing = true;
+                    this.OnEvent?.Invoke();
+                }
+            }   
+            else
+            {
+                this.maxAngleReachedForCurrentSwing = false;
+            }
         }
         
 #if UNITY_EDITOR
