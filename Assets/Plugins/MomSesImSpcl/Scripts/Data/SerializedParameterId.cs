@@ -15,11 +15,13 @@ namespace MomSesImSpcl.Data
         #region Inspector Fields
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.HorizontalGroup]
+        [Sirenix.OdinInspector.ReadOnly]
 #endif
         [Tooltip("The lower 32 bits of the PARAMETER_ID.")]
         [SerializeField] private uint data1;
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.HorizontalGroup]
+        [Sirenix.OdinInspector.ReadOnly]
 #endif
         [Tooltip("The upper 32 bits of the PARAMETER_ID.")]
         [SerializeField] private uint data2;
