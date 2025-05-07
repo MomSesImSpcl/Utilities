@@ -24,7 +24,7 @@ namespace MomSesImSpcl.Data
         /// <summary>
         /// The <see cref="PARAMETER_ID"/> of the <see cref="PARAMETER_DESCRIPTION"/>.
         /// </summary>
-        private SerializedParameterId parameterDescriptionId;
+        private SerializedParameterId parameterId;
         #endregion
         
         #region Properties
@@ -37,9 +37,9 @@ namespace MomSesImSpcl.Data
         /// </summary>
         public GUID EventDescriptionId => this.eventDescriptionId;
         /// <summary>
-        /// <see cref="parameterDescriptionId"/>.
+        /// <see cref="parameterId"/>.
         /// </summary>
-        public PARAMETER_ID ParameterDescriptionId => this.parameterDescriptionId.ParameterId;
+        public PARAMETER_ID ParameterId => this.parameterId.ParameterId;
         #endregion
         
         #region Operators
@@ -56,11 +56,11 @@ namespace MomSesImSpcl.Data
         /// <see cref="FMODParameter"/>.
         /// </summary>
         /// <param name="_EventDescription"><see cref="eventDescriptionId"/>.</param>
-        /// <param name="_ParameterDescription"><see cref="parameterDescriptionId"/>.</param>
+        /// <param name="_ParameterDescription"><see cref="parameterId"/>.</param>
         internal FMODParameter(EventDescription _EventDescription, PARAMETER_DESCRIPTION _ParameterDescription)
         {
             _EventDescription.getID(out this.eventDescriptionId);
-            this.parameterDescriptionId = new SerializedParameterId(_ParameterDescription.id);
+            this.parameterId = new SerializedParameterId(_ParameterDescription.id);
             this.parameterName = _ParameterDescription.GetName();
         }
         #endregion
