@@ -3,6 +3,7 @@ using System;
 using FMOD;
 using FMOD.Studio;
 using MomSesImSpcl.Extensions;
+using UnityEngine;
 
 namespace MomSesImSpcl.Data
 {
@@ -14,19 +15,22 @@ namespace MomSesImSpcl.Data
     {
         #region Fields
 #if UNITY_EDITOR
-        /// <summary>
-        /// The name of the parameter in FMOD.
-        /// </summary>
-        private string parameterName;
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.ReadOnly]
 #endif
-        /// <summary>
-        /// The <see cref="GUID"/> of the <see cref="EventDescription"/> the <see cref="PARAMETER_DESCRIPTION"/> belongs to.
-        /// </summary>
-        private GUID eventDescriptionId;
-        /// <summary>
-        /// The <see cref="PARAMETER_ID"/> of the <see cref="PARAMETER_DESCRIPTION"/>.
-        /// </summary>
-        private SerializedParameterId parameterId;
+        [Tooltip("The name of the parameter in FMOD.")] 
+        [SerializeField] private string parameterName;
+#endif
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.ReadOnly]
+#endif
+        [Tooltip("The GUID of the EventDescription this FMODParameter belongs to.")] 
+        [SerializeField] private GUID eventDescriptionId;
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.ReadOnly]
+#endif
+        [Tooltip("The PARAMETER_ID of the PARAMETER_DESCRIPTION.")] 
+        [SerializeField] private SerializedParameterId parameterId;
         #endregion
         
         #region Properties
