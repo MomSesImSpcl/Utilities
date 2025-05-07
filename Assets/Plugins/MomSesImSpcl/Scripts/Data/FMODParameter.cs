@@ -1,5 +1,6 @@
 #if FMOD
 using System;
+using System.Runtime.InteropServices;
 using FMOD;
 using FMOD.Studio;
 using MomSesImSpcl.Extensions;
@@ -13,6 +14,13 @@ namespace MomSesImSpcl.Data
     [Serializable]
     public struct FMODParameter
     {
+        #region Constants
+        /// <summary>
+        /// Name for an unused <see cref="FMODParameter"/>.
+        /// </summary>
+        public const string NULL_PARAMETER = "NULL";
+        #endregion
+            
         #region Fields
 #if UNITY_EDITOR
 #if ODIN_INSPECTOR
@@ -50,6 +58,10 @@ namespace MomSesImSpcl.Data
         /// <see cref="parameterId"/>.
         /// </summary>
         public PARAMETER_ID ParameterId => this.parameterId.ParameterId;
+        /// <summary>
+        /// Gets an <see cref="FMODParameter"/> with all values set to <c>default</c> and <see cref="ParameterName"/> set to <see cref="NULL_PARAMETER"/>.
+        /// </summary>
+        public static FMODParameter NullParameter { get; } = CreateNullParameter();
         #endregion
         
 #if UNITY_EDITOR
@@ -87,6 +99,20 @@ namespace MomSesImSpcl.Data
         public bool IsValid()
         {
             return !this.eventDescriptionId.GUID.IsNull;
+        }
+        
+        /// <summary>
+        /// Creates an <see cref="FMODParameter"/> with all values set to <c>default</c> and <see cref="ParameterName"/> set to <see cref="NULL_PARAMETER"/>.
+        /// </summary>
+        /// <returns>An <see cref="FMODParameter"/> with all values set to <c>default</c> and <see cref="ParameterName"/> set to <see cref="NULL_PARAMETER"/>.</returns>
+        private static FMODParameter CreateNullParameter()
+        {
+            var _parameterDescription = new PARAMETER_DESCRIPTION
+            { 
+                name = new StringWrapper(Marshal.StringToHGlobalAnsi(NULL_PARAMETER))
+            };
+            
+            return new FMODParameter(default, _parameterDescription);
         }
         
 #if UNITY_EDITOR
