@@ -39,7 +39,7 @@ namespace MomSesImSpcl.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int AsInt(this float _Float)
         {
-            return Unsafe.As<float, int>(ref _Float);
+            return (int)_Float;
         }
         
         /// <summary>
