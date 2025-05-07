@@ -40,6 +40,7 @@ namespace MomSesImSpcl.Utilities
         /// <summary>
         /// <see cref="fmodSystem"/>.
         /// </summary>
+        /// <exception cref="Exception">When <see cref="FMOD.Studio.System"/>.<see cref="FMOD.Studio.System.create"/> or <see cref="FMOD.Studio.System"/>.<see cref="FMOD.Studio.System.initialize"/> don't return <see cref="RESULT.OK"/>.</exception>
         public static FMOD.Studio.System FMODSystem
         {
             get
@@ -90,6 +91,59 @@ namespace MomSesImSpcl.Utilities
         }
         
         /// <summary>
+        /// Searches and loads the <see cref="Bank"/> that contains the given <see cref="EventReference"/>.
+        /// </summary>
+        /// <param name="_EventReference">The <see cref="EventReference"/> to search the <see cref="Bank"/> of.</param>
+        /// <returns>The <see cref="Bank"/> containing the given <see cref="EventReference"/>, or <c>null</c> if none could be found.</returns>
+        /// <exception cref="Exception">When <see cref="Bank"/>.<see cref="Bank.getEventList"/> doesn't return <see cref="RESULT.OK"/>.</exception>
+        public static Bank? GetBank(EventReference _EventReference)
+        {
+            Bank _bank = default;
+            var _banks = Settings.Instance.Banks;
+            var _bankFound = false;
+            
+            // ReSharper disable once InconsistentNaming
+            for (var i = 0; i < _banks.Count && !_bankFound; i++)
+            {
+                try
+                {
+                    if (!IsBankLoaded(_banks[i], out _bank))
+                    {
+                        LoadBank(_banks[i], out _bank);   
+                    }
+
+                    if (_bank.getEventList(out var _eventList) is var _eventListResult && _eventListResult != RESULT.OK)
+                    {
+                        throw new Exception($"Get Event list: {_eventListResult}");
+                    }
+
+                    var _eventDescription = GetEventDescription(_EventReference, out _);
+                    
+                    foreach (var _bankEvent in _eventList)
+                    {
+                        _bankEvent.getID(out var _bankEventId);
+                        _eventDescription.getID(out var _targetEventId);
+
+                        if (_bankEventId == _targetEventId)
+                        {
+                            _bankFound = true;
+                            break;
+                        }
+                    }
+                }
+                finally
+                {
+                    if (!_bankFound && _bank.isValid())
+                    {
+                        _bank.unload();
+                    }
+                }   
+            }
+            
+            return _bankFound ? _bank : null;
+        }
+        
+        /// <summary>
         /// Loads the <see cref="Bank"/> with the given name.
         /// </summary>
         /// <param name="_BankName">
@@ -98,10 +152,10 @@ namespace MomSesImSpcl.Utilities
         /// </param>
         /// <param name="_Bank">Will contain the loaded <see cref="Bank"/>.</param>
         /// <returns>The loaded <see cref="Bank"/>.</returns>
+        /// <exception cref="Exception">When <see cref="FMOD.Studio.System"/>.<see cref="FMOD.Studio.System.loadBankFile"/> doesn't return <see cref="RESULT.OK"/>.</exception>
         public static Bank LoadBank(string _BankName, out Bank _Bank)
         {
-            var _fmodInstance = Settings.Instance;
-            var _absoluteBankPath = Path.Combine(Application.dataPath.RemoveString("Assets"), _fmodInstance.SourceBankPath, _fmodInstance.PlayInEditorPlatform.BuildDirectory, $"{_BankName}.bank");
+            var _absoluteBankPath = GetBankFilePathInUnity(_BankName);
 
             if (FMODSystem.loadBankFile(_absoluteBankPath, LOAD_BANK_FLAGS.NORMAL, out _Bank) is var _bankResult && _bankResult != RESULT.OK)
             {
@@ -112,11 +166,23 @@ namespace MomSesImSpcl.Utilities
         }
 
         /// <summary>
+        /// Returns the absolute filepath of the <see cref="Bank"/> with the given name inside Unity.
+        /// </summary>
+        /// <param name="_BankName">The bank name to get the filepath for.</param>
+        /// <returns>The absolute filepath of the <see cref="Bank"/> with the given name inside Unity.</returns>
+        public static string GetBankFilePathInUnity(string _BankName)
+        {
+            var _fmodInstance = Settings.Instance;
+            return Path.Combine(Application.dataPath.RemoveString("Assets"), _fmodInstance.SourceBankPath, _fmodInstance.PlayInEditorPlatform.BuildDirectory, $"{_BankName}.bank");
+        }
+        
+        /// <summary>
         /// Checks if the given bank is laoded in <see cref="fmodSystem"/>.
         /// </summary>
         /// <param name="_BankName">The name of the bank to check.</param>
+        /// <param name="_Bank">Will contain the loaded <see cref="Bank"/> or <c>default</c>.</param>
         /// <returns><c>true</c> if the bank is loaded, otherwise <c>false</c>.</returns>
-        public static bool IsBankLoaded(string _BankName)
+        public static bool IsBankLoaded(string _BankName, out Bank _Bank)
         {
             FMODSystem.getBankList(out var _banks);
             
@@ -126,10 +192,12 @@ namespace MomSesImSpcl.Utilities
                 
                 if (string.Equals($"bank:/{_BankName}", _bankPath))
                 {
+                    _Bank = _bank;
                     return true;
                 }
             }
 
+            _Bank = default;
             return false;
         }
         
@@ -140,6 +208,7 @@ namespace MomSesImSpcl.Utilities
         /// <param name="_EventReference">The <see cref="EventReference"/> to get the <see cref="EventDescription"/> for.</param>
         /// <param name="_EventDescription">Will contain the <see cref="EventDescription"/> for the given <see cref="EventReference"/>.</param>
         /// <returns>The <see cref="EventDescription"/> for the given <see cref="EventReference"/>.</returns>
+        /// <exception cref="Exception">When <see cref="FMOD.Studio.System"/>.<see cref="FMOD.Studio.System.getEventByID"/> doesn't return <see cref="RESULT.OK"/>.</exception>
         public static EventDescription GetEventDescription(EventReference _EventReference, out EventDescription _EventDescription)
         {
             if (FMODSystem.getEventByID(_EventReference.Guid, out _EventDescription) is var _eventDescriptionResult && _eventDescriptionResult != RESULT.OK)
@@ -176,6 +245,7 @@ namespace MomSesImSpcl.Utilities
         /// </param>
         /// <param name="_FMODParameters">Will contain all <see cref="PARAMETER_DESCRIPTION"/> for the given <see cref="EventDescription"/>.</param>
         /// <returns>All <see cref="PARAMETER_DESCRIPTION"/> for the given <see cref="EventDescription"/>.</returns>
+        /// <exception cref="Exception">When <see cref="EventDescription"/>.<see cref="EventDescription.getParameterDescriptionCount"/> doesn't return <see cref="RESULT.OK"/>.</exception>
         public static List<FMODParameter> GetParameters(EventDescription _EventDescription, Func<PARAMETER_DESCRIPTION, bool> _Exclude, out List<FMODParameter> _FMODParameters)
         {
             if (_EventDescription.getParameterDescriptionCount(out var _parameterCount) is var _parameterResult && _parameterResult != RESULT.OK)
@@ -200,20 +270,16 @@ namespace MomSesImSpcl.Utilities
 
             return _FMODParameters;
         }
-
+        
         /// <summary>
         /// Returns a <see cref="Dictionary{TKey,TValue}"/> with every labeled parameter for the given <see cref="FMODParameter"/>.
         /// </summary>
         /// <param name="_FMODParameter">The <see cref="FMODParameter"/> to get the labels for.</param>
         /// <param name="_ParameterName">The actual name of the <see cref="FMODParameter"/>.</param>
-        /// <returns>
-        /// A <see cref="Dictionary{TKey,TValue}"/> with every labeled parameter for the given <see cref="FMODParameter"/>. <br/>
-        /// <b><see cref="KeyValuePair{TKey,TValue}.Key"/>:</b> The name of the label. <br/>
-        /// <b><see cref="KeyValuePair{TKey,TValue}.Value"/>:</b> The value/index of the label.
-        /// </returns>
-        public static Dictionary<string, int> GetParameterLabels(FMODParameter _FMODParameter, out string _ParameterName)
+        /// <returns>An <see cref="Array"/> with all <see cref="ParameterLabel"/> of the given <see cref="FMODParameter"/>.</returns>
+        /// <exception cref="Exception">When <see cref="FMOD.Studio.System"/>.<see cref="FMOD.Studio.System.getEventByID"/> or <see cref="EventDescription"/>.<see cref="EventDescription.getParameterDescriptionByID"/> don't return <see cref="RESULT.OK"/>.</exception>
+        public static ParameterLabel[] GetParameterLabels(FMODParameter _FMODParameter, out string _ParameterName)
         {
-            var _labels = new Dictionary<string, int>();
             _ParameterName = _FMODParameter.ParameterName;
 
             if (FMODSystem.getEventByID(_FMODParameter.EventDescriptionId, out var _eventDescription) is var _eventDescriptionResult && _eventDescriptionResult != RESULT.OK)
@@ -221,24 +287,26 @@ namespace MomSesImSpcl.Utilities
                 throw new Exception($"Get Event: {_eventDescriptionResult}");
             }
             
-            if (_eventDescription.getParameterDescriptionByID(_FMODParameter.ParameterDescriptionId, out var _parameterDescription) is var _parameterDescriptionResult && _parameterDescriptionResult != RESULT.OK)
+            if (_eventDescription.getParameterDescriptionByID(_FMODParameter.ParameterId, out var _parameterDescription) is var _parameterDescriptionResult && _parameterDescriptionResult != RESULT.OK)
             {
                 throw new Exception($"Get Parameter: {_parameterDescriptionResult}");
             }
             
+            var _parameterLabels = new ParameterLabel[_parameterDescription.maximum.AsInt() + 1];
+            
             // ReSharper disable once InconsistentNaming
             for (var i = 0; i <= _parameterDescription.maximum; i++)
             {
-                if (_eventDescription.getParameterLabelByID(_FMODParameter.ParameterDescriptionId, i, out var _label) is var _labelResult && _labelResult != RESULT.OK)
+                if (_eventDescription.getParameterLabelByID(_FMODParameter.ParameterId, i, out var _label) is var _labelResult && _labelResult != RESULT.OK)
                 {
                     Debug.LogError($"Get Parameter Label: {_labelResult}{Environment.NewLine}Parameter: {_ParameterName.Bold()}");
                     continue;
                 }
-                
-                _labels.Add(_label, i);
+
+                _parameterLabels[i] = new ParameterLabel(_label, i);
             }
 
-            return _labels;
+            return _parameterLabels;
         }
         #endregion
     }
