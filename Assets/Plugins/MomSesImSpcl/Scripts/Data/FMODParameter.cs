@@ -1,6 +1,5 @@
 #if FMOD
 using System;
-using System.Runtime.InteropServices;
 using FMOD;
 using FMOD.Studio;
 using MomSesImSpcl.Extensions;
@@ -14,12 +13,15 @@ namespace MomSesImSpcl.Data
     [Serializable]
     public struct FMODParameter
     {
+#if UNITY_EDITOR
         #region Constants
         /// <summary>
-        /// Name for an unused <see cref="FMODParameter"/>.
+        /// Name for an unused <see cref="FMODParameter"/>. <br/>
+        /// <b>Is only accessible in editor.</b>
         /// </summary>
         public const string NULL_PARAMETER = "NULL";
         #endregion
+#endif
             
         #region Fields
 #if UNITY_EDITOR
@@ -58,10 +60,12 @@ namespace MomSesImSpcl.Data
         /// <see cref="parameterId"/>.
         /// </summary>
         public PARAMETER_ID ParameterId => this.parameterId.ParameterId;
+#if UNITY_EDITOR
         /// <summary>
         /// Gets an <see cref="FMODParameter"/> with all values set to <c>default</c> and <see cref="ParameterName"/> set to <see cref="NULL_PARAMETER"/>.
         /// </summary>
         public static FMODParameter NullParameter { get; } = CreateNullParameter();
+#endif
         #endregion
         
 #if UNITY_EDITOR
@@ -101,6 +105,7 @@ namespace MomSesImSpcl.Data
             return !this.eventDescriptionId.GUID.IsNull;
         }
         
+#if UNITY_EDITOR
         /// <summary>
         /// Creates an <see cref="FMODParameter"/> with all values set to <c>default</c> and <see cref="ParameterName"/> set to <see cref="NULL_PARAMETER"/>.
         /// </summary>
@@ -109,13 +114,12 @@ namespace MomSesImSpcl.Data
         {
             var _parameterDescription = new PARAMETER_DESCRIPTION
             { 
-                name = new StringWrapper(Marshal.StringToHGlobalAnsi(NULL_PARAMETER))
+                name = new StringWrapper(System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(NULL_PARAMETER))
             };
             
             return new FMODParameter(default, _parameterDescription);
         }
         
-#if UNITY_EDITOR
         /// <summary>
         /// Returns the <see cref="parameterName"/>.
         /// </summary>
