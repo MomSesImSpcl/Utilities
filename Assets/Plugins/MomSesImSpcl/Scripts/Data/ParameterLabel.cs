@@ -12,8 +12,14 @@ namespace MomSesImSpcl.Data
     {
         #region Inspector Fields
 #if UNITY_EDITOR
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.ReadOnly]
+#endif
         [Tooltip("The name of this parameter label.")]
         [SerializeField] private string label;
+#endif
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.ReadOnly]
 #endif
         [Tooltip("The value/index of this label.")]
         [SerializeField] private int value;
