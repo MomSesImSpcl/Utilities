@@ -318,7 +318,11 @@ namespace MomSesImSpcl.Utilities
         {
             if (Guid.TryParse(_Guid, out var _guid))
             {
-                if (RuntimeManager.StudioSystem.getEventByID(new FMOD.GUID(_guid), out var _eventDescription) is var _eventResult && _eventResult != RESULT.OK)
+                var _eventResult = Application.isPlaying 
+                    ? RuntimeManager.StudioSystem.getEventByID(new FMOD.GUID(_guid), out var _eventDescription) 
+                    : FMODSystem.getEventByID(new FMOD.GUID(_guid), out _eventDescription);
+                
+                if (_eventResult != RESULT.OK)
                 {
                     Debug.LogError($"Get Event: {_eventResult}");
                 }
