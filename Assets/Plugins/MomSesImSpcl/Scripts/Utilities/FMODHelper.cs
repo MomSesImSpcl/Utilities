@@ -308,6 +308,33 @@ namespace MomSesImSpcl.Utilities
 
             return _parameterLabels;
         }
+
+        /// <summary>
+        /// Gets the event path for the given <see cref="Guid"/>.
+        /// </summary>
+        /// <param name="_Guid">The <see cref="Guid"/> to get the event path for.</param>
+        /// <returns>The event path for the given <see cref="Guid"/>.</returns>
+        public static string GetEventPathFromGuid(string _Guid)
+        {
+            if (Guid.TryParse(_Guid, out var _guid))
+            {
+                if (RuntimeManager.StudioSystem.getEventByID(new FMOD.GUID(_guid), out var _eventDescription) is var _eventResult && _eventResult != RESULT.OK)
+                {
+                    Debug.LogError($"Get Event: {_eventResult}");
+                }
+                else
+                {
+                    _eventDescription.getPath(out var _eventPath);
+                    return _eventPath;
+                }
+            }
+            else
+            {
+                Debug.LogError("Invalid GUID format.");
+            }
+
+            return string.Empty;
+        }
         #endregion
     }
 }
