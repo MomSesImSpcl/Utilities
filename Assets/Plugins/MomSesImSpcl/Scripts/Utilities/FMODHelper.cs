@@ -334,7 +334,7 @@ namespace MomSesImSpcl.Utilities
             }
             else
             {
-                Debug.LogError("Invalid GUID format.");
+                Debug.LogError("Invalid Guid format.");
             }
 
             return string.Empty;
