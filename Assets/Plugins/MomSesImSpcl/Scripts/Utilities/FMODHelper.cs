@@ -314,7 +314,7 @@ namespace MomSesImSpcl.Utilities
         /// </summary>
         /// <param name="_Guid">The <see cref="Guid"/> to get the event path for.</param>
         /// <returns>The event path for the given <see cref="Guid"/>.</returns>
-        public static string GetEventPathFromGuid(string _Guid)
+        public static string GetEventPathForGuid(string _Guid)
         {
             if (Guid.TryParse(_Guid, out var _guid))
             {
