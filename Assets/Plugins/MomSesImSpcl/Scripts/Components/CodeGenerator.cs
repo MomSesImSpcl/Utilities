@@ -3,22 +3,24 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using MomSesImSpcl.Components;
 using MomSesImSpcl.Interfaces;
-using MomSesImSpcl.Utilities;
 using MomSesImSpcl.Utilities.Logging;
 using UnityEngine;
+
 // ReSharper disable RedundantUsingDirective
+using MomSesImSpcl.Utilities;
 using Object = UnityEngine.Object;
 // ReSharper restore RedundantUsingDirective
 
 #pragma warning disable CS1998
 
-namespace MomSesImSpcl.Components
+namespace MomSesImSpcl.Utilities
 {
     /// <summary>
     /// Helper class for the <see cref="RuntimeCodeExecutor"/> to generate code from a <c>.cs</c>-file instead of from the inspector.
     /// </summary>
-    internal sealed class CodeGenerator : MonoBehaviour, ICodeGenerator
+    public sealed class CodeGenerator : EditorMonoBehaviour, ICodeGenerator
     {
 #if UNITY_EDITOR && ODIN_INSPECTOR
         #region Inspector Fields
@@ -88,7 +90,7 @@ namespace MomSesImSpcl.Components
                         _Fields.Add(_line + Environment.NewLine);
                     }
                 }
-                else if (_line.Contains($"void {nameof(Main)}({nameof(Object)}[] _Contexts)"))
+                else if (_line.Contains($"void {nameof(this.Main)}({nameof(Object)}[] _Contexts)"))
                 {
                     _mainMethodStartLine = _lineNumber;
                 }
