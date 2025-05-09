@@ -117,18 +117,19 @@ namespace MomSesImSpcl.Utilities
                         throw new Exception($"Get Event list: {_eventListResult}");
                     }
 
-                    var _eventDescription = GetEventDescription(_EventReference, out _);
-                    
-                    foreach (var _bankEvent in _eventList)
+                    if (FMODSystem.getEventByID(_EventReference.Guid, out var _eventDescription) is RESULT.OK)
                     {
-                        _bankEvent.getID(out var _bankEventId);
-                        _eventDescription.getID(out var _targetEventId);
-
-                        if (_bankEventId == _targetEventId)
+                        foreach (var _bankEvent in _eventList)
                         {
-                            _bankFound = true;
-                            break;
-                        }
+                            _bankEvent.getID(out var _bankEventId);
+                            _eventDescription.getID(out var _targetEventId);
+
+                            if (_bankEventId == _targetEventId)
+                            {
+                                _bankFound = true;
+                                break;
+                            }
+                        }   
                     }
                 }
                 finally
