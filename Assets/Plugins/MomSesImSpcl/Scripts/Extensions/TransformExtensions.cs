@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Runtime.CompilerServices;
 using MomSesImSpcl.Utilities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.eulerAngles"/> from.</param>
         /// <returns>The <see cref="Transform.eulerAngles"/> as a <see cref="float3"/></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static float3 EulerAngles(this Transform _Transform)
         {
             return new float3(_Transform.eulerAngles.x, _Transform.eulerAngles.y, _Transform.eulerAngles.z);
@@ -28,6 +30,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localEulerAngles"/> from.</param>
         /// <returns>The <see cref="Transform.localEulerAngles"/> as a <see cref="float3"/></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static float3 LocalEulerAngles(this Transform _Transform)
         {
             return new float3(_Transform.localEulerAngles.x, _Transform.localEulerAngles.y, _Transform.localEulerAngles.z);
@@ -218,6 +221,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localPosition"/> from.</param>
         /// <returns>The <see cref="Transform.localPosition"/> as a <see cref="float2"/></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static float2 LocalPosition2(this Transform _Transform)
         {
             return new float2(_Transform.localPosition.x, _Transform.localPosition.y);
@@ -228,6 +232,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.position"/> from.</param>
         /// <returns>The <see cref="Transform.position"/> as a <see cref="float2"/></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static float2 Position2(this Transform _Transform)
         {
             return new float2(_Transform.position.x, _Transform.position.y);
@@ -238,6 +243,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localPosition"/> from.</param>
         /// <returns>The <see cref="Transform.localPosition"/> as a <see cref="float3"/></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static float3 LocalPosition3(this Transform _Transform)
         {
             return new float3(_Transform.localPosition.x, _Transform.localPosition.y, _Transform.localPosition.z);
@@ -248,6 +254,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.position"/> from.</param>
         /// <returns>The <see cref="Transform.position"/> as a <see cref="float3"/></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static float3 Position3(this Transform _Transform)
         {
             return new float3(_Transform.position.x, _Transform.position.y, _Transform.position.z);
@@ -258,6 +265,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.eulerAngles"/> from.</param>
         /// <returns>The <see cref="Transform.eulerAngles"/> rotation as a <see cref="Quaternion"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static Quaternion Rotation2D(this Transform _Transform)
         {
             return _Transform.eulerAngles.WithZ(0).ToQuaternion();
@@ -268,6 +276,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localEulerAngles"/> from.</param>
         /// <returns>The <see cref="Transform.localEulerAngles"/> rotation as a <see cref="Quaternion"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static Quaternion LocalRotation2D(this Transform _Transform)
         {
             return _Transform.localEulerAngles.WithZ(0).ToQuaternion();
@@ -278,6 +287,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.eulerAngles"/> from.</param>
         /// <returns>The signed values of the <see cref="Transform.eulerAngles"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static Vector3 SignedEulerAngles(this Transform _Transform)
         {
             return Math.UnsignedToSignedAngle(_Transform.eulerAngles);
@@ -288,6 +298,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.eulerAngles"/> from.</param>
         /// <returns>The signed values of the <see cref="Transform.eulerAngles"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static Vector3 SignedLocalEulerAngles(this Transform _Transform)
         {
             return Math.UnsignedToSignedAngle(_Transform.localEulerAngles);
@@ -309,6 +320,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.eulerAngles"/> from.</param>
         /// <returns>The <see cref="Transform.eulerAngles"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Vector2EulerAngles(this Transform _Transform)
         {
             return _Transform.eulerAngles.ToVector2();
@@ -319,6 +331,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localEulerAngles"/> from.</param>
         /// <returns>The <see cref="Transform.localEulerAngles"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 LocalVector2EulerAngles(this Transform _Transform)
         {
             return _Transform.localEulerAngles.ToVector2();
@@ -329,6 +342,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.position"/> from.</param>
         /// <returns>The <see cref="Transform.position"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Vector2Position(this Transform _Transform)
         {
             return _Transform.position.ToVector2();
@@ -339,6 +353,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.localPosition"/> from.</param>
         /// <returns>The <see cref="Transform.localPosition"/> of this <see cref="Transform"/> as a <see cref="Vector2"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 LocalVector2Position(this Transform _Transform)
         {
             return _Transform.localPosition.ToVector2();
