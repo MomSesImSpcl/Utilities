@@ -17,7 +17,6 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_ObscuredInt">The <see cref="ObscuredInt"/> value to cast to its <see cref="Enum"/> representation.</param>
         /// <typeparam name="T">Must be an <see cref="Enum"/>.</typeparam>
         /// <returns>This <see cref="ObscuredInt"/> as the value inside the given <see cref="Enum"/> <see cref="Type"/>.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T AsEnum<T>(this ObscuredInt _ObscuredInt) where T : Enum
         {
             var _value = _ObscuredInt.GetDecrypted();
