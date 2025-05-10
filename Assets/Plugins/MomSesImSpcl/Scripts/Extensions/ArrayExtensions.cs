@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using MomSesImSpcl.Utilities.Comparers;
 using MomSesImSpcl.Utilities.Pooling;
 using Random = UnityEngine.Random;
@@ -280,6 +281,20 @@ namespace MomSesImSpcl.Extensions
         {
             Array.Sort(_Array, _StartIndex, _Length, Comparer<T>.Create((_First, _Second) => _Second.CompareTo(_First)));
             return _Array;
+        }
+        
+        /// <summary>
+        /// Tries to retrieve the element at the given <c>_Index</c>. <br/>
+        /// </summary>
+        /// <param name="_Array">The <see cref="Array"/> to retrieve the element from.</param>
+        /// <param name="_Index">The index to retrieve the element at.</param>
+        /// <param name="_Element">Will hold the retrieved element or <c>null</c>, if the given <c>_Index</c> was out of range.</param>
+        /// <typeparam name="T">Must be a nullable <see cref="Type"/>.</typeparam>
+        /// <returns><c>true</c> if the element was successfully retrieved, otherwise <c>false</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool TryGet<T>(this T[] _Array, int _Index, out T? _Element)
+        {
+            return _Array.To<IList<T>>().TryGet(_Index, out _Element);
         }
         #endregion
     }
