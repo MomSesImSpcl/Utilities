@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -49,9 +50,10 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_ClampMin">The minimum value this <see cref="float"/> can have.</param>
         /// <param name="_ClampMax">The maximum value this <see cref="float"/> can have.</param>
         /// <returns>This <see cref="float"/> clamped between the given min and max value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Clamp(this float _Float, float _ClampMin, float _ClampMax)
         {
-            return Mathf.Clamp(_Float, _ClampMin, _ClampMax);
+            return math.clamp(_Float, _ClampMin, _ClampMax);
         }
 
         /// <summary>
