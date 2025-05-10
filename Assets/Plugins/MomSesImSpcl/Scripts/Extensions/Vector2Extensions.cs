@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using MomSesImSpcl.Utilities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -28,8 +29,9 @@ namespace MomSesImSpcl.Extensions
         /// <summary>
         /// Returns the average value of all three axes of this <see cref="Vector2"/>.
         /// </summary>
-        /// <param name="_Vector2">The <see cref="Vector2"/> to get the axis avcerage from.</param>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to get the axis average from.</param>
         /// <returns>The average value of all three axes of this <see cref="Vector2"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Average(this Vector2 _Vector2)
         {
             return (_Vector2.x + _Vector2.y) / 2f;
@@ -42,6 +44,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_ClampMin">The minimum value this <see cref="Vector2"/> can have.</param>
         /// <param name="_ClampMax">The maximum value this <see cref="Vector2"/> can have.</param>
         /// <returns>This <see cref="Vector2"/> clamped between the given min and max value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Clamp(this Vector2 _Vector2, float _ClampMin, float _ClampMax)
         {
             var _x = _Vector2.x.Clamp(_ClampMin, _ClampMax);
@@ -59,6 +62,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_YMin">The minimum value on the <see cref="Vector2.y"/> axis.</param>
         /// <param name="_YMax">The maximum value on the <see cref="Vector2.y"/> axis.</param>
         /// <returns>This <see cref="Vector2"/> clamped between the given min and max values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Clamp(this Vector2 _Vector2, float _XMin, float _XMax, float _YMin, float _YMax)
         {
             var _x = _Vector2.x.Clamp(_XMin, _XMax);
@@ -72,9 +76,10 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Vector2">The <see cref="Vector2"/> to compute the diagonal lenght for.</param>
         /// <returns>The diagonal length of this <see cref="Vector2"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Diagonal(this Vector2 _Vector2)
         {
-            return Mathf.Sqrt(_Vector2.x * _Vector2.x + _Vector2.y * _Vector2.y);
+            return math.sqrt(_Vector2.x * _Vector2.x + _Vector2.y * _Vector2.y);
         }
         
         /// <summary>
@@ -83,6 +88,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_From">Origin <see cref="Transform.position"/>.</param>
         /// <param name="_To">Target <see cref="Transform.position"/>.</param>
         /// <returns>The direction vector from this <see cref="Vector2"/> to the given <see cref="Vector2"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Direction(this Vector2 _From, Vector2 _To)
         {
             return _To - _From;
@@ -94,6 +100,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_From">From where to calculate the distance.</param>
         /// <param name="_To">To where to calculate the distance.</param>
         /// <returns>The distance between the two <see cref="Vector2"/>s.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Distance(this Vector2 _From, Vector2 _To)
         {
             return math.distance(_From, _To);
@@ -107,6 +114,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value to divide from <c>_Vector2</c>.</param>
         /// <returns>This <c>_Vector2</c> with the divided value/s.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When <c>_Axis</c> is any other value than: <see cref="Axis.X"/>, <see cref="Axis.Y"/> or <see cref="Axis.XY"/>.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Divide(this Vector2 _Vector2, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector2(_Vector2.x / _Value, _Vector2.y),
@@ -121,6 +129,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector2">The <see cref="Vector2"/> to be divided from.</param>
         /// <param name="_Value">The value to divide from the component(s).</param>
         /// <returns>A new <see cref="Vector2"/> with the divided value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Divide(this Vector2 _Vector2, float _Value)
         {
             return new Vector2(_Vector2.x / _Value, _Vector2.y / _Value);
@@ -132,6 +141,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector2">The <see cref="Vector2"/> to be divided from.</param>
         /// <param name="_Values">The values to divide from the component(s).</param>
         /// <returns>A new <see cref="Vector2"/> with the divided values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Divide(this Vector2 _Vector2, Vector2 _Values)
         {
             return new Vector2(_Vector2.x / _Values.x, _Vector2.y / _Values.y);
@@ -145,6 +155,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Axis">The <see cref="Axis"/> from which to get the value.</param>
         /// <returns>The values for the given <see cref="Axis"/> of this <see cref="Vector2"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Get(this Vector2 _Vector3, Axis _Axis) => _Axis switch
         {
             Axis.X => new Vector2(_Vector3.x, 0),
@@ -216,6 +227,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_First">First <see cref="Vector2"/>.</param>
         /// <param name="_Second">Second <see cref="Vector2"/>.</param>
         /// <returns>The midpoint (average) of two <see cref="Vector2"/>s.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 MidPoint(this Vector2 _First, Vector2 _Second)
         {
             return (_First + _Second) * .5f;
@@ -229,6 +241,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value to subtract from <c>_Vector2</c>.</param>
         /// <returns>This <c>_Vector2</c> with the subtracted value/s.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When <c>_Axis</c> is any other value than: <see cref="Axis.X"/>, <see cref="Axis.Y"/> or <see cref="Axis.XY"/>.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Minus(this Vector2 _Vector2, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector2(_Vector2.x - _Value, _Vector2.y),
@@ -243,6 +256,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector2">The <see cref="Vector2"/> to be subtracted from.</param>
         /// <param name="_Value">The value to subtract from the component(s).</param>
         /// <returns>A new <see cref="Vector2"/> with the subtracted value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Minus(this Vector2 _Vector2, float _Value)
         {
             return new Vector2(_Vector2.x - _Value, _Vector2.y - _Value);
@@ -254,6 +268,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector2">The <see cref="Vector2"/> to be subtracted from.</param>
         /// <param name="_Values">The values to subtract from the component(s).</param>
         /// <returns>A new <see cref="Vector2"/> with the subtracted values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Minus(this Vector2 _Vector2, Vector2 _Values)
         {
             return new Vector2(_Vector2.x - _Values.x, _Vector2.y - _Values.y);
@@ -267,6 +282,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value to multiply with <c>_Vector2</c>.</param>
         /// <returns>This <c>_Vector2</c> with the multiplied value/s.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When <c>_Axis</c> is any other value than: <see cref="Axis.X"/>, <see cref="Axis.Y"/> or <see cref="Axis.XY"/>.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Multiply(this Vector2 _Vector2, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector2(_Vector2.x * _Value, _Vector2.y),
@@ -281,6 +297,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector2">The Vector2 to be multiplied.</param>
         /// <param name="_Value">The value by which to multiply the component(s).</param>
         /// <returns>A new Vector2 with the multiplied values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Multiply(this Vector2 _Vector2, float _Value)
         {
             return new Vector2(_Vector2.x * _Value, _Vector2.y * _Value);
@@ -292,6 +309,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector2">The Vector2 to be multiplied.</param>
         /// <param name="_Values">The value by which to multiply the component(s).</param>
         /// <returns>A new Vector2 with the multiplied values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Multiply(this Vector2 _Vector2, Vector2 _Values)
         {
             return new Vector2(_Vector2.x * _Values.x, _Vector2.y * _Values.y);
@@ -306,6 +324,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value to use for the <see cref="Utilities.Operation"/>.</param>
         /// <returns>A new <see cref="Vector2"/> computed with the specified <see cref="Utilities.Operation"/> applied to the given <see cref="Axis"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the specified <see cref="Utilities.Operation"/> is not valid.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Operation(this Vector2 _Vector2, Operation _Operation, Axis _Axis, float _Value)
         {
             return _Operation switch
@@ -330,6 +349,7 @@ namespace MomSesImSpcl.Extensions
         /// </param>
         /// <returns>A new <see cref="Vector2"/> computed with the specified <see cref="Utilities.Operation"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the specified <see cref="Utilities.Operation"/> is not valid.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Operation(this Vector2 _Vector2, Operation _Operation, Vector2 _Values)
         {
             return _Operation switch
@@ -398,6 +418,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value to add to <c>_Vector2</c>.</param>
         /// <returns>This <c>_Vector2</c> with the added value/s.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When <c>_Axis</c> is any other value than: <see cref="Axis.X"/>, <see cref="Axis.Y"/> or <see cref="Axis.XY"/>.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Plus(this Vector2 _Vector2, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector2(_Vector2.x + _Value, _Vector2.y),
@@ -412,6 +433,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector2">The <see cref="Vector2"/> to add to.</param>
         /// <param name="_Value">The value to add to the component(s).</param>
         /// <returns>A new <see cref="Vector2"/> with the added value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Plus(this Vector2 _Vector2, float _Value)
         {
             return new Vector2(_Vector2.x + _Value, _Vector2.y + _Value);
@@ -423,6 +445,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector2">The <see cref="Vector2"/> to add to.</param>
         /// <param name="_Values">The values to add to the component(s).</param>
         /// <returns>A new <see cref="Vector2"/> with the added values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Plus(this Vector2 _Vector2, Vector2 _Values)
         {
             return new Vector2(_Vector2.x + _Values.x, _Vector2.y + _Values.y);
@@ -436,6 +459,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value to set for the specified <c>_Axis</c>.</param>
         /// <returns>A new <see cref="Vector2"/> with the set value.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When <c>_Axis</c> is any other value than: <see cref="Axis.X"/>, <see cref="Axis.Y"/> or <see cref="Axis.XY"/>.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Set(this Vector2 _Vector2, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector2(_Value, _Vector2.y),
@@ -452,6 +476,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value(s) to set the component(s) to.</param>
         /// <returns>A new <see cref="Vector2"/> with the set values.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 Set(this Vector2 _Vector2, Axis _Axis, Vector2 _Value)
         {
             var _vector2 = _Value.Get(_Axis);
@@ -470,6 +495,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Vector2">The <see cref="Vector2"/> to convert.</param>
         /// <returns>A new <see cref="Vector3"/> with the value of this <see cref="Vector2"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ToVector3(this Vector2 _Vector2)
         {
             return new Vector3(_Vector2.x, _Vector2.y, 0);
@@ -480,6 +506,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Vector2">The <see cref="Vector2"/> to convert to a <see cref="Quaternion"/>.</param>
         /// <returns>This <see cref="Vector2"/> converted to a <see cref="Quaternion"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Quaternion ToQuaternion(this Vector2 _Vector2)
         {
             return Quaternion.Euler(_Vector2);
@@ -491,6 +518,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector">The <see cref="Vector2"/> to modify.</param>
         /// <param name="_X">The x-coordinate to set or add.</param>
         /// <returns>This <c>Vector2</c> with the modified x-coordinate.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 WithX(this Vector2 _Vector, float _X)
         {
             _Vector.x = _X;
@@ -504,6 +532,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector">The <see cref="Vector2"/> to modify the y-component for.</param>
         /// <param name="_Y">The value to set or add to the y-component.</param>
         /// <returns>This <c>_Vector</c> with the modified y-component.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 WithY(this Vector2 _Vector, float _Y)
         {
             _Vector.y = _Y;
@@ -518,6 +547,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_X">The new value for the <c>X</c> component.</param>
         /// <param name="_Y">The new value for the <c>Y</c> component.</param>
         /// <returns>A new <see cref="Vector2"/> with the modified <c>X</c> and <c>Y</c> values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 WithXY(this Vector2 _Vector, float _X, float _Y)
         {
             _Vector.x = _X;
@@ -532,6 +562,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector">The original <see cref="Vector2"/> to modify.</param>
         /// <param name="_Value">The new value to set to every axis.</param>
         /// <returns>A new <see cref="Vector2"/> with the modified <c>X</c> and <c>Y</c> values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 WithXY(this Vector2 _Vector, float _Value)
         {
             _Vector.x = _Value;
