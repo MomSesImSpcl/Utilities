@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using Random = UnityEngine.Random;
 
@@ -483,6 +484,20 @@ namespace MomSesImSpcl.Extensions
             var _lastIndex = _IList.Count - 1;
             _IList[_Index] = _IList[_lastIndex];
             _IList.RemoveAt(_lastIndex);
+        }
+
+        /// <summary>
+        /// Tries to retrieve the element at the given <c>_Index</c>. <br/>
+        /// </summary>
+        /// <param name="_IList">The <see cref="IList{T}"/> to retrieve the element from.</param>
+        /// <param name="_Index">The index to retrieve the element at.</param>
+        /// <param name="_Element">Will hold the retrieved element or <c>null</c>, if the given <c>_Index</c> was out of range.</param>
+        /// <typeparam name="T">Must be a nullable <see cref="Type"/>.</typeparam>
+        /// <returns><c>true</c> if the element was successfully retrieved, otherwise <c>false</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool TryGet<T>(this IList<T> _IList, int _Index, out T? _Element)
+        {
+            return _Index < _IList.Count ? (_Element = _IList[_Index]).AsBool() : (_Element = default).AsBool();
         }
         #endregion
     }
