@@ -1,4 +1,5 @@
 #nullable enable
+using System.Runtime.CompilerServices;
 using MomSesImSpcl.Utilities.Logging;
 
 namespace MomSesImSpcl.Extensions
@@ -14,6 +15,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Class">The <see cref="object"/> to wrap.</param>
         /// <returns>The <see cref="object"/>'s <c>ToString()</c> output wrapped in an bold tag.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Bold<T>(this T? _Class) where T : class
         {
             return $"<b>{_Class.OrNull()}</b>";
@@ -25,6 +27,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Struct">The <see cref="object"/> to wrap.</param>
         /// <param name="_Color">The <see cref="RichTextColor"/> to display the <c>ToString()</c> output in.</param>
         /// <returns>The <see cref="object"/> wrapped in a color tag.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Color<T>(this T? _Struct, RichTextColor _Color) where T : class
         {
             return $"<color={_Color.GetName()}>{_Struct.OrNull()}</color>";
@@ -35,6 +38,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Class">The <see cref="object"/> to wrap.</param>
         /// <returns>The <see cref="object"/> wrapped in an italic tag.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Italic<T>(this T? _Class) where T : class
         {
             return $"<i>{_Class.OrNull()}</i>";
@@ -45,6 +49,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Class">The <see cref="object"/> whose <c>ToString()</c> output to return.</param>
         /// <returns>The <see cref="object"/> or <c>null</c> as a <see cref="string"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string OrNull<T>(this T? _Class) where T : class
         {
             return _Class != null ? _Class.ToString() : "null";
@@ -55,6 +60,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Class">The <see cref="object"/> to wrap.</param>
         /// <returns>The <see cref="object"/> wrapped in an underline tag.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Underline<T>(this T? _Class) where T : class
         {
             return $"<u>{_Class.OrNull()}</u>";
