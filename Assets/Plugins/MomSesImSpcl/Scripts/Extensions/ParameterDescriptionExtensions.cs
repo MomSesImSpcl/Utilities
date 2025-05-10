@@ -1,4 +1,5 @@
 #if FMOD
+using System.Runtime.CompilerServices;
 using FMOD.Studio;
 
 namespace MomSesImSpcl.Extensions
@@ -14,6 +15,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_ParameterDescription">The <see cref="PARAMETER_DESCRIPTION"/> to get the name of.</param>
         /// <returns>The actual parameter name of this <see cref="PARAMETER_DESCRIPTION"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetName(this PARAMETER_DESCRIPTION _ParameterDescription)
         {
             return _ParameterDescription.name;
