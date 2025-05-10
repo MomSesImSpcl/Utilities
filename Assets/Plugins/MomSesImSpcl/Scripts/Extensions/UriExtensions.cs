@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Runtime.CompilerServices;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -16,6 +17,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Content">The content to display inside the hyperlink. If null, the URI string is displayed.</param>
         /// <param name="_Line">The line number to include in the hyperlink as an attribute. If null, the attribute is omitted.</param>
         /// <returns>The formatted HTML hyperlink.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToHyperLink(this Uri _URL, object? _Content = null, int? _Line = null)
         {
             return _URL.OriginalString.ToHyperlink(_Content, _Line);
