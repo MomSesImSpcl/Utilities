@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using MomSesImSpcl.Utilities;
@@ -26,6 +27,18 @@ namespace MomSesImSpcl.Extensions
         #endregion
         
         #region Methods
+        /// <summary>
+        /// Returns <c>true</c> if the given <c>_Instance</c> is not <c>null</c>.
+        /// </summary>
+        /// <param name="_Instance">The <see cref="object"/> to check if it is <c>null</c></param>
+        /// <typeparam name="T">Must be a nullable <see cref="Type"/>.</typeparam>
+        /// <returns><c>true</c> if the given <c>_Instance</c> is not <c>null</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AsBool<T>(this T? _Instance)
+        {
+            return _Instance is not null;
+        }
+        
         /// <summary>
         /// Returns the pointer for the given field in this instance.
         /// </summary>
