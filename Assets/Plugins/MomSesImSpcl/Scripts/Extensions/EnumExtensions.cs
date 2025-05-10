@@ -40,6 +40,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_EnumValue">The value to convert.</param>
         /// <typeparam name="E">Must be an <see cref="Enum"/>.</typeparam>
         /// <returns>The <see cref="sbyte"/> representation of the <see cref="Enum"/> value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static sbyte ToSByte<E>(this E _EnumValue) where E : Enum
         {
 #if UNITY_EDITOR
@@ -54,6 +55,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_EnumValue">The value to convert.</param>
         /// <typeparam name="E">Must be an <see cref="Enum"/>.</typeparam>
         /// <returns>The <see cref="byte"/> representation of the <see cref="Enum"/> value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte ToByte<E>(this E _EnumValue) where E : Enum
         {
 #if UNITY_EDITOR
@@ -68,6 +70,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_EnumValue">The value to convert.</param>
         /// <typeparam name="E">Must be an <see cref="Enum"/>.</typeparam>
         /// <returns>The <see cref="short"/> representation of the <see cref="Enum"/> value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static short ToShort<E>(this E _EnumValue) where E : Enum
         {
 #if UNITY_EDITOR
@@ -82,6 +85,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_EnumValue">The value to convert.</param>
         /// <typeparam name="E">Must be an <see cref="Enum"/>.</typeparam>
         /// <returns>The <see cref="ushort"/> representation of the <see cref="Enum"/> value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ushort ToUShort<E>(this E _EnumValue) where E : Enum
         {
 #if UNITY_EDITOR
@@ -96,6 +100,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_EnumValue">The value to convert.</param>
         /// <typeparam name="E">Must be an <see cref="Enum"/>.</typeparam>
         /// <returns>The <see cref="int"/> representation of the <see cref="Enum"/> value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int ToInt<E>(this E _EnumValue) where E : Enum
         {
 #if UNITY_EDITOR
@@ -110,6 +115,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_EnumValue">The value to convert.</param>
         /// <typeparam name="E">Must be an <see cref="Enum"/>.</typeparam>
         /// <returns>The <see cref="uint"/> representation of the <see cref="Enum"/> value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint ToUInt<E>(this E _EnumValue) where E : Enum
         {
 #if UNITY_EDITOR
@@ -124,6 +130,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_EnumValue">The value to convert.</param>
         /// <typeparam name="E">Must be an <see cref="Enum"/>.</typeparam>
         /// <returns>The <see cref="long"/> representation of the <see cref="Enum"/> value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static long ToLong<E>(this E _EnumValue) where E : Enum
         {
 #if UNITY_EDITOR
@@ -138,6 +145,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_EnumValue">The value to convert.</param>
         /// <typeparam name="E">Must be an <see cref="Enum"/>.</typeparam>
         /// <returns>The <see cref="ulong"/> representation of the <see cref="Enum"/> value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong ToULong<E>(this E _EnumValue) where E : Enum
         {
 #if UNITY_EDITOR
