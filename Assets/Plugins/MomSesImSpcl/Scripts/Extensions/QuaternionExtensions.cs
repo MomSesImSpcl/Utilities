@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using MomSesImSpcl.Utilities;
 using UnityEngine;
 
@@ -117,6 +118,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Axis">The axis value that caused the exception.</param>
         /// <returns>A new instance of the <see cref="ArgumentOutOfRangeException"/> class.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When <c>_Axis</c> has an invalid value not defined in the enum.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ArgumentOutOfRangeException ArgumentOutOfRangeException(string _ParameterName, Axis _Axis)
         {
             return new ArgumentOutOfRangeException(_ParameterName, _Axis, $"The value of [{nameof(_Axis)}]:{_Axis}, is not allowed.");
