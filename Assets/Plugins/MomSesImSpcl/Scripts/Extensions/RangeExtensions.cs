@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using MomSesImSpcl.Utilities;
 
 namespace MomSesImSpcl.Extensions
@@ -14,6 +15,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Range"></param>
         /// <returns>A new <see cref="NumericEnumerator"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static NumericEnumerator GetEnumerator(this Range _Range)
         {
             return new NumericEnumerator(_Range);
