@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using MomSesImSpcl.Utilities.Logging;
 
 namespace MomSesImSpcl.Extensions
@@ -13,6 +14,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Struct">The <see cref="object"/> to wrap.</param>
         /// <returns>The <see cref="object"/>'s <c>ToString()</c> output wrapped in an bold tag.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Bold<T>(this T _Struct) where T : struct
         {
             return $"<b>{_Struct.ToString()}</b>";
@@ -34,6 +36,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Struct">The <see cref="object"/> to wrap.</param>
         /// <returns>The <see cref="object"/> wrapped in an italic tag.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Italic<T>(this T _Struct) where T : struct
         {
             return $"<i>{_Struct.ToString()}</i>";
@@ -44,6 +47,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Struct">The <see cref="object"/> to wrap.</param>
         /// <returns>The <see cref="object"/> wrapped in an underline tag.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Underline<T>(this T _Struct) where T : struct
         {
             return $"<u>{_Struct.ToString()}</u>";
