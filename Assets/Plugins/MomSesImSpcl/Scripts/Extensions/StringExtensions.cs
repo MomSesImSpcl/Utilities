@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using MomSesImSpcl.Utilities.Logging;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_String">The <see cref="string"/> to wrap.</param>
         /// <returns>The <see cref="string"/> wrapped in an bold tag.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
         public static string Bold(this string? _String)
         {
             return $"<b>{_String.OrNull()}</b>";
@@ -393,6 +395,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_String">The <see cref="string"/> to check.</param>
         /// <returns><see langword="true"/> if the string is empty or consists only of white-space characters; otherwise, <see langword="false"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsEmptyOrWhitespace(this string _String)
         {
             return _String == string.Empty || _String.All(_Char => _Char == ' ');
@@ -403,6 +406,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_String">The <see cref="string"/> to wrap.</param>
         /// <returns>The <see cref="string"/> wrapped in an italic tag.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Italic(this string? _String)
         {
             return $"<i>{_String.OrNull()}</i>";
@@ -492,6 +496,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_String">The <see cref="string"/> to return.</param>
         /// <returns>The <see cref="string"/> or <c>null</c> as a <see cref="string"/> if the <see cref="string"/> is <c>null</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string OrNull(this string? _String)
         {
             return _String ?? "null";
@@ -758,6 +763,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Content">The content to display inside the hyperlink. If null, the URI string is displayed.</param>
         /// <param name="_Line">The line number to include in the hyperlink as an attribute. If null, the attribute is omitted.</param>
         /// <returns>The formatted HTML hyperlink.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToHyperlink(this string _UriString, object? _Content = null, int? _Line = null)
         {
             return $"<a href=\"{_UriString}\"{(_Line == null ? string.Empty : $" line=\"{_Line}\"")}>{_Content ?? _UriString}</a>";
@@ -803,6 +809,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_String">The <see cref="string"/> to wrap.</param>
         /// <returns>The <see cref="string"/> wrapped in an underline tag.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Underline(this string? _String)
         {
             return $"<u>{_String.OrNull()}</u>";
