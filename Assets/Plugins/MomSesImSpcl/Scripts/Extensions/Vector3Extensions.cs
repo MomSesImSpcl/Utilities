@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using MomSesImSpcl.Utilities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -17,10 +18,11 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Origin">The <see cref="Transform.position"/> to calculate the angle from.</param>
         /// <param name="_Target">The <see cref="Transform.position"/> to calculate the angle to.</param>
         /// <returns>The angle between this <see cref="Vector3"/> and the given target.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Angle(this Vector3 _Origin, Vector3 _Target)
         {
             var _direction = _Origin.Direction(_Target);
-            var _mouseAngle = Mathf.Atan2(-_direction.y, _direction.x) * Mathf.Rad2Deg;
+            var _mouseAngle = math.atan2(-_direction.y, _direction.x) * math.TODEGREES;
 
             return _mouseAngle;
         }
@@ -28,8 +30,9 @@ namespace MomSesImSpcl.Extensions
         /// <summary>
         /// Returns the average value of all three axes of this <see cref="Vector3"/>.
         /// </summary>
-        /// <param name="_Vector3">The <see cref="Vector3"/> to get the axis avcerage from.</param>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to get the axis average from.</param>
         /// <returns>The average value of all three axes of this <see cref="Vector3"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Average(this Vector3 _Vector3)
         {
             return (_Vector3.x + _Vector3.y + _Vector3.z) / 3f;
@@ -42,11 +45,12 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Min">The min values for this <see cref="Vector3"/>.</param>
         /// <param name="_Max">The max values for this <see cref="Vector3"/>.</param>
         /// <returns>This <see cref="Vector3"/> clamped between the given min and max values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Clamp(this Vector3 _Vector3, Vector3 _Min, Vector3 _Max)
         {
-            var _x = Mathf.Clamp(_Vector3.x, _Min.x, _Max.x);
-            var _y = Mathf.Clamp(_Vector3.y, _Min.y, _Max.y);
-            var _z = Mathf.Clamp(_Vector3.z, _Min.z, _Max.z);
+            var _x = math.clamp(_Vector3.x, _Min.x, _Max.x);
+            var _y = math.clamp(_Vector3.y, _Min.y, _Max.y);
+            var _z = math.clamp(_Vector3.z, _Min.z, _Max.z);
             
             return new Vector3(_x, _y, _z);
         }
@@ -57,6 +61,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_From">Origin <see cref="Transform.position"/>.</param>
         /// <param name="_To">Target <see cref="Transform.position"/>.</param>
         /// <returns>The direction vector from this <see cref="Vector3"/> to the given <see cref="Vector3"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Direction(this Vector3 _From, Vector3 _To)
         {
             return _To - _From;
@@ -68,6 +73,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_From">From where to calculate the distance.</param>
         /// <param name="_To">To where to calculate the distance.</param>
         /// <returns>The distance between the two <see cref="Vector3"/>s.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Distance(this Vector3 _From, Vector3 _To)
         {
             return math.distance(_From, _To);
@@ -81,6 +87,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value by which to divide the component(s).</param>
         /// <returns>A new <see cref="Vector3"/> with the divided values.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Divide(this Vector3 _Vector3, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector3(_Vector3.x / _Value, _Vector3.y, _Vector3.z),
@@ -99,6 +106,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector3">The <see cref="Vector3"/> to be divided from.</param>
         /// <param name="_Value">The value to divide from the component(s).</param>
         /// <returns>A new <see cref="Vector3"/> with the divided value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Divide(this Vector3 _Vector3, float _Value)
         {
             return new Vector3(_Vector3.x / _Value, _Vector3.y / _Value, _Vector3.z / _Value);
@@ -110,6 +118,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector3">The <see cref="Vector3"/> to be divided from.</param>
         /// <param name="_Values">The values to divide from the component(s).</param>
         /// <returns>A new <see cref="Vector3"/> with the divided values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Divide(this Vector3 _Vector3, Vector3 _Values)
         {
             return new Vector3(_Vector3.x / _Values.x, _Vector3.y / _Values.y, _Vector3.z / _Values.z);
@@ -123,6 +132,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Axis">The <see cref="Axis"/> from which to get the value.</param>
         /// <returns>The values for the given <see cref="Axis"/> of this <see cref="Vector3"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Get(this Vector3 _Vector3, Axis _Axis) => _Axis switch
         {
             Axis.X => new Vector3(_Vector3.x, 0, 0),
@@ -268,6 +278,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Vector3">The <see cref="Vector3"/> to evaluate.</param>
         /// <returns>The maximum value among the x, y, and z components.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Max(this Vector3 _Vector3)
         {
             var _value = _Vector3.x;
@@ -290,6 +301,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_First">First <see cref="Vector3"/>.</param>
         /// <param name="_Second">Second <see cref="Vector3"/>.</param>
         /// <returns>The midpoint (average) of two <see cref="Vector3"/>s.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 MidPoint(this Vector3 _First, Vector3 _Second)
         {
             return (_First + _Second) * .5f;
@@ -303,6 +315,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value to subtract from the component(s).</param>
         /// <returns>A new <see cref="Vector3"/> with the subtracted values.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Minus(this Vector3 _Vector3, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector3(_Vector3.x - _Value, _Vector3.y, _Vector3.z),
@@ -321,6 +334,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector3">The <see cref="Vector3"/> to be subtracted from.</param>
         /// <param name="_Value">The value to subtract from the component(s).</param>
         /// <returns>A new <see cref="Vector3"/> with the subtracted value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Minus(this Vector3 _Vector3, float _Value)
         {
             return new Vector3(_Vector3.x - _Value, _Vector3.y - _Value, _Vector3.z - _Value);
@@ -332,6 +346,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector3">The <see cref="Vector3"/> to be subtracted from.</param>
         /// <param name="_Values">The values to subtract from the component(s).</param>
         /// <returns>A new <see cref="Vector3"/> with the subtracted values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Minus(this Vector3 _Vector3, Vector3 _Values)
         {
             return new Vector3(_Vector3.x - _Values.x, _Vector3.y - _Values.y, _Vector3.z - _Values.z);
@@ -345,6 +360,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value by which to multiply the component(s).</param>
         /// <returns>A new Vector3 with the multiplied values.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Multiply(this Vector3 _Vector3, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector3(_Vector3.x * _Value, _Vector3.y, _Vector3.z),
@@ -363,6 +379,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector3">The Vector3 to be multiplied.</param>
         /// <param name="_Value">The value by which to multiply the component(s).</param>
         /// <returns>A new Vector3 with the multiplied values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Multiply(this Vector3 _Vector3, float _Value)
         {
             return new Vector3(_Vector3.x * _Value, _Vector3.y * _Value, _Vector3.z * _Value);
@@ -374,6 +391,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector3">The Vector3 to be multiplied.</param>
         /// <param name="_Values">The value by which to multiply the component(s).</param>
         /// <returns>A new Vector3 with the multiplied values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Multiply(this Vector3 _Vector3, Vector3 _Values)
         {
             return new Vector3(_Vector3.x * _Values.x, _Vector3.y * _Values.y, _Vector3.z * _Values.z);
@@ -436,6 +454,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value to use for the <see cref="Utilities.Operation"/>.</param>
         /// <returns>A new <see cref="Vector3"/> computed with the specified <see cref="Utilities.Operation"/> applied to the given <see cref="Axis"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the specified <see cref="Utilities.Operation"/> is not valid.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Operation(this Vector3 _Vector3, Operation _Operation, Axis _Axis, float _Value)
         {
             return _Operation switch
@@ -460,6 +479,7 @@ namespace MomSesImSpcl.Extensions
         /// </param>
         /// <returns>A new <see cref="Vector3"/> computed with the specified <see cref="Utilities.Operation"/>.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the specified <see cref="Utilities.Operation"/> is not valid.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Operation(this Vector3 _Vector3, Operation _Operation, Vector3 _Values)
         {
             return _Operation switch
@@ -480,6 +500,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value to add to the component(s).</param>
         /// <returns>A new <see cref="Vector3"/> with the added values.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Plus(this Vector3 _Vector3, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector3(_Vector3.x + _Value, _Vector3.y, _Vector3.z),
@@ -498,6 +519,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector3">The <see cref="Vector3"/> to add to.</param>
         /// <param name="_Value">The value to add to the component(s).</param>
         /// <returns>A new <see cref="Vector3"/> with the added value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Plus(this Vector3 _Vector3, float _Value)
         {
             return new Vector3(_Vector3.x + _Value, _Vector3.y + _Value, _Vector3.z + _Value);
@@ -509,6 +531,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector3">The <see cref="Vector3"/> to add to.</param>
         /// <param name="_Values">The values to add to the component(s).</param>
         /// <returns>A new <see cref="Vector3"/> with the added values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Plus(this Vector3 _Vector3, Vector3 _Values)
         {
             return new Vector3(_Vector3.x + _Values.x, _Vector3.y + _Values.y, _Vector3.z + _Values.z);
@@ -522,6 +545,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value to set the component(s) to.</param>
         /// <returns>A new <see cref="Vector3"/> with the set values.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Set(this Vector3 _Vector3, Axis _Axis, float _Value) => _Axis switch
         {
             Axis.X => new Vector3(_Value, _Vector3.y, _Vector3.z),
@@ -542,6 +566,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Value">The value(s) to set the component(s) to.</param>
         /// <returns>A new <see cref="Vector3"/> with the set values.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Axis"/> is not handled by this method.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Set(this Vector3 _Vector3, Axis _Axis, Vector3 _Value)
         {
             var _vector3 = _Value.Get(_Axis);
@@ -564,6 +589,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Vector3">The <see cref="Vector3"/> to convert.</param>
         /// <returns>A new <see cref="Vector2"/> with the value of this <see cref="Vector3"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 ToVector2(this Vector3 _Vector3)
         {
             return new Vector2(_Vector3.x, _Vector3.y);
@@ -574,6 +600,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Vector3">The <see cref="Vector3"/> to convert to a <see cref="Quaternion"/>.</param>
         /// <returns>This <see cref="Vector3"/> converted to a <see cref="Quaternion"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Quaternion ToQuaternion(this Vector3 _Vector3)
         {
             return Quaternion.Euler(_Vector3);
@@ -585,6 +612,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector">The <see cref="Vector3"/> to modify.</param>
         /// <param name="_X">The new value for the x component.</param>
         /// <returns>A new <see cref="Vector3"/> with the modified x component.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 WithX(this Vector3 _Vector, float _X)
         {
             _Vector.x = _X;
@@ -597,6 +625,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector">The <see cref="Vector3"/> whose Y component is to be modified.</param>
         /// <param name="_Y">The value to set or add to the Y component.</param>
         /// <returns>A new <see cref="Vector3"/> with the modified Y component.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 WithY(this Vector3 _Vector, float _Y)
         {
             _Vector.y = _Y;
@@ -609,6 +638,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector">The <see cref="Vector3"/> to modify.</param>
         /// <param name="_Z">The value to set or add to the Z component.</param>
         /// <returns>A new <see cref="Vector3"/> with the modified Z component.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 WithZ(this Vector3 _Vector, float _Z)
         {
             _Vector.z = _Z;
@@ -622,6 +652,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_X">The new value for the x component.</param>
         /// <param name="_Y">The new value for the y component.</param>
         /// <returns>A new <see cref="Vector3"/> with the updated x and y values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 WithXY(this Vector3 _Vector, float _X, float _Y)
         {
             _Vector.x = _X;
@@ -636,6 +667,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector">The <see cref="Vector3"/> instance to modify.</param>
         /// <param name="_Value">The new value to set to every axis.</param>
         /// <returns>The modified <see cref="Vector3"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 WithXY(this Vector3 _Vector, float _Value)
         {
             _Vector.x = _Value;
@@ -651,6 +683,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_X">The value to set or add to the x component.</param>
         /// <param name="_Z">The value to set or add to the z component.</param>
         /// <returns>A new Vector3 with the adjusted x and z components.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 WithXZ(this Vector3 _Vector, float _X, float _Z)
         {
             _Vector.x = _X;
@@ -665,6 +698,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector">The <see cref="Vector3"/> instance to modify.</param>
         /// <param name="_Value">The new value to set to every axis.</param>
         /// <returns>The modified <see cref="Vector3"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 WithXZ(this Vector3 _Vector, float _Value)
         {
             _Vector.x = _Value;
@@ -680,6 +714,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Y">The value to set (or add to) the Y component.</param>
         /// <param name="_Z">The value to set (or add to) the Z component.</param>
         /// <returns>The modified <see cref="Vector3"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 WithYZ(this Vector3 _Vector, float _Y, float _Z)
         {
             _Vector.y = _Y;
@@ -694,6 +729,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector">The <see cref="Vector3"/> instance to modify.</param>
         /// <param name="_Value">The new value to set to every axis.</param>
         /// <returns>The modified <see cref="Vector3"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 WithYZ(this Vector3 _Vector, float _Value)
         {
             _Vector.y = _Value;
@@ -710,6 +746,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Y">The new y value or the value to add to the current y component.</param>
         /// <param name="_Z">The new z value or the value to add to the current z component.</param>
         /// <returns>The modified <see cref="Vector3"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 WithXYZ(this Vector3 _Vector, float _X, float _Y, float _Z)
         {
             _Vector.x = _X;
@@ -725,6 +762,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Vector">The <see cref="Vector3"/> instance to modify.</param>
         /// <param name="_Value">The new value to set to every axis.</param>
         /// <returns>The modified <see cref="Vector3"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 WithXYZ(this Vector3 _Vector, float _Value)
         {
             _Vector.x = _Value;
