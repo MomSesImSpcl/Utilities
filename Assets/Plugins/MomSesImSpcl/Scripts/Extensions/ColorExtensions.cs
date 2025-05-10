@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -41,6 +42,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Color">The color to convert.</param>
         /// <return>The hexadecimal string representation of the color.</return>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToHex(this Color _Color)
         {
             return $"#{_Color.r:X2}{_Color.g:X2}{_Color.b:X2}";
@@ -52,6 +54,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Color">The original color.</param>
         /// <param name="_AlphaValue">The alpha value to be set, ranging from 0 to 1.</param>
         /// <return>The color with the updated alpha value.</return>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color WithAlpha(this Color _Color, float _AlphaValue)
         {
             _Color.a = _AlphaValue;
