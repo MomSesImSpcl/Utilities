@@ -18,10 +18,11 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Origin">The <see cref="Transform.position"/> to calculate the angle from.</param>
         /// <param name="_Target">The <see cref="Transform.position"/> to calculate the angle to.</param>
         /// <returns>The angle between this <see cref="Vector2"/> and the given target.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Angle(this Vector2 _Origin, Vector2 _Target)
         {
             var _direction = _Origin.Direction(_Target);
-            var _mouseAngle = Mathf.Atan2(-_direction.y, _direction.x) * Mathf.Rad2Deg;
+            var _mouseAngle = math.atan2(-_direction.y, _direction.x) * math.TODEGREES;
 
             return _mouseAngle;
         }
