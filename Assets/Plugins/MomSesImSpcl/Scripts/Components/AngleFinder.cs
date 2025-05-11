@@ -1,5 +1,4 @@
 using JetBrains.Annotations;
-using MomSesImSpcl.Data;
 using MomSesImSpcl.Extensions;
 using MomSesImSpcl.Utilities;
 using UnityEngine;
@@ -10,7 +9,7 @@ namespace MomSesImSpcl.Components
     /// Helper class to find the angle of the mouse to the position of this <see cref="GameObject"/>.
     /// </summary>
     [ExecuteAlways]
-    public sealed class AngleFinder : MonoBehaviour
+    public sealed class AngleFinder : EditorComponent
     {
 #if UNITY_EDITOR
         #region Inspector Fields
@@ -40,18 +39,8 @@ namespace MomSesImSpcl.Components
         /// </summary>
         private bool mouseDown;
         #endregion
-#endif
         
         #region Methods
-        private void Awake()
-        {
-            if (!Application.isEditor)
-            {
-                Destroy(this);
-            }
-        }
-        
-#if UNITY_EDITOR
         private void OnEnable()
         {
             this.camera = Camera.main;
@@ -90,7 +79,7 @@ namespace MomSesImSpcl.Components
                 Draw.Angle(_worldOrigin, _direction, _radius, this.signedAngle, .05f);
             }
         }
-#endif
         #endregion
+#endif
     }
 }
