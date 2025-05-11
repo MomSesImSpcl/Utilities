@@ -44,6 +44,17 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
+        /// Casts this <see cref="float"/> into an <see cref="uint"/>.
+        /// </summary>
+        /// <param name="_Float">The <see cref="float"/> to cast into an <see cref="uint"/>.</param>
+        /// <returns>This <see cref="float"/> as an <see cref="uint"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint AsUInt(this float _Float)
+        {
+            return (uint)_Float;
+        }
+        
+        /// <summary>
         /// Clamps this <see cref="float"/> between the given min and max value.
         /// </summary>
         /// <param name="_Float">The <see cref="float"/> to clamp.</param>
