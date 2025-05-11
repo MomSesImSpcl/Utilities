@@ -5,7 +5,7 @@ namespace MomSesImSpcl.Components
     /// <summary>
     /// Destroys this <see cref="GameObject"/> in build.
     /// </summary>
-    public abstract class EditorMonoBehaviour : MonoBehaviour
+    public class EditorMonoBehaviour : MonoBehaviour
     {
         #region Methods
         protected virtual void Awake()
