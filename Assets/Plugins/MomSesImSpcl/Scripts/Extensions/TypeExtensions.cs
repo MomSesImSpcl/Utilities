@@ -14,7 +14,6 @@ namespace MomSesImSpcl.Extensions
     public static class TypeExtensions
     {
         #region Methods
-
         /// <summary>
         /// Returns the count of the enum values of the given <c>_Type</c>.
         /// </summary>
