@@ -1,6 +1,5 @@
 using System;
 using MomSesImSpcl.Extensions;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace MomSesImSpcl.Data
@@ -8,13 +7,23 @@ namespace MomSesImSpcl.Data
     /// <summary>
     /// Holds 4 <see cref="float"/> values.
     /// </summary>
-    [Serializable, InlineProperty]
+#if ODIN_INSPECTOR
+    [Sirenix.OdinInspector.InlineProperty]
+#endif
+    [Serializable]
     public struct Float4Parameter
     {
         #region Inspector Fields
-        [Tooltip("Holds the 4 float values."), HorizontalGroup]
-        [SerializeField, HideLabel] private Vector4 vector4;
-        [Tooltip("Will be false when this Vector4 should be treated as not set."), HorizontalGroup]
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.HorizontalGroup]
+        [Sirenix.OdinInspector.HideLabel]
+#endif
+        [Tooltip("Holds the 4 float values.")]
+        [SerializeField] private Vector4 vector4;
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.HorizontalGroup]
+#endif
+        [Tooltip("Will be false when this Vector4 should be treated as not set.")]
         [SerializeField] private bool hasValue;
         #endregion
         
