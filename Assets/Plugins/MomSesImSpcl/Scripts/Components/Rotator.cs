@@ -8,7 +8,7 @@ namespace MomSesImSpcl.Components
     /// <summary>
     /// Helper class to rotate child <see cref="GameObject"/>s to a specific angle.
     /// </summary>
-    public sealed class Rotator : MonoBehaviour
+    public sealed class Rotator : EditorComponent
     {
 #if UNITY_EDITOR
         #region Inspector Fields
@@ -20,17 +20,8 @@ namespace MomSesImSpcl.Components
         [Range(-360, 360)]
         [SerializeField] private float angle;
         #endregion
-#endif
-        #region Methods
-        private void Awake()
-        {
-            if (!Application.isEditor)
-            {
-                Destroy(this);
-            }
-        }
         
-#if UNITY_EDITOR
+        #region Methods
         [Button, Tooltip("Sets the z-rotation of all direct children + the GameObject in the \"Transforms\" array, the the value set in \"Angle\".")]
         private void Rotate()
         {
@@ -46,8 +37,8 @@ namespace MomSesImSpcl.Components
                 _transform.localEulerAngles = _transform.localEulerAngles.WithZ(this.angle);
             }
         }
-#endif
         #endregion
+#endif
     }
 }
 #endif
