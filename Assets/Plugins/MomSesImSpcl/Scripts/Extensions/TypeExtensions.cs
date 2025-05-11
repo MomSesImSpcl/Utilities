@@ -149,7 +149,7 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Type">The <see cref="Type"/> to check for the interface implementation.</param>
         /// <param name="_InterfaceType">The <see cref="Type"/> of the interface to check for.</param>
-        /// <returns><c>true</c> if this <see cref="Type"/> implements the given <c>_InterfaceType</c>, otherwise <c>flase</c>.</returns>
+        /// <returns><c>true</c> if this <see cref="Type"/> implements the given <c>_InterfaceType</c>, otherwise <c>false</c>.</returns>
         public static bool ImplementsInterface(this Type _Type, Type _InterfaceType)
         {
             return _InterfaceType.IsGenericTypeDefinition switch
