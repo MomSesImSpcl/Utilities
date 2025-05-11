@@ -123,6 +123,17 @@ namespace MomSesImSpcl.Extensions
         {
             return new ArgumentOutOfRangeException(_ParameterName, _Axis, $"The value of [{nameof(_Axis)}]:{_Axis}, is not allowed.");
         }
+
+        /// <summary>
+        /// Creates a new <see cref="Vector4"/> from this <see cref="Quaternion"/>.
+        /// </summary>
+        /// <param name="_Quaternion">The <see cref="Quaternion"/> to create a <see cref="Vector4"/> from.</param>
+        /// <returns>A new <see cref="Vector4"/> with the value of this <see cref="Quaternion"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector4 ToVector4(this Quaternion _Quaternion)
+        {
+            return new Vector4(_Quaternion.x, _Quaternion.y, _Quaternion.z, _Quaternion.w);
+        }
         
         /// <summary>
         /// Sets the x component of a <see cref="Quaternion"/> to a specified value.
