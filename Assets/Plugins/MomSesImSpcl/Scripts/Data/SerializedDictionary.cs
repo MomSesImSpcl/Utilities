@@ -13,7 +13,10 @@ namespace MomSesImSpcl.Data
     /// <typeparam name="K">The <see cref="Type"/> of the <see cref="Dictionary{K,V}.Keys"/>.</typeparam>
     /// <typeparam name="V">The <see cref="Type"/> of the <see cref="Dictionary{K,V}.Values"/>.</typeparam>
     [Serializable]
-    public sealed class SerializedDictionary<K,V> : IDictionary<K,V>, ISerializationCallbackReceiver
+    public sealed class SerializedDictionary<K,V> : IDictionary<K,V>
+#if UNITY_EDITOR
+        , ISerializationCallbackReceiver
+#endif
     {
 #if UNITY_EDITOR
         #region Inspector Fields
@@ -319,29 +322,27 @@ namespace MomSesImSpcl.Data
             return this.dictionary.GetEnumerator();
         }
         
+#if UNITY_EDITOR
         public void OnBeforeSerialize()
         {
-#if UNITY_EDITOR
             this.list.Clear();
             
             foreach (var _kvp in this.dictionary)
             {
                 this.list.Add(new SerializedKeyValuePair<K,V>(_kvp.Key, _kvp.Value));
             }
-#endif
         }
-
+        
         public void OnAfterDeserialize()
         {
-#if UNITY_EDITOR
             this.dictionary.Clear();
             
             foreach (var _kvp in this.list)
             {
                 this.dictionary[_kvp.Key] = _kvp.Value;
             }
-#endif
         }
+#endif
         #endregion
     }
 }
