@@ -1,8 +1,10 @@
 #nullable enable
 using System;
+using System.Linq;
 using System.Reflection;
 using MomSesImSpcl.Utilities;
 using UnityEngine;
+using ZLinq;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -141,6 +143,57 @@ namespace MomSesImSpcl.Extensions
             }
 
             throw new InvalidOperationException(GenericExtensions.FallbackMemberMessage(_Type, _MemberName, _FallbackMembers));
+        }
+
+        /// <summary>
+        /// Checks if this <see cref="Type"/> implements the given <c>_InterfaceType</c>.
+        /// </summary>
+        /// <param name="_Type">The <see cref="Type"/> to check for the interface implementation.</param>
+        /// <param name="_InterfaceType">The <see cref="Type"/> of the interface to check for.</param>
+        /// <returns><c>true</c> if this <see cref="Type"/> implements the given <c>_InterfaceType</c>, otherwise <c>flase</c>.</returns>
+        public static bool ImplementsInterface(this Type _Type, Type _InterfaceType)
+        {
+            return _InterfaceType.IsGenericTypeDefinition switch
+            {
+                false => _InterfaceType.IsAssignableFrom(_Type),
+                true => _Type.GetInterfaces().AsValueEnumerable().Any(_Interface => _Interface.IsGenericType && _Interface.GetGenericTypeDefinition() == _InterfaceType)
+            };
+        }
+        
+        /// <summary>
+        /// Checks if this <see cref="Type"/> implements the given <c>_InterfaceType</c>.
+        /// </summary>
+        /// <param name="_Type">The <see cref="Type"/> to check for the interface implementation.</param>
+        /// <param name="_InterfaceType">The <see cref="Type"/> of the interface to check for.</param>
+        /// <param name="_ParameterTypes">
+        /// Optional parameter <see cref="Type"/>s if the interface has generic parameters. <br/>
+        /// <i>If the interface has generic parameters and this is left empty, the method will still return <c>true</c> if this <see cref="Type"/> implements the given <c>_InterfaceType</c>.</i> <br/>
+        /// <i>If this is not empty, this method will only return <c>true</c> if the given <see cref="Type"/>s exactly match the parameter <see cref="Type"/>s of the interface.</i>
+        /// </param>
+        /// <returns><c>true</c> if this <see cref="Type"/> implements the given <c>_InterfaceType</c>, otherwise <c>flase</c>.</returns>
+        public static bool ImplementsInterface(this Type _Type, Type _InterfaceType, params Type[] _ParameterTypes)
+        {
+            if (_ParameterTypes.Length == 0)
+            {
+                throw new ArgumentException($"{nameof(_ParameterTypes)} is empty.");
+            }
+
+            foreach (var _interface in _Type.GetInterfaces())
+            {
+                if (!_interface.IsGenericType || _interface.GetGenericTypeDefinition() != _InterfaceType)
+                {
+                    continue;
+                }
+
+                var _arguments = _interface.GetGenericArguments();
+
+                if (_arguments.Length == _ParameterTypes.Length && _arguments.SequenceEqual(_ParameterTypes))
+                {
+                    return true;
+                }
+            }
+                
+            return false;
         }
         
         /// <summary>
