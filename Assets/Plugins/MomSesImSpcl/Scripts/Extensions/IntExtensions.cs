@@ -11,6 +11,17 @@ namespace MomSesImSpcl.Extensions
     {
         #region Methods
         /// <summary>
+        /// Converts the given <see cref="int"/> to a <see cref="bool"/>.
+        /// </summary>
+        /// <param name="_Int">The <see cref="int"/> to convert.</param>
+        /// <returns><c>true</c> if the <see cref="int"/> can be converted to a <see cref="bool"/> representation, otherwise <c>false</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AsBool(this int _Int)
+        {
+            return _Int != 0;
+        }
+        
+        /// <summary>
         /// Casts this <see cref="int"/> to the given <see cref="Enum"/> <see cref="Type"/> <c>T</c>.
         /// </summary>
         /// <param name="_Int">The <see cref="int"/> value to cast to its <see cref="Enum"/> representation.</param>
@@ -23,14 +34,14 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
-        /// Converts the given <see cref="int"/> to a <see cref="bool"/>.
+        /// Returns this <see cref="int"/> as a <see cref="float"/>.
         /// </summary>
-        /// <param name="_Int">The <see cref="int"/> to convert.</param>
-        /// <returns><c>true</c> if the <see cref="int"/> can be converted to a <see cref="bool"/> representation, otherwise <c>false</c>.</returns>
+        /// <param name="_Int">The <see cref="int"/> to cast to a <see cref="float"/>.</param>
+        /// <returns>This <see cref="int"/> cast to a <see cref="float"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool AsBool(this int _Int)
+        public static float AsFloat(this int _Int)
         {
-            return _Int != 0;
+            return _Int;
         }
         
         /// <summary>
