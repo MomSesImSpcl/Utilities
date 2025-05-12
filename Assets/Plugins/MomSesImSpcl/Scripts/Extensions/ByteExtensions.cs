@@ -17,7 +17,7 @@ namespace MomSesImSpcl.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float AsFloat(this byte _Byte)
         {
-            return (float)_Byte;
+            return _Byte;
         }
         
         /// <summary>
