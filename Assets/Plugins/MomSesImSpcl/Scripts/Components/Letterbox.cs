@@ -69,7 +69,7 @@ namespace MomSesImSpcl.Components
             var _right = this.borders[2].rectTransform;
             var _bottom = this.borders[3].rectTransform;
 
-            if (_currentAspect > MaxAspect)
+            if (_currentAspect > this.MaxAspect)
             {
                 // Letterbox left/right.
                 var _contentWidth = _currentHeight * this.MaxAspect;
