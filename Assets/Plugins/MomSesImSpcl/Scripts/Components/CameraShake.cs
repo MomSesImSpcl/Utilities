@@ -152,7 +152,7 @@ namespace MomSesImSpcl.Components
         /// </summary>
         /// <param name="_Duration">The duration in seconds.</param>
         /// <param name="_Strength">How far the <see cref="Transform.position"/> can move.</param>
-        /// <param name="_MaxStrength">The maximum value <c>_Strenght</c> can have.</param>
+        /// <param name="_MaxStrength">The maximum value <c>_Strength</c> can have.</param>
         /// <param name="_Vibrato">How much the <see cref="Camera"/> will vibrate.</param>
         /// <param name="_Intensity">
         /// Multiplier for the <c>_Strength</c>. <br/>
