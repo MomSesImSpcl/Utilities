@@ -538,6 +538,18 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
+        /// Sets the values of <c>_Vector3</c>.
+        /// </summary>
+        /// <param name="_Vector3">The <see cref="Vector3"/> to set the values for.</param>
+        /// <param name="_Values">The values to set.</param>
+        /// <returns>A new <see cref="Vector3"/> with the set values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 Set(this Vector3 _Vector3, Vector3 _Values)
+        {
+            return new Vector3(_Values.x, _Values.y, _Values.z);
+        }
+        
+        /// <summary>
         /// Sets the component(s) of a <see cref="Vector3"/> to a specified value along the given axis.
         /// </summary>
         /// <param name="_Vector3">The <see cref="Vector3"/> to be modified.</param>
