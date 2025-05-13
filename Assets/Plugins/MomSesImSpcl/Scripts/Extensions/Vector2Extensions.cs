@@ -221,6 +221,18 @@ namespace MomSesImSpcl.Extensions
 #endif
             return _Center + _offset.ToVector2();
         }
+
+        /// <summary>
+        /// Checks if any value of this <see cref="Vector2"/> is greater than the given <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_Vector2">This <see cref="Vector2"/>.</param>
+        /// <param name="_Other">The <see cref="Vector2"/> to compare to.</param>
+        /// <returns><c>true</c> if this <see cref="Vector2"/> is greater, otherwise <c>false</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Greater(this Vector2 _Vector2, Vector2 _Other)
+        {
+            return _Vector2.x > _Other.x || _Vector2.y > _Other.y;
+        }
         
         /// <summary>
         /// Calculates the midpoint (average) of two <see cref="Vector2"/>s.
@@ -503,6 +515,18 @@ namespace MomSesImSpcl.Extensions
             };
         }
 
+        /// <summary>
+        /// Checks if any value of this <see cref="Vector2"/> is smaller than the given <see cref="Vector2"/>.
+        /// </summary>
+        /// <param name="_Vector2">This <see cref="Vector2"/>.</param>
+        /// <param name="_Other">The <see cref="Vector2"/> to compare to.</param>
+        /// <returns><c>true</c> if this <see cref="Vector2"/> is smaller, otherwise <c>false</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Smaller(this Vector2 _Vector2, Vector2 _Other)
+        {
+            return _Vector2.x < _Other.x || _Vector2.y < _Other.y;
+        }
+        
         /// <summary>
         /// Converts this <see cref="Vector2"/> to a <see cref="Vector3"/>.
         /// </summary>
