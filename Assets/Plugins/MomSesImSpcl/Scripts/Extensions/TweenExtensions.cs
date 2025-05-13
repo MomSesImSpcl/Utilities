@@ -34,6 +34,24 @@ namespace MomSesImSpcl.Extensions
                 
             });
         }
+
+        /// <summary>
+        /// Adds the given <see cref="Action"/> to the <c>OnComplete()</c> callback.
+        /// </summary>
+        /// <param name="_Tween">The <see cref="Tween"/> to add the callback to.</param>
+        /// <param name="_Action">The <see cref="Action"/> to invoke.</param>
+        /// <typeparam name="T">Must be a <see cref="Tween"/>.</typeparam>
+        /// <returns>This <see cref="Tween"/>.</returns>
+        public static T OnCompleteAdd<T>(T _Tween, Action _Action) where T : Tween
+        {
+            var _onComplete = _Tween.onComplete;
+            
+            return _Tween.OnComplete(() =>
+            {
+                _onComplete?.Invoke();
+                _Action();
+            });
+        }
         #endregion
     }
 }
