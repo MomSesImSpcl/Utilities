@@ -42,7 +42,7 @@ namespace MomSesImSpcl.Extensions
         /// <param name="_Action">The <see cref="Action"/> to invoke.</param>
         /// <typeparam name="T">Must be a <see cref="Tween"/>.</typeparam>
         /// <returns>This <see cref="Tween"/>.</returns>
-        public static T OnCompleteAdd<T>(T _Tween, Action _Action) where T : Tween
+        public static T OnCompleteAdd<T>(this T _Tween, Action _Action) where T : Tween
         {
             var _onComplete = _Tween.onComplete;
             
