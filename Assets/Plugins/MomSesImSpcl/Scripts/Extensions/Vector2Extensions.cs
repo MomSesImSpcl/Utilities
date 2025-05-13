@@ -451,6 +451,18 @@ namespace MomSesImSpcl.Extensions
         {
             return new Vector2(_Vector2.x + _Values.x, _Vector2.y + _Values.y);
         }
+
+        /// <summary>
+        /// Sets the values of <c>_Vector2</c>.
+        /// </summary>
+        /// <param name="_Vector2">The <see cref="Vector2"/> to set the values for.</param>
+        /// <param name="_Values">The values to set.</param>
+        /// <returns>A new <see cref="Vector2"/> with the set values.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 Set(this Vector2 _Vector2, Vector2 _Values)
+        {
+            return new Vector2(_Values.x, _Values.y);
+        }
         
         /// <summary>
         /// Sets the value of <c>_Vector2</c> on the specified <c>_Axis</c>.
