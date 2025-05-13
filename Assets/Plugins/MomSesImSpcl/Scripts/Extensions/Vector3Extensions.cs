@@ -248,6 +248,18 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
+        /// Checks if any value of this <see cref="Vector3"/> is greater than the given <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="_Vector3">This <see cref="Vector3"/>.</param>
+        /// <param name="_Other">The <see cref="Vector3"/> to compare to.</param>
+        /// <returns><c>true</c> if this <see cref="Vector3"/> is greater, otherwise <c>false</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Greater(this Vector3 _Vector3, Vector3 _Other)
+        {
+            return _Vector3.x > _Other.x || _Vector3.y > _Other.y || _Vector3.z > _Other.z;
+        }
+        
+        /// <summary>
         /// Determines whether this <see cref="Vector3"/> has reached or exceeded the given <c>_TargetPosition</c>, based on the direction of the given <c>_OriginPosition</c>.
         /// </summary>
         /// <param name="_CurrentPosition">The current <see cref="Transform.position"/> of the <see cref="Vector3"/>.</param>
@@ -596,6 +608,18 @@ namespace MomSesImSpcl.Extensions
             };
         }
 
+        /// <summary>
+        /// Checks if any value of this <see cref="Vector3"/> is smaller than the given <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="_Vector3">This <see cref="Vector3"/>.</param>
+        /// <param name="_Other">The <see cref="Vector3"/> to compare to.</param>
+        /// <returns><c>true</c> if this <see cref="Vector3"/> is smaller, otherwise <c>false</c>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Smaller(this Vector3 _Vector3, Vector3 _Other)
+        {
+            return _Vector3.x < _Other.x || _Vector3.y < _Other.y || _Vector3.z < _Other.z;
+        }
+        
         /// <summary>
         /// Converts this <see cref="Vector3"/> to a <see cref="Vector2"/>.
         /// </summary>
