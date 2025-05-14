@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using MomSesImSpcl.Utilities;
 using Unity.Mathematics;
@@ -188,6 +189,25 @@ namespace MomSesImSpcl.Extensions
         }
 
         /// <summary>
+        /// Returns a <see cref="Vector2"/> that consists of the biggest values from every <see cref="Vector2"/> in the given  <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <param name="_IEnumerable">The <see cref="IEnumerable{T}"/> to get the values from.</param>
+        /// <returns>A <see cref="Vector2"/> that consists of the biggest values from every <see cref="Vector2"/> in the given  <see cref="IEnumerable{T}"/>.</returns>
+        public static Vector2 GetBiggest(this IEnumerable<Vector2> _IEnumerable)
+        {
+            var _x = 0f;
+            var _y = 0f;
+            
+            foreach (var _vector2 in _IEnumerable)
+            {
+                _x = Mathf.Max(_x, _vector2.x);
+                _y = Mathf.Max(_y, _vector2.y);
+            }
+
+            return new Vector2(_x, _y);
+        }
+        
+        /// <summary>
         /// Gets a points on the circumference of a circle around the <see cref="Transform.position"/> of this <see cref="Vector2"/>.
         /// </summary>
         /// <param name="_Center">The center of the circle to get the point around.</param>
@@ -222,6 +242,25 @@ namespace MomSesImSpcl.Extensions
             return _Center + _offset.ToVector2();
         }
 
+        /// <summary>
+        /// Returns a <see cref="Vector2"/> that consists of the smallest values from every <see cref="Vector2"/> in the given  <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <param name="_IEnumerable">The <see cref="IEnumerable{T}"/> to get the values from.</param>
+        /// <returns>A <see cref="Vector2"/> that consists of the smallest values from every <see cref="Vector2"/> in the given  <see cref="IEnumerable{T}"/>.</returns>
+        public static Vector2 GetSmallest(this IEnumerable<Vector2> _IEnumerable)
+        {
+            var _x = 0f;
+            var _y = 0f;
+            
+            foreach (var _vector2 in _IEnumerable)
+            {
+                _x = Mathf.Min(_x, _vector2.x);
+                _y = Mathf.Min(_y, _vector2.y);
+            }
+
+            return new Vector2(_x, _y);
+        }
+        
         /// <summary>
         /// Checks if any value of this <see cref="Vector2"/> is greater than the given <see cref="Vector2"/>.
         /// </summary>
