@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using MomSesImSpcl.Utilities;
 using Unity.Mathematics;
@@ -213,6 +214,27 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
+        /// Returns a <see cref="Vector3"/> that consists of the biggest values from every <see cref="Vector3"/> in the given  <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <param name="_IEnumerable">The <see cref="IEnumerable{T}"/> to get the values from.</param>
+        /// <returns>A <see cref="Vector3"/> that consists of the biggest values from every <see cref="Vector3"/> in the given  <see cref="IEnumerable{T}"/>.</returns>
+        public static Vector3 GetBiggest(this IEnumerable<Vector3> _IEnumerable)
+        {
+            var _x = 0f;
+            var _y = 0f;
+            var _z = 0f;
+            
+            foreach (var _vector3 in _IEnumerable)
+            {
+                _x = Mathf.Max(_x, _vector3.x);
+                _y = Mathf.Max(_y, _vector3.y);
+                _z = Mathf.Max(_z, _vector3.z);
+            }
+
+            return new Vector3(_x, _y, _z);
+        }
+        
+        /// <summary>
         /// Gets a points on the circumference of a circle around the <see cref="Transform.position"/> of this <see cref="Vector3"/>.
         /// </summary>
         /// <param name="_Center">The center of the circle to get the point around.</param>
@@ -245,6 +267,27 @@ namespace MomSesImSpcl.Extensions
             }
 #endif
             return _Center + _offset;
+        }
+        
+        /// <summary>
+        /// Returns a <see cref="Vector3"/> that consists of the smallest values from every <see cref="Vector3"/> in the given  <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <param name="_IEnumerable">The <see cref="IEnumerable{T}"/> to get the values from.</param>
+        /// <returns>A <see cref="Vector3"/> that consists of the smallest values from every <see cref="Vector3"/> in the given  <see cref="IEnumerable{T}"/>.</returns>
+        public static Vector3 GetSmallest(this IEnumerable<Vector3> _IEnumerable)
+        {
+            var _x = 0f;
+            var _y = 0f;
+            var _z = 0f;
+            
+            foreach (var _vector3 in _IEnumerable)
+            {
+                _x = Mathf.Min(_x, _vector3.x);
+                _y = Mathf.Min(_y, _vector3.y);
+                _z = Mathf.Min(_z, _vector3.z);
+            }
+
+            return new Vector3(_x, _y, _z);
         }
         
         /// <summary>
