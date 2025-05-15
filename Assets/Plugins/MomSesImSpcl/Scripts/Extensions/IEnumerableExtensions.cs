@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using MomSesImSpcl.Data;
+using ZLinq;
 
 namespace MomSesImSpcl.Extensions
 {
@@ -195,7 +196,7 @@ namespace MomSesImSpcl.Extensions
         /// </exception>
         public static IEnumerable<T> GetWeightedRandom<T,V>(this IEnumerable<T> _IEnumerable, Func<T,V> _Value, IDictionary<V,uint> _Weights, uint _Amount, bool _CanContainDuplicates)
         {
-            var _weightedElements = _IEnumerable.Select(_Element => new
+            var _weightedElements = _IEnumerable.AsValueEnumerable().Select(_Element => new
             {
                 Element = _Element,
                 Weight = _Weights.TryGetValue(_Value(_Element), out var _weight) ? _weight : 0
@@ -242,7 +243,7 @@ namespace MomSesImSpcl.Extensions
             }
             else
             {
-                var _totalWeight = (ulong)_weightedElements.Sum(_WeightedElement => _WeightedElement.Weight);
+                var _totalWeight = (ulong)_weightedElements.AsValueEnumerable().Sum(_WeightedElement => _WeightedElement.Weight);
                 
                 // ReSharper disable once InconsistentNaming
                 for (var i = 0; i < _Amount; i++)
