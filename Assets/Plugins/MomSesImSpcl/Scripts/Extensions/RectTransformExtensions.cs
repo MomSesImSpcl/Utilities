@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using MomSesImSpcl.Utilities;
 using MomSesImSpcl.Utilities.Pooling;
 using UnityEngine;
@@ -24,27 +25,58 @@ namespace MomSesImSpcl.Extensions
             
             _RectTransform.GetWorldCorners(_fourCornerArray);
             
-            var _bottomLeft = _fourCornerArray[0];
-            var _topLeft = _fourCornerArray[1];
-            var _topRight = _fourCornerArray[2];
-            var _bottomRight = _fourCornerArray[3];
-            var _corner = _Corner switch
-            {
-                Corner.UpperLeft    => _topLeft,
-                Corner.UpperCenter  => (_topLeft + _topRight) * .5f,
-                Corner.UpperRight   => _topRight,
-                Corner.MiddleLeft   => (_topLeft + _bottomLeft) * .5f,
-                Corner.MiddleCenter => (_bottomLeft + _topLeft + _topRight + _bottomRight) * .25f,
-                Corner.MiddleRight  => (_topRight + _bottomRight) * .5f,
-                Corner.LowerLeft    => _bottomLeft,
-                Corner.LowerCenter  => (_bottomLeft + _bottomRight) * .5f,
-                Corner.LowerRight   => _bottomRight,
-                _ => throw new ArgumentOutOfRangeException(nameof(_Corner), _Corner, null)
-            };
+            var _corner = GetWorldCornerPosition(_fourCornerArray, _Corner);
 
             _fourCornerArray.ReturnToArrayPool();
             
             return _corner;
+        }
+
+        /// <summary>
+        /// Returns a world <see cref="Transform.position"/> between <c>_From</c> and <c>_To</c> that reflects the given <c>_Percentage</c>.
+        /// </summary>
+        /// <param name="_RectTransform">The <see cref="RectTransform"/> to get the relative <see cref="Transform.position"/> from.</param>
+        /// <param name="_From">The <see cref="Corner"/> from which to calculate the new <see cref="Transform.position"/>.</param>
+        /// <param name="_To">The <see cref="Corner"/> to which to calculate the new <see cref="Transform.position"/>.</param>
+        /// <param name="_Percentage">The new <see cref="Transform.position"/> will be this percentage between <c>_From</c> and <c>_To</c>.</param>
+        /// <returns>A world <see cref="Transform.position"/> between <c>_From</c> and <c>_To</c> that reflects the given <c>_Percentage</c>.</returns>
+        public static Vector3 WorldCornerOffset(this RectTransform _RectTransform, Corner _From, Corner _To, float _Percentage)
+        {
+            var _fourCornerArray = ArrayPool<Vector3>.Get(4);
+            
+            _RectTransform.GetWorldCorners(_fourCornerArray);
+            
+            var _from = GetWorldCornerPosition(_fourCornerArray, _From);
+            var _to = GetWorldCornerPosition(_fourCornerArray, _To);
+            
+            _fourCornerArray.ReturnToArrayPool();
+            
+            return Vector3.Lerp(_from, _to, _Percentage);
+        }
+
+        /// <summary>
+        /// Returns the world <see cref="Transform.position"/> for the given <see cref="Corner"/>.
+        /// </summary>
+        /// <param name="_FourCornerArray">Must already contain the 4 world corners.</param>
+        /// <param name="_Corner">The <see cref="Corner"/> to get the world <see cref="Transform.position"/> for.</param>
+        /// <returns>The world <see cref="Transform.position"/> for the given <see cref="Corner"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Corner"/> is not valid.</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Vector3 GetWorldCornerPosition(Vector3[] _FourCornerArray, Corner _Corner)
+        {
+            return _Corner switch
+            {
+                Corner.UpperLeft    => _FourCornerArray[1],
+                Corner.UpperCenter  => (_FourCornerArray[1] + _FourCornerArray[2]) * .5f,
+                Corner.UpperRight   => _FourCornerArray[2],
+                Corner.MiddleLeft   => (_FourCornerArray[1] + _FourCornerArray[0]) * .5f,
+                Corner.MiddleCenter => (_FourCornerArray[0] + _FourCornerArray[1] + _FourCornerArray[2] + _FourCornerArray[3]) * .25f,
+                Corner.MiddleRight  => (_FourCornerArray[2] + _FourCornerArray[3]) * .5f,
+                Corner.LowerLeft    => _FourCornerArray[0],
+                Corner.LowerCenter  => (_FourCornerArray[0] + _FourCornerArray[3]) * .5f,
+                Corner.LowerRight   => _FourCornerArray[3],
+                _ => throw new ArgumentOutOfRangeException(nameof(_Corner), _Corner, null)
+            };
         }
         
         /// <summary>
