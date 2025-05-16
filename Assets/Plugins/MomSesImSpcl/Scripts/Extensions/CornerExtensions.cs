@@ -66,9 +66,9 @@ namespace MomSesImSpcl.Extensions
             Corner.MiddleLeft   => new Vector3(0, 0, 90),
             Corner.MiddleCenter => Vector3.zero,
             Corner.MiddleRight  => new Vector3(0, 0, -90),
-            Corner.LowerLeft    => new Vector3(0, 0, 45),
-            Corner.LowerCenter  => new Vector3(0, 0, 0),
-            Corner.LowerRight   => new Vector3(0, 0, -45),
+            Corner.LowerLeft    => new Vector3(0, 0, 135),
+            Corner.LowerCenter  => new Vector3(0, 0, 180),
+            Corner.LowerRight   => new Vector3(0, 0, -135),
             _                   => Vector2.zero
         };
 
