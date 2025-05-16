@@ -1,4 +1,6 @@
 using System;
+using MomSesImSpcl.Utilities;
+using MomSesImSpcl.Utilities.Pooling;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -9,6 +11,42 @@ namespace MomSesImSpcl.Extensions
     public static class RectTransformExtensions
     {
         #region Methods
+        /// <summary>
+        /// Returns the world <see cref="Transform.position"/> of the given <see cref="Corner"/>.
+        /// </summary>
+        /// <param name="_RectTransform">The <see cref="RectTransform"/> to use the <see cref="Corner"/> from.</param>
+        /// <param name="_Corner">The <see cref="Corner"/> to get the <see cref="Transform.position"/> of.</param>
+        /// <returns>The world <see cref="Transform.position"/> of the given <see cref="Corner"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When the given <see cref="Corner"/> is not valid.</exception>
+        public static Vector3 WorldCorner(this RectTransform _RectTransform, Corner _Corner)
+        {
+            var _fourCornerArray = ArrayPool<Vector3>.Get(4);
+            
+            _RectTransform.GetWorldCorners(_fourCornerArray);
+            
+            var _bottomLeft = _fourCornerArray[0];
+            var _topLeft = _fourCornerArray[1];
+            var _topRight = _fourCornerArray[2];
+            var _bottomRight = _fourCornerArray[3];
+            var _corner = _Corner switch
+            {
+                Corner.UpperLeft    => _topLeft,
+                Corner.UpperCenter  => (_topLeft + _topRight) * .5f,
+                Corner.UpperRight   => _topRight,
+                Corner.MiddleLeft   => (_topLeft + _bottomLeft) * .5f,
+                Corner.MiddleCenter => (_bottomLeft + _topLeft + _topRight + _bottomRight) * .25f,
+                Corner.MiddleRight  => (_topRight + _bottomRight) * .5f,
+                Corner.LowerLeft    => _bottomLeft,
+                Corner.LowerCenter  => (_bottomLeft + _bottomRight) * .5f,
+                Corner.LowerRight   => _bottomRight,
+                _ => throw new ArgumentOutOfRangeException(nameof(_Corner), _Corner, null)
+            };
+
+            _fourCornerArray.ReturnToArrayPool();
+            
+            return _corner;
+        }
+        
         /// <summary>
         /// Transforms a point from this <see cref="RectTransform"/> into world coordinates.
         /// </summary>
