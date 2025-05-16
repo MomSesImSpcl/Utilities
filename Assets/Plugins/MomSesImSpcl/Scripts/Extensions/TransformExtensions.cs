@@ -15,11 +15,22 @@ namespace MomSesImSpcl.Extensions
     {
         #region Methods
         /// <summary>
+        /// Casts this <see cref="Transform"/> into a <see cref="RectTransform"/>.
+        /// </summary>
+        /// <param name="_Transform">The <see cref="Transform"/> to cast into a <see cref="RectTransform"/>.</param>
+        /// <returns>This <see cref="Transform"/> cast into a <see cref="RectTransform"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RectTransform? AsRectTransform(this Transform _Transform)
+        {
+            return _Transform.As<RectTransform>();
+        }
+        
+        /// <summary>
         /// Returns the <see cref="Transform.eulerAngles"/> as a <see cref="float3"/>.
         /// </summary>
         /// <param name="_Transform">The <see cref="Transform"/> to get the <see cref="Transform.eulerAngles"/> from.</param>
         /// <returns>The <see cref="Transform.eulerAngles"/> as a <see cref="float3"/></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)] 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float3 EulerAngles(this Transform _Transform)
         {
             return new float3(_Transform.eulerAngles.x, _Transform.eulerAngles.y, _Transform.eulerAngles.z);
