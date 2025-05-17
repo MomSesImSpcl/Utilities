@@ -8,7 +8,12 @@ namespace MomSesImSpcl.Utilities
         Awake,
         OnEnable,
         Start,
+#if UNITY_EDITOR
+        /// <summary>
+        /// Editor only.
+        /// </summary>
         OnValidate,
+#endif
         OnDisable,
         OnDestroy
     }
