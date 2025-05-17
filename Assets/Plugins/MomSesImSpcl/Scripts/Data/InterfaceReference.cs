@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
@@ -14,7 +13,10 @@ namespace MomSesImSpcl.Data
 #if ODIN_INSPECTOR
     [Sirenix.OdinInspector.HideLabel]
 #endif
-    public sealed class InterfaceReference<T> : ISerializationCallbackReceiver where T : class
+    public sealed class InterfaceReference<T>
+#if UNITY_EDITOR
+        : ISerializationCallbackReceiver where T : class
+#endif
     {
         #region Inspector Fields
         [Tooltip("Reference to the Object that implements the given interface of type T.")]
@@ -37,8 +39,8 @@ namespace MomSesImSpcl.Data
         public static implicit operator bool(InterfaceReference<T> _InterfaceReference) => _InterfaceReference.interfaceReference is not null;
         #endregion
         
+#if UNITY_EDITOR
         #region Methods
-        [Conditional("UNITY_EDITOR")]
         private void OnValidate()
         {
             if (this.interfaceReference is T || this.interfaceReference is not GameObject _gameObject)
@@ -64,9 +66,10 @@ namespace MomSesImSpcl.Data
                 Debug.LogWarning($"The given GameObject doesn't implement the interface: {typeof(T).Name}");
             }
         }
-
+        
         void ISerializationCallbackReceiver.OnBeforeSerialize() => this.OnValidate();
         void ISerializationCallbackReceiver.OnAfterDeserialize() { }
         #endregion
+#endif
     }
 }
