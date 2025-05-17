@@ -92,7 +92,7 @@ namespace MomSesImSpcl.Data
         {
             this.item1 = _Item1;
             this.item2 = _Item2;
-#if UNITY_EDITOR && ODIN_INSPECTOR
+#if ODIN_INSPECTOR
             this.Item1Label = nameof(this.item1);
             this.Item2Label = nameof(this.item2);
 #endif
