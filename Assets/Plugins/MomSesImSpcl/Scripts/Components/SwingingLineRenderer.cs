@@ -33,12 +33,12 @@ namespace MomSesImSpcl.Components
         [SerializeField] private float swingAngle = 30f;
         [Tooltip("The amount by which the line will be curved while swinging.")]
         [SerializeField] private float curvatureAmount = .25f;
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
         [Sirenix.OdinInspector.OnValueChanged(nameof(this.SetLineRendererLength))]
 #endif
         [Tooltip("The length of the line renderer.")]
         [SerializeField] private float lineRendererLength = 15f;
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
         [Sirenix.OdinInspector.OnValueChanged(nameof(this.SetLineRendererSegments))]
 #endif
         [Tooltip("The number of positions that will be created in the line renderer.")]
@@ -194,14 +194,14 @@ namespace MomSesImSpcl.Components
                 return;
             }
             
-            if (this.lineRenderer == null)
+            if (!this.lineRenderer)
             {
                 this.lineRenderer = base.GetComponent<LineRenderer>();    
             }
             
             this.lineRenderer.SetPosition(this.lineRenderer.positionCount - 1, Vector3.zero.WithY(-_LineRendererLength));
 
-            if (this.attachedObject != null)
+            if (this.attachedObject)
             {
                 this.attachedObject.position = base.transform.TransformPoint(Vector3.zero.WithY(-_LineRendererLength));
             }
@@ -216,7 +216,7 @@ namespace MomSesImSpcl.Components
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
-                if (this.lineRenderer == null)
+                if (!this.lineRenderer)
                 {
                     this.lineRenderer = base.GetComponent<LineRenderer>();    
                 }
