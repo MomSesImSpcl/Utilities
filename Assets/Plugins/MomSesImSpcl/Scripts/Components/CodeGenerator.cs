@@ -22,7 +22,8 @@ namespace MomSesImSpcl.Utilities
     /// </summary>
     public sealed class CodeGenerator : EditorMonoBehaviour, ICodeGenerator
     {
-#if UNITY_EDITOR && ODIN_INSPECTOR
+#if UNITY_EDITOR
+#if ODIN_INSPECTOR
         #region Inspector Fields
         [Tooltip("Contains fields to dynamically compile and execute code during runtime.")]
         [SerializeField] private RuntimeCodeExecutor runtimeCodeExecutor;
@@ -115,5 +116,6 @@ namespace MomSesImSpcl.Utilities
             return _methodBody;
         }
         #endregion
+#endif
     }
 }
