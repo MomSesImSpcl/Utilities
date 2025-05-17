@@ -26,6 +26,7 @@ namespace MomSesImSpcl.Editor.Updater
         /// If an update is available, a log message is displayed in the Unity console.
         /// </summary>
         [InitializeOnLoadMethod]
+        // ReSharper disable once AsyncVoidMethod
         private static async void CheckForUpdatesAsync()
         {
             EditorApplication.wantsToQuit += OnEditorQuit;
