@@ -25,8 +25,7 @@ namespace MomSesImSpcl.Editor.Updater
         /// Checks for updates by comparing the current version with the latest version available online.
         /// If an update is available, a log message is displayed in the Unity console.
         /// </summary>
-        [InitializeOnLoadMethod]
-        // ReSharper disable once AsyncVoidMethod
+        [InitializeOnLoadMethod] // ReSharper disable once AsyncVoidMethod
         private static async void CheckForUpdatesAsync()
         {
             EditorApplication.wantsToQuit += OnEditorQuit;
