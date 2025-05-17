@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
 namespace MomSesImSpcl.Data
@@ -36,9 +38,9 @@ namespace MomSesImSpcl.Data
         #endregion
         
         #region Methods
+        [Conditional("UNITY_EDITOR")]
         private void OnValidate()
         {
-#if UNITY_EDITOR
             if (this.interfaceReference is T || this.interfaceReference is not GameObject _gameObject)
             {
                 return;
@@ -61,7 +63,6 @@ namespace MomSesImSpcl.Data
             {
                 Debug.LogWarning($"The given GameObject doesn't implement the interface: {typeof(T).Name}");
             }
-#endif
         }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize() => this.OnValidate();
