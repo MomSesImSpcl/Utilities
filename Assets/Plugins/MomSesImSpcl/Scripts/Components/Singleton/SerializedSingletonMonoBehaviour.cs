@@ -1,5 +1,6 @@
 #if ODIN_INSPECTOR
 #nullable enable
+using System.Diagnostics;
 using Sirenix.OdinInspector;
 
 namespace MomSesImSpcl.Components.Singleton
@@ -54,8 +55,8 @@ namespace MomSesImSpcl.Components.Singleton
                 this.Init();
             }
         }
-
-#if UNITY_EDITOR
+        
+        [Conditional("UNITY_EDITOR")]
         protected virtual void OnValidate()
         {
             if (this.InitializationMethod == InitializationMethod.OnValidate)
@@ -63,7 +64,7 @@ namespace MomSesImSpcl.Components.Singleton
                 this.Init();
             }
         }
-#endif
+        
         protected virtual void OnDestroy()
         {
             if (Instance == this)
