@@ -23,7 +23,7 @@ namespace MomSesImSpcl.Extensions
         /// <summary>
         /// Maps every <see cref="PARAMETER_ID"/> of a <see cref="EventReference"/> to their name.
         /// </summary>
-        private static readonly Dictionary<EventReferencePath, Dictionary<string, PARAMETER_ID>> parameterIds = new();
+        private static readonly Dictionary<EventReferenceGuid, Dictionary<string, PARAMETER_ID>> parameterIds = new();
         #endregion
         
         #region Methods
@@ -95,7 +95,7 @@ namespace MomSesImSpcl.Extensions
         /// <returns>The <see cref="PARAMETER_ID"/> for the given parameter name.</returns>
         private static PARAMETER_ID GetOrAddCachedParameterId(EventReference _EventReference, string _ParameterName)
         {
-            var _eventReferencePath = new EventReferencePath(_EventReference);
+            var _eventReferencePath = new EventReferenceGuid(_EventReference);
             PARAMETER_ID _parameterId;
 
             if (parameterIds.TryGetValue(_eventReferencePath, out var _parameterIds))
