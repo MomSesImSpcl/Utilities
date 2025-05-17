@@ -15,8 +15,9 @@ namespace MomSesImSpcl.Data
 #endif
     public sealed class InterfaceReference<T>
 #if UNITY_EDITOR
-        : ISerializationCallbackReceiver where T : class
+        : ISerializationCallbackReceiver
 #endif
+        where T : class
     {
         #region Inspector Fields
         [Tooltip("Reference to the Object that implements the given interface of type T.")]
