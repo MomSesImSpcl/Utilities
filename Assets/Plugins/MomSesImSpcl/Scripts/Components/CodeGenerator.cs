@@ -20,7 +20,10 @@ namespace MomSesImSpcl.Utilities
     /// <summary>
     /// Helper class for the <see cref="RuntimeCodeExecutor"/> to generate code from a <c>.cs</c>-file instead of from the inspector.
     /// </summary>
-    public sealed class CodeGenerator : EditorMonoBehaviour, ICodeGenerator
+    public sealed class CodeGenerator : EditorMonoBehaviour
+#if UNITY_EDITOR
+        , ICodeGenerator
+#endif
     {
 #if UNITY_EDITOR
 #if ODIN_INSPECTOR
