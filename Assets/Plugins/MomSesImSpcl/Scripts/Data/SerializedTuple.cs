@@ -29,7 +29,7 @@ namespace MomSesImSpcl.Data
         #endregion
         
         #region Properties
-#if UNITY_EDITOR && ODIN_INSPECTOR
+#if ODIN_INSPECTOR
         /// <summary>
         /// Refactor resistant name for <see cref="item1"/>. <br/>
         /// <i>For custom <see cref="PropertyDrawer"/>.</i>
