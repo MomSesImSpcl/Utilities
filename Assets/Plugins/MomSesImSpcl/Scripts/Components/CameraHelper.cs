@@ -48,11 +48,11 @@ namespace MomSesImSpcl.Components
             base.Awake();
             this.camera = base.GetComponentInParent<Camera>();
             
-            if (base.GetComponent<Camera>() == null) // Must not be "is", otherwise this will return "false" for some reason.
+            if (!base.GetComponent<Camera>()) // Must not be "is", otherwise this will return "false" for some reason.
             {
                 var _canvas = base.GetComponent<Canvas>();
                 
-                if (_canvas == null) // Must not be "is", must be "==".
+                if (!_canvas) // Must not be "is", must be "==".
                 {
                     _canvas = base.gameObject.AddComponent<Canvas>();
                 }
