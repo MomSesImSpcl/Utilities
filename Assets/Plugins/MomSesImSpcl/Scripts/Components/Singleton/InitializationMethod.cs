@@ -21,12 +21,9 @@ namespace MomSesImSpcl.Components.Singleton
         /// When the singleton should be initialized manually.
         /// </summary>
         Manual,
-#if UNITY_EDITOR
         /// <summary>
-        /// Will be initialized in the OnValidate method. <br/>
-        /// <b>Works only in  editor.</b>
+        /// Will be initialized in the OnValidate method.
         /// </summary>
         OnValidate
-#endif
     }
 }
