@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using MomSesImSpcl.Extensions;
 using UnityEngine;
 
@@ -15,7 +14,7 @@ namespace MomSesImSpcl.Data
     public struct Float4Parameter
     {
         #region Inspector Fields
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
         [Sirenix.OdinInspector.HorizontalGroup]
         [Sirenix.OdinInspector.HideLabel]
         [Sirenix.OdinInspector.OnValueChanged(nameof(this.Vector4Changed))]
@@ -143,15 +142,16 @@ namespace MomSesImSpcl.Data
             return this.vector4.ToString();
         }
         
+#if UNITY_EDITOR
         /// <summary>
         /// Will be fired when the value of <see cref="vector4"/> changes.
         /// </summary>
         /// <param name="_">The new value.</param>
-        [Conditional("UNITY_EDITOR")]
         private void Vector4Changed(Vector4 _)
         {
             this.hasValue = true;
         }
+#endif
         #endregion
     }
 }
