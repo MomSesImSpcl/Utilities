@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using MomSesImSpcl.Extensions;
 using MomSesImSpcl.Interfaces;
 using Unity.Burst;
@@ -180,12 +181,12 @@ namespace MomSesImSpcl.Components
             }
         }
         
-#if UNITY_EDITOR
         /// <summary>
         /// Sets the lenght of the <see cref="lineRenderer"/>. <br/>
         /// <b>Editor only.</b>
         /// </summary>
         /// <param name="_LineRendererLength"><see cref="lineRendererLength"/>.</param>
+        [Conditional("UNITY_EDITOR")]
         private void SetLineRendererLength(float _LineRendererLength)
         {
             if (Application.isPlaying)
@@ -205,7 +206,7 @@ namespace MomSesImSpcl.Components
                 this.attachedObject.position = base.transform.TransformPoint(Vector3.zero.WithY(-_LineRendererLength));
             }
         }
-#endif
+        
          /// <summary>
          /// Sets the position count in the <see cref="lineRenderer"/>.
          /// </summary>
