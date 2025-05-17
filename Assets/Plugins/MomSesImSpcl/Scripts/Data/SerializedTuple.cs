@@ -14,13 +14,13 @@ namespace MomSesImSpcl.Data
     public struct SerializedTuple<T> : IEquatable<SerializedTuple<T>>
     {
         #region Inspector Fields
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
         [Sirenix.OdinInspector.HorizontalGroup]
         [Sirenix.OdinInspector.LabelText("$" + nameof(Item1Label))]
 #endif
         [Tooltip("The first item of the serialized tuple.")]
         [SerializeField] private T item1;
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
         [Sirenix.OdinInspector.HorizontalGroup]
         [Sirenix.OdinInspector.LabelText("$" + nameof(Item2Label))]
 #endif
@@ -29,7 +29,7 @@ namespace MomSesImSpcl.Data
         #endregion
         
         #region Properties
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
         /// <summary>
         /// Refactor resistant name for <see cref="item1"/>. <br/>
         /// <i>For custom <see cref="PropertyDrawer"/>.</i>
@@ -92,7 +92,7 @@ namespace MomSesImSpcl.Data
         {
             this.item1 = _Item1;
             this.item2 = _Item2;
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
             this.Item1Label = nameof(this.item1);
             this.Item2Label = nameof(this.item2);
 #endif
