@@ -23,7 +23,9 @@ namespace MomSesImSpcl.Components
         /// <summary>
         /// Reference to the <see cref="UnityEngine.Camera"/> in the scene.
         /// </summary>
-        private new Camera camera;
+#pragma warning disable CS0108, CS0114
+        private Camera camera;
+#pragma warning restore CS0108, CS0114
         #endregion
         
         #region Properties
