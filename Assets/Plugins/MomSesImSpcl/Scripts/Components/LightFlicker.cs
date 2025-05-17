@@ -34,7 +34,9 @@ namespace MomSesImSpcl.Components
         /// <summary>
         /// The <see cref="Light"/> component to flicker.
         /// </summary>
-        private new Light light;
+#pragma warning disable CS0108, CS0114
+        private Light light;
+#pragma warning restore CS0108, CS0114
         /// <summary>
         /// The default <see cref="Light.intensity"/> of the <see cref="light"/>.
         /// </summary>
