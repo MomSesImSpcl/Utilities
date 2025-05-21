@@ -52,11 +52,7 @@ namespace MomSesImSpcl.Utilities.Logging
         public static void EnableLogger(params LogType[] _LogTypesToExclude)
         {
             enableLogger = true;
-            
-            if (_LogTypesToExclude.Length > 0)
-            {
-                excludedLogTypes = new HashSet<LogType>(_LogTypesToExclude);
-            }
+            excludedLogTypes = new HashSet<LogType>(_LogTypesToExclude);
         }
         
         /// <summary>
