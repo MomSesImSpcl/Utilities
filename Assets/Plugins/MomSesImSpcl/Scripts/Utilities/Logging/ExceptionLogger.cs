@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using JetBrains.Annotations;
 using MomSesImSpcl.Utilities.Pooling;
 using MomSesImSpcl.Utilities.Pooling.Wrappers;
@@ -41,6 +42,10 @@ namespace MomSesImSpcl.Utilities.Logging
         /// <see cref="StreamWriter"/>.
         /// </summary>
         [CanBeNull] private static StreamWriter streamWriter;
+        /// <summary>
+        /// Prevents race conditions for the <see cref="streamWriter"/>.
+        /// </summary>
+        private static SemaphoreSlim semaphoreSlim;
         #endregion
         
         #region Methods
@@ -53,6 +58,7 @@ namespace MomSesImSpcl.Utilities.Logging
         {
             enableLogger = true;
             excludedLogTypes = new HashSet<LogType>(_LogTypesToExclude);
+            semaphoreSlim = new SemaphoreSlim(1, 1);
         }
         
         /// <summary>
@@ -117,9 +123,18 @@ namespace MomSesImSpcl.Utilities.Logging
                 _poolWrapper.StringBuilder.Append(_Stacktrace);
                 _poolWrapper.StringBuilder.Append(SEPARATOR);
                 _poolWrapper.StringBuilder.Append(Environment.NewLine);
+
+                await semaphoreSlim.WaitAsync();
                 
-                await streamWriter!.WriteAsync(_poolWrapper.Return());
-                await streamWriter!.FlushAsync();
+                try
+                {
+                    await streamWriter!.WriteAsync(_poolWrapper.Return());
+                    await streamWriter!.FlushAsync(); 
+                }
+                finally
+                {
+                    semaphoreSlim.Release();
+                }
             }
             catch (Exception _exception)
             {
