@@ -132,20 +132,13 @@ namespace MomSesImSpcl.Utilities.Logging
         }
         
         /// <summary>
-        /// Closes the <see cref="streamWriter"/> and deletes the file at <see cref="filePath"/> if nothing has been written to it.
+        /// Closes the <see cref="streamWriter"/>.
         /// </summary>
         private static void OnApplicationQuit()
         {
             try
             {
-                var _fileIsEmpty = fileStream?.Length == 0;
-                
                 streamWriter?.Close();
-
-                if (_fileIsEmpty)
-                {
-                    File.Delete(filePath);
-                }
             }
             catch (Exception _exception)
             {
