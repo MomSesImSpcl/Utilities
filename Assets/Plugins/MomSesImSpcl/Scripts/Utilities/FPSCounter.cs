@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Utilities
@@ -57,6 +59,7 @@ namespace MomSesImSpcl.Utilities
         /// <b>Should be between <c>0</c> and <c>1</c>.</b>
         /// </param>
         /// <returns>The current Frames Per Second.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float FloatFPS(float _SmoothingFactor = SMOOTING_FACTOR)
         {
             return 1 / (this.deltaTime += (Time.unscaledDeltaTime - this.deltaTime) * _SmoothingFactor);
@@ -70,11 +73,13 @@ namespace MomSesImSpcl.Utilities
         /// <b>Should be between <c>0</c> and <c>1</c>.</b>
         /// </param>
         /// <returns>The current Frames Per Second.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int IntFPS(float _SmoothingFactor = SMOOTING_FACTOR)
         {
-            return Mathf.RoundToInt(this.FloatFPS(_SmoothingFactor));
+            return (int)math.round(this.FloatFPS(_SmoothingFactor));
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return this.IntFPS().ToString();
