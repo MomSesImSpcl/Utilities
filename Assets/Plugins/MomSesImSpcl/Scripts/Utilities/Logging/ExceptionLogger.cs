@@ -51,6 +51,8 @@ namespace MomSesImSpcl.Utilities.Logging
         /// <param name="_LogTypesToExclude"><see cref="excludedLogTypes"/>.</param>
         public static void EnableLogger(params LogType[] _LogTypesToExclude)
         {
+            enableLogger = true;
+            
             if (_LogTypesToExclude.Length > 0)
             {
                 excludedLogTypes = new HashSet<LogType>(_LogTypesToExclude);
