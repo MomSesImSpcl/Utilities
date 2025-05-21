@@ -120,7 +120,6 @@ namespace MomSesImSpcl.Utilities.Logging
                 _poolWrapper.StringBuilder.Append(SEPARATOR);
                 _poolWrapper.StringBuilder.Append(Environment.NewLine);
                 
-                // TODO: When Debug.Logs are called right after another, sometimes not all of them are written to the .txt file
                 await streamWriter!.WriteAsync(_poolWrapper.Return());
                 await streamWriter!.FlushAsync();
             }
