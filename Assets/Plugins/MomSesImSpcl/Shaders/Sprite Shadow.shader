@@ -9,7 +9,7 @@ Shader "MomSesImSpcl/Sprite Shadow"
         [Toggle] _UseNormalMap("Use Normal Map", Float) = 0
         [Normal] _NormalMap("Normal Map", 2D) = "bump" {}
         _NormalIntensity("Normal Intensity", Range(0, 3)) = 1
-        _Smoothness("Smoothness", Range(0, 1)) = 0.5
+        _Smoothness("Smoothness", Range(0, 1)) = 0
         _Metallic("Metallic", Range(0, 1)) = 0
         [Enum(Off,0,Front,1,Back,2)] _CullMode("Culling Mode", Float) = 2
     }
