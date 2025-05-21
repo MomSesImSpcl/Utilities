@@ -1,4 +1,3 @@
-#if ODIN_INSPECTOR
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,12 +12,8 @@ namespace MomSesImSpcl.Data
     /// <typeparam name="K">The <see cref="Type"/> of the <see cref="Dictionary{K,V}.Keys"/>.</typeparam>
     /// <typeparam name="V">The <see cref="Type"/> of the <see cref="Dictionary{K,V}.Values"/>.</typeparam>
     [Serializable]
-    public sealed class SerializedDictionary<K,V> : IDictionary<K,V>
-#if UNITY_EDITOR
-        , ISerializationCallbackReceiver
-#endif
+    public sealed class SerializedDictionary<K,V> : IDictionary<K,V> , ISerializationCallbackReceiver
     {
-#if UNITY_EDITOR
         #region Inspector Fields
         /// <summary>
         /// Only used in editor to display all <see cref="dictionary"/> entries in the inspector.
@@ -26,7 +21,7 @@ namespace MomSesImSpcl.Data
         [Tooltip("Contains all elements of the underlying Dictionary.")]
         [SerializeField] private List<SerializedKeyValuePair<K,V>> list;
         #endregion
-#endif
+        
         #region Fields
         /// <summary>
         /// The underlying <see cref="Dictionary{K,V}"/> of this <see cref="SerializedDictionary{K,V}"/>.
@@ -90,9 +85,7 @@ namespace MomSesImSpcl.Data
         public SerializedDictionary()
         {
             this.dictionary = new Dictionary<K,V>();
-#if UNITY_EDITOR
             this.list = new List<SerializedKeyValuePair<K,V>>();
-#endif
         }
         
         /// <summary>
@@ -102,9 +95,7 @@ namespace MomSesImSpcl.Data
         public SerializedDictionary(IDictionary<K,V> _Dictionary)
         {
             this.dictionary = new Dictionary<K,V>(_Dictionary);
-#if UNITY_EDITOR
             this.list = new List<SerializedKeyValuePair<K,V>>(_Dictionary.Select(_Kvp => new SerializedKeyValuePair<K,V>(_Kvp)));
-#endif
         }
         
         /// <summary>
@@ -115,9 +106,7 @@ namespace MomSesImSpcl.Data
         public SerializedDictionary(IDictionary<K,V> _Dictionary, IEqualityComparer<K> _Comparer)
         {
             this.dictionary = new Dictionary<K,V>(_Dictionary, _Comparer);
-#if UNITY_EDITOR
             this.list = new List<SerializedKeyValuePair<K,V>>(_Dictionary.Select(_Kvp => new SerializedKeyValuePair<K,V>(_Kvp)));
-#endif
         }
         
         /// <summary>
@@ -128,9 +117,7 @@ namespace MomSesImSpcl.Data
         {
             var _array = _Collection.ToArray();
             this.dictionary = new Dictionary<K,V>(_array);
-#if UNITY_EDITOR
             this.list = new List<SerializedKeyValuePair<K,V>>(_array.Select(_Kvp => new SerializedKeyValuePair<K,V>(_Kvp)));
-#endif
         }
         
         /// <summary>
@@ -142,9 +129,7 @@ namespace MomSesImSpcl.Data
         {
             var _array = _Collection.ToArray();
             this.dictionary = new Dictionary<K,V>(_array, _Comparer);
-#if UNITY_EDITOR
             this.list = new List<SerializedKeyValuePair<K,V>>(_array.Select(_Kvp => new SerializedKeyValuePair<K,V>(_Kvp)));
-#endif
         }
         
         /// <summary>
@@ -154,9 +139,7 @@ namespace MomSesImSpcl.Data
         public SerializedDictionary(IEqualityComparer<K> _Comparer)
         {
             this.dictionary = new Dictionary<K,V>(_Comparer);
-#if UNITY_EDITOR
             this.list = new List<SerializedKeyValuePair<K,V>>();
-#endif
         }
         
         /// <summary>
@@ -166,9 +149,7 @@ namespace MomSesImSpcl.Data
         public SerializedDictionary(int _Capacity)
         {
             this.dictionary = new Dictionary<K,V>(_Capacity);
-#if UNITY_EDITOR
             this.list = new List<SerializedKeyValuePair<K,V>>(_Capacity);
-#endif
         }
         
         /// <summary>
@@ -179,9 +160,7 @@ namespace MomSesImSpcl.Data
         public SerializedDictionary(int _Capacity, IEqualityComparer<K> _Comparer)
         {
             this.dictionary = new Dictionary<K,V>(_Capacity, _Comparer);
-#if UNITY_EDITOR
             this.list = new List<SerializedKeyValuePair<K,V>>(_Capacity);
-#endif
         }
         #endregion
         
@@ -322,7 +301,6 @@ namespace MomSesImSpcl.Data
             return this.dictionary.GetEnumerator();
         }
         
-#if UNITY_EDITOR
         public void OnBeforeSerialize()
         {
             this.list.Clear();
@@ -342,8 +320,6 @@ namespace MomSesImSpcl.Data
                 this.dictionary[_kvp.Key] = _kvp.Value;
             }
         }
-#endif
         #endregion
     }
 }
-#endif
