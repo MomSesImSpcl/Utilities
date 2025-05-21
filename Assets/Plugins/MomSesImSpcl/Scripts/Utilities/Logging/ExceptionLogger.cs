@@ -1,0 +1,156 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using JetBrains.Annotations;
+using MomSesImSpcl.Utilities.Pooling;
+using MomSesImSpcl.Utilities.Pooling.Wrappers;
+using UnityEngine;
+
+namespace MomSesImSpcl.Utilities.Logging
+{
+    /// <summary>
+    /// Logs debug messages in build to a .txt file.
+    /// </summary>
+    public static class ExceptionLogger
+    {
+        #region Constants
+        /// <summary>
+        /// Separator between each log entry.
+        /// </summary>
+        private const string SEPARATOR = "----------------------------------------------------------------------------";
+        #endregion
+        
+        #region Fields
+        /// <summary>
+        /// Set to <c>true</c> to enable the <see cref="ExceptionLogger"/>.
+        /// </summary>
+        private static bool enableLogger;
+        /// <summary>
+        /// The <see cref="LogType"/>s to exclude from the <c>Log.txt</c> file.
+        /// </summary>
+        private static HashSet<LogType> excludedLogTypes;
+        /// <summary>
+        /// The file path of the error log .txt file.
+        /// </summary>
+        private static string filePath;
+        /// <summary>
+        /// <see cref="FileStream"/>.
+        /// </summary>
+        [CanBeNull] private static FileStream fileStream;
+        /// <summary>
+        /// <see cref="StreamWriter"/>.
+        /// </summary>
+        [CanBeNull] private static StreamWriter streamWriter;
+        #endregion
+        
+        #region Methods
+        /// <summary>
+        /// Enables the <see cref="ExceptionLogger"/>. <br/>
+        /// <b>Must be set during <see cref="RuntimeInitializeLoadType.SubsystemRegistration"/>.</b>
+        /// </summary>
+        /// <param name="_LogTypesToExclude"><see cref="excludedLogTypes"/>.</param>
+        public static void EnableLogger(params LogType[] _LogTypesToExclude)
+        {
+            if (_LogTypesToExclude.Length > 0)
+            {
+                excludedLogTypes = new HashSet<LogType>(_LogTypesToExclude);
+            }
+        }
+        
+        /// <summary>
+        /// Initializes the <see cref="ExceptionLogger"/> if <see cref="enableLogger"/> is set to <c>true</c>.
+        /// </summary>
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+        private static void Init()
+        {
+            if (!enableLogger)
+            {
+                return;
+            }
+            
+            try
+            {
+                var _directoryPath = Application.dataPath;
+#if UNITY_EDITOR // Will be the "Assets"-Folder in Editor.
+                _directoryPath = Directory.GetParent(_directoryPath)!.FullName;
+#endif
+                filePath = Path.Combine(_directoryPath, "Log.txt");
+                fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+                streamWriter = new StreamWriter(fileStream);
+
+                ObjectPools.ConcurrentStringBuilderPool ??= new ConcurrentCustomPool<ConcurrentStringBuilderPoolWrapper>(1);
+            }
+            catch (Exception _exception)
+            {
+                Debug.LogException(_exception);
+            }
+            
+            if (streamWriter == null)
+            {
+                return;
+            }
+
+            Application.logMessageReceivedThreaded += OnLogMessageReceived;
+            Application.quitting += OnApplicationQuit;
+        }
+
+        /// <summary>
+        /// Writes the message to the <c>Log.txt</c> file.
+        /// </summary>
+        /// <param name="_Condition">The message.</param>
+        /// <param name="_Stacktrace">The stacktrace</param>
+        /// <param name="_LogType"><see cref="LogType"/>.</param>
+        // ReSharper disable once AsyncVoidMethod
+        private static async void OnLogMessageReceived(string _Condition, string _Stacktrace, LogType _LogType)
+        {
+            if (excludedLogTypes.Contains(_LogType))
+            {
+                return;
+            }
+            
+            try
+            {
+                var _poolWrapper = await ObjectPools.ConcurrentStringBuilderPool.GetAsync();
+             
+                _poolWrapper.StringBuilder.Append(_LogType.ToString());
+                _poolWrapper.StringBuilder.Append(Environment.NewLine);
+                _poolWrapper.StringBuilder.Append(_Condition);
+                _poolWrapper.StringBuilder.Append(Environment.NewLine);
+                _poolWrapper.StringBuilder.Append(_Stacktrace);
+                _poolWrapper.StringBuilder.Append(SEPARATOR);
+                _poolWrapper.StringBuilder.Append(Environment.NewLine);
+                
+                // TODO: When Debug.Logs are called right after another, sometimes not all of them are written to the .txt file
+                await streamWriter!.WriteAsync(_poolWrapper.Return());
+                await streamWriter!.FlushAsync();
+            }
+            catch (Exception _exception)
+            {
+                Debug.LogException(_exception);
+            }
+        }
+        
+        /// <summary>
+        /// Closes the <see cref="streamWriter"/> and deletes the file at <see cref="filePath"/> if nothing has been written to it.
+        /// </summary>
+        private static void OnApplicationQuit()
+        {
+            try
+            {
+                var _fileIsEmpty = fileStream?.Length == 0;
+                
+                streamWriter?.Close();
+
+                if (_fileIsEmpty)
+                {
+                    File.Delete(filePath);
+                }
+            }
+            catch (Exception _exception)
+            {
+                Debug.LogException(_exception);
+            }
+        }
+        #endregion
+    }
+}
