@@ -293,7 +293,7 @@ namespace MomSesImSpcl.Components
                 var _localSwingRotation = quaternion.AxisAngle(new float3(0, 0, 1), _radians);
                 var _objectRotation = math.mul(this.anchorRotation, _localSwingRotation);
     
-                _Transform.position = _objectPosition;
+                _Transform.position = _objectPosition.WithZ(_Transform.position.z);
                 _Transform.rotation = _objectRotation;
             }
             #endregion
