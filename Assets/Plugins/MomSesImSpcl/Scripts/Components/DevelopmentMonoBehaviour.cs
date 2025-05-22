@@ -10,7 +10,7 @@ namespace MomSesImSpcl.Components
         #region Methods
         protected virtual void Awake()
         {
-            if (!Application.isEditor && Debug.isDebugBuild)
+            if (!Application.isEditor && !Debug.isDebugBuild)
             {
                 Destroy(base.gameObject);
             }
