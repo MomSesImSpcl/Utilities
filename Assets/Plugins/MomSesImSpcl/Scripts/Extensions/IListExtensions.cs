@@ -21,7 +21,7 @@ namespace MomSesImSpcl.Extensions
         /// Removes and returns the first item in the list.
         /// </summary>
         /// <param name="_IList">The list from which the first item will be removed and returned.</param>
-        /// <typeparam name="T">The type of the elements in the list.</typeparam>
+        /// <typeparam name="T">The <see cref="Type"/> of the elements in the list.</typeparam>
         /// <returns>The first item that was removed from the list.</returns>
         public static T Dequeue<T>(this IList<T> _IList)
         {
@@ -31,6 +31,25 @@ namespace MomSesImSpcl.Extensions
             return _firstEntry;
         }
 
+        /// <summary>
+        /// Tries to remove and return the first item in the <see cref="IList{T}"/>.
+        /// </summary>
+        /// <param name="_IList">The list from which the first item will be removed and returned.</param>
+        /// <param name="_Item">The first item that was removed from the <see cref="IList{T}"/> or <c>null</c>.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the elements in the list.</typeparam>
+        /// <returns><c>true</c> if the item was removed, otherwise <c>false</c>.</returns>
+        public static bool TryDequeue<T>(this IList<T> _IList, out T? _Item)
+        {
+            if (_IList.Count > 0)
+            {
+                _Item = _IList.Dequeue();
+                return true;
+            }
+
+            _Item = default;
+            return false;
+        }
+        
         /// <summary>
         /// Returns a random element from this <see cref="Array"/>.
         /// </summary>
