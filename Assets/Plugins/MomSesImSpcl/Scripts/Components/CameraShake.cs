@@ -1,6 +1,5 @@
 #if DOTWEEN
 using System.Globalization;
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using JetBrains.Annotations;
 using MomSesImSpcl.Components.Singleton;
@@ -97,9 +96,9 @@ namespace MomSesImSpcl.Components
         /// </param>
         public static async
 #if UNITASK
-            UniTask
+            Cysharp.Threading.Tasks.UniTask
 #else
-            Task 
+            System.Threading.Tasks.Task 
 #endif
             Shake(
             (float Min, float Max) _Duration,
@@ -113,9 +112,9 @@ namespace MomSesImSpcl.Components
             {
                 Time.timeScale = 0f;
 #if UNITASK
-                await UniTask.DelayFrame(_FreezeTime.Value);
+                await Cysharp.Threading.Tasks.UniTask.DelayFrame(_FreezeTime.Value);
 #else
-                await Task.Delay(_FreezeTime.Value);
+                await System.Threading.Tasks.Task.Delay(_FreezeTime.Value);
 #endif
                 Time.timeScale = 1f;
             }
