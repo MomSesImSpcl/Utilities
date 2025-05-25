@@ -40,13 +40,14 @@ namespace MomSesImSpcl.Extensions
         /// <summary>
         /// Converts the given <see cref="byte"/> <c>RGBA</c> values <c>0-255</c>, into <see cref="float"/> values <c>0-1</c>.
         /// </summary>
+        /// <param name="_Color"><see cref="Color"/>.</param>
         /// <param name="_R"><see cref="Color.r"/>.</param>
         /// <param name="_G"><see cref="Color.g"/>.</param>
         /// <param name="_B"><see cref="Color.b"/>.</param>
         /// <param name="_A"><see cref="Color.a"/>.</param>
         /// <returns>A new <see cref="Color"/> <see cref="object"/> with the given values.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Color FromByte(byte _R, byte _G, byte _B, byte _A = 0)
+        public static Color FromByte(this Color _Color, byte _R, byte _G, byte _B, byte _A = 0)
         {
             return new Color(_R / 255f, _G / 255f, _B / 255f, _A / 255f);;
         }
