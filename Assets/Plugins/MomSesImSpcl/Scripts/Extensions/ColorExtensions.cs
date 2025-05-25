@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -26,14 +27,18 @@ namespace MomSesImSpcl.Extensions
         /// </summary>
         /// <param name="_Color">The original color.</param>
         /// <param name="_TargetColor">The target color to blend to.</param>
-        /// <param name="_Percentage">The percentage of blending between the original and target colors.</param>
+        /// <param name="_Percentage">
+        /// The percentage of blending between the original and target colors. <br/>
+        /// <i><c>0</c>-<c>1</c>.</i>
+        /// </param>
         /// <return>The blended color as a hexadecimal string.</return>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string BlendColors(this Color _Color, Color _TargetColor, float _Percentage)
         {
-            var _red = (int)(_Color.r + (_TargetColor.r - _Color.r) * _Percentage);
-            var _green = (int)(_Color.g + (_TargetColor.g - _Color.g) * _Percentage);
-            var _blue = (int)(_Color.b + (_TargetColor.b - _Color.b) * _Percentage);
-        
+            var _red = (int)math.round((_Color.r + (_TargetColor.r - _Color.r) * _Percentage) * 255);
+            var _green = (int)math.round((_Color.g + (_TargetColor.g - _Color.g) * _Percentage) * 255);
+            var _blue = (int)math.round((_Color.b + (_TargetColor.b - _Color.b) * _Percentage) * 255);
+    
             return $"#{_red:X2}{_green:X2}{_blue:X2}";
         }
 
