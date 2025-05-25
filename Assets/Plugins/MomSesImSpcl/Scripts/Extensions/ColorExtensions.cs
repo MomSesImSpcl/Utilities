@@ -35,26 +35,24 @@ namespace MomSesImSpcl.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string BlendColors(this Color _Color, Color _TargetColor, float _Percentage)
         {
-            var _red = (int)math.round((_Color.r + (_TargetColor.r - _Color.r) * _Percentage) * 255);
-            var _green = (int)math.round((_Color.g + (_TargetColor.g - _Color.g) * _Percentage) * 255);
-            var _blue = (int)math.round((_Color.b + (_TargetColor.b - _Color.b) * _Percentage) * 255);
-    
-            return $"#{_red:X2}{_green:X2}{_blue:X2}";
+            return new Color
+            (
+                _Color.r + (_TargetColor.r - _Color.r) * _Percentage,
+                _Color.g + (_TargetColor.g - _Color.g) * _Percentage,
+                _Color.b + (_TargetColor.b - _Color.b) * _Percentage
+                
+            ).ToHex();
         }
 
         /// <summary>
-        /// Converts the given <see cref="byte"/> <c>RGBA</c> values <c>0-255</c>, into <see cref="float"/> values <c>0-1</c>.
+        /// Converts a <see cref="Color"/> <see cref="object"/> that was initialized with <see cref="byte"/> values <c>0-255</c>, into <see cref="float"/> values <c>0-1</c>.
         /// </summary>
-        /// <param name="_Color"><see cref="Color"/>.</param>
-        /// <param name="_R"><see cref="Color.r"/>.</param>
-        /// <param name="_G"><see cref="Color.g"/>.</param>
-        /// <param name="_B"><see cref="Color.b"/>.</param>
-        /// <param name="_A"><see cref="Color.a"/>.</param>
-        /// <returns>A new <see cref="Color"/> <see cref="object"/> with the given values.</returns>
+        /// <param name="_Color">Must have been initialized with values from <c>0-255</c>.</param>
+        /// <returns>A new <see cref="Color"/> <see cref="object"/> with values converted from <c>0-255</c> to <c>0-1</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Color FromByte(this Color _Color, byte _R, byte _G, byte _B, byte _A = 0)
+        public static Color ByteToFloat(this Color _Color)
         {
-            return new Color(_R / 255f, _G / 255f, _B / 255f, _A / 255f);;
+            return new Color(_Color.r / 255f, _Color.g / 255f, _Color.b / 255f, _Color.a / 255f);;
         }
         
         /// <summary>
@@ -65,7 +63,11 @@ namespace MomSesImSpcl.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToHex(this Color _Color)
         {
-            return $"#{_Color.r:X2}{_Color.g:X2}{_Color.b:X2}";
+            var _r = (int)math.round(_Color.r * 255);
+            var _g = (int)math.round(_Color.g * 255);
+            var _b = (int)math.round(_Color.b * 255);
+    
+            return $"#{_r:X2}{_g:X2}{_b:X2}";
         }
         
         /// <summary>
