@@ -38,6 +38,21 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
+        /// Returns the <see cref="EventDescription"/> for this <see cref="EventReference"/>.
+        /// </summary>
+        /// <param name="_EventReference">The <see cref="EventReference"/> to get the <see cref="EventDescription"/> of.</param>
+        /// <param name="_IsValid"><c>true</c> if the <see cref="EventDescription"/> is valid, otherwise <c>false</c>.</param>
+        /// <returns>The <see cref="EventDescription"/> for this <see cref="EventReference"/>.</returns>
+        public static EventDescription GetEventDescription(this EventReference _EventReference, out bool _IsValid)
+        {
+            var _eventDescription = RuntimeManager.GetEventDescription(_EventReference);
+
+            _IsValid = _eventDescription.isValid();
+            
+            return _eventDescription;
+        }
+        
+        /// <summary>
         /// Returns the <see cref="PARAMETER_ID"/> for the given name.
         /// </summary>
         /// <param name="_EventReference">The <see cref="EventReference"/> to get the parameter from.</param>
