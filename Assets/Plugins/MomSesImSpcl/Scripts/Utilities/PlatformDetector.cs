@@ -82,7 +82,7 @@ namespace MomSesImSpcl.Utilities
 #if UNITY_WEBGL
         #region Fields
         /// <summary>
-        /// JavaScript function to detect if the current device is a mobile device or not.
+        /// JavaScript function to detect if the current device is a mobile device in a WebGL build.
         /// </summary>
         /// <returns><c>true</c> if the current device is a mobile device, otherwise <c>false</c>.</returns>
         [System.Runtime.InteropServices.DllImport("__Internal")]
