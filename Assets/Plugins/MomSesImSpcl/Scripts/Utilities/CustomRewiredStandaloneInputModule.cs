@@ -88,12 +88,23 @@ namespace MomSesImSpcl.Utilities
             // Get the axis move event.
             _axisEventData ??= base.GetAxisEventData(_movement.x, _movement.y, 0f);
             
-            base.eventSystem.currentSelectedGameObject.GetComponent<Selectable>().GetNextActive(_axisEventData.moveDir, out var _previous);
+            var _next = base.eventSystem.currentSelectedGameObject.GetComponent<Selectable>().GetNextActive(_axisEventData.moveDir, out var _previous);
             
             if (_axisEventData.moveDir != MoveDirection.None) 
             {
-                ExecuteEvents.Execute(_previous.gameObject, _axisEventData, ExecuteEvents.moveHandler);
-
+                if ((!_previous.interactable || !_previous.gameObject.activeInHierarchy) && _next)
+                {
+                    _axisEventData.moveDir = MoveDirection.None;
+                    _axisEventData.moveVector = Vector2.zero;
+                    _axisEventData.selectedObject = _next.gameObject;
+                    
+                    ExecuteEvents.Execute(_next.gameObject, _axisEventData, ExecuteEvents.moveHandler);
+                }
+                else
+                {
+                    ExecuteEvents.Execute(_previous.gameObject, _axisEventData, ExecuteEvents.moveHandler);    
+                }
+                
                 if (!_similarDir)
                 {
                     base.m_ConsecutiveMoveCount = 0;
