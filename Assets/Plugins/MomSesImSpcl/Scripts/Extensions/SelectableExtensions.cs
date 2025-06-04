@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace MomSesImSpcl.Extensions
 {
     /// <summary>
-    /// Contains exntension methods for <see cref="Selectable"/>.
+    /// Contains extension methods for <see cref="Selectable"/>.
     /// </summary>
     public static class SelectableExtensions
     {
