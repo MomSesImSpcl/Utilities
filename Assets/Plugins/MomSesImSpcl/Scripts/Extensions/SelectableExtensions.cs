@@ -44,13 +44,13 @@ namespace MomSesImSpcl.Extensions
                     MoveDirection.Down => _Previous.FindSelectableOnDown(),
                     _ => _Previous
                 };
-
+                
                 if (!_nextSelectable)
                 {
                     return null;
                 }
                 
-                if (_nextSelectable.interactable)
+                if (_nextSelectable.interactable && _nextSelectable.gameObject.activeInHierarchy)
                 {
                     return _nextSelectable;
                 }
