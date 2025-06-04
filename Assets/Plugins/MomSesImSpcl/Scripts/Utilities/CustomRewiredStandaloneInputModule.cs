@@ -8,15 +8,10 @@ using UnityEngine.UI;
 namespace MomSesImSpcl.Utilities
 {
     /// <summary>
-    /// <see cref="RewiredStandaloneInputModule"/> with optional non interactable UI element skip during navigation.
+    /// <see cref="RewiredStandaloneInputModule"/> with non interactable UI element skip during navigation.
     /// </summary>
     public sealed class CustomRewiredStandaloneInputModule : RewiredStandaloneInputModule
     {
-        #region Inspector Fields
-        [Tooltip("Should UI elements that are not interactable be skipped during the navigation.")]
-        [SerializeField] private bool skipNonInteractable;
-        #endregion
-        
         #region Methods
         protected override bool SendMoveEventToSelectedObject()
         {
@@ -92,18 +87,12 @@ namespace MomSesImSpcl.Utilities
 
             // Get the axis move event.
             _axisEventData ??= base.GetAxisEventData(_movement.x, _movement.y, 0f);
-
-            var _currentSelectedGameObject = base.eventSystem.currentSelectedGameObject;
             
-            if (this.skipNonInteractable)
-            {
-                _currentSelectedGameObject.GetComponent<Selectable>().GetNextActive(_axisEventData.moveDir, out var _previous);
-                _currentSelectedGameObject = _previous.gameObject;
-            }
+            base.eventSystem.currentSelectedGameObject.GetComponent<Selectable>().GetNextActive(_axisEventData.moveDir, out var _previous);
             
             if (_axisEventData.moveDir != MoveDirection.None) 
             {
-                ExecuteEvents.Execute(_currentSelectedGameObject, _axisEventData, ExecuteEvents.moveHandler);
+                ExecuteEvents.Execute(_previous.gameObject, _axisEventData, ExecuteEvents.moveHandler);
 
                 if (!_similarDir)
                 {
