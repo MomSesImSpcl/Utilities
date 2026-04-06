@@ -17,7 +17,7 @@ namespace MomSesImSpcl.Extensions
         /// <typeparam name="T">The type of elements in the <see cref="Span{T}"/>.</typeparam>
         /// <typeparam name="TAccumulate">The type of the accumulated value.</typeparam>
         /// <returns>The final accumulated result after processing all elements in the <see cref="Span{T}"/>.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="_Func"/> is <b>null</b>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="_Func"/> is <c>null</c>.</exception>
         public static TAccumulate Aggregate<T, TAccumulate>(this Span<T> _Span, TAccumulate _Seed, Func<TAccumulate, T, TAccumulate> _Func)
         {
             if (_Func is null)
