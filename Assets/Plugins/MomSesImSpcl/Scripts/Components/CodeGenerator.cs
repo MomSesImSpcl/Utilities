@@ -17,6 +17,7 @@ using Object = UnityEngine.Object;
 
 namespace MomSesImSpcl.Utilities
 {
+    // ReSharper disable once InvalidXmlDocComment
     /// <summary>
     /// Helper class for the <see cref="RuntimeCodeExecutor"/> to generate code from a <c>.cs</c>-file instead of from the inspector.
     /// </summary>
@@ -37,7 +38,7 @@ namespace MomSesImSpcl.Utilities
         #region Fields
         // ReSharper disable once ArrangeStaticMemberQualifier
         // ReSharper disable once UnusedMember.Local
-        private static CodeGenerator CodeGeneratorInstance => GameObject.FindFirstObjectByType<CodeGenerator>();
+        private static CodeGenerator CodeGeneratorInstance => GameObject.FindAnyObjectByType<CodeGenerator>();
         #endregion
 #pragma warning restore CS0414
         
