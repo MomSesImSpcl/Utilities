@@ -235,6 +235,7 @@ Shader "MomSesImSpcl/Sprite Shadow"
             
             #pragma vertex vert
             #pragma fragment frag
+            #pragma target 4.5
             
             // #pragma multi_compile_shadowcaster
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW

@@ -2,7 +2,11 @@
     "name": "MomSesImSpclEditor",
     "rootNamespace": "MomSesImSpcl",
     "references": [
-        "GUID:682192562fa5113408a38b895f98338f"
+        "GUID:db2875c6bc6e11c4fb8730f4afcd8265",
+        "GUID:0c752da273b17c547ae705acf0f2adf2",
+        "GUID:aab3caaf43456d6449a3e035348ff798",
+        "GUID:682192562fa5113408a38b895f98338f",
+        "GUID:2a0d1602c4d48c643bc5f848459f18a7"
     ],
     "includePlatforms": [
         "Editor"

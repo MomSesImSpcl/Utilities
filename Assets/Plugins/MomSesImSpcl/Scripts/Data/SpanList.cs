@@ -155,7 +155,7 @@ namespace MomSesImSpcl.Data
         }
         
         /// <summary>
-        /// Clears all <see cref="elements"/>.
+        /// Clreas all <see cref="elements"/>.
         /// </summary>
         public void Clear()
         {

@@ -1,4 +1,4 @@
-#if ANIMATION // TODO: Add this to the scripting define symbols when the "Animation" package is enabled.
+#if ANIMATION
 using System;
 using System.Linq;
 using UnityEngine;

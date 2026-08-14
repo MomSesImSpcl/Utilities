@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace MomSesImSpcl.Extensions
@@ -63,7 +64,7 @@ namespace MomSesImSpcl.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Clamp(this float _Float, float _ClampMin, float _ClampMax)
         {
-            return Mathf.Clamp(_Float, _ClampMin, _ClampMax);
+            return math.clamp(_Float, _ClampMin, _ClampMax);
         }
 
         /// <summary>

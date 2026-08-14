@@ -17,9 +17,9 @@ namespace MomSesImSpcl.Extensions
 #endif
         PreloadAsync<T>(this ObjectPool<T> _ObjectPool, T _Prefab, int _Count, Transform _Parent, Vector3 _Position, Quaternion _Rotation) where T : MonoBehaviour
         {
-            foreach (var _object in await Object.InstantiateAsync(_Prefab, _Count, _Parent, _Position, _Rotation))
+            foreach (var _card in await Object.InstantiateAsync(_Prefab, _Count, _Parent, _Position, _Rotation))
             {
-                _ObjectPool.Release(_object);
+                _ObjectPool.Release(_card);
             }
         }
         #endregion
