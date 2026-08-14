@@ -117,7 +117,12 @@ namespace MomSesImSpcl.Data
                 name = new StringWrapper(System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(NULL_PARAMETER))
             };
             
-            return new FMODParameter(default, _parameterDescription);
+            var _fmodParameter = new FMODParameter
+            {
+                parameterId = new SerializedParameterId(_parameterDescription.id)
+            };
+            
+            return _fmodParameter;
         }
         
         /// <summary>

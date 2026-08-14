@@ -23,7 +23,7 @@ namespace MomSesImSpcl.Extensions
         public static float Angle(this Vector3 _Origin, Vector3 _Target)
         {
             var _direction = _Origin.Direction(_Target);
-            var _mouseAngle = math.atan2(-_direction.y, _direction.x) * math.TODEGREES;
+            var _mouseAngle = Mathf.Atan2(-_direction.y, _direction.x) * Mathf.Rad2Deg;
 
             return _mouseAngle;
         }
@@ -49,9 +49,9 @@ namespace MomSesImSpcl.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Clamp(this Vector3 _Vector3, Vector3 _Min, Vector3 _Max)
         {
-            var _x = math.clamp(_Vector3.x, _Min.x, _Max.x);
-            var _y = math.clamp(_Vector3.y, _Min.y, _Max.y);
-            var _z = math.clamp(_Vector3.z, _Min.z, _Max.z);
+            var _x = Mathf.Clamp(_Vector3.x, _Min.x, _Max.x);
+            var _y = Mathf.Clamp(_Vector3.y, _Min.y, _Max.y);
+            var _z = Mathf.Clamp(_Vector3.z, _Min.z, _Max.z);
             
             return new Vector3(_x, _y, _z);
         }

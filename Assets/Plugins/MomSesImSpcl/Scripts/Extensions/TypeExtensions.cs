@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection;
 using MomSesImSpcl.Utilities;
 using UnityEngine;
+#if ZLINQ
 using ZLinq;
+#endif
 
 namespace MomSesImSpcl.Extensions
 {
@@ -155,7 +157,12 @@ namespace MomSesImSpcl.Extensions
             return _InterfaceType.IsGenericTypeDefinition switch
             {
                 false => _InterfaceType.IsAssignableFrom(_Type),
-                true => _Type.GetInterfaces().AsValueEnumerable().Any(_Interface => _Interface.IsGenericType && _Interface.GetGenericTypeDefinition() == _InterfaceType)
+                true => _Type.GetInterfaces()
+#if ZLINQ
+                    .AsValueEnumerable()
+#else
+                    .Any(_Interface => _Interface.IsGenericType && _Interface.GetGenericTypeDefinition() == _InterfaceType)
+#endif
             };
         }
         

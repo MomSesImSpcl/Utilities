@@ -23,7 +23,7 @@ namespace MomSesImSpcl.Extensions
         public static float Angle(this Vector2 _Origin, Vector2 _Target)
         {
             var _direction = _Origin.Direction(_Target);
-            var _mouseAngle = math.atan2(-_direction.y, _direction.x) * math.TODEGREES;
+            var _mouseAngle = Mathf.Atan2(-_direction.y, _direction.x) * Mathf.Rad2Deg;
 
             return _mouseAngle;
         }
@@ -81,7 +81,7 @@ namespace MomSesImSpcl.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Diagonal(this Vector2 _Vector2)
         {
-            return math.sqrt(_Vector2.x * _Vector2.x + _Vector2.y * _Vector2.y);
+            return Mathf.Sqrt(_Vector2.x * _Vector2.x + _Vector2.y * _Vector2.y);
         }
         
         /// <summary>

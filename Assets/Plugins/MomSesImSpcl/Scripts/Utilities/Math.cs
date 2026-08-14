@@ -34,7 +34,7 @@ namespace MomSesImSpcl.Utilities
         [SuppressMessage("ReSharper", "RedundantCast")]
         public static bool Approximately(float _A, float _B)
         {
-            return (double)math.abs(_B - _A) < (double)math.max(1E-06f * math.max(math.abs(_A), math.abs(_B)), float.Epsilon * 8f);
+            return math.abs(_B - _A) < math.max(1E-06f * math.max(math.abs(_A), math.abs(_B)), float.Epsilon * 8f);
         }
         
         /// <summary>
