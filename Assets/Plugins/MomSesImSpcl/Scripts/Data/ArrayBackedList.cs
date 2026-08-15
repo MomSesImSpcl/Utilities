@@ -1,22 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using MomSesImSpcl.Extensions;
 using UnityEngine;
 
 namespace MomSesImSpcl.Data
 {
     /// <summary>
-    /// TODO: Test all methods if they work.
+    /// A resizable <see cref="List{T}"/> with an accessible minimum backing-array size.
     /// </summary>
     [Serializable]
-    public sealed class SpanList<T> : IList<T>
+    public sealed class ArrayBackedList<T> : IList<T>
     {
         #region Inspector Fields
         /// <summary>
-        /// Contains all elements in this <see cref="SpanList{T}"/>.
+        /// Contains all elements in this <see cref="ArrayBackedList{T}"/>.
         /// </summary>
         [SerializeField] private T[] elements;
         #endregion
@@ -25,19 +23,23 @@ namespace MomSesImSpcl.Data
         /// <summary>
         /// The index of the last item in <see cref="elements"/>.
         /// </summary>
-        private int lastUsedIndex = -1; // TODO: Check if there is a better name.
+        private int lastUsedIndex = -1;
         #endregion
         
         #region Properties
         /// <summary>
-        /// The number of items currently in <see cref="elements"/>. <br/>
-        /// <i>Can be less than <see cref="Size"/>.</i>
+        /// The number of used items currently in <see cref="elements"/>. <br/>
+        /// <i>Can be less than <see cref="MinSize"/>.</i>
         /// </summary>
         public int Count => this.lastUsedIndex + 1;
         /// <summary>
         /// The minimum desired size of <see cref="elements"/>.
         /// </summary>
-        public int Size { get; private set; }
+        public int MinSize { get; private set; }
+        /// <summary>
+        /// The current size of <see cref="elements"/>.
+        /// </summary>
+        public int Capacity => this.elements.Length;
         /// <summary>
         /// Will always be <c>false</c>.
         /// </summary>
@@ -58,55 +60,60 @@ namespace MomSesImSpcl.Data
         
         #region Constructors
         /// <summary>
-        /// <see cref="SpanList{T}"/>.
+        /// <see cref="ArrayBackedList{T}"/>.
         /// </summary>
-        /// <param name="_Size"><see cref="Size"/>.</param>
-        public SpanList(int _Size = 0)
+        /// <param name="_MinSize"><see cref="MinSize"/>.</param>
+        public ArrayBackedList(int _MinSize = 0)
         {
-            if (_Size == 0)
+            if (_MinSize <= 0)
             {
                 this.elements = Array.Empty<T>();
             }
             else
             {
-                this.lastUsedIndex = _Size - 1;
-                this.Size = _Size;
-                this.elements = new T[_Size];
+                this.elements = new T[_MinSize];
+                this.MinSize = _MinSize;
             }
         }
 
         /// <summary>
-        /// <see cref="SpanList{T}"/>.
+        /// <see cref="ArrayBackedList{T}"/>.
         /// </summary>
         /// <param name="_Collection">A collection to add to <see cref="elements"/>.</param>
-        /// <param name="_Size"><see cref="Size"/>.</param>
-        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-        public SpanList(IEnumerable<T> _Collection, int _Size = 0)
+        /// <param name="_MinSize"><see cref="MinSize"/>.</param>
+        public ArrayBackedList(IEnumerable<T> _Collection, int _MinSize = 0)
         {
-            var _collection = _Collection as ICollection<T>;
-            var _elements = _collection?.Count ?? _Collection.Count();
-            var _size = Mathf.Max(_elements, _Size);
-            this.Size = _Size;
-            
-            this.elements = new T[_size];
+            this.MinSize = _MinSize;
 
-            if (_size > 0)
+            if (_Collection is ICollection<T> _collection)
             {
-                this.lastUsedIndex = _size - 1;
-            }
-            
-            if (_collection != null)
-            {
-                _collection.CopyTo(this.elements, 0);
-            }
-            else
-            {
-                var _index = 0;
-                foreach (var _element in _Collection)
+                var _elements = _collection.Count;
+                var _size = Mathf.Max(_elements, _MinSize);
+
+                this.elements = new T[_size];
+
+                if (_elements > 0)
                 {
-                    this.elements[_index++] = _element;
+                    this.lastUsedIndex = _elements - 1;
                 }
+
+                _collection.CopyTo(this.elements, 0);
+
+                return;
             }
+
+            var _items = _Collection.ToArray();
+            var _itemCount = _items.Length;
+            var _arraySize = Mathf.Max(_itemCount, _MinSize);
+
+            this.elements = new T[_arraySize];
+
+            if (_itemCount > 0)
+            {
+                this.lastUsedIndex = _itemCount - 1;
+            }
+
+            Array.Copy(_items, 0, this.elements, 0, _itemCount);
         }
         #endregion
         
@@ -117,11 +124,7 @@ namespace MomSesImSpcl.Data
         /// <param name="_Item">The item  to add.</param>
         public void Add(T _Item)
         {
-            if (this.Count + 1 > this.Size)
-            {
-                Array.Resize(ref this.elements, this.Size + 1);    
-            }
-            
+            this.EnsureCapacity(this.Count + 1);
             this.elements[++this.lastUsedIndex] = _Item;
         }
 
@@ -131,47 +134,52 @@ namespace MomSesImSpcl.Data
         /// <param name="_Collection">The elements to add.</param>
         public void AddRange(IEnumerable<T> _Collection)
         {
-            // TODO: Check if "Possible multiple enumeration" can be avoided.
-            var _collection = _Collection as ICollection<T>;
-            var _elements = _collection?.Count ?? _Collection.Count();
-
-            if (this.Count + _elements > this.Size)
+            if (_Collection is ICollection<T> _collection)
             {
-                Array.Resize(ref this.elements, this.Size + _elements);    
-            }
-
-            if (_collection != null)
-            {
+                this.EnsureCapacity(this.Count + _collection.Count);
                 _collection.CopyTo(this.elements, this.lastUsedIndex + 1);
-                this.lastUsedIndex += _elements;
+                this.lastUsedIndex += _collection.Count;
             }
             else
             {
-                foreach (var _item in _Collection)
+                var _items = _Collection.ToArray();
+
+                this.EnsureCapacity(this.Count + _items.Length);
+
+                foreach (var _item in _items)
                 {
                     this.elements[++this.lastUsedIndex] = _item;
                 }   
             }
         }
+
+        /// <summary>
+        /// Returns a <see cref="Span{T}"/> of <see cref="elements"/>.
+        /// </summary>
+        /// <returns><see cref="elements"/> as a <see cref="Span{T}"/>.</returns>
+        public Span<T> AsSpan()
+        {
+            return this.elements.AsSpan(0, this.Count);
+        }
         
         /// <summary>
-        /// Clreas all <see cref="elements"/>.
+        /// Clears all <see cref="elements"/>.
         /// </summary>
         public void Clear()
         {
-            if (this.Size == 0)
+            if (this.MinSize == 0)
             {
                 this.elements = Array.Empty<T>();
             }
             else
             {
-                if (this.elements.Length > this.Size)
+                if (this.Capacity > this.MinSize)
                 {
-                    Array.Resize(ref this.elements, this.Size);
+                    Array.Resize(ref this.elements, this.MinSize);
                 }
 
                 // ReSharper disable once InconsistentNaming
-                for (var i = 0; i < this.Size; i++)
+                for (var i = 0; i < this.MinSize; i++)
                 {
                     this.elements[i] = default;
                 }
@@ -187,7 +195,16 @@ namespace MomSesImSpcl.Data
         /// <returns><c>true</c> if the item is in <see cref="elements"/>, otherwise <c>false</c>.</returns>
         public bool Contains(T _Item) 
         {
-            return this.elements.Any(_Element => EqualityComparer<T>.Default.Equals(_Element, _Item));
+            // ReSharper disable once InconsistentNaming
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (EqualityComparer<T>.Default.Equals(this.elements[i], _Item))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
         
         /// <summary>
@@ -198,6 +215,27 @@ namespace MomSesImSpcl.Data
         public void CopyTo(T[] _Array, int _ArrayIndex)
         {
             Array.Copy(this.elements, 0, _Array, _ArrayIndex, this.Count);
+        }
+        
+        /// <summary>
+        /// Ensures that <see cref="elements"/> can contain at least the given <c>_Capacity</c>.
+        /// </summary>
+        /// <param name="_Capacity">The minimum required capacity.</param>
+        private void EnsureCapacity(int _Capacity)
+        {
+            if (_Capacity <= this.Capacity)
+            {
+                return;
+            }
+
+            var _newCapacity = this.Capacity == 0 ? Mathf.Max(this.MinSize, 4) : this.elements.Length * 2;
+
+            if (_newCapacity < _Capacity)
+            {
+                _newCapacity = _Capacity;
+            }
+
+            Array.Resize(ref this.elements, _newCapacity);
         }
         
         /// <summary>
@@ -217,13 +255,10 @@ namespace MomSesImSpcl.Data
         /// <param name="_Item">The item to insert.</param>
         public void Insert(int _Index, T _Item)
         {
-            if (this.Count + 1 > this.Size)
-            {
-                Array.Resize(ref this.elements, this.Size + 1);    
-            }
+            this.EnsureCapacity(this.Count + 1);
             
             // ReSharper disable once InconsistentNaming
-            for (var i = this.lastUsedIndex; i > _Index; i--)
+            for (var i = this.lastUsedIndex + 1; i > _Index; i--)
             {
                 this.elements[i] = this.elements[i - 1];
             }
@@ -274,8 +309,16 @@ namespace MomSesImSpcl.Data
         /// <returns>The index of the given <c>_Item</c> in <see cref="elements"/>, or <c>-1</c> if it couldn't be found.</returns>
         private int FindIndex(T _Item)
         {
-            // ReSharper disable once VariableHidesOuterVariable
-            return this.elements.FindIndex(_Item, (_Element, _Item) => EqualityComparer<T>.Default.Equals(_Element, _Item));
+            // ReSharper disable once InconsistentNaming
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (EqualityComparer<T>.Default.Equals(this.elements[i], _Item))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
         
         /// <summary>
@@ -288,38 +331,31 @@ namespace MomSesImSpcl.Data
             // ReSharper disable once InconsistentNaming
             for (var i = _Index; i < this.lastUsedIndex; i++)
             {
-                this.elements[_Index] = this.elements[_Index + 1];    
+                this.elements[i] = this.elements[i + 1];    
             }
-                
-            this.lastUsedIndex--;
-                
-            this.ResizeOrDefault();
+            
+            this.elements[this.lastUsedIndex--] = default;
         }
         
         /// <summary>
-        /// Removes the element at the given <c>_Index</c>, without maintaining the order.
+        /// Removes the element at the given <c>_Index</c>, without maintaining the order. <br/>
+        /// <i>Faster than <see cref="RemoveAt"/>.</i>
         /// </summary>
         /// <param name="_Index">The index in <see cref="elements"/> to remove.</param>
         public void RemoveAtUnordered(int _Index)
         {
-            this.elements[_Index] = this.elements[this.lastUsedIndex--];
-            
-            this.ResizeOrDefault();
+            this.elements[_Index] = this.elements[this.lastUsedIndex];
+            this.elements[this.lastUsedIndex--] = default;
         }
 
         /// <summary>
-        /// Resizes the <see cref="elements"/> <see cref="Array"/> if it is greater than <see cref="Size"/>, <br/>
-        /// or set the element at <see cref="lastUsedIndex"/> to <c>default</c>.
+        /// Resizes the <see cref="elements"/> <see cref="Array"/> if it is greater than <see cref="MinSize"/> or <see cref="Count"/>.
         /// </summary>
-        private void ResizeOrDefault()
+        public void TrimExcess()
         {
-            if (this.elements.Length > this.Size)
+            if (this.Capacity > Mathf.Max(this.MinSize, this.Count))
             {
-                Array.Resize(ref this.elements, Mathf.Max(this.Size, this.Count));
-            }
-            else
-            {
-                this.elements[this.lastUsedIndex + 1] = default;
+                Array.Resize(ref this.elements, Mathf.Max(this.MinSize, this.Count));
             }
         }
         

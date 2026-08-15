@@ -100,6 +100,23 @@ namespace MomSesImSpcl.Utilities
         public static int GetBigger(int _Number1, int _Number2) => _Number1 > _Number2 ? _Number1 : _Number2;
 
         /// <summary>
+        /// Finds the greatest common divisor of two integers.
+        /// </summary>
+        /// <param name="_A">First <see cref="int"/>.</param>
+        /// <param name="_B">Second <see cref="int"/>.</param>
+        /// <returns>The greatest common divisor of the given integers.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int GreatestCommonDivisor(int _A, int _B)
+        {
+            while (_B != 0)
+            {
+                (_A, _B) = (_B, _A % _B);
+            }
+
+            return _A;
+        }
+        
+        /// <summary>
         /// Converts a linear value to its corresponding decibel value.
         /// </summary>
         /// <param name="_Linear">The linear value to be converted to decibels.</param>

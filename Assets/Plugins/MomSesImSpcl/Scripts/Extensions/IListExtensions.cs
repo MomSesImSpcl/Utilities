@@ -173,6 +173,20 @@ namespace MomSesImSpcl.Extensions
         }
         
         /// <summary>
+        /// Removes and returns the last element from this <see cref="IList{T}"/>.
+        /// </summary>
+        /// <param name="_IList">The <see cref="IList{T}"/> to get the last element from.</param>
+        /// <typeparam name="T">The <see cref="Type"/> of the <see cref="IList{T}"/>.</typeparam>
+        /// <returns>Returns the last element from this <see cref="IList{T}"/>.</returns>
+        public static T Pop<T>(this IList<T> _IList)
+        {
+            var _element = _IList[^1];
+            _IList.RemoveAt(_IList.Count - 1);
+            
+            return _element;
+        }
+        
+        /// <summary>
         /// Populates this <see cref="IList{T}"/> with elements from the given <c>_Factory</c>-method.
         /// </summary>
         /// <param name="_IList">The <see cref="IList{T}"/> to populate.</param>
