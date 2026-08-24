@@ -12,12 +12,10 @@
   <component name="ChangeListManager">
     <list default="true" id="6d707ed9-23b4-4378-b2ba-58c6e20a1763" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Utilities/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Utilities/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Data/SpanList.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Data/ArrayBackedList.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Data/SpanList.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Data/ArrayBackedList.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Extensions/IListExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Extensions/IListExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/Math.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/Math.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Utilities.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Utilities.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/SceneTemplateSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/SceneTemplateSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Plugins/WebGL/PlatformDetector.jslib" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Plugins/WebGL/PlatformDetector.jslib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Plugins/WebGL/PlatformDetector.jslib.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Plugins/WebGL/PlatformDetector.jslib.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Scripting Define Symbols.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Scripting Define Symbols.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/PlatformDetector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/MomSesImSpcl/Scripts/Utilities/PlatformDetector.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +165,8 @@
       <workItem from="1742414762933" duration="1056000" />
       <workItem from="1745786994369" duration="1215000" />
       <workItem from="1786666172399" duration="8182000" />
-      <workItem from="1786706261453" duration="21847000" />
+      <workItem from="1786706261453" duration="22544000" />
+      <workItem from="1787601604332" duration="4892000" />
     </task>
     <servers />
   </component>

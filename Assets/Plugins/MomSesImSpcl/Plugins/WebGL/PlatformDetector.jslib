@@ -1,9 +1,9 @@
 mergeInto(LibraryManager.library,
 {
-  IsHandheldDeviceJS: function()
+  IsHandheldDevice: function()
   {
     const _userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    const _mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone|Mobile|mobile|CriOS/i;
+    const _mobileRegex = /Android|BlackBerry|CriOS|IEMobile|iPad|iPhone|iPod|Mobile|mobile|Opera Mini|webOS|Windows Phone/i;
     
     if (_mobileRegex.test(_userAgent))
     {

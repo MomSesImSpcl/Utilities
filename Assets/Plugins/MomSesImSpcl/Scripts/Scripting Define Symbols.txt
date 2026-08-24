@@ -5,4 +5,5 @@ NETCODE        - https://docs-multiplayer.unity3d.com/netcode/current/about/
 ODIN_INSPECTOR - https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041
 TMP            - https://learn.unity.com/tutorial/working-with-textmesh-pro#
 UNITASK        - https://github.com/Cysharp/UniTask
+VR_BUILD       - Must only be enabled when the VR/XR packages are installed.
 ZLINQ          - https://github.com/Cysharp/ZLinq

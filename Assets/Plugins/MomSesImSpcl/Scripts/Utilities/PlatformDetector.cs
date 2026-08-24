@@ -8,7 +8,7 @@ namespace MomSesImSpcl.Utilities
     /// <summary>
     /// Contains helper methods to get information about the current device. <br/>
     /// <b>Latest platform-dependant compilation directives:</b> <br/>
-    /// <i>https://docs.unity3d.com/2022.3/Documentation/Manual/PlatformDependentCompilation.html</i>
+    /// <i>https://docs.unity3d.com/2023.2/Documentation/Manual/PlatformDependentCompilation.html</i>
     /// </summary>
     public static class PlatformDetector
     {
@@ -21,6 +21,7 @@ namespace MomSesImSpcl.Utilities
             Windows,
             MacOS,
             Linux,
+            Server,
             Android,
             IOS,
             WindowsHandheld,
@@ -76,13 +77,16 @@ namespace MomSesImSpcl.Utilities
             Unknown,
             MouseAndKeyboard,
             Touch,
-            Controller
+            Controller,
+            // ReSharper disable once UnusedMember.Global
+            VR
         }
         
 #if UNITY_WEBGL
         #region Fields
         /// <summary>
-        /// JavaScript function to detect if the current device is a mobile device in a WebGL build.
+        /// JavaScript function to detect if the current device is a mobile device in a WebGL build. <br/>
+        /// <i>The implementation is in <c>PlatformDetector.jslib</c>.</i>
         /// </summary>
         /// <returns><c>true</c> if the current device is a mobile device, otherwise <c>false</c>.</returns>
         [System.Runtime.InteropServices.DllImport("__Internal")]
@@ -111,12 +115,15 @@ namespace MomSesImSpcl.Utilities
             return Platform.MacOS;
 #elif UNITY_STANDALONE_LINUX
 #if STEAMWORKS_NET
+            // SteamDeck uses Linux.
             if (Steamworks.SteamUtils.IsSteamRunningOnSteamDeck()) // TODO: Check if this is the correct method.
             {
                 return Platform.SteamDeck;
             }
 #endif
             return Platform.Linux;
+#elif UNITY_SERVER
+            return Platform.Server;
 #elif UNITY_WSA
             if (Application.platform is RuntimePlatform.XboxOne or RuntimePlatform.GameCoreXboxSeries or RuntimePlatform.GameCoreXboxOne)
             {
@@ -191,12 +198,15 @@ namespace MomSesImSpcl.Utilities
         /// <returns>The default <see cref="InputSource"/> for the current <see cref="DeviceFamily"/>.</returns>
         public static InputSource GetInputSource(DeviceFamily? _DeviceFamily = null)
         {
+#if VR_BUILD
+                return InputSource.VR;
+#endif
+            
             return (_DeviceFamily ?? GetCurrentDeviceFamily()) switch
             {
                 DeviceFamily.Desktop => InputSource.MouseAndKeyboard,
                 DeviceFamily.Mobile => InputSource.Touch,
-                DeviceFamily.Console => InputSource.Controller,
-                DeviceFamily.Handheld => InputSource.Controller,
+                DeviceFamily.Console or DeviceFamily.Handheld => InputSource.Controller,
                 _ => InputSource.Unknown
             };
         }
